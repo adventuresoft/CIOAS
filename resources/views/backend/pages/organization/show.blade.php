@@ -118,32 +118,6 @@
             <div class="col-sm-9">{{ $organization->capital }}</div>
         </div>
 
-        {{-- Status --}}
-        <div class="row mb-2">
-            <div class="col-sm-3 font-weight-bold">Status:</div>
-            <div class="col-sm-9">
-                @if($organization->status == 1)
-                    <span class="badge badge-success">Approved</span>
-                @else
-                    <span class="badge badge-warning">Pending</span>
-                @endif
-            </div>
-        </div>
-
-    </div>
-
-    <div class="card-footer">
-
-        <a href="{{route('organization.index')}}" class="btn btn-secondary">
-            Back
-        </a>
-
-        @if($organization->status != 1)
-        <button class="btn btn-success float-right" id="approveBtn">
-            ✔ Approve
-        </button>
-        @endif
-
     </div>
 
 </div>
@@ -244,6 +218,33 @@
             @endforelse
 
         </div>
+    </div>
+</div>
+
+<div class="card card-info mt-3">
+    <div class="card-body">
+        <div class="row mb-2">
+            <div class="col-sm-3 font-weight-bold">Status:</div>
+            <div class="col-sm-9">
+                @if($organization->status == 1)
+                    <span class="badge badge-success">Approved</span>
+                @else
+                    <span class="badge badge-warning">Pending</span>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <a href="{{route('organization.index')}}" class="btn btn-secondary">
+            Back
+        </a>
+
+        @if($organization->status != 1)
+        <button class="btn btn-success float-right" id="approveBtn">
+            ✔ Approve
+        </button>
+        @endif
     </div>
 </div>
 

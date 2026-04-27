@@ -145,9 +145,18 @@
                                             <div class="form-group row">
                                                 <label for="date_of_birth" class="col-sm-2 col-form-label">Date of Birth</label>
                                                 <div class="col-sm-9">
-                                                    <input type="date" value="{{ $user->people->date_of_birth ?? '' }}" name="date_of_birth"
-                                                        class="form-control" id="date_of_birth">
-                                                    <small class="error date_of_birth-error text-danger"></small>
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                            <input type="date" value="{{ $user->people->date_of_birth ?? '' }}" name="date_of_birth"
+                                                                class="form-control" id="date_of_birth">
+                                                            <small class="error date_of_birth-error text-danger"></small>
+                                                        </div>
+                                                        <div class="col-md-4 mt-2 mt-md-0">
+                                                            <label for="age" class="col-form-label">Age</label>
+                                                            <input type="text" class="form-control" id="age" readonly
+                                                                placeholder="Auto calculated">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -623,4 +632,38 @@
 
 @endsection
 @push('script')
+    <script>
+        $(document).ready(function() {
+            function calculateAge(dob) {
+                if (!dob) {
+                    return '';
+                }
+
+                let birthDate = new Date(dob);
+                if (Number.isNaN(birthDate.getTime())) {
+                    return '';
+                }
+
+                let today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                let monthDiff = today.getMonth() - birthDate.getMonth();
+
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+
+                return age;
+            }
+
+            function setAgeFromDob(dob) {
+                let age = calculateAge(dob);
+                $('#age').val(age !== '' && age >= 0 ? age + ' years' : '');
+            }
+
+            setAgeFromDob($('#date_of_birth').val());
+            $('#date_of_birth').on('change', function() {
+                setAgeFromDob($(this).val());
+            });
+        });
+    </script>
 @endpush

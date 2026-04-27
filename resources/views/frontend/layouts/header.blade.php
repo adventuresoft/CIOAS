@@ -11,8 +11,8 @@
                 <a href="{{ URL::to('/') }}"><img src="{{ asset('frontend/img/school-logo.png') }}" alt=""></a>
             </div>
             <div class="institute-name">
-                <h1>No. 3 SUKTAIL UNION PARISHAD</h1>
-                <p>Suktail, Gopalgang Sadar, Gopalgang</p>
+                <h1>Citizen Service Management and Central Reporting System</h1>
+                <p>Local Government Division, Local Government Ministry, Bangladesh</p>
             </div>
             <div class="auth-menu">
                 <ul>
@@ -24,7 +24,7 @@
                     <li></li>
                     <!--<li><a href="{{ url('/register') }}" style="color: #f00;">রেজিষ্ট্রশন</a></li>-->
                     @endif
-                    
+
                 </ul>
             </div>
         </div>

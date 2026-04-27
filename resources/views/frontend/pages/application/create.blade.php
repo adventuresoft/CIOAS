@@ -74,13 +74,18 @@
                                             </div>
 
                                             <div class="form-group row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-5">
                                                     <label for="date_of_birth">জন্ম তারিখ</label>
                                                     <input type="date" required value="" name="date_of_birth"
                                                         class="form-control" id="date_of_birth">
                                                     <small class="error date_of_birth-error text-danger"></small>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-2">
+                                                    <label for="age">বয়স</label>
+                                                    <input type="text" class="form-control" id="age" readonly
+                                                        placeholder="Auto calculated">
+                                                </div>
+                                                <div class="col-md-5">
                                                     <label for="birth_place">জন্মস্থান</label>
                                                     <select name="birth_place" class="form-control" id="birth_place" required>
                                                         <option value="">Select Birth Place</option>
@@ -522,6 +527,37 @@
     <script>
         $(document).ready(function() {
             $('.select2').select2();
+
+            function calculateAge(dob) {
+                if (!dob) {
+                    return '';
+                }
+
+                let birthDate = new Date(dob);
+                if (Number.isNaN(birthDate.getTime())) {
+                    return '';
+                }
+
+                let today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                let monthDiff = today.getMonth() - birthDate.getMonth();
+
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+
+                return age;
+            }
+
+            function setAgeFromDob(dob) {
+                let age = calculateAge(dob);
+                $('#age').val(age !== '' && age >= 0 ? age + ' years' : '');
+            }
+
+            setAgeFromDob($('#date_of_birth').val());
+            $('#date_of_birth').on('change', function() {
+                setAgeFromDob($(this).val());
+            });
         });
 
         $(document).on('submit', "#applicationForm", function(e) {

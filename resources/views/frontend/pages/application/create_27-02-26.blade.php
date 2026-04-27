@@ -78,7 +78,7 @@
                                                     <label for="religion">ধর্ম</label>
                                                     <select name="religion" class="form-control" id="religion">
                                                         <option value="">Select Religion</option>
-                                                        <option value="1">Islam</option>
+                                                        <option value="1">Muslim</option>
                                                         <option value="2">Hinduism</option>
                                                         <option value="3">Buddhism</option>
                                                         <option value="4">Christianity</option>
