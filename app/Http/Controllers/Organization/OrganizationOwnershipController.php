@@ -33,9 +33,9 @@ class OrganizationOwnershipController extends Controller
 
     public function ownershipForm()
     {
-        
-         
-        
+
+
+
         $data['ownership'] = null;
         return view('backend.pages.organization.forms.ownership', $data);
     }
@@ -65,8 +65,8 @@ class OrganizationOwnershipController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-     
-   
+
+
 public function saveNewOwnership(Request $request)
 {
     // ================= VALIDATION =================
@@ -127,7 +127,7 @@ public function saveNewOwnership(Request $request)
         if (!$people->save()) {
             throw new \Exception('People save failed');
         }
-        
+
         // ================= ADDRESS SAVE (NEW 🔥) =================
         $address = new AddressInfo();
         $address->user_id = $user->id;
@@ -219,19 +219,19 @@ public function saveNewOwnership(Request $request)
                     }else {
                         $ownership = new OrganizationOwnership();
                     }
-    
+
                     $ownership->organization_id  = $request->organization_id;
                     $ownership->system_id  = $system_id;
-                  
+
                     $ownership->quantity  = $quantities[$key];
-                    
+
                     $ownership->user_id = $user_ids[$key];
                     $ownership->user_name  = $user_names[$key];
-                    
+
                     $ownership->is_trade_license = $is_trade_licenses[$key] ??  false;
                     $ownership->save();
                 }
-    
+
                 $data['status'] = true;
                 $data['message'] = "Ownership saved successfully!";
                 return response()->json($data, 200);
@@ -242,11 +242,11 @@ public function saveNewOwnership(Request $request)
                 return response()->json($data, 500);
             }
 
-            
+
         }
     }
-    
-    
+
+
     public function store(Request $request)
 {
     $validate = Validator::make($request->all(), [
@@ -343,8 +343,8 @@ public function saveNewOwnership(Request $request)
      */
     public function edit($id)
     {
-        
-        
+
+
         $user=User::find(Auth::user()->id);
         $data['religions'] = Religion::where('status', true)->get();
         $data['villages'] = [];
@@ -352,18 +352,18 @@ public function saveNewOwnership(Request $request)
         $data['presentVillageAreas'] = [];
         $data['wards'] = [];
         $data['permanent_houses'] = [];
-        
+
          if(isset($user->institute->institute_type_id) && $user->institute->institute_type_id == 1) {
             $data['villages'] = Village::where('union_id', $user->institute->union_id)->get();
             $data['wards'] = UnionWard::where('status', true)->get();
             $data['roads'] = Road::where('institute_id',  $user->institute->id)->latest()->get();
             $data['post_officeses']=PostOffice::latest()->get();
-            
+
         }
-        
+
         $data['religions'] = Religion::where('status', true)->get();
-        $data['districts'] =  District::where('status', true)->orderBy('name')->get(); 
-        $data['countries'] =  Country::orderBy('name')->get(); 
+        $data['districts'] =  District::where('status', true)->orderBy('name')->get();
+        $data['countries'] =  Country::orderBy('name')->get();
          $data['divisions'] = Division::where('status', true)->get();
         $organization= Organization::with('ownership')->find($id);
         if($organization) {

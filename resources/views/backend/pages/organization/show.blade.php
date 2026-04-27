@@ -165,12 +165,12 @@
                     <div class="card-body">
 
                         <div class="d-flex align-items-center mb-3">
-                            <img src="{{ $owner->user->image ?? 'https://via.placeholder.com/60' }}"
+                            <img src="{{ $owner->user?->image ? asset($owner->user->image) : 'https://via.placeholder.com/60' }}"
                                  class="rounded-circle mr-3"
                                  width="60" height="60">
 
                             <div>
-                                <h5 class="mb-0">{{ $owner->user?->name }}</h5>
+                                <h5 class="mb-0">{{ $owner->user?->name ?? $owner->user_name ?? '-' }}</h5>
                                 <small class="text-muted">{{ $owner->designation ?? 'Owner' }}</small>
                             </div>
                         </div>
@@ -179,14 +179,14 @@
                             <div class="col-5 font-weight-bold">Father Name:</div>
                             <div class="col-7">{{ $owner->user->familyInfo->father_name ?? '-' }}</div>
                         </div>
-                        
+
                         <div class="row mb-1">
                             <div class="col-5 font-weight-bold">Mother Name:</div>
                             <div class="col-7">{{ $owner->user->familyInfo->mother_name ?? '-' }}</div>
                         </div>
-                        
+
                         <div class="row mb-1">
-                            <div class="col-5 font-weight-bold">Phone:</div> 
+                            <div class="col-5 font-weight-bold">Phone:</div>
                             <div class="col-7">{{ $owner->user?->mobile ?? '-' }}</div>
                         </div>
 
@@ -203,20 +203,20 @@
                         <div class="row">
                             <div class="col-5 font-weight-bold">Present Address:</div>
                             <div class="col-7">
-                                
+
                                  {{ collect([
     $owner->user->addressInfo->presentPostoffice->name ?? '',
     $owner->user->addressInfo->presentVillage->en_name ?? '',
     $owner->user->addressInfo->present_area ?? '',
     $owner->user->addressInfo->presentRoad->name ?? '',
     $owner->user->addressInfo->presentHouse->house ?? ''
-])->filter()->implode(', ') }} 
+])->filter()->implode(', ') }}
 
-                            
+
                             </div>
                         </div>
-                        
-                        
+
+
                         <div class="row">
                             <div class="col-5 font-weight-bold">Permanent Address:</div>
                             <div class="col-7">
