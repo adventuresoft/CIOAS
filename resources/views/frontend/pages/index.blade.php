@@ -99,7 +99,7 @@
       </div>
     </div>
     <!-- Navigation -->
-    <nav class="navbar md:block hidden bg-gray-100 shadow-md">
+    <nav class="navbar md:block hidden bg-[#046307] shadow-md">
       <div class="container mx-auto max-w-screen-xl">
         <!-- Navigation Links -->
         <ul class="nav-links flex items-left justify-left gap-5 py-2 pl-12">
@@ -144,7 +144,7 @@
               মনিটরিং লগইন
             </a>
           </li>
-          
+
 
 
           <!--<li><a class="btn btn-outline-success application-link"  href="{{url('/')}}/application">আবেদন করুন</a></li>-->

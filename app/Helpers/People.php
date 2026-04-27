@@ -14,9 +14,9 @@ if(! function_exists('people_constant_option')){
             ],
             'religion' => [
                 1 => 'Islam',
-                2 => 'Hinduism',
-                3 => 'Buddhism',
-                4 => 'Christianity',
+                2 => 'Hindu',
+                3 => 'Buddhist',
+                4 => 'Christian',
                 5 => 'Others'
             ],
 

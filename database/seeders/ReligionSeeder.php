@@ -18,9 +18,9 @@ class ReligionSeeder extends Seeder
     {
         $records = [
             ['id' => 1, 'name' => 'Islam', 'slug' => 'islam', 'status' => true, 'created_by' => 1],
-            ['id' => 2, 'name' => 'Hinduism ', 'slug' => 'hinduism', 'status' => true, 'created_by' => 1],
-            ['id' => 3, 'name' => 'Buddhism', 'slug' => 'buddhism ', 'status' => true, 'created_by' => 1],
-            ['id' => 4, 'name' => 'Christianity', 'slug' => 'christianity', 'status' => true, 'created_by' => 1],
+            ['id' => 2, 'name' => 'Hindu ', 'slug' => 'Hindu', 'status' => true, 'created_by' => 1],
+            ['id' => 3, 'name' => 'Buddhist', 'slug' => 'Buddhist ', 'status' => true, 'created_by' => 1],
+            ['id' => 4, 'name' => 'Christian', 'slug' => 'Christian', 'status' => true, 'created_by' => 1],
             ['id' => 5, 'name' => 'Others', 'slug' => 'others', 'status' => true, 'created_by' => 1],
         ];
         DB::table('religions')->insert($records);
