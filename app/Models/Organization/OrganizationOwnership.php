@@ -13,11 +13,11 @@ class OrganizationOwnership extends Model
     public static $snakeAttributes = false;
     protected $table = "organization_ownerships";
     protected $fillable = [
-        'organization_id', 
-        'name', 
-        'nid', 
-        'mobile', 
-        'address', 
+        'organization_id',
+        'name',
+        'nid',
+        'mobile',
+        'address',
         'quantity'
     ];
 

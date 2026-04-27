@@ -17,7 +17,7 @@ class ReligionSeeder extends Seeder
     public function run()
     {
         $records = [
-            ['id' => 1, 'name' => 'Muslim ','slug' => 'muslim', 'status' => true, 'created_by' => 1],
+            ['id' => 1, 'name' => 'Islam', 'slug' => 'islam', 'status' => true, 'created_by' => 1],
             ['id' => 2, 'name' => 'Hinduism ', 'slug' => 'hinduism', 'status' => true, 'created_by' => 1],
             ['id' => 3, 'name' => 'Buddhism', 'slug' => 'buddhism ', 'status' => true, 'created_by' => 1],
             ['id' => 4, 'name' => 'Christianity', 'slug' => 'christianity', 'status' => true, 'created_by' => 1],

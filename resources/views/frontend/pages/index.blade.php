@@ -360,7 +360,7 @@
                     <circle cx="11" cy="11" r="6.5" />
                   <path d="m16 16 4.2 4.2" stroke-linecap="round" />
                 </svg>
-                ট্রেড লাইসেন্স যাচাই করুন
+                যাচাই
               </a>
             </article>
 

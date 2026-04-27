@@ -13,7 +13,7 @@ if(! function_exists('people_constant_option')){
                 3 => 'Others'
             ],
             'religion' => [
-                1 => 'Muslim',
+                1 => 'Islam',
                 2 => 'Hinduism',
                 3 => 'Buddhism',
                 4 => 'Christianity',
@@ -37,6 +37,6 @@ if(! function_exists('people_constant_option')){
         } else {
             return $records;
         }
-        
+
     }
 }

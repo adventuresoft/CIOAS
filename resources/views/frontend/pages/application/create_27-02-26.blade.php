@@ -78,7 +78,7 @@
                                                     <label for="religion">ধর্ম</label>
                                                     <select name="religion" class="form-control" id="religion">
                                                         <option value="">Select Religion</option>
-                                                        <option value="1">Muslim</option>
+                                                        <option value="1">Islam</option>
                                                         <option value="2">Hinduism</option>
                                                         <option value="3">Buddhism</option>
                                                         <option value="4">Christianity</option>
@@ -210,7 +210,7 @@
                                                         <option value="385">Gopalganj Sadar</option>
                                                     </select>
                                                 </div>
-                                                
+
                                                 <div class="col-md-6">
                                                     <label for="permanent_union">ইউনিয়ন পরিষদ</label>
                                                     <select name="permanent_union" class="form-control" id="permanent_union">
@@ -274,7 +274,7 @@
                                                     <label for="permanent_house_no">বাড়ি (বাংলায়)</label>
                                                     <input id="permanent_house_no" class="form-control" type="text" placeholder="House No" name="permanent_house_no">
                                                 </div>
-                                                
+
                                                 <div class="col-md-6">
                                                     <label for="permanent_house_no">বাড়ি (ইংরেজীতে)</label>
                                                     <input id="permanent_house_no" class="form-control" type="text" placeholder="House No" name="permanent_house_no">

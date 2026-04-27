@@ -128,6 +128,16 @@ public function saveNewOwnership(Request $request)
             throw new \Exception('People save failed');
         }
 
+        // ================= FAMILY SAVE =================
+        $family = new \App\Models\People\FamilyInfo();
+        $family->user_id = $user->id;
+        $family->family_type_id = $request->family_type_id ?? 1;
+        $family->father_name = $request->father_name;
+        $family->father_name_bn = $request->father_name_bn;
+        $family->mother_name = $request->mother_name;
+        $family->mother_name_bn = $request->mother_name_bn;
+        $family->save();
+
         // ================= ADDRESS SAVE (NEW 🔥) =================
         $address = new AddressInfo();
         $address->user_id = $user->id;
@@ -161,7 +171,9 @@ public function saveNewOwnership(Request $request)
         // ================= OWNERSHIP SAVE =================
         $ownership = new OrganizationOwnership();
         $ownership->organization_id = $request->organization_id;
-        $ownership->user_id = $people->id;
+        $ownership->user_id = $user->id;
+        $ownership->system_id = $user->system_id;
+        $ownership->user_name = $user->name;
         $ownership->same_union = 1;
         // $ownership->created_by = Auth::id();
 

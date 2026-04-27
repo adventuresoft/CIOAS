@@ -31,14 +31,14 @@ class AddressInfo extends Model
     // 'end_date',
     // 'status',
     // ];
-    
-     protected $guarded = []; 
-    
+
+     protected $guarded = [];
+
     public function presentUnion()
     {
         return $this->belongsTo(Union::class, 'present_union_id', 'id');
     }
-    
+
     public function permanentUnion()
     {
         return $this->belongsTo(Union::class, 'permanent_union_id', 'id');
@@ -57,12 +57,12 @@ class AddressInfo extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
-    
+
      public function permanentThana()
     {
         return $this->belongsTo(Thana::class, 'permanent_thana_id', 'id');
     }
-    
+
     public function presentThana()
     {
         return $this->belongsTo(Thana::class, 'present_thana_id', 'id');
@@ -73,7 +73,7 @@ class AddressInfo extends Model
     {
         return $this->belongsTo(District::class, 'permanent_district_id', 'id');
     }
-    
+
     public function presentDistrict()
     {
         return $this->belongsTo(District::class, 'present_district_id', 'id');
@@ -118,16 +118,16 @@ class AddressInfo extends Model
     {
         return $this->belongsTo(VillageArea::class, 'permanent_village_area_id', 'id');
     }
-    
+
     public function presentPostoffice()
     {
         return $this->belongsTo(PostOffice::class, 'present_post_office_id', 'id');
     }
-    
+
     public function permanentPostOffice()
     {
         return $this->belongsTo(PostOffice::class, 'permanent_post_office_id', 'id');
     }
-    
-    
+
+
 }

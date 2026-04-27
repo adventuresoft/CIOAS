@@ -64,7 +64,7 @@ class User extends Authenticatable
     ];
 
 
-  
+
     public static function boot()
     {
         parent::boot();
@@ -72,7 +72,7 @@ class User extends Authenticatable
             $model->system_id = IdGenerator::generate(['table' => 'users', 'field' => 'system_id', 'length' => 11, 'prefix' => date("Ymd") ]);
         });
     }
-   
+
 
     public function institute()
     {

@@ -205,11 +205,11 @@
                             <div class="col-7">
 
                                  {{ collect([
-    $owner->user->addressInfo->presentPostoffice->name ?? '',
-    $owner->user->addressInfo->presentVillage->en_name ?? '',
-    $owner->user->addressInfo->present_area ?? '',
-    $owner->user->addressInfo->presentRoad->name ?? '',
-    $owner->user->addressInfo->presentHouse->house ?? ''
+    $owner->user?->addressInfo?->presentPostoffice?->name ?? '',
+    $owner->user?->addressInfo?->presentVillage?->en_name ?? '',
+    $owner->user?->addressInfo?->present_area ?? ($owner->user?->addressInfo?->present_area_bn ?? ''),
+    $owner->user?->addressInfo?->present_road ?? '',
+    $owner->user?->addressInfo?->present_house ?? ''
 ])->filter()->implode(', ') }}
 
 
@@ -221,13 +221,13 @@
                             <div class="col-5 font-weight-bold">Permanent Address:</div>
                             <div class="col-7">
                                {{ collect([
-    $owner->user->addressInfo->permanentDistrict->name ?? '',
-    $owner->user->addressInfo->permanentThana->name ?? '',
-    $owner->user->addressInfo->permanentPostoffice->name ?? '',
-    $owner->user->addressInfo->permanentVillage->en_name ?? '',
-    $owner->user->addressInfo->permanent_area ?? '',
-    $owner->user->addressInfo->permanentRoad->name ?? '',
-    $owner->user->addressInfo->permanentHouse->house ?? ''
+    $owner->user?->addressInfo?->permanentDistrict?->name ?? '',
+    $owner->user?->addressInfo?->permanentThana?->name ?? '',
+    $owner->user?->addressInfo?->permanentPostOffice?->name ?? '',
+    $owner->user?->addressInfo?->permanentVillage?->en_name ?? '',
+    $owner->user?->addressInfo?->permanent_area ?? ($owner->user?->addressInfo?->permanent_area_bn ?? ''),
+    $owner->user?->addressInfo?->permanent_road ?? '',
+    $owner->user?->addressInfo?->permanent_house ?? ''
 ])->filter()->implode(', ') }}
 
                                 </div>
