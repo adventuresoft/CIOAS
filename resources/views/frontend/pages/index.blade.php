@@ -86,14 +86,14 @@
             <li>
               <a href="{{url('/')}}/login" class="text-white text-lg"> System login </a>
             </li>
-            <li>
+          <!--  <li>
             <a
             href="{{url('/')}}/application"
             class="block text-center bg-gradient-to-r from-green-400 to-green-500 text-red font-bold py-1 rounded shadow hover:from-green-300 hover:to-green-400"
           >
             আবেদন করুন
             </a>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
@@ -102,11 +102,49 @@
     <nav class="navbar md:block hidden bg-gray-100 shadow-md">
       <div class="container mx-auto max-w-screen-xl">
         <!-- Navigation Links -->
-        <ul class="nav-links flex items-left justify-left gap-5 py-2">
+        <ul class="nav-links flex items-left justify-left gap-5 py-2 pl-12">
 
-          <li><a href="{{url('/')}}/login">নাগরিক লগইন</a></li>
-          <li><a href="{{url('/')}}/login">মনিটরিং লগইন</a></li>
-          <li><a href="{{url('/')}}/login">অ্যাডমিন লগইন</a></li>
+          <li class="flex items-center">
+                <a href="{{url('/')}}" class="inline-flex items-center gap-2">
+
+            <span class="inline-flex h-7 w-7 items-center justify-center text-purple-700" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                <path d="M12 3.1 3 10.4c-.4.3-.5.9-.2 1.3.2.3.5.4.8.4h1.4V20c0 .6.4 1 1 1h4.8c.6 0 1-.4 1-1v-4.6h2.4V20c0 .6.4 1 1 1H20c.6 0 1-.4 1-1v-7.9h1.4c.6 0 1-.4 1-.9 0-.3-.1-.6-.4-.8L12 3.1Z" />
+              </svg>
+            </span>
+                </a>
+          </li>
+          <li>
+            <a href="{{url('/')}}/login" class="inline-flex items-center gap-2">
+              <span class="inline-flex h-7 w-7 items-center justify-center text-red-600" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                  <path d="M12 12a4.2 4.2 0 1 0-4.2-4.2A4.2 4.2 0 0 0 12 12Zm0 1.8c-3.6 0-6.8 2-6.8 5.2 0 .6.4 1 1 1h11.6c.6 0 1-.4 1-1 0-3.2-3.2-5.2-6.8-5.2Z" />
+                </svg>
+              </span>
+              নাগরিক লগইন
+            </a>
+          </li>
+          <li>
+            <a href="{{url('/')}}/login" class="inline-flex items-center gap-2">
+              <span class="inline-flex h-7 w-7 items-center justify-center text-red-600" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                  <path d="M12 12a4.2 4.2 0 1 0-4.2-4.2A4.2 4.2 0 0 0 12 12Zm0 1.8c-3.6 0-6.8 2-6.8 5.2 0 .6.4 1 1 1h11.6c.6 0 1-.4 1-1 0-3.2-3.2-5.2-6.8-5.2Z" />
+                </svg>
+              </span>
+              অ্যাডমিন লগইন
+            </a>
+          </li>
+          <li>
+            <a href="{{url('/')}}/login" class="inline-flex items-center gap-2">
+              <span class="inline-flex h-7 w-7 items-center justify-center text-red-600" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                  <path d="M12 12a4.2 4.2 0 1 0-4.2-4.2A4.2 4.2 0 0 0 12 12Zm0 1.8c-3.6 0-6.8 2-6.8 5.2 0 .6.4 1 1 1h11.6c.6 0 1-.4 1-1 0-3.2-3.2-5.2-6.8-5.2Z" />
+                </svg>
+              </span>
+              মনিটরিং লগইন
+            </a>
+          </li>
+
 
           <!--<li><a class="btn btn-outline-success application-link"  href="{{url('/')}}/application">আবেদন করুন</a></li>-->
         </ul>
@@ -127,63 +165,32 @@
           >
             হোম
           </a>
-          <a href="#" class="block px-4 py-2 hover:bg-gray-100 rounded">
-            আমাদের সম্পর্কে
-          </a>
-          <a href="#" class="block px-4 py-2 hover:bg-gray-100 rounded">
-            ইউনিয়ন আইন
-          </a>
-          <a
-            href="{{url('/')}}/allproject"
-            class="block px-4 py-2 hover:bg-gray-100 rounded"
-          >
-            প্রকল্প
-          </a>
-          <a href="#" class="block px-4 py-2 hover:bg-gray-100 rounded">
-            নোটিশ
-          </a>
-
-          <!-- Dropdown: অন্যান্য -->
-          <details class="px-2">
-            <summary
-              class="flex justify-between items-center px-2 py-2 cursor-pointer bg-gray-100 rounded hover:bg-gray-200"
-            >
-              অন্যান্য
-              <svg
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                class="w-5 h-5 text-gray-500 transition-transform duration-200"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10
-              11.94l3.72-3.72a.75.75 0 1 1
-              1.06 1.06l-4.25 4.25a.75.75 0
-              0 1-1.06 0L5.22 9.28a.75.75
-              0 0 1 0-1.06Z"
-                />
+          <a href="{{url('/')}}/login" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded">
+            <span class="inline-flex h-5 w-5 items-center justify-center text-red-600" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                <path d="M12 12a4.2 4.2 0 1 0-4.2-4.2A4.2 4.2 0 0 0 12 12Zm0 1.8c-3.6 0-6.8 2-6.8 5.2 0 .6.4 1 1 1h11.6c.6 0 1-.4 1-1 0-3.2-3.2-5.2-6.8-5.2Z" />
               </svg>
-            </summary>
-            <div class="mt-2 ml-4 space-y-1">
-              <a
-                href="#"
-                class="block px-2 py-1 text-sm hover:bg-gray-100 rounded"
-              >
-                আবেদনের নিয়ম
-              </a>
-              <a
-                href="#"
-                class="block px-2 py-1 text-sm hover:bg-gray-100 rounded"
-              >
-                সনদ প্রাপ্তির নিয়ম
-              </a>
-            </div>
-          </details>
-
-          <a href="#" class="block px-4 py-2 hover:bg-gray-100 rounded">
-            ছবির গ্যালারী
+            </span>
+            নাগরিক লগইন
           </a>
+          <a href="{{url('/')}}/login" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded">
+            <span class="inline-flex h-5 w-5 items-center justify-center text-red-600" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                <path d="M12 12a4.2 4.2 0 1 0-4.2-4.2A4.2 4.2 0 0 0 12 12Zm0 1.8c-3.6 0-6.8 2-6.8 5.2 0 .6.4 1 1 1h11.6c.6 0 1-.4 1-1 0-3.2-3.2-5.2-6.8-5.2Z" />
+              </svg>
+            </span>
+            অ্যাডমিন লগইন
+          </a>
+          <a href="{{url('/')}}/login" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded">
+            <span class="inline-flex h-5 w-5 items-center justify-center text-red-600" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                <path d="M12 12a4.2 4.2 0 1 0-4.2-4.2A4.2 4.2 0 0 0 12 12Zm0 1.8c-3.6 0-6.8 2-6.8 5.2 0 .6.4 1 1 1h11.6c.6 0 1-.4 1-1 0-3.2-3.2-5.2-6.8-5.2Z" />
+              </svg>
+            </span>
+            মনিটরিং লগইন
+          </a>
+
+
         </div>
       </div>
     </nav>
@@ -284,7 +291,7 @@
               <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">সনদপত্র/প্রত্যয়ন যাচাই</h3>
               <div class="mx-auto mt-3 h-px w-full max-w-[520px] bg-black/30"></div>
               <p class="mx-auto mt-4 max-w-sm text-sm leading-6 text-black md:text-base">
-                সনদপত্র/প্রত্যয়ন যাচাই করতে ক্লিক করে ।
+                সনদপত্র/প্রত্যয়ন যাচাই করতে ক্লিক করুন ।
               </p>
               <a
                 href="{{ route('certificate.verify') }}"
@@ -332,10 +339,10 @@
                   />
                 </svg>
               </div>
-              <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">ট্রেড লাইসেন্স</h3>
+              <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">ট্রেড লাইসেন্স যাচাই</h3>
               <div class="mx-auto mt-3 h-px w-full max-w-[520px] bg-black/30"></div>
               <p class="mx-auto mt-4 max-w-sm text-sm leading-6 text-black md:text-base">
-                ট্রেড লাইসেন্স যাচাই করতে যাচাই ক্লিক করুন।
+                ট্রেড লাইসেন্স যাচাই করতে ক্লিক করুন।
               </p>
               <a
                 href="{{ route('certificate.verify') }}"
