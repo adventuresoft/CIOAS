@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\ApplicationSuccessMail;
 use App\Models\BasicSettings\Village;
 use App\Models\Division;
+use App\Models\District;
 use App\Models\Institute;
 use App\Models\People;
 use App\Models\People\AddressInfo;
@@ -12,6 +13,7 @@ use App\Models\People\FamilyInfo;
 use App\Models\PostOffice;
 use App\Models\Road;
 use App\Models\UnionWard;
+use App\Models\Religion;
 use App\Models\User;
 use App\Models\Union;
 
@@ -28,6 +30,8 @@ class ApplicationController extends Controller
     public function create()
     {
         $data['divisions'] = Division::orderBy('name', 'asc')->get();
+        $data['districts'] = District::where('status', true)->orderBy('name', 'asc')->get();
+        $data['religions'] = Religion::where('status', true)->orderBy('name', 'asc')->get();
         $data['permanent_villages'] = Village::latest()->get();
         $data['wards'] = UnionWard::get();
         $data['roads'] = Road::latest()->get();
@@ -55,7 +59,9 @@ class ApplicationController extends Controller
             'mobile' => 'required|max:11|min:11',
 
             'date_of_birth' => 'required',
+            'birth_place' => 'required',
             'gender' => 'required',
+            'religion' => 'nullable|exists:religions,id',
             'union_id' => 'required',
 
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
@@ -110,8 +116,10 @@ class ApplicationController extends Controller
             $people->user_id = $user->id;
             $people->bn_name = $request->bn_name;
             $people->date_of_birth = $request->date_of_birth;
-            $people->district_id = $request->district_id;
+            $people->birth_place = $request->birth_place;
+            $people->district_id = $request->birth_place;
             $people->gender = $request->gender;
+            $people->religion_id = $request->religion;
             $people->save();
 
             $family = new FamilyInfo();
@@ -158,55 +166,55 @@ class ApplicationController extends Controller
 
             $address = new AddressInfo();
             $address->user_id = $user->id;
-            
+
             /* ================= PERMANENT ADDRESS ================= */
-            
+
             $address->permanent_division_id = $request->permanent_division;
             $address->permanent_district_id = $request->permanent_district;
             $address->permanent_thana_id    = $request->permanent_thana;
             $address->permanent_union_id    = $request->permanent_union;
             $address->permanent_post_office_id = $request->permanent_post_office_id;
-            
+
             $address->permanent_village_id  = $request->permanent_village;
             $address->permanent_ward_id     = $request->permanent_ward;
-            
+
             $address->permanent_road  = $request->permanent_road;
             $address->permanent_house = $request->permanent_house_no;
-            
+
             /* ================= PRESENT ADDRESS ================= */
-            
+
             if($request->same_as_present_address){
-            
+
                 $address->present_division_id = $request->permanent_division;
                 $address->present_district_id = $request->permanent_district;
                 $address->present_thana_id    = $request->permanent_thana;
                 $address->present_union_id    = $request->permanent_union;
                 $address->present_post_office_id = $request->permanent_post_office_id;
-            
+
                 $address->present_village_id  = $request->permanent_village;
                 $address->present_ward_id     = $request->permanent_ward;
                 $address->present_road        = $request->permanent_road;
                 $address->present_house       = $request->permanent_house_no;
-            
+
             }else{
-            
+
                 $address->present_division_id = $request->present_division;
                 $address->present_district_id = $request->present_district;
                 $address->present_thana_id    = $request->present_thana;
                 $address->present_union_id    = $request->present_union_name;
                 $address->present_post_office_id = $request->present_post_office_id;
-            
+
                 $address->present_village_id  = $request->present_village;
                 $address->present_ward_id     = $request->present_ward;
                 $address->present_road        = $request->present_road;
                 $address->present_house       = $request->present_house_no;
             }
-            
+
             /* Optional fields */
             $address->union_name      = $request->union_name;
             $address->village         = $request->village;
             $address->present_address = $request->present_address;
-            
+
             $address->save();
 
 

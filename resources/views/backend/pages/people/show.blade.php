@@ -422,12 +422,7 @@
                 <div class="info-row"><span class="info-label">NID No. :</span><span class="info-value">{{ $user->nid ?? '' }}</span></div>
                 <div class="info-row"><span class="info-label">Blood Group :</span><span class="info-value">{{ people_constant_option('blood_group')[$user->people->blood_group ?? ''] ?? '' }}</span></div>
                 <div class="info-row"><span class="info-label">Date of Birth :</span><span class="info-value">{{ $user->people->date_of_birth ?? '' }}</span></div>
-                <div class="info-row"><span class="info-label">Birth Place :</span><span class="info-value">{{ people_constant_option('birth_place')[$user->people->birth_place ?? ''] ?? '' }}</span></div>
-                @if(isset($user->people->birth_place) && $user->people->birth_place == 1)
-                <div class="info-row"><span class="info-label">District :</span><span class="info-value">{{ $user->people->district->name ?? '' }}</span></div>
-                @elseif(isset($user->people->birth_place) && $user->people->birth_place == 2)
-                <div class="info-row"><span class="info-label">Country :</span><span class="info-value">{{ $user->people->country->name ?? '' }}</span></div>
-                @endif
+                <div class="info-row"><span class="info-label">Birth Place :</span><span class="info-value">{{ optional(\App\Models\District::find($user->people->birth_place ?? null))->name }}</span></div>
             </div>
             <div class="col">
                 <div class="info-row"><span class="info-label">Name (Bangla) :</span><span class="info-value">{{ $user->people->bn_name ?? '' }}</span></div>

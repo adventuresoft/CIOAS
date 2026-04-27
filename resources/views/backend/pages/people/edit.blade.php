@@ -65,9 +65,9 @@
                                         <label for="birth_place">Birth Place</label>
                                         <select name="birth_place" class="form-control" id="birth_place">
                                             <option value="">Select Birth Place</option>
-                                            @if (count(people_constant_option('birth_place')))
-                                                @foreach (people_constant_option('birth_place') as $key => $item)
-                                                    <option value="{{ $key }}" {{isset($user->people->birth_place) ? (($user->people->birth_place == $key) ? 'selected' : '') : ''}}>{{ $item }}</option>
+                                            @if (count($districts))
+                                                @foreach ($districts as $district)
+                                                    <option value="{{ $district->id }}" {{isset($user->people->birth_place) ? (($user->people->birth_place == $district->id) ? 'selected' : '') : ''}}>{{ $district->name }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -75,34 +75,8 @@
                                     </div>
                                 </div>
 
-                                <!-- District/Country conditional fields -->
-                                <div class="form-group row districts {{isset($user->people->birth_place) ? (($user->people->birth_place == 1) ? '' : 'd-none') : 'd-none'}}">
-                                    <div class="col-sm-12">
-                                        <label for="district_id">District</label>
-                                        <select name="district_id" class="form-control" id="district_id">
-                                            @if (count($districts))
-                                                @foreach ($districts as $district)
-                                                    <option value="{{ $district->id }}" {{isset($user->people->district_id) ? (($user->people->district_id == $district->id) ? 'selected' : '') : ''}}>{{ $district->name }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        <small class="error district_id-error text-danger"></small>
-                                    </div>
-                                </div>
 
-                                <div class="form-group row countries {{isset($user->people->birth_place) ? (($user->people->birth_place == 2) ? '' : 'd-none') : 'd-none'}}">
-                                    <div class="col-sm-12">
-                                        <label for="country_id">Country</label>
-                                        <select name="country_id" class="form-control" id="country_id">
-                                            @if (count($countries))
-                                                @foreach ($countries as $country)
-                                                    <option value="{{ $country->id }}" {{isset($user->people->country_id) ? (($user->people->country_id == $country->id) ? 'selected' : '') : ''}}>{{ $country->name }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        <small class="error country_id-error text-danger"></small>
-                                    </div>
-                                </div>
+
 
                                 <!-- Row 3: Gender, Religion, Blood Group -->
                                 <div class="form-group row">
@@ -273,17 +247,6 @@
         // Birth place change handler
         $(document).on('change', '#birth_place', function(e) {
             e.preventDefault();
-            let birth_place = $(this).val();
-            if (birth_place == 1) {
-                $('.districts').removeClass('d-none');
-                $('.countries').addClass('d-none');
-            } else if (birth_place == 2) {
-                $('.countries').removeClass('d-none');
-                $('.districts').addClass('d-none');
-            } else {
-                $('.districts').addClass('d-none');
-                $('.countries').addClass('d-none');
-            }
         });
 
         // Image preview

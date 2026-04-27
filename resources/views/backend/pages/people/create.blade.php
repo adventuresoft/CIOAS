@@ -64,42 +64,13 @@
                                         <label for="birth_place">Birth Place</label>
                                         <select name="birth_place" class="form-control" id="birth_place">
                                             <option value="">Select Birth Place</option>
-                                            @if (count(people_constant_option('birth_place')))
-                                                @foreach (people_constant_option('birth_place') as $key => $item)
-                                                    <option value="{{ $key }}">{{ $item }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        <small class="error birth_place-error text-danger"></small>
-                                    </div>
-                                </div>
-
-                                <!-- District/Country conditional fields -->
-                                <div class="form-group row districts d-none">
-                                    <div class="col-sm-12">
-                                        <label for="district_id">District</label>
-                                        <select name="district_id" class="form-control" id="district_id">
                                             @if (count($districts))
                                                 @foreach ($districts as $district)
                                                     <option value="{{ $district->id }}">{{ $district->name }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
-                                        <small class="error district_id-error text-danger"></small>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row countries d-none">
-                                    <div class="col-sm-12">
-                                        <label for="country_id">Country</label>
-                                        <select name="country_id" class="form-control" id="country_id">
-                                            @if (count($countries))
-                                                @foreach ($countries as $country)
-                                                    <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        <small class="error country_id-error text-danger"></small>
+                                        <small class="error birth_place-error text-danger"></small>
                                     </div>
                                 </div>
 
@@ -217,11 +188,11 @@
                     let today = new Date();
                     let age = today.getFullYear() - birthDate.getFullYear();
                     let monthDiff = today.getMonth() - birthDate.getMonth();
-                    
+
                     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
                         age--;
                     }
-                    
+
                     $('#age').val(age + ' years');
                 } else {
                     $('#age').val('');
@@ -265,17 +236,6 @@
             // Birth place change handler
             $('#birth_place').on('change', function(e) {
                 e.preventDefault();
-                let birth_place = $(this).val();
-                if (birth_place == 1) {
-                    $('.districts').removeClass('d-none');
-                    $('.countries').addClass('d-none');
-                } else if (birth_place == 2) {
-                    $('.countries').removeClass('d-none');
-                    $('.districts').addClass('d-none');
-                } else {
-                    $('.districts').addClass('d-none');
-                    $('.countries').addClass('d-none');
-                }
             });
         });
 
@@ -289,7 +249,7 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-        
+
         $("#image").change(function() {
             readURL(this);
         });
