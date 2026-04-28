@@ -107,15 +107,15 @@
           <li class="flex items-center">
                 <a href="{{url('/')}}" class="inline-flex items-center gap-2">
 
-            <span class="inline-flex h-7 w-7 items-center justify-center text-purple-700" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+            <span class="inline-flex h-7 w-7 items-center justify-center text-white" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
                 <path d="M12 3.1 3 10.4c-.4.3-.5.9-.2 1.3.2.3.5.4.8.4h1.4V20c0 .6.4 1 1 1h4.8c.6 0 1-.4 1-1v-4.6h2.4V20c0 .6.4 1 1 1H20c.6 0 1-.4 1-1v-7.9h1.4c.6 0 1-.4 1-.9 0-.3-.1-.6-.4-.8L12 3.1Z" />
               </svg>
             </span>
                 </a>
           </li>
           <li>
-            <a href="{{url('/')}}/login" class="inline-flex items-center gap-2">
+            <a href="{{url('/')}}/login" class="inline-flex items-center gap-2 text-white">
               <span class="inline-flex h-7 w-7 items-center justify-center text-red-600" aria-hidden="true">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
                   <path d="M12 12a4.2 4.2 0 1 0-4.2-4.2A4.2 4.2 0 0 0 12 12Zm0 1.8c-3.6 0-6.8 2-6.8 5.2 0 .6.4 1 1 1h11.6c.6 0 1-.4 1-1 0-3.2-3.2-5.2-6.8-5.2Z" />
@@ -125,7 +125,7 @@
             </a>
           </li>
           <li>
-            <a href="{{url('/')}}/login" class="inline-flex items-center gap-2">
+            <a href="{{url('/')}}/login" class="inline-flex items-center gap-2 text-white">
               <span class="inline-flex h-7 w-7 items-center justify-center text-red-600" aria-hidden="true">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
                   <path d="M12 12a4.2 4.2 0 1 0-4.2-4.2A4.2 4.2 0 0 0 12 12Zm0 1.8c-3.6 0-6.8 2-6.8 5.2 0 .6.4 1 1 1h11.6c.6 0 1-.4 1-1 0-3.2-3.2-5.2-6.8-5.2Z" />
@@ -135,7 +135,7 @@
             </a>
           </li>
           <li>
-            <a href="{{url('/')}}/login" class="inline-flex items-center gap-2">
+            <a href="{{url('/')}}/login" class="inline-flex items-center gap-2 text-white">
               <span class="inline-flex h-7 w-7 items-center justify-center text-red-600" aria-hidden="true">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
                   <path d="M12 12a4.2 4.2 0 1 0-4.2-4.2A4.2 4.2 0 0 0 12 12Zm0 1.8c-3.6 0-6.8 2-6.8 5.2 0 .6.4 1 1 1h11.6c.6 0 1-.4 1-1 0-3.2-3.2-5.2-6.8-5.2Z" />
