@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProfessionTypesTable extends Migration
+class AddPremisesOwnershipToOrganizationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,8 @@ class CreateProfessionTypesTable extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable('profession_types')) {
-            return;
-        }
-
-        Schema::create('profession_types', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('organizations', function (Blueprint $table) {
+            $table->string('premises_ownership')->nullable();
         });
     }
 
@@ -30,6 +25,8 @@ class CreateProfessionTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profession_types');
+        Schema::table('organizations', function (Blueprint $table) {
+            $table->dropColumn('premises_ownership');
+        });
     }
 }

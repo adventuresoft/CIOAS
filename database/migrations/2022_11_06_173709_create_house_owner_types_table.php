@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHouseOwnerTypesTable extends Migration
+class CreateHouseOwnerTypesTableDuplicate extends Migration
 {
     /**
      * Run the migrations.
@@ -13,6 +13,10 @@ class CreateHouseOwnerTypesTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('house_owner_types')) {
+            return;
+        }
+
         Schema::create('house_owner_types', function (Blueprint $table) {
             $table->id();
             $table->string('en_name')->unique();
@@ -32,6 +36,8 @@ class CreateHouseOwnerTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('house_owner_types');
+        if (Schema::hasTable('house_owner_types')) {
+            Schema::dropIfExists('house_owner_types');
+        }
     }
 }

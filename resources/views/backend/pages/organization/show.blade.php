@@ -134,8 +134,8 @@
     }
 
     .photo-box img {
-        width: 180px;
-        height: 210px;
+        width: 120px;
+        height: 120px;
         object-fit: cover;
         border: 2px solid #006600;
         background: #fff;
@@ -225,11 +225,11 @@
             <img src="{{ asset('images/dhaka.png') }}" alt="City Logo">
             <div class="union-header">
                 <h5 class="mb-0">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার</h5>
-                <div class="union-title-bn">{{ $organization->Union->bn_name ?? '' }}</div>
-                <div class="union-title-en">{{ $organization->Union->name ?? '' }}</div>
+                <div class="union-title-bn">{{ $organization->Union?->bn_name ?? '' }}</div>
+                <div class="union-title-en">{{ $organization->Union?->name ?? '' }}</div>
                 <p class="union-address">
-                    থানাঃ {{ $organization->Thana->bn_name ?? $organization->Thana->name ?? '' }},
-                    জেলাঃ {{ $organization->District->bn_name ?? $organization->District->name ?? '' }},
+                    থানাঃ {{ $organization->Thana?->bn_name ?? $organization->Thana?->name ?? $organization->officeThana?->bn_name ?? $organization->officeThana?->name ?? '' }},
+                    জেলাঃ {{ $organization->District?->bn_name ?? $organization->District?->name ?? $organization->officeDistrict?->bn_name ?? $organization->officeDistrict?->name ?? '' }},
                     বাংলাদেশ।
                 </p>
             </div>
@@ -237,6 +237,7 @@
         </div>
 
         <div class="citizen-title">
+            <h4 class="mb-0">প্রতিষ্ঠানের তথ্য</h4>
             <h4>Organization Details</h4>
         </div>
 
@@ -251,25 +252,52 @@
                 <div class="id-info-item"><span>Sub Category :</span> {{ $organization->subcategory->en_name ?? '' }}</div>
                 <div class="id-info-item"><span>Type :</span> {{ $organization->type->en_name ?? '' }}</div>
                 <div class="id-info-item"><span>Capital :</span> {{ $organization->capital }}</div>
+                <div class="id-info-item"><span>Est. Year :</span> {{ $organization->establishment_year }}</div>
+                <div class="id-info-item"><span>work area :</span> {{ $organization->work_area }}</div>
+                <div class="id-info-item"><span>Application type :</span> {{ $organization->application_type }}</div>
+                <div class="id-info-item"><span>RJSC Registration No :</span> {{ $organization->rjsc_registration_no }}</div>
             </div>
         </div>
 
-        <div class="section-header">Organization Information</div>
+
+
+        <div class="section-header">Registered Address</div>
         <div class="two-columns">
             <div class="col">
-                 <div class="info-row"><span class="info-label">Division :</span><span class="info-value">{{ $organization->Division->name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Division :</span><span class="info-value">{{ $organization->Division->name ?? '' }}</span></div>
                 <div class="info-row"><span class="info-label">District :</span><span class="info-value">{{ $organization->District->name ?? '' }}</span></div>
                 <div class="info-row"><span class="info-label">Thana :</span><span class="info-value">{{ $organization->Thana->name ?? '' }}</span></div>
-
-                <div class="info-row"><span class="info-label">RJSC :</span><span class="info-value">{{ $organization->rjsc_reg_no }}</span></div>
+                <div class="info-row"><span class="info-label">Post Office :</span><span class="info-value">{{ $organization->postOffice?->bn_name ?? $organization->postOffice?->name ?? '' }}</span></div>
             </div>
             <div class="col">
                 <div class="info-row"><span class="info-label">Union :</span><span class="info-value">{{ $organization->Union->name ?? '' }}</span></div>
-                <div class="info-row"><span class="info-label">Village :</span><span class="info-value">{{ $organization->Village->bn_name ?? '' }}</span></div>
-                <div class="info-row"><span class="info-label">Road :</span><span class="info-value">{{ $organization->road }}</span></div>
-                <div class="info-row"><span class="info-label">House :</span><span class="info-value">{{ $organization->house }}</span></div>
+                <div class="info-row"><span class="info-label">Village :</span><span class="info-value">{{ $organization->Village->bn_name ?? $organization->Village->name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Ward :</span><span class="info-value">{{ $organization->ward?->en_ward_no ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Road :</span><span class="info-value">{{ $organization->road ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">House :</span><span class="info-value">{{ $organization->house ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">House (Bangla) :</span><span class="info-value">{{ $organization->house_bn ?? '' }}</span></div>
             </div>
         </div>
+
+        <div class="section-header">Corporate/Office Address</div>
+        <div class="two-columns">
+            <div class="col">
+                <div class="info-row"><span class="info-label">Division :</span><span class="info-value">{{ $organization->officeDivision?->name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">District :</span><span class="info-value">{{ $organization->officeDistrict?->name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Thana :</span><span class="info-value">{{ $organization->officeThana?->name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Post Office :</span><span class="info-value">{{ $organization->officePostOffice?->bn_name ?? $organization->officePostOffice?->name ?? '' }}</span></div>
+            </div>
+            <div class="col">
+                <div class="info-row"><span class="info-label">Village :</span><span class="info-value">{{ $organization->officeVillage?->bn_name ?? $organization->officeVillage?->name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Ward :</span><span class="info-value">{{ $organization->officeWard?->en_ward_no ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Road :</span><span class="info-value">{{ $organization->office_road ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">House :</span><span class="info-value">{{ $organization->office_house ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">House (Bangla) :</span><span class="info-value">{{ $organization->office_house_bn ?? '' }}</span></div>
+            </div>
+        </div>
+
+        <div class="section-header">Premises Ownership</div>
+        <div class="info-row"><span class="info-label">Ownership :</span><span class="info-value">{{ $organization->premises_ownership ? ucfirst($organization->premises_ownership) : '' }}</span></div>
 
         <div class="section-header">Organization Owners</div>
         <div class="nested-grid">
