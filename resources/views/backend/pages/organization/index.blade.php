@@ -44,6 +44,51 @@
                         <!-- /.card-header -->
 
                         <div class="card-body">
+
+                          <!-- FILTER BAR -->
+                          <div class="row mb-3 align-items-center g-2">
+
+                            <!-- Show Entries -->
+                            <div class="col-md-1">
+                              <select id="tableLength" class="form-control form-control-sm">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                              </select>
+                            </div>
+
+                            <!-- Organization Name Filter -->
+                            <div class="col-md-2">
+                              <input type="text" id="search_org_name" class="form-control form-control-sm"
+                                placeholder="Organization Name">
+                            </div>
+
+                            <!-- Owner Name Filter -->
+                            <div class="col-md-2">
+                              <input type="text" id="search_owner_name" class="form-control form-control-sm"
+                                placeholder="Owner Name">
+                            </div>
+
+                            <!-- Category Filter -->
+                            <div class="col-md-2">
+                              <input type="text" id="search_category" class="form-control form-control-sm"
+                                placeholder="Category">
+                            </div>
+
+                            <!-- Subcategory Filter -->
+                            <div class="col-md-2">
+                              <input type="text" id="search_subcategory" class="form-control form-control-sm"
+                                placeholder="Subcategory">
+                            </div>
+
+                            <!-- GLOBAL SEARCH -->
+                            <div class="col-md-2">
+                              <input type="text" id="search_global" class="form-control form-control-sm"
+                                placeholder="Search">
+                            </div>
+
+                          </div>
                             <table id="example1" class="table table-bordered table-striped">
                               <thead>
                                 <tr>
@@ -119,8 +164,47 @@
 @endsection
 @push('script')
 <script>
-    $(document).ready(function(){
-    $(".deleteHouse").on('submit', function(e){
+  $(document).ready(function(){
+  let table = $('#example1').DataTable({
+    responsive: true,
+    autoWidth: false,
+    pageLength: 10,
+    lengthChange: false,
+    order: [[0, 'asc']],
+    columnDefs: [
+      { targets: 7, orderable: false }
+    ],
+    language: {
+      emptyTable: '<div class="empty-state"><i class="fas fa-folder-open"></i><h5>No data available</h5></div>',
+      zeroRecords: '<div class="empty-state"><i class="fas fa-folder-open"></i><h5>No matching records found</h5></div>'
+    }
+  });
+
+  $('#search_org_name').keyup(function() {
+    table.column(2).search(this.value).draw();
+  });
+
+  $('#search_owner_name').keyup(function() {
+    table.column(3).search(this.value).draw();
+  });
+
+  $('#search_category').keyup(function() {
+    table.column(4).search(this.value).draw();
+  });
+
+  $('#search_subcategory').keyup(function() {
+    table.column(5).search(this.value).draw();
+  });
+
+  $('#search_global').keyup(function() {
+    table.search(this.value).draw();
+  });
+
+  $('#tableLength').change(function() {
+    table.page.len($(this).val()).draw();
+  });
+
+  $(".deleteHouse").on('submit', function(e){
       e.preventDefault();
       var thisForm = $(this);
       var formData = $(this).serialize();

@@ -208,9 +208,7 @@
           <p
             class="mx-auto mt-7 max-w-4xl text-base leading-relaxed text-black sm:mt-2 sm:text-lg md:text-xl"
           >
-            এটি একটি ডিজিটাল প্ল্যাটফর্ম যেখানে আপনি সহজে
-            বিভিন্ন ধরনের সনদপত্রের জন্য আবেদন করতে পারেন এবং আপনার প্রয়োজনীয়
-            সেবাগুলো পেতে পারেন।
+            এই প্ল্যাটফর্মে আপনি আপনার প্রয়োজনীয় সেবাগুলো পেতে পারেন।
           </p>
         </div>
 
@@ -218,7 +216,7 @@
 
 
         <div class="mx-auto mt-8 max-w-5xl md:mt-10">
-          <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-4">
+          <div class="grid grid-cols-1 gap-6 lg:grid-cols-4 lg:gap-4">
             <article class="mx-auto w-full max-w-[290px] text-center text-black">
               <div
                 class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#0ea5d9] md:h-28 md:w-28"
@@ -245,9 +243,9 @@
                   />
                 </svg>
               </div>
-              <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">আবেদন</h3>
+              <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">আবেদন ফরম</h3>
               <div class="mx-auto mt-3 h-px w-full max-w-[520px] bg-black/30"></div>
-              <p class="mx-auto mt-4 max-w-sm text-sm leading-6 text-black md:text-base">
+              <p class="mx-auto mt-1 max-w-sm text-sm leading-6 text-black md:text-base">
               আবেদন করতে ক্লিক করুন ।
               </p>
               <a
@@ -289,10 +287,10 @@
                   <path d="m15.2 17.4-.2 2.8 1.5-1 1.5 1-.2-2.8" fill="#ef4444" />
                 </svg>
               </div>
-              <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">সনদপত্র/প্রত্যয়ন যাচাই</h3>
+              <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">সনদপত্র যাচাই</h3>
               <div class="mx-auto mt-3 h-px w-full max-w-[520px] bg-black/30"></div>
-              <p class="mx-auto mt-4 max-w-sm text-sm leading-6 text-black md:text-base">
-                সনদপত্র/প্রত্যয়ন যাচাই করতে ক্লিক করুন ।
+              <p class="mx-auto mt-1 max-w-sm text-sm leading-6 text-black md:text-base">
+                সনদপত্র যাচাই করতে ক্লিক করুন ।
               </p>
               <a
                 href="{{ route('certificate.verify') }}"
@@ -340,9 +338,55 @@
                   />
                 </svg>
               </div>
+              <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">ট্রেড লাইসেন্সের আবেদন</h3>
+              <div class="mx-auto mt-3 h-px w-full max-w-[520px] bg-black/30"></div>
+              <p class="mx-auto mt-1 max-w-sm text-sm leading-6 text-black md:text-base">
+                ট্রেড লাইসেন্সের আবেদন করুন।
+              </p>
+              <a
+                href="{{ route('application.create') }}"
+                class="mt-5 inline-flex items-center justify-center gap-1.5 rounded-md bg-[#2d88c7] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#1f75b3] md:text-base"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  class="h-6 w-6"
+                  aria-hidden="true"
+                >
+                  <path d="M12 20h9" />
+                  <path d="M16.5 3.5a2.1 2.1 0 1 1 3 3L8 18l-4 1 1-4 11.5-11.5Z" />
+                </svg>
+                আবেদন
+              </a>
+            </article>
+
+
+
+            <article class="mx-auto w-full max-w-[290px] text-center text-black">
+              <div
+                class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#45caa2] md:h-28 md:w-28"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  class="h-14 w-14 md:h-16 md:w-16"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="5" width="18" height="13" rx="1.5" fill="#f4f4f5" />
+                  <path d="M6.5 8h10M6.5 11h10" stroke="#b3b3b8" stroke-width="1.4" stroke-linecap="round" />
+                  <path d="M6.5 14h5" stroke="#3b82f6" stroke-width="1.4" stroke-linecap="round" />
+                  <circle cx="16.5" cy="14.5" r="3.5" fill="#fbbf24" />
+                  <circle cx="16.5" cy="14.5" r="1.8" fill="#f59e0b" />
+                  <path d="m15.2 17.4-.2 2.8 1.5-1 1.5 1-.2-2.8" fill="#ef4444" />
+                </svg>
+              </div>
               <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">ট্রেড লাইসেন্স যাচাই</h3>
               <div class="mx-auto mt-3 h-px w-full max-w-[520px] bg-black/30"></div>
-              <p class="mx-auto mt-4 max-w-sm text-sm leading-6 text-black md:text-base">
+              <p class="mx-auto mt-1 max-w-sm text-sm leading-6 text-black md:text-base">
                 ট্রেড লাইসেন্স যাচাই করতে ক্লিক করুন।
               </p>
               <a
