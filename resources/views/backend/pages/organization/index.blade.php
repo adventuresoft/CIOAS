@@ -3,22 +3,7 @@
 @endpush
 @section('title', 'Organization List')
 @section('content')
-   <!-- Content Header (Page header) -->
-   <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1>Organization List</h1>
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{route('organization.index')}}">Organization List</a></li>
-            <li class="breadcrumb-item active">View</li>
-          </ol>
-        </div>
-      </div>
-    </div><!-- /.container-fluid -->
-  </section>
+
 
     <!-- Main content -->
     <section class="content">
@@ -30,17 +15,19 @@
                     <!-- Horizontal Form -->
                     <div class="card card-info">
                         <div class="card-header">
-                            <div class="row">
-                                <div class="col-md-6 text-left">
-                                    <h3 class="card-title">Organization List</h3>
-                                </div>
-                                <div class="col-md-6 text-right">
-                                  @if (Auth::user()->institute_id && create_permission() )
-                                    <a href="{{route('organization.create')}}" class="btn btn-primary">Create</a>
-                                  @endif
-                                </div>
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h3 class="card-title" style="font-size:24px; font-weight: semi-bold;">Organization Information</h3>
+                            </div>
+
+                            <div class="col-md-6 text-right">
+                                @if (create_permission())
+                                <a href="{{ route('organization.create') }}" class="btn btn-primary">Create</a>
+                                <a href="{{ route('organization.index') }}" class="btn btn-primary">List</a>
+                                @endif
                             </div>
                         </div>
+                    </div>
                         <!-- /.card-header -->
 
                         <div class="card-body">

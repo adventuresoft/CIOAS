@@ -248,8 +248,8 @@
                 <div class="id-info-item"><span>Name :</span> {{ $organization->name }}</div>
                 <div class="id-info-item"><span>Name (Bangla) :</span> {{ $organization->bn_name }}</div>
                 <div class="id-info-item"><span>Category :</span> {{ $organization->category->en_name ?? '' }}</div>
+                <div class="id-info-item"><span>Sub Category :</span> {{ $organization->subcategory->en_name ?? '' }}</div>
                 <div class="id-info-item"><span>Type :</span> {{ $organization->type->en_name ?? '' }}</div>
-                <div class="id-info-item"><span>RJSC :</span> {{ $organization->rjsc_reg_no }}</div>
                 <div class="id-info-item"><span>Capital :</span> {{ $organization->capital }}</div>
             </div>
         </div>
@@ -257,22 +257,17 @@
         <div class="section-header">Organization Information</div>
         <div class="two-columns">
             <div class="col">
-                <div class="info-row"><span class="info-label">Name :</span><span class="info-value">{{ $organization->name }}</span></div>
-                <div class="info-row"><span class="info-label">Name (Bangla) :</span><span class="info-value">{{ $organization->bn_name }}</span></div>
-                <div class="info-row"><span class="info-label">Category :</span><span class="info-value">{{ $organization->category->en_name ?? '' }}</span></div>
-                <div class="info-row"><span class="info-label">Sub Category :</span><span class="info-value">{{ $organization->subcategory->en_name ?? '' }}</span></div>
-                <div class="info-row"><span class="info-label">Type :</span><span class="info-value">{{ $organization->type->en_name ?? '' }}</span></div>
+                 <div class="info-row"><span class="info-label">Division :</span><span class="info-value">{{ $organization->Division->name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">District :</span><span class="info-value">{{ $organization->District->name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Thana :</span><span class="info-value">{{ $organization->Thana->name ?? '' }}</span></div>
+
                 <div class="info-row"><span class="info-label">RJSC :</span><span class="info-value">{{ $organization->rjsc_reg_no }}</span></div>
             </div>
             <div class="col">
-                <div class="info-row"><span class="info-label">Division :</span><span class="info-value">{{ $organization->Division->name ?? '' }}</span></div>
-                <div class="info-row"><span class="info-label">District :</span><span class="info-value">{{ $organization->District->name ?? '' }}</span></div>
-                <div class="info-row"><span class="info-label">Thana :</span><span class="info-value">{{ $organization->Thana->name ?? '' }}</span></div>
                 <div class="info-row"><span class="info-label">Union :</span><span class="info-value">{{ $organization->Union->name ?? '' }}</span></div>
                 <div class="info-row"><span class="info-label">Village :</span><span class="info-value">{{ $organization->Village->bn_name ?? '' }}</span></div>
                 <div class="info-row"><span class="info-label">Road :</span><span class="info-value">{{ $organization->road }}</span></div>
                 <div class="info-row"><span class="info-label">House :</span><span class="info-value">{{ $organization->house }}</span></div>
-                <div class="info-row"><span class="info-label">Capital :</span><span class="info-value">{{ $organization->capital }}</span></div>
             </div>
         </div>
 
@@ -289,11 +284,12 @@
                             <div class="owner-role">{{ $owner->designation ?? 'Owner' }}</div>
                         </div>
                     </div>
+                    <div class="info-row"><span class="info-label">NID :</span><span class="info-value">{{ $owner->user->nid ?? '-' }}</span></div>
+
                     <div class="info-row"><span class="info-label">Father Name :</span><span class="info-value">{{ $owner->user->familyInfo->father_name ?? '-' }}</span></div>
                     <div class="info-row"><span class="info-label">Mother Name :</span><span class="info-value">{{ $owner->user->familyInfo->mother_name ?? '-' }}</span></div>
                     <div class="info-row"><span class="info-label">Phone :</span><span class="info-value">{{ $owner->user?->mobile ?? '-' }}</span></div>
                     <div class="info-row"><span class="info-label">Email :</span><span class="info-value">{{ $owner->user?->email ?? '-' }}</span></div>
-                    <div class="info-row"><span class="info-label">NID :</span><span class="info-value">{{ $owner->user->nid ?? '-' }}</span></div>
                     <div class="info-row"><span class="info-label">Present Address :</span><span class="info-value">
                         {{ collect([
                             $owner->user?->addressInfo?->presentPostoffice?->name ?? '',
