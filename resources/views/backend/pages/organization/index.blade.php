@@ -166,6 +166,7 @@
 <script>
   $(document).ready(function(){
   let table = $('#example1').DataTable({
+    dom: 'rtip',
     responsive: true,
     autoWidth: false,
     pageLength: 10,
