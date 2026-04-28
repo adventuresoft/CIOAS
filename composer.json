@@ -34,7 +34,8 @@
             "app/Helpers/Profession.php",
             "app/Helpers/Property.php",
             "app/Helpers/Disability.php",
-            "app/Helpers/FreedomFighter.php"
+            "app/Helpers/FreedomFighter.php",
+            "app/Helpers/Permissions.php"
         ]
     },
     "autoload-dev": {
