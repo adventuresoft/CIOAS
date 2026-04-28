@@ -331,6 +331,10 @@
             </div>
             <div>
                 <a href="{{route('organization.index')}}" class="btn btn-secondary">Back</a>
+                @if($organization->status == 0)
+                    <a href="{{ route('organization.edit', $organization->id) }}" class="btn btn-primary">Edit</a>
+                @endif
+                <button type="button" class="btn btn-info" onclick="window.print()">Print</button>
                 @if($organization->status != 1)
                     <button class="btn btn-success" id="approveBtn">✔ Approve</button>
                 @endif
