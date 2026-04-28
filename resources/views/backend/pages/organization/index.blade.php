@@ -49,11 +49,11 @@
                                 <tr>
                                     <th>Sl.</th>
                                     <th>Application ID</th>
-                                    <th>System ID</th>
-                                    <th>Name</th>
+                                    <th>Orgazition Name</th>
+                                    <th>Owner Name</th>
                                     <th>Category</th>
                                     <th>Subcategory</th>
-                                    <th>Created at</th>
+                                    <th>Applied Date</th>
                                     <th>Action</th>
                                 </tr>
                               </thead>
@@ -64,8 +64,14 @@
                                     <tr>
                                         <td>{{++$key}}</td>
                                         <td>{{$organization->application_id}}</td>
-                                        <td>{{$organization->system_id}}</td>
                                         <td>{{$organization->name}}</td>
+                                        <td>
+                                          @php
+                                            $owner = $organization->ownership->first() ?? null;
+                                          @endphp
+                                          <div>{{ $owner?->user?->name ?? $owner?->user_name ?? '-' }}</div>
+                                          <div>{{ $owner?->user?->people?->bn_name ?? '-' }}</div>
+                                        </td>
                                         <td>{{$organization->category->en_name}}</td>
                                         <td>{{$organization->subcategory?->en_name}}</td>
 
@@ -76,11 +82,11 @@
                                           <div class="d-flex">
                                             @if (Auth::user()->institute_id && create_permission() )
                                             @if( $organization->status==0)
-                                                <a href="{{ route('organization.edit', $organization->id) }}" title="Edit" class="btn btn-primary mx-2"><i class="fa fa-edit"></i></a>
+                                                <a href="{{ route('organization.edit', $organization->id) }}" title="Edit" class="btn btn-primary btn-sm mx-1"><i class="fa fa-edit"></i></a>
                                                  @endif
-                                                <a href="{{ route('organization.show', $organization->id) }}" title="View" class="btn btn-info mx-2"><i class="fa fa-eye"></i></a>
-                                               
-                                                
+                                                <a href="{{ route('organization.show', $organization->id) }}" title="View" class="btn btn-info btn-sm mx-1"><i class="fa fa-eye"></i></a>
+
+
                                                     <!--<form class="deleteHouse" method="post">-->
                                                     <!--  @csrf-->
                                                     <!--  @method('Delete')-->
@@ -93,7 +99,7 @@
                                     </tr>
                                   @endforeach
                                 @endif
-                               
+
 
                               </tbody>
 
@@ -144,11 +150,11 @@
                           toastr.error(responseText.message);
                       }
                   });
-  
-                  
-            
+
+
+
           });
-  
+
           $("#confirmationRevertNo").click(function(){
             $("#toast-container").hide();
           })
