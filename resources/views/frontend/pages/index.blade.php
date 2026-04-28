@@ -372,7 +372,7 @@
 
 
       <section class="bg-[#efefef] py-12 md:py-16">
-        <h2 class="relative left-1/2 right-1/2 -mt-2 mb-8 -ml-[50vw] -mr-[50vw] w-screen bg-[#B0E0E6] py-3 text-center text-2xl font-bold tracking-tight text-black md:-mt-12 md:mb-10 md:text-3xl">
+        <h2 class="relative left-1/2 right-1/2 -mt-6 mb-8 -ml-[50vw] -mr-[50vw] w-screen bg-[#B0E0E6] py-3 text-center text-2xl font-bold tracking-tight text-black md:-mt-16 md:mb-10 md:text-3xl">
           Reports
         </h2>
         <div class="container mx-auto max-w-6xl px-4">
