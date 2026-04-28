@@ -2,255 +2,342 @@
 
 @section('title', 'Organization View')
 
+@push('style')
+<style>
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Nikosh', 'Noto Sans Bengali', Arial, sans-serif;
+        font-size: 14px !important;
+        line-height: 1.4;
+        background: #f4f6f9;
+    }
+
+    .people-certificate-page {
+        max-width: 1100px;
+        margin: 0 auto;
+        background: white;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: visible;
+        border-radius: 4px;
+    }
+
+    .people-certificate-content {
+        padding: 10mm 15mm;
+    }
+
+    .header-logos {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #006600;
+        padding-bottom: 10px;
+    }
+
+    .header-logos img {
+        width: 70px;
+        height: 70px;
+        object-fit: contain;
+    }
+
+    .union-header {
+        text-align: center;
+        flex: 1;
+    }
+
+    .union-title-bn {
+        font-size: 24px;
+        font-weight: bold;
+        color: #006600;
+        margin: 0;
+    }
+
+    .union-title-en {
+        font-size: 18px;
+        font-weight: bold;
+        color: #2e3192;
+        margin: 2px 0;
+    }
+
+    .union-address {
+        font-size: 16px;
+        margin: 0;
+        color: #333;
+    }
+
+    .citizen-title {
+        text-align: center;
+        margin: 10px 0;
+    }
+
+    .citizen-title h4 {
+        font-size: 20px;
+        font-weight: bold;
+        color: #006600;
+        margin: 0;
+    }
+
+    .section-header {
+        background: #006600;
+        color: #fff;
+        font-weight: bold;
+        padding: 6px 12px;
+        margin: 20px 0 12px 0;
+        font-size: 16px;
+        border-radius: 4px;
+        letter-spacing: 1px;
+    }
+
+    .info-row {
+        display: flex;
+        margin-bottom: 8px;
+        font-size: 13px;
+        border-bottom: 1px dotted #e0e0e0;
+        padding-bottom: 5px;
+    }
+
+    .info-label {
+        width: 200px;
+        font-weight: bold;
+        color: #2c3e4e;
+    }
+
+    .info-value {
+        flex: 1;
+        color: #1e2a36;
+    }
+
+    .nested-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px 20px;
+        margin-top: 5px;
+    }
+
+    .photo-badge {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 15px;
+        background: #f8f9fc;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+        align-items: flex-start;
+    }
+
+    .photo-box {
+        text-align: center;
+        flex-shrink: 0;
+    }
+
+    .photo-box img {
+        width: 180px;
+        height: 210px;
+        object-fit: cover;
+        border: 2px solid #006600;
+        background: #fff;
+        border-radius: 8px;
+    }
+
+    .id-info-columns {
+        flex: 1;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 4px 6px;
+        padding: 5px 0;
+    }
+
+    .id-info-item {
+        background: #e9ecef;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 14px;
+        word-break: break-word;
+    }
+
+    .id-info-item span {
+        font-weight: normal;
+        color: #2c3e4e;
+    }
+
+    .two-columns {
+        display: flex;
+        gap: 30px;
+        margin-top: 10px;
+    }
+
+    .col {
+        flex: 1;
+    }
+
+    .owner-card {
+        background: #f8f9fc;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+    }
+
+    .owner-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 10px;
+    }
+
+    .owner-avatar img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #006600;
+        background: #fff;
+    }
+
+    .owner-name {
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .owner-role {
+        color: #6c757d;
+        font-size: 12px;
+    }
+
+    .action-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px dashed #aaa;
+    }
+</style>
+@endpush
+
 @section('content')
-
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Organization Details</h1>
+<div class="people-certificate-page">
+    <div class="people-certificate-content">
+        <div class="header-logos">
+            <img src="{{ asset('images/dhaka.png') }}" alt="City Logo">
+            <div class="union-header">
+                <h5 class="mb-0">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার</h5>
+                <div class="union-title-bn">{{ $organization->Union->bn_name ?? '' }}</div>
+                <div class="union-title-en">{{ $organization->Union->name ?? '' }}</div>
+                <p class="union-address">
+                    থানাঃ {{ $organization->Thana->bn_name ?? $organization->Thana->name ?? '' }},
+                    জেলাঃ {{ $organization->District->bn_name ?? $organization->District->name ?? '' }},
+                    বাংলাদেশ।
+                </p>
             </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item">
-                        <a href="{{route('organization.index')}}">Organization</a>
-                    </li>
-                    <li class="breadcrumb-item active">View</li>
-                </ol>
+            <img src="{{ asset('images/govt-bd-logo.png') }}" alt="Govt Logo">
+        </div>
+
+        <div class="citizen-title">
+            <h4>Organization Details</h4>
+        </div>
+
+        <div class="photo-badge">
+            <div class="photo-box">
+                <img src="{{ $organization->logo ? asset($organization->logo) : asset('public/no-image-found.jpeg') }}" alt="Organization Logo">
+            </div>
+            <div class="id-info-columns">
+                <div class="id-info-item"><span>Name :</span> {{ $organization->name }}</div>
+                <div class="id-info-item"><span>Name (Bangla) :</span> {{ $organization->bn_name }}</div>
+                <div class="id-info-item"><span>Category :</span> {{ $organization->category->en_name ?? '' }}</div>
+                <div class="id-info-item"><span>Type :</span> {{ $organization->type->en_name ?? '' }}</div>
+                <div class="id-info-item"><span>RJSC :</span> {{ $organization->rjsc_reg_no }}</div>
+                <div class="id-info-item"><span>Capital :</span> {{ $organization->capital }}</div>
             </div>
         </div>
-    </div>
-</section>
 
-<section class="content">
-<div class="container-fluid">
-
-<div class="card card-info">
-    <div class="card-header">
-        <h3 class="card-title">
-            Organization Information
-        </h3>
-    </div>
-
-    <div class="card-body">
-
-        {{-- Name --}}
-        <div class="row mb-2">
-            <div class="col-sm-3 font-weight-bold">Name:</div>
-            <div class="col-sm-9">{{ $organization->name }}</div>
+        <div class="section-header">Organization Information</div>
+        <div class="two-columns">
+            <div class="col">
+                <div class="info-row"><span class="info-label">Name :</span><span class="info-value">{{ $organization->name }}</span></div>
+                <div class="info-row"><span class="info-label">Name (Bangla) :</span><span class="info-value">{{ $organization->bn_name }}</span></div>
+                <div class="info-row"><span class="info-label">Category :</span><span class="info-value">{{ $organization->category->en_name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Sub Category :</span><span class="info-value">{{ $organization->subcategory->en_name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Type :</span><span class="info-value">{{ $organization->type->en_name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">RJSC :</span><span class="info-value">{{ $organization->rjsc_reg_no }}</span></div>
+            </div>
+            <div class="col">
+                <div class="info-row"><span class="info-label">Division :</span><span class="info-value">{{ $organization->Division->name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">District :</span><span class="info-value">{{ $organization->District->name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Thana :</span><span class="info-value">{{ $organization->Thana->name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Union :</span><span class="info-value">{{ $organization->Union->name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Village :</span><span class="info-value">{{ $organization->Village->bn_name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Road :</span><span class="info-value">{{ $organization->road }}</span></div>
+                <div class="info-row"><span class="info-label">House :</span><span class="info-value">{{ $organization->house }}</span></div>
+                <div class="info-row"><span class="info-label">Capital :</span><span class="info-value">{{ $organization->capital }}</span></div>
+            </div>
         </div>
 
-        {{-- Bangla Name --}}
-        <div class="row mb-2">
-            <div class="col-sm-3 font-weight-bold">Name (Bangla):</div>
-            <div class="col-sm-9">{{ $organization->bn_name }}</div>
-        </div>
-
-        {{-- Category --}}
-        <div class="row mb-2">
-            <div class="col-sm-3 font-weight-bold">Category:</div>
-            <div class="col-sm-9">{{ $organization->category->en_name ?? '' }}</div>
-        </div>
-
-        {{-- Subcategory --}}
-        <div class="row mb-2">
-            <div class="col-sm-3 font-weight-bold">Sub Category:</div>
-            <div class="col-sm-9">{{ $organization->subcategory->en_name ?? '' }}</div>
-        </div>
-
-        {{-- Type --}}
-        <div class="row mb-2">
-            <div class="col-sm-3 font-weight-bold">Type:</div>
-            <div class="col-sm-9">{{ $organization->type->en_name ?? '' }}</div>
-        </div>
-
-        {{-- RJSC --}}
-        <div class="row mb-2">
-            <div class="col-sm-3 font-weight-bold">RJSC:</div>
-            <div class="col-sm-9">{{ $organization->rjsc_reg_no }}</div>
-        </div>
-
-        {{-- Division --}}
-        <div class="row mb-2">
-            <div class="col-sm-3 font-weight-bold">Division:</div>
-            <div class="col-sm-9">{{ $organization->Division->name ?? '' }}</div>
-        </div>
-
-        {{-- District --}}
-        <div class="row mb-2">
-            <div class="col-sm-3 font-weight-bold">District:</div>
-            <div class="col-sm-9">{{ $organization->District->name ?? '' }}</div>
-        </div>
-
-        {{-- Thana --}}
-        <div class="row mb-2">
-            <div class="col-sm-3 font-weight-bold">Thana:</div>
-            <div class="col-sm-9">{{ $organization->Thana->name ?? '' }}</div>
-        </div>
-
-        {{-- Union --}}
-        <div class="row mb-2">
-            <div class="col-sm-3 font-weight-bold">Union:</div>
-            <div class="col-sm-9">{{ $organization->Union->name ?? '' }}</div>
-        </div>
-
-        {{-- Village --}}
-        <div class="row mb-2">
-            <div class="col-sm-3 font-weight-bold">Village:</div>
-            <div class="col-sm-9">{{ $organization->Village->bn_name ?? '' }}</div>
-        </div>
-
-        {{-- Road --}}
-        <div class="row mb-2">
-            <div class="col-sm-3 font-weight-bold">Road:</div>
-            <div class="col-sm-9">{{ $organization->road }}</div>
-        </div>
-
-        {{-- House --}}
-        <div class="row mb-2">
-            <div class="col-sm-3 font-weight-bold">House:</div>
-            <div class="col-sm-9">{{ $organization->house }}</div>
-        </div>
-
-        {{-- Capital --}}
-        <div class="row mb-2">
-            <div class="col-sm-3 font-weight-bold">Capital:</div>
-            <div class="col-sm-9">{{ $organization->capital }}</div>
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- ================= ORGANIZATION OWNERS ================= -->
-<div class="card card-primary mt-3">
-    <div class="card-header">
-        <h3 class="card-title">Organization Owners</h3>
-    </div>
-
-    <div class="card-body">
-        <div class="row">
-
+        <div class="section-header">Organization Owners</div>
+        <div class="nested-grid">
             @forelse($organization->ownership ?? [] as $owner)
-
-            <div class="col-md-6">
-                <div class="card border shadow-sm">
-                    <div class="card-body">
-
-                        <div class="d-flex align-items-center mb-3">
-                            <img src="{{ $owner->user?->image ? asset($owner->user->image) : 'https://via.placeholder.com/60' }}"
-                                 class="rounded-circle mr-3"
-                                 width="60" height="60">
-
-                            <div>
-                                <h5 class="mb-0">{{ $owner->user?->name ?? $owner->user_name ?? '-' }}</h5>
-                                <small class="text-muted">{{ $owner->designation ?? 'Owner' }}</small>
-                            </div>
+                <div class="owner-card">
+                    <div class="owner-header">
+                        <div class="owner-avatar">
+                            <img src="{{ $owner->user?->image ? asset($owner->user->image) : 'https://via.placeholder.com/60' }}" alt="Owner Photo">
                         </div>
-
-                        <div class="row mb-1">
-                            <div class="col-5 font-weight-bold">Father Name:</div>
-                            <div class="col-7">{{ $owner->user->familyInfo->father_name ?? '-' }}</div>
+                        <div>
+                            <p class="owner-name">{{ $owner->user?->name ?? $owner->user_name ?? '-' }}</p>
+                            <div class="owner-role">{{ $owner->designation ?? 'Owner' }}</div>
                         </div>
-
-                        <div class="row mb-1">
-                            <div class="col-5 font-weight-bold">Mother Name:</div>
-                            <div class="col-7">{{ $owner->user->familyInfo->mother_name ?? '-' }}</div>
-                        </div>
-
-                        <div class="row mb-1">
-                            <div class="col-5 font-weight-bold">Phone:</div>
-                            <div class="col-7">{{ $owner->user?->mobile ?? '-' }}</div>
-                        </div>
-
-                        <div class="row mb-1">
-                            <div class="col-5 font-weight-bold">Email:</div>
-                            <div class="col-7">{{ $owner->user?->email ?? '-' }}</div>
-                        </div>
-
-                        <div class="row mb-1">
-                            <div class="col-5 font-weight-bold">NID:</div>
-                            <div class="col-7">{{ $owner->user->nid ?? '-' }}</div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-5 font-weight-bold">Present Address:</div>
-                            <div class="col-7">
-
-                                 {{ collect([
-    $owner->user?->addressInfo?->presentPostoffice?->name ?? '',
-    $owner->user?->addressInfo?->presentVillage?->en_name ?? '',
-    $owner->user?->addressInfo?->present_area ?? ($owner->user?->addressInfo?->present_area_bn ?? ''),
-    $owner->user?->addressInfo?->present_road ?? '',
-    $owner->user?->addressInfo?->present_house ?? ''
-])->filter()->implode(', ') }}
-
-
-                            </div>
-                        </div>
-
-
-                        <div class="row">
-                            <div class="col-5 font-weight-bold">Permanent Address:</div>
-                            <div class="col-7">
-                               {{ collect([
-    $owner->user?->addressInfo?->permanentDistrict?->name ?? '',
-    $owner->user?->addressInfo?->permanentThana?->name ?? '',
-    $owner->user?->addressInfo?->permanentPostOffice?->name ?? '',
-    $owner->user?->addressInfo?->permanentVillage?->en_name ?? '',
-    $owner->user?->addressInfo?->permanent_area ?? ($owner->user?->addressInfo?->permanent_area_bn ?? ''),
-    $owner->user?->addressInfo?->permanent_road ?? '',
-    $owner->user?->addressInfo?->permanent_house ?? ''
-])->filter()->implode(', ') }}
-
-                                </div>
-                        </div>
-
                     </div>
+                    <div class="info-row"><span class="info-label">Father Name :</span><span class="info-value">{{ $owner->user->familyInfo->father_name ?? '-' }}</span></div>
+                    <div class="info-row"><span class="info-label">Mother Name :</span><span class="info-value">{{ $owner->user->familyInfo->mother_name ?? '-' }}</span></div>
+                    <div class="info-row"><span class="info-label">Phone :</span><span class="info-value">{{ $owner->user?->mobile ?? '-' }}</span></div>
+                    <div class="info-row"><span class="info-label">Email :</span><span class="info-value">{{ $owner->user?->email ?? '-' }}</span></div>
+                    <div class="info-row"><span class="info-label">NID :</span><span class="info-value">{{ $owner->user->nid ?? '-' }}</span></div>
+                    <div class="info-row"><span class="info-label">Present Address :</span><span class="info-value">
+                        {{ collect([
+                            $owner->user?->addressInfo?->presentPostoffice?->name ?? '',
+                            $owner->user?->addressInfo?->presentVillage?->en_name ?? '',
+                            $owner->user?->addressInfo?->present_area ?? ($owner->user?->addressInfo?->present_area_bn ?? ''),
+                            $owner->user?->addressInfo?->present_road ?? '',
+                            $owner->user?->addressInfo?->present_house ?? ''
+                        ])->filter()->implode(', ') }}
+                    </span></div>
+                    <div class="info-row"><span class="info-label">Permanent Address :</span><span class="info-value">
+                        {{ collect([
+                            $owner->user?->addressInfo?->permanentDistrict?->name ?? '',
+                            $owner->user?->addressInfo?->permanentThana?->name ?? '',
+                            $owner->user?->addressInfo?->permanentPostOffice?->name ?? '',
+                            $owner->user?->addressInfo?->permanentVillage?->en_name ?? '',
+                            $owner->user?->addressInfo?->permanent_area ?? ($owner->user?->addressInfo?->permanent_area_bn ?? ''),
+                            $owner->user?->addressInfo?->permanent_road ?? '',
+                            $owner->user?->addressInfo?->permanent_house ?? ''
+                        ])->filter()->implode(', ') }}
+                    </span></div>
                 </div>
-            </div>
-
             @empty
-                <div class="col-12 text-center text-muted">
-                    No owners found
-                </div>
+                <div class="text-center text-muted">No owners found</div>
             @endforelse
-
         </div>
-    </div>
-</div>
 
-<div class="card card-info mt-3">
-    <div class="card-body">
-        <div class="row mb-2">
-            <div class="col-sm-3 font-weight-bold">Status:</div>
-            <div class="col-sm-9">
+        <div class="action-row">
+            <div>
+                <strong>Status:</strong>
                 @if($organization->status == 1)
                     <span class="badge badge-success">Approved</span>
                 @else
                     <span class="badge badge-warning">Pending</span>
                 @endif
             </div>
+            <div>
+                <a href="{{route('organization.index')}}" class="btn btn-secondary">Back</a>
+                @if($organization->status != 1)
+                    <button class="btn btn-success" id="approveBtn">✔ Approve</button>
+                @endif
+            </div>
         </div>
     </div>
-
-    <div class="card-footer">
-        <a href="{{route('organization.index')}}" class="btn btn-secondary">
-            Back
-        </a>
-
-        @if($organization->status != 1)
-        <button class="btn btn-success float-right" id="approveBtn">
-            ✔ Approve
-        </button>
-        @endif
-    </div>
 </div>
-
-</div>
-</section>
-
 @endsection
 
 @push('script')
