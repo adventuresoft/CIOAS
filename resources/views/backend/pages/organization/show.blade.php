@@ -221,15 +221,20 @@
 @section('content')
 <div class="people-certificate-page">
     <div class="people-certificate-content">
+        @php
+            $headerUnion = $organization->Union ?? $organization->institute?->union;
+            $headerThana = $organization->Thana ?? $headerUnion?->thana ?? $organization->officeThana;
+            $headerDistrict = $organization->District ?? $headerThana?->district ?? $organization->officeDistrict;
+        @endphp
         <div class="header-logos">
             <img src="{{ asset('images/dhaka.png') }}" alt="City Logo">
             <div class="union-header">
                 <h5 class="mb-0">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার</h5>
-                <div class="union-title-bn">{{ $organization->Union?->bn_name ?? '' }}</div>
-                <div class="union-title-en">{{ $organization->Union?->name ?? '' }}</div>
+                <div class="union-title-bn">{{ $headerUnion?->bn_name ?? '' }}</div>
+                <div class="union-title-en">{{ $headerUnion?->name ?? '' }}</div>
                 <p class="union-address">
-                    থানাঃ {{ $organization->Thana?->bn_name ?? $organization->Thana?->name ?? $organization->officeThana?->bn_name ?? $organization->officeThana?->name ?? '' }},
-                    জেলাঃ {{ $organization->District?->bn_name ?? $organization->District?->name ?? $organization->officeDistrict?->bn_name ?? $organization->officeDistrict?->name ?? '' }},
+                    থানাঃ {{ $headerThana?->bn_name ?? $headerThana?->name ?? '' }},
+                    জেলাঃ {{ $headerDistrict?->bn_name ?? $headerDistrict?->name ?? '' }},
                     বাংলাদেশ।
                 </p>
             </div>

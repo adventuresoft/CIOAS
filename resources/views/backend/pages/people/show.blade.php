@@ -379,15 +379,18 @@
     <div class="people-certificate-content">
 
         {{-- Header with Logos --}}
+        @php
+            $headerUnion = $user->addressInfo?->presentUnion ?? $user->institute?->union;
+        @endphp
         <div class="header-logos">
             <img src="{{ asset('images/dhaka.png') }}" alt="City Logo">
             <div class="union-header">
                 <h5 class="mb-0">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার</h5>
-                <div class="union-title-bn">{{ $user->addressInfo->presentUnion->bn_name ?? '' }}</div>
-                <div class="union-title-en">{{ $user->addressInfo->presentUnion->name ?? '' }}</div>
+                <div class="union-title-bn">{{ $headerUnion?->bn_name ?? '' }}</div>
+                <div class="union-title-en">{{ $headerUnion?->name ?? '' }}</div>
                 <p class="union-address">
-                    থানাঃ {{ $user->institute->union->thana->bn_name ?? '' }},
-                    জেলাঃ {{ $user->institute->union->thana->district->bn_name ?? '' }},
+                    থানাঃ {{ $headerUnion?->thana?->bn_name ?? '' }},
+                    জেলাঃ {{ $headerUnion?->thana?->district?->bn_name ?? '' }},
                     বাংলাদেশ।
                 </p>
             </div>
