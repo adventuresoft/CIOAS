@@ -112,10 +112,10 @@
                                         </td>
                                         <td>
                                           <div class="d-flex">
-                                            @if (Auth::user()->institute_id && create_permission() )
-                                            @if( $organization->status==0)
+                                            @if (view_permission())
                                                 <a href="{{ route('organization.edit', $organization->id) }}" title="Edit" class="btn btn-primary btn-sm mx-1"><i class="fa fa-edit"></i></a>
-                                                 @endif
+                                            @endif
+                                            @if (view_permission())
                                                 <a href="{{ route('organization.show', $organization->id) }}" title="View" class="btn btn-info btn-sm mx-1"><i class="fa fa-eye"></i></a>
 
 
@@ -236,4 +236,3 @@
   });
 </script>
 @endpush
-

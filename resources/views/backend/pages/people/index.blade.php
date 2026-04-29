@@ -253,15 +253,17 @@ Permanent:</strong>
 
                                         <td>
                                             <div class="table-action">
-                                                @if (Auth::user()->institute_id && create_permission())
-                                                <a href="{{ route('people.edit', $user->id) }}" 
-                                                    class="btn btn-primary btn-sm btn-action" title="Edit">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                                <a href="{{ route('people.show', $user->id) }}" 
-                                                    class="btn btn-info btn-sm btn-action" title="View">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
+                                                @if (view_permission())
+                                                    <a href="{{ route('people.edit', $user->id) }}"
+                                                        class="btn btn-primary btn-sm btn-action" title="Edit">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                @endif
+                                                @if (view_permission())
+                                                    <a href="{{ route('people.show', $user->id) }}"
+                                                        class="btn btn-info btn-sm btn-action" title="View">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
                                                 @endif
                                             </div>
                                         </td>

@@ -33,7 +33,7 @@ class PeopleController extends Controller
 
     public function __construct()
     {
-        $this->middleware('unionAdmin')->except('index', 'show', 'searchUser');
+        $this->middleware('unionAdmin')->except('index', 'show', 'searchUser', 'edit', 'update');
     }
 
 
@@ -291,6 +291,10 @@ class PeopleController extends Controller
      */
     public function edit($id)
     {
+        if (!view_permission()) {
+            return redirect()->back();
+        }
+
         $data['religions'] = Religion::where('status', true)->get();
         $data['districts'] =  District::where('status', true)->orderBy('name')->get(); 
         $data['countries'] =  Country::orderBy('name')->get(); 
@@ -312,6 +316,13 @@ class PeopleController extends Controller
      */
     public function update(Request $request, $userID)
     {
+        if (!view_permission()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized access.',
+            ], 403);
+        }
+
         $validate = Validator::make($request->all(), [
             'name' => 'required|max:190',
             'bn_name' => 'required|max:190',
