@@ -283,26 +283,26 @@
         </li>
 
 
-        {{-- <li class="nav-item">
+        <li class="nav-item">
           <a href="{{route('basic-settings.vehicle-category.index')}}" class="nav-link {{$subMenu == 'VehicleCategory'?'active':''}}">
             <i class="far fa-circle nav-icon"></i>
             <p>Vehicle Category</p>
           </a>
-        </li> --}}
+        </li>
 
-        {{-- <li class="nav-item">
+        <li class="nav-item">
           <a href="{{route('basic-settings.vehicle-subcategory.index')}}" class="nav-link {{$subMenu == 'VehicleSubcategory'?'active':''}}">
             <i class="far fa-circle nav-icon"></i>
             <p>Vehicle Subcategory</p>
           </a>
-        </li> --}}
+        </li>
 
-        {{-- <li class="nav-item">
+        <li class="nav-item">
           <a href="{{route('basic-settings.vehicle-type.index')}}" class="nav-link {{$subMenu == 'VehicleType'?'active':''}}  ">
             <i class="far fa-circle nav-icon"></i>
             <p>Vehicle Type</p>
           </a>
-        </li> --}}
+        </li>
 
         <li class="nav-item">
           <a href="{{route('basic-settings.village.index')}}" class="nav-link {{$subMenu == 'Village'?'active':''}}">
@@ -498,8 +498,8 @@
           <p>Applicant List</p>
         </a>
       </li>
-      
-      
+
+
        <li class="nav-item">
         <a href="{{route('peopleapprovedlist')}}" class="nav-link @if($subMenu == "approvedList") active @endif">
           <i class="far fa-circle nav-icon"></i>
@@ -1010,7 +1010,7 @@ menu-open
       </a>
       <ul class="nav nav-treeview">
 
-        @if (create_permission())
+        @if (view_permission())
         <li class="nav-item">
           <a href="{{route('vehicle.create')}}" class="nav-link @if( $subMenu == "VehicleCreate") active @endif">
             <i class="far fa-circle nav-icon"></i>

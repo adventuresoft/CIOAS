@@ -53,24 +53,24 @@
                                 <div class="form-group row">
                                     <label for="name" class="col-sm-2 col-form-label">Vehicle Type</label>
                                     <div class="col-sm-9">
-                                        <select required class="form-control select2" name="user_id" id="">
-                                            <option value="">Vehicle Type</option>
+                                        <select required class="form-control select2" name="vehicle_type" id="vehicle_type">
+                                            <option value="">Select Vehicle Type</option>
                                         </select>
                                     </div>
                                 </div>
                                  <div class="form-group row">
                                     <label for="name" class="col-sm-2 col-form-label">Vehicle Category</label>
                                     <div class="col-sm-9">
-                                        <select required class="form-control select2" name="user_id" id="">
-                                            <option value="">Vehicle Category</option>
+                                        <select required class="form-control select2" name="vehicle_category" id="vehicle_category">
+                                            <option value="">Select Vehicle Category</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="name" class="col-sm-2 col-form-label">Vehicle Sub Category </label>
                                     <div class="col-sm-9">
-                                        <select required class="form-control select2" name="user_id" id="">
-                                            <option value="">Vehicle Sub Category</option>
+                                        <select required class="form-control select2" name="vehicle_subcategory" id="vehicle_subcategory">
+                                            <option value="">Select Vehicle Sub Category</option>
                                         </select>
                                     </div>
                                 </div>
@@ -168,6 +168,69 @@
     <script>
          $(document).ready(function() {
              $(".select2").select2();
+             const vehicleData = {
+                 "Two Wheeler": {
+                     "Motorcycle": ["Standard Motorcycle", "Sport Bike", "Moped"],
+                     "Scooter": ["Gearless Scooter", "Electric Scooter"],
+                     "Bicycle": ["Standard Bicycle", "Electric Bicycle"]
+                 },
+                 "Three Wheeler": {
+                     "Auto Rickshaw (CNG)": ["Passenger CNG", "Cargo CNG"],
+                     "E-Rickshaw": ["Passenger E-Rickshaw", "Loader E-Rickshaw"],
+                     "Rickshaw (Non-motorized)": ["Passenger Rickshaw", "Van Rickshaw"]
+                 },
+                 "Passenger Vehicle": {
+                     "Sedan": ["Compact Sedan", "Mid-size Sedan", "Premium Sedan"],
+                     "SUV/Jeep": ["Compact SUV", "Full-size SUV", "Off-road Jeep"],
+                     "Microbus": ["7 Seater", "9 Seater"],
+                     "Bus/Minibus": ["Minibus", "Intercity Bus", "City Bus"]
+                 },
+                 "Goods Vehicle": {
+                     "Pickup": ["Single Cab", "Double Cab"],
+                     "Truck": ["Light Truck", "Medium Truck", "Heavy Truck"],
+                     "Covered Van": ["Small Covered Van", "Large Covered Van"],
+                     "Cargo Van": ["Refrigerated Van", "Delivery Van"]
+                 },
+                 "Special Purpose": {
+                     "Ambulance": ["Basic Ambulance", "ICU Ambulance"],
+                     "Fire Service Vehicle": ["Fire Engine", "Rescue Vehicle"],
+                     "Construction Equipment": ["Excavator", "Loader", "Roller"]
+                 }
+             };
+
+             const $type = $("#vehicle_type");
+             const $category = $("#vehicle_category");
+             const $subcategory = $("#vehicle_subcategory");
+
+             const populateSelect = (select, items, placeholder) => {
+                 select.empty();
+                 select.append(new Option(placeholder, ""));
+                 items.forEach((item) => {
+                     select.append(new Option(item, item));
+                 });
+                 select.trigger("change");
+             };
+
+             populateSelect($type, Object.keys(vehicleData), "Select Vehicle Type");
+             populateSelect($category, [], "Select Vehicle Category");
+             populateSelect($subcategory, [], "Select Vehicle Sub Category");
+
+             $type.on("change", function() {
+                 const selectedType = $(this).val();
+                 const categories = selectedType ? Object.keys(vehicleData[selectedType]) : [];
+                 populateSelect($category, categories, "Select Vehicle Category");
+                 populateSelect($subcategory, [], "Select Vehicle Sub Category");
+             });
+
+             $category.on("change", function() {
+                 const selectedType = $type.val();
+                 const selectedCategory = $(this).val();
+                 const subcategories =
+                     selectedType && selectedCategory
+                         ? vehicleData[selectedType][selectedCategory]
+                         : [];
+                 populateSelect($subcategory, subcategories, "Select Vehicle Sub Category");
+             });
             $("#deathCertificateForm").on('submit', function(e) {
                 e.preventDefault();
                 let thisForm = $(this);
