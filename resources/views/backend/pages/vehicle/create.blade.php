@@ -34,28 +34,19 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form class="form-horizontal" id="Form" method="POST" enctype="multipart/form-data">
+                        <form class="form-horizontal" id="vehicleForm" method="POST" action="{{route('vehicle.store')}}" enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
 
-                                <div class="form-group row">
-                                    <label for="date_of_death" class="col-sm-2 col-form-label">Vehicle Name</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="date_of_death" placeholder="Vehicle Name" class="form-control" id="date_of_death">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="date_of_death" class="col-sm-2 col-form-label">Name (Bangla)</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="date_of_death" placeholder="Name Bangla" class="form-control" id="date_of_death">
-                                    </div>
-                                </div>
+
+
                                 <div class="form-group row">
                                     <label for="name" class="col-sm-2 col-form-label">Vehicle Type</label>
                                     <div class="col-sm-9">
                                         <select required class="form-control select2" name="vehicle_type" id="vehicle_type">
                                             <option value="">Select Vehicle Type</option>
                                         </select>
+                                        <span class="error vehicle_type-error text-danger"></span>
                                     </div>
                                 </div>
                                  <div class="form-group row">
@@ -64,87 +55,71 @@
                                         <select required class="form-control select2" name="vehicle_category" id="vehicle_category">
                                             <option value="">Select Vehicle Category</option>
                                         </select>
+                                        <span class="error vehicle_category-error text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">Vehicle Sub Category </label>
+                                    <label for="vehicle_model" class="col-sm-2 col-form-label">Vehicle Model</label>
                                     <div class="col-sm-9">
-                                        <select required class="form-control select2" name="vehicle_subcategory" id="vehicle_subcategory">
-                                            <option value="">Select Vehicle Sub Category</option>
+                                        <input type="text" required class="form-control" name="vehicle_model" id="vehicle_model" placeholder="Enter Vehicle Model">
+                                        <span class="error vehicle_model-error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="make_year" class="col-sm-2 col-form-label">Make Year</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" required class="form-control" name="make_year" id="make_year" placeholder="Enter Year (e.g. 2024)" min="1900" max="2099">
+                                        <span class="error make_year-error text-danger"></span>
+                                    </div>
+                                </div>
+                               <div class="form-group row">
+                                    <label for="make_company" class="col-sm-2 col-form-label">Make Company</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" required class="form-control" name="make_company" id="make_company" placeholder="Enter Company Name">
+                                        <span class="error make_company-error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="ownership_type" class="col-sm-2 col-form-label">Ownership Type</label>
+                                    <div class="col-sm-9">
+                                        <select required class="form-control select2" name="ownership_type" id="ownership_type">
+                                            <option value="">Select Ownership Type</option>
+                                            <option value="personal">Personal</option>
+                                            <option value="institutional">Institutional</option>
                                         </select>
+                                        <span class="error ownership_type-error text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">Vehicle Model</label>
+                                    <label for="owner_id" class="col-sm-2 col-form-label">Owner ID</label>
                                     <div class="col-sm-9">
-                                        <select required class="form-control select2" name="user_id" id="">
-                                            <option value="">Vehicle Model</option>
-                                        </select>
+                                        <input type="text" name="owner_id" placeholder="Owner Id" class="form-control" id="owner_id">
+                                        <span class="error owner_id-error text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">Make Year</label>
+                                    <label for="owner_name" class="col-sm-2 col-form-label">Owner Name</label>
                                     <div class="col-sm-9">
-                                        <select required class="form-control select2" name="user_id" id="">
-                                            <option value="">Make Year</option>
-                                        </select>
+                                        <input type="text" name="owner_name" placeholder="Owner Name" class="form-control" id="owner_name">
+                                        <span class="error owner_name-error text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">Make Company</label>
+                                    <label for="price" class="col-sm-2 col-form-label">Price</label>
                                     <div class="col-sm-9">
-                                        <select required class="form-control select2" name="user_id" id="">
-                                            <option value="">Make Company</option>
-                                        </select>
+                                        <input type="text" name="price" placeholder="Price" class="form-control" id="price">
+                                        <span class="error price-error text-danger"></span>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">Ownership Type</label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="user_id" id="">
-                                            <option value="">Ownership Type</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="date_of_death" class="col-sm-2 col-form-label">Owner ID</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="date_of_death" placeholder="Owner Id" class="form-control" id="date_of_death">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="date_of_death" class="col-sm-2 col-form-label">Owner Name</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="date_of_death" placeholder="Owner Name" class="form-control" id="date_of_death">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="date_of_death" class="col-sm-2 col-form-label">Price</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="date_of_death" placeholder="Price" class="form-control" id="date_of_death">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="date_of_death" class="col-sm-2 col-form-label">BRTA Reg. No.</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="date_of_death" placeholder="BRTA Reg. No." class="form-control" id="date_of_death">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">Reg. Authority</label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="user_id" id="">
-                                            <option value="">Select Reg. Authority</option>
-                                        </select>
-                                    </div>
-                                </div>
+
+
 
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer">
                                 <div class="form-group row">
                                     {{-- {{route('death.index')}} --}}
-                                    <a href="" class="btn btn-default float-right">Cancel</a>
+                                    <a href="{{route('vehicle.index')}}" class="btn btn-default float-right">Cancel</a>
                                     <div class="col-sm-9">
                                         <button type="submit" class="btn btn-info">Submit</button>
                                     </div>
@@ -166,103 +141,94 @@
 @push('script')
 
     <script>
-         $(document).ready(function() {
-             $(".select2").select2();
-             const vehicleData = {
-                 "Two Wheeler": {
-                     "Motorcycle": ["Standard Motorcycle", "Sport Bike", "Moped"],
-                     "Scooter": ["Gearless Scooter", "Electric Scooter"],
-                     "Bicycle": ["Standard Bicycle", "Electric Bicycle"]
-                 },
-                 "Three Wheeler": {
-                     "Auto Rickshaw (CNG)": ["Passenger CNG", "Cargo CNG"],
-                     "E-Rickshaw": ["Passenger E-Rickshaw", "Loader E-Rickshaw"],
-                     "Rickshaw (Non-motorized)": ["Passenger Rickshaw", "Van Rickshaw"]
-                 },
-                 "Passenger Vehicle": {
-                     "Sedan": ["Compact Sedan", "Mid-size Sedan", "Premium Sedan"],
-                     "SUV/Jeep": ["Compact SUV", "Full-size SUV", "Off-road Jeep"],
-                     "Microbus": ["7 Seater", "9 Seater"],
-                     "Bus/Minibus": ["Minibus", "Intercity Bus", "City Bus"]
-                 },
-                 "Goods Vehicle": {
-                     "Pickup": ["Single Cab", "Double Cab"],
-                     "Truck": ["Light Truck", "Medium Truck", "Heavy Truck"],
-                     "Covered Van": ["Small Covered Van", "Large Covered Van"],
-                     "Cargo Van": ["Refrigerated Van", "Delivery Van"]
-                 },
-                 "Special Purpose": {
-                     "Ambulance": ["Basic Ambulance", "ICU Ambulance"],
-                     "Fire Service Vehicle": ["Fire Engine", "Rescue Vehicle"],
-                     "Construction Equipment": ["Excavator", "Loader", "Roller"]
-                 }
-             };
+$(document).ready(function () {
 
-             const $type = $("#vehicle_type");
-             const $category = $("#vehicle_category");
-             const $subcategory = $("#vehicle_subcategory");
+    // Initialize select2
+    $(".select2").select2();
 
-             const populateSelect = (select, items, placeholder) => {
-                 select.empty();
-                 select.append(new Option(placeholder, ""));
-                 items.forEach((item) => {
-                     select.append(new Option(item, item));
-                 });
-                 select.trigger("change");
-             };
+    // Vehicle Data (FIXED STRUCTURE)
+    const vehicleData = {
+        "Auto": [
+            "Rickshaw - রিকশা",
+            "Van - ভ্যান / ভ্যানগাড়ি"
+        ],
+        "Manual": [
+            "Rickshaw - রিকশা",
+            "Van - ভ্যান / ভ্যানগাড়ি",
+            "Thela Gari - ঠেলাগাড়ি",
+            "Gorur Gari - গরুর গাড়ি"
+        ]
+    };
 
-             populateSelect($type, Object.keys(vehicleData), "Select Vehicle Type");
-             populateSelect($category, [], "Select Vehicle Category");
-             populateSelect($subcategory, [], "Select Vehicle Sub Category");
+    const $type = $("#vehicle_type");
+    const $category = $("#vehicle_category");
 
-             $type.on("change", function() {
-                 const selectedType = $(this).val();
-                 const categories = selectedType ? Object.keys(vehicleData[selectedType]) : [];
-                 populateSelect($category, categories, "Select Vehicle Category");
-                 populateSelect($subcategory, [], "Select Vehicle Sub Category");
-             });
+    // Function to populate select
+    function populateSelect(select, items, placeholder) {
+        select.empty();
+        select.append(new Option(placeholder, ""));
 
-             $category.on("change", function() {
-                 const selectedType = $type.val();
-                 const selectedCategory = $(this).val();
-                 const subcategories =
-                     selectedType && selectedCategory
-                         ? vehicleData[selectedType][selectedCategory]
-                         : [];
-                 populateSelect($subcategory, subcategories, "Select Vehicle Sub Category");
-             });
-            $("#deathCertificateForm").on('submit', function(e) {
-                e.preventDefault();
-                let thisForm = $(this);
-                $.ajax({
-                    type: "POST",
-                    url: "",
-                    data: new FormData(this),
-                    dataType: "json",
-                    contentType:false,
-                    cache:false,
-                    processData:false,
-                    beforeSend: function() {
-                        thisForm.find('button[type="submit"]').prop("disabled",true);
-                    },
-                    success: function (response) {
-                        thisForm.find('button[type="submit"]').prop("disabled",false);
-                        toastr.success(response.message);
-                        setTimeout(function() {
-                            location.href = response.redirect_url;
-                        }, 2000)
-                    },
-                    error: function(xhr, status, error) {
-                        thisForm.find('button[type="submit"]').prop("disabled",false);
-                        var responseText = jQuery.parseJSON(xhr.responseText);
-                        toastr.error(responseText.message);
-                        $.each(responseText.errors, function(key, val) {
-                            thisForm.find("." + key + "-error").text(val[0]);
-                        });
-                    }
-                });
-            })
-        })
+        items.forEach(function(item) {
+            select.append(new Option(item, item));
+        });
 
-    </script>
+        select.trigger("change");
+    }
+
+    // Initial Load
+    populateSelect($type, Object.keys(vehicleData), "Select Vehicle Type");
+    populateSelect($category, [], "Select Vehicle Category");
+
+    // On Type Change
+    $type.on("change", function () {
+        const selectedType = $(this).val();
+        const categories = selectedType ? vehicleData[selectedType] : [];
+        populateSelect($category, categories, "Select Vehicle Category");
+    });
+
+    $("#vehicleForm").on("submit", function (e) {
+        e.preventDefault();
+
+        let thisForm = $(this);
+        let submitBtn = thisForm.find('button[type="submit"]');
+
+        $.ajax({
+            type: "POST",
+            url: "{{route('vehicle.store')}}",
+            data: new FormData(this),
+            dataType: "json",
+            contentType: false,
+            cache: false,
+            processData: false,
+
+            beforeSend: function () {
+                submitBtn.prop("disabled", true);
+                $(".error").text("");
+            },
+
+            success: function (response) {
+                submitBtn.prop("disabled", false);
+                toastr.success(response.message);
+
+                setTimeout(function () {
+                    window.location.href = response.redirect_url;
+                }, 2000);
+            },
+
+            error: function (xhr) {
+                submitBtn.prop("disabled", false);
+                let response = xhr.responseJSON || {};
+                toastr.error(response.message || "Something went wrong! Please try again...");
+
+                if (response.errors) {
+                    $.each(response.errors, function (key, val) {
+                        thisForm.find("." + key + "-error").text(val[0]);
+                    });
+                }
+            }
+        });
+    });
+
+});
+</script>
 @endpush

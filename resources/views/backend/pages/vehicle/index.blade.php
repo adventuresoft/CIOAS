@@ -1,5 +1,11 @@
 @extends('backend.master', ['mainMenu' => 'Vehicle', 'subMenu' =>'VehicleList'])
 @push('style')
+<style>
+    .table-action {
+        display: flex;
+        gap: 6px;
+    }
+</style>
 @endpush
 @section('title', 'Vehicle List')
 @section('content')
@@ -55,16 +61,28 @@
                                 </tr>
                               </thead>
                               <tbody>
-
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+                                @if (isset($vehicles) && count($vehicles))
+                                    @foreach ($vehicles as $key => $vehicle)
+                                        <tr>
+                                            <td>{{ ++$key }}</td>
+                                            <td>{{ $vehicle->vehicle_model ?? '--' }}</td>
+                                            <td>{{ $vehicle->vehicle_type ?? '--' }}</td>
+                                            <td>{{ $vehicle->vehicle_category ?? '--' }}</td>
+                                            <td>{{ $vehicle->make_company ?? '--' }}{{ $vehicle->make_year ? ' (' . $vehicle->make_year . ')' : '' }}</td>
+                                            <td>{{ $vehicle->owner_id ?? '--' }}{{ $vehicle->owner_name ? ' - ' . $vehicle->owner_name : '' }}</td>
+                                            <td>
+                                                <div class="table-action">
+                                                    <a class="btn btn-sm btn-primary" href="{{ route('vehicle.edit', $vehicle->id) }}" title="Edit">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <a class="btn btn-sm btn-info" href="{{ route('vehicle.show', $vehicle->id) }}" title="View">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
 
                               </tbody>
 
@@ -84,4 +102,3 @@
 @endsection
 @push('script')
 @endpush
-

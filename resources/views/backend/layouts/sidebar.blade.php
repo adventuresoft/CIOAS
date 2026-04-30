@@ -291,13 +291,6 @@
         </li>
 
         <li class="nav-item">
-          <a href="{{route('basic-settings.vehicle-subcategory.index')}}" class="nav-link {{$subMenu == 'VehicleSubcategory'?'active':''}}">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Vehicle Subcategory</p>
-          </a>
-        </li>
-
-        <li class="nav-item">
           <a href="{{route('basic-settings.vehicle-type.index')}}" class="nav-link {{$subMenu == 'VehicleType'?'active':''}}  ">
             <i class="far fa-circle nav-icon"></i>
             <p>Vehicle Type</p>
