@@ -391,7 +391,7 @@
                             <div class="owner-pill"><span>Reg. People ID :</span> <strong>{{ $owner->user?->system_id ?? '-' }}</strong></div>
                             <div class="owner-pill"><span>NID :</span> <strong>{{ $owner->user?->nid ?? '-' }}</strong></div>
                             <div class="owner-pill"><span>Mobile :</span> <strong>{{ $owner->user?->mobile ?? '-' }}</strong></div>
-                            <div class="owner-pill"><span>Married Status :</span> <strong>{{ $maritalStatus }}</strong></div>
+
 
                         </div>
                     </div>
