@@ -174,37 +174,85 @@
         flex: 1;
     }
 
-    .owner-card {
-        background: #f8f9fc;
-        padding: 12px;
-        border-radius: 8px;
-        border: 1px solid #dee2e6;
+.owner-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
     }
 
-    .owner-header {
+.owner-card {
+        background: #f8f9fc;
+        padding: 14px;
+        border-radius: 10px;
+        border: 1px solid #d9e1e8;
+    }
+
+    .owner-serial-title {
+        background: #006600;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 700;
+        border-radius: 6px;
+        padding: 6px 12px;
+        margin-bottom: 12px;
+        letter-spacing: .4px;
+    }
+
+    .owner-top {
+
         display: flex;
-        align-items: center;
-        gap: 12px;
+        gap: 16px;
+        align-items: stretch;
         margin-bottom: 10px;
     }
 
-    .owner-avatar img {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
+     .owner-photo {
+        width: 210px;
+        min-width: 210px;
+    }
+    .owner-photo img {
+        width: 100%;
+        height: 250px;
         object-fit: cover;
-        border: 2px solid #006600;
+       border: 3px solid #0a7a2c;
+        border-radius: 12px;
         background: #fff;
     }
 
-    .owner-name {
-        font-weight: bold;
-        margin: 0;
+   .owner-pill-list {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+     .owner-pill {
+        background: #d8dde3;
+        border-radius: 28px;
+        padding: 10px 16px;
+        color: #243447;
+        font-size: 16px;
+        line-height: 1.3;
+        word-break: break-word;
     }
 
-    .owner-role {
-        color: #6c757d;
-        font-size: 12px;
+    .owner-pill span {
+        font-weight: 500;
+    }
+
+       .owner-pill strong {
+        font-weight: 700;
+        color: #1d252d;
+    }
+
+    @media (max-width: 992px) {
+        .owner-top {
+            flex-direction: column;
+        }
+
+        .owner-photo {
+            width: 100%;
+            min-width: 100%;
+        }
     }
 
     .action-row {
@@ -305,44 +353,56 @@
         <div class="info-row"><span class="info-label">Ownership :</span><span class="info-value">{{ $organization->premises_ownership ? ucfirst($organization->premises_ownership) : '' }}</span></div>
 
         <div class="section-header">Organization Owners</div>
-        <div class="nested-grid">
+          <div class="owner-list"></div>
             @forelse($organization->ownership ?? [] as $owner)
+
+                            @php
+                    $presentAddress = collect([
+                        $owner->user?->addressInfo?->presentPostoffice?->name ?? '',
+                        $owner->user?->addressInfo?->presentVillage?->en_name ?? '',
+                        $owner->user?->addressInfo?->present_area ?? ($owner->user?->addressInfo?->present_area_bn ?? ''),
+                        $owner->user?->addressInfo?->present_road ?? '',
+                        $owner->user?->addressInfo?->present_house ?? ''
+                    ])->filter()->implode(', ');
+
+                    $permanentAddress = collect([
+                        $owner->user?->addressInfo?->permanentDistrict?->name ?? '',
+                        $owner->user?->addressInfo?->permanentThana?->name ?? '',
+                        $owner->user?->addressInfo?->permanentPostOffice?->name ?? '',
+                        $owner->user?->addressInfo?->permanentVillage?->en_name ?? '',
+                        $owner->user?->addressInfo?->permanent_area ?? ($owner->user?->addressInfo?->permanent_area_bn ?? ''),
+                        $owner->user?->addressInfo?->permanent_road ?? '',
+                        $owner->user?->addressInfo?->permanent_house ?? ''
+                    ])->filter()->implode(', ');
+
+                    $maritalStatus = family_constant_option('marital_status')[$owner->user?->familyInfo?->marital_status ?? ''] ?? '-';
+                @endphp
                 <div class="owner-card">
-                    <div class="owner-header">
-                        <div class="owner-avatar">
-                            <img src="{{ $owner->user?->image ? asset($owner->user->image) : 'https://via.placeholder.com/60' }}" alt="Owner Photo">
+                    <div class="owner-serial-title">Owner {{ $loop->iteration }} information</div>
+
+                    <div class="owner-top">
+                        <div class="owner-photo">
+                            <img src="{{ $owner->user?->image ? asset($owner->user->image) : asset('public/no-image-found.jpeg') }}" alt="Owner Photo" onerror="this.src='{{ asset('public/no-image-found.jpeg') }}'">
+
                         </div>
-                        <div>
-                            <p class="owner-name">{{ $owner->user?->name ?? $owner->user_name ?? '-' }}</p>
-                            <div class="owner-role">{{ $owner->designation ?? 'Owner' }}</div>
+                         <div class="owner-pill-list">
+                            <div class="owner-pill"><span>Name :</span> <strong>{{ $owner->user?->name ?? $owner->user_name ?? '-' }}</strong></div>
+                            <div class="owner-pill"><span>Name (Bangla) :</span> <strong>{{ $owner->user?->people?->bn_name ?? '-' }}</strong></div>
+                            <div class="owner-pill"><span>Reg. People ID :</span> <strong>{{ $owner->user?->system_id ?? '-' }}</strong></div>
+                            <div class="owner-pill"><span>NID :</span> <strong>{{ $owner->user?->nid ?? '-' }}</strong></div>
+                            <div class="owner-pill"><span>Mobile :</span> <strong>{{ $owner->user?->mobile ?? '-' }}</strong></div>
+                            <div class="owner-pill"><span>Married Status :</span> <strong>{{ $maritalStatus }}</strong></div>
+
                         </div>
                     </div>
-                    <div class="info-row"><span class="info-label">NID :</span><span class="info-value">{{ $owner->user->nid ?? '-' }}</span></div>
-
-                    <div class="info-row"><span class="info-label">Father Name :</span><span class="info-value">{{ $owner->user->familyInfo->father_name ?? '-' }}</span></div>
-                    <div class="info-row"><span class="info-label">Mother Name :</span><span class="info-value">{{ $owner->user->familyInfo->mother_name ?? '-' }}</span></div>
+                       <div class="info-row"><span class="info-label">Owner Role :</span><span class="info-value">{{ $owner->designation ?? 'Owner' }}</span></div>
+                    <div class="info-row"><span class="info-label">Father Name :</span><span class="info-value">{{ $owner->user?->familyInfo?->father_name ?? '-' }}</span></div>
+                    <div class="info-row"><span class="info-label">Mother Name :</span><span class="info-value">{{ $owner->user?->familyInfo?->mother_name ?? '-' }}</span></div>
                     <div class="info-row"><span class="info-label">Phone :</span><span class="info-value">{{ $owner->user?->mobile ?? '-' }}</span></div>
                     <div class="info-row"><span class="info-label">Email :</span><span class="info-value">{{ $owner->user?->email ?? '-' }}</span></div>
-                    <div class="info-row"><span class="info-label">Present Address :</span><span class="info-value">
-                        {{ collect([
-                            $owner->user?->addressInfo?->presentPostoffice?->name ?? '',
-                            $owner->user?->addressInfo?->presentVillage?->en_name ?? '',
-                            $owner->user?->addressInfo?->present_area ?? ($owner->user?->addressInfo?->present_area_bn ?? ''),
-                            $owner->user?->addressInfo?->present_road ?? '',
-                            $owner->user?->addressInfo?->present_house ?? ''
-                        ])->filter()->implode(', ') }}
-                    </span></div>
-                    <div class="info-row"><span class="info-label">Permanent Address :</span><span class="info-value">
-                        {{ collect([
-                            $owner->user?->addressInfo?->permanentDistrict?->name ?? '',
-                            $owner->user?->addressInfo?->permanentThana?->name ?? '',
-                            $owner->user?->addressInfo?->permanentPostOffice?->name ?? '',
-                            $owner->user?->addressInfo?->permanentVillage?->en_name ?? '',
-                            $owner->user?->addressInfo?->permanent_area ?? ($owner->user?->addressInfo?->permanent_area_bn ?? ''),
-                            $owner->user?->addressInfo?->permanent_road ?? '',
-                            $owner->user?->addressInfo?->permanent_house ?? ''
-                        ])->filter()->implode(', ') }}
-                    </span></div>
+                      <div class="info-row"><span class="info-label">Present Address :</span><span class="info-value">{{ $presentAddress ?: '-' }}</span></div>
+                    <div class="info-row"><span class="info-label">Permanent Address :</span><span class="info-value">{{ $permanentAddress ?: '-' }}</span></div>
+
                 </div>
             @empty
                 <div class="text-center text-muted">No owners found</div>

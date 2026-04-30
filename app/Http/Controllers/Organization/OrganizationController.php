@@ -427,6 +427,7 @@ public function getOrganizationBySystemId($system_id)
             'Union',
             'Village',
             'ownership.user.familyInfo',
+            'ownership.user.people',
             'ownership.user.addressInfo.presentPostoffice',
             'ownership.user.addressInfo.presentVillage',
             'ownership.user.addressInfo.presentRoad',
@@ -444,6 +445,7 @@ public function getOrganizationBySystemId($system_id)
                 if (!$owner->user && !empty($owner->system_id)) {
                     $resolvedUser = User::with([
                         'familyInfo',
+                        'people',
                         'addressInfo.presentPostoffice',
                         'addressInfo.presentVillage',
                         'addressInfo.presentRoad',
