@@ -11,7 +11,7 @@
         .login-container {
             height: 100vh;
             display: flex;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8f4fb 100%);
+            background: white;
             justify-content: center;
             align-items: center;
             padding: 20px;
