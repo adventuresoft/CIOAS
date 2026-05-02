@@ -329,6 +329,8 @@
                         <div class="id-info-item"><span>NID :</span> {{ $ownerUser->nid ?? '-' }}</div>
                         <div class="id-info-item"><span>ID :</span> {{ $ownerUser->system_id ?? $ownerUser->id ?? '-' }}</div>
                         <div class="id-info-item"><span>Phone :</span> {{ $ownerUser->mobile ?? '-' }}</div>
+                        <div class="id-info-item"><span>Email :</span> {{ $ownerUser->email ?? '-' }}</div>
+
                     </div>
                 </div>
 
