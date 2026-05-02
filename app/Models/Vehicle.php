@@ -18,6 +18,9 @@ class Vehicle extends Model
         'ownership_type',
         'owner_id',
         'owner_name',
+        'institutional_name',
+        'trade_license',
+        'institutional_address',
         'price',
     ];
 }

@@ -11,7 +11,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{route('vehicle.index')}}">Vehicle</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('vehicle.index') }}">Vehicle</a></li>
                     <li class="breadcrumb-item active">Edit</li>
                 </ol>
             </div>
@@ -32,6 +32,8 @@
                         @csrf
                         @method('PUT')
                         <div class="card-body">
+
+                            <h5 class="text-info mb-3">Vehicle Info</h5>
 
                             <div class="form-group row">
                                 <label for="vehicle_type" class="col-sm-2 col-form-label">Vehicle Type</label>
@@ -78,6 +80,17 @@
                             </div>
 
                             <div class="form-group row">
+                                <label for="price" class="col-sm-2 col-form-label">Price</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="price" class="form-control" id="price" value="{{ $vehicle->price }}" placeholder="Price">
+                                    <span class="error price-error text-danger"></span>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <h5 class="text-info mb-3">Owner Info</h5>
+
+                            <div class="form-group row">
                                 <label for="ownership_type" class="col-sm-2 col-form-label">Ownership Type</label>
                                 <div class="col-sm-9">
                                     <select required class="form-control select2" name="ownership_type" id="ownership_type">
@@ -89,27 +102,40 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label for="owner_id" class="col-sm-2 col-form-label">Owner ID</label>
-                                <div class="col-sm-9">
-                                    <input type="text" name="owner_id" class="form-control" id="owner_id" value="{{ $vehicle->owner_id }}" placeholder="Owner Id">
-                                    <span class="error owner_id-error text-danger"></span>
+                            <div id="personal-owner-field" class="{{ $vehicle->ownership_type === 'personal' ? '' : 'd-none' }}">
+                                <div class="form-group row">
+                                    <label for="owner_id" class="col-sm-2 col-form-label">Owner ID</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="owner_id" class="form-control" id="owner_id" value="{{ $vehicle->owner_id }}" placeholder="Owner ID (User ID / System ID)">
+                                        <small class="text-muted">Personal ownership-এর ক্ষেত্রে এই ID থেকে user details দেখানো হবে view page-এ।</small>
+                                        <span class="error owner_id-error text-danger"></span>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label for="owner_name" class="col-sm-2 col-form-label">Owner Name</label>
-                                <div class="col-sm-9">
-                                    <input type="text" name="owner_name" class="form-control" id="owner_name" value="{{ $vehicle->owner_name }}" placeholder="Owner Name">
-                                    <span class="error owner_name-error text-danger"></span>
+                            <div id="institutional-fields" class="{{ $vehicle->ownership_type === 'institutional' ? '' : 'd-none' }}">
+                                <div class="form-group row">
+                                    <label for="institutional_name" class="col-sm-2 col-form-label">Institutional Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="institutional_name" class="form-control" id="institutional_name" value="{{ $vehicle->institutional_name }}" placeholder="Institutional Name">
+                                        <span class="error institutional_name-error text-danger"></span>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group row">
-                                <label for="price" class="col-sm-2 col-form-label">Price</label>
-                                <div class="col-sm-9">
-                                    <input type="text" name="price" class="form-control" id="price" value="{{ $vehicle->price }}" placeholder="Price">
-                                    <span class="error price-error text-danger"></span>
+                                <div class="form-group row">
+                                    <label for="trade_license" class="col-sm-2 col-form-label">Trade License</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="trade_license" class="form-control" id="trade_license" value="{{ $vehicle->trade_license }}" placeholder="Trade License">
+                                        <span class="error trade_license-error text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="institutional_address" class="col-sm-2 col-form-label">Institutional Address</label>
+                                    <div class="col-sm-9">
+                                        <textarea name="institutional_address" class="form-control" id="institutional_address" rows="3" placeholder="Institutional Address">{{ $vehicle->institutional_address }}</textarea>
+                                        <span class="error institutional_address-error text-danger"></span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -130,6 +156,7 @@
     </div>
 </section>
 @endsection
+
 @push('script')
 <script>
 $(document).ready(function () {
@@ -150,6 +177,7 @@ $(document).ready(function () {
 
     const $type = $("#vehicle_type");
     const $category = $("#vehicle_category");
+    const $ownershipType = $("#ownership_type");
     const selectedType = @json($vehicle->vehicle_type);
     const selectedCategory = @json($vehicle->vehicle_category);
 
@@ -169,6 +197,23 @@ $(document).ready(function () {
         select.trigger("change");
     }
 
+    function toggleOwnershipFields() {
+        const isPersonal = $ownershipType.val() === "personal";
+        const isInstitutional = $ownershipType.val() === "institutional";
+        const personalField = $("#owner_id");
+        const institutionalFields = $("#institutional_name, #trade_license, #institutional_address");
+
+        $("#personal-owner-field").toggleClass("d-none", !isPersonal);
+        personalField.prop("required", isPersonal);
+
+        $("#institutional-fields").toggleClass("d-none", !isInstitutional);
+        institutionalFields.prop("required", isInstitutional);
+
+        if (!isPersonal) {
+            personalField.val("");
+        }
+    }
+
     const types = Object.keys(vehicleData);
     populateSelect($type, types, "Select Vehicle Type", selectedType);
 
@@ -180,6 +225,9 @@ $(document).ready(function () {
         const typeCategories = type && vehicleData[type] ? vehicleData[type] : [];
         populateSelect($category, typeCategories, "Select Vehicle Category");
     });
+
+    $ownershipType.on("change", toggleOwnershipFields);
+    toggleOwnershipFields();
 
     $("#vehicleEditForm").on("submit", function (e) {
         e.preventDefault();

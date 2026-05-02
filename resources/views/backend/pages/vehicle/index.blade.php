@@ -69,7 +69,15 @@
                                             <td>{{ $vehicle->vehicle_type ?? '--' }}</td>
                                             <td>{{ $vehicle->vehicle_category ?? '--' }}</td>
                                             <td>{{ $vehicle->make_company ?? '--' }}{{ $vehicle->make_year ? ' (' . $vehicle->make_year . ')' : '' }}</td>
-                                            <td>{{ $vehicle->owner_id ?? '--' }}{{ $vehicle->owner_name ? ' - ' . $vehicle->owner_name : '' }}</td>
+                                            <td>
+                                                {{ $vehicle->owner_id ?? '--' }}
+                                                @php
+                                                    $ownerDisplayName = $vehicle->ownership_type === 'institutional'
+                                                        ? ($vehicle->institutional_name ?? $vehicle->owner_name)
+                                                        : $vehicle->owner_name;
+                                                @endphp
+                                                {{ $ownerDisplayName ? ' - ' . $ownerDisplayName : '' }}
+                                            </td>
                                             <td>
                                                 <div class="table-action">
                                                     <a class="btn btn-sm btn-primary" href="{{ route('vehicle.edit', $vehicle->id) }}" title="Edit">
