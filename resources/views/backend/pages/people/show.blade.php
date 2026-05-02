@@ -62,7 +62,7 @@
     }
 
     .union-title-bn {
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
         color: #006600;
         margin: 0;
