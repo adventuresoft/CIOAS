@@ -1,0 +1,41 @@
+Date: 15-05-2022
+    1. Add People From Frontend Need Verification
+    First Verification Ward Then Chairman After he will member
+    2. No need verification from backend
+
+
+Date: 16-05-2022
+1. Think All Over Bangladesh
+2. Three Steps
+    a.  City Corporation (Category of City Corporation)
+    b.  Porosova (Category)
+    c.  Union (Category A, Category B, Category C)
+3. Holding Tax Category
+4. Trade License
+
+5. Create City corporation, Porosova, Union
+
+Date: 18-05-2022
+Hardly Check Log Management What was in Old data and What present in new data
+
+
+Date: 19-05-2022
+<!-- if want to send only single sms for every time, have to change action="..../SendTextMessage" & for multiple sms write action=".../SendTextMultiMessage" -->
+
+                 <!-- <form style="margin: 0px 10%" id="abcd" onclick="hello()" action="https://bmpws.robi.com.bd/ApacheGearWS/SendTextMessage" method="post"> -->
+                 <form action="https://api.mobireach.com.bd/SendTextMultiMessage" method="post">
+                        <input type="hidden" name="Username" value="advsoft" />
+                        <input type="hidden" name="Password" value="Dhaka@0088" />
+                        <input type="hidden" name="From" value="8801847050122"/>
+
+						https://user.mobireach.com.bd/index.php?r=site/login
+
+						Username : advsoft
+                        Password : Dhaka@0088
+                        SMS Number : 8801847050122
+
+Date: 25-05-2022
+Division->District->Thana->Mouza
+Birth Place -> HomeCountry(Division/District/Thana)/Abroad(Only Country Name)
+
+

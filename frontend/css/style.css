@@ -1,0 +1,707 @@
+.section-padding {
+    padding: 50px 0px;
+}
+
+@media only screen and (min-width: 768px) {
+    .min-height {
+        min-height: 250px;
+    }
+}
+#header {
+}
+
+#header .small-device-menu {
+    display: block;
+    width: 30px;
+    height: 26px;
+    position: absolute;
+    top: 28px;
+    left: 15px;
+}
+
+#header .small-device-menu span {
+    width: 30px;
+    height: 5px;
+    background: #ffffff;
+    display: block;
+    margin-bottom: 5px;
+}
+
+#header #header-top {
+    background: #495457;
+    padding-top: 1px;
+}
+
+#header #header-top::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+#header #header-top .small-device-logo {
+    width: 105px;
+    background: #fff;
+    margin: 0px auto;
+    margin-top: 5px;
+}
+
+#header #header-top .small-device-logo a {
+}
+
+#header #header-top .small-device-logo img {
+    width: 100%;
+}
+
+#header #header-top div {
+    position: relative;
+    padding-bottom: 1px;
+}
+
+#header #header-top .large-device-logo {
+    width: 80px;
+    position: absolute;
+    /*background: #fff;*/
+    top: 0px;
+    left: 0px;
+    display: none;
+}
+
+#header #header-top .large-device-logo a {
+}
+
+#header #header-top .large-device-logo a img {
+    width: 100%;
+}
+
+#header #header-top .institute-name {
+    margin-left: 0px;
+    float: left;
+    padding: 10px 0px;
+}
+
+#header #header-top .institute-name h1 {
+    color: #ffffff;
+    font-size: 22px;
+}
+
+#header #header-top .institute-name p {
+    color: #ffffff;
+    margin-bottom: 0px;
+}
+
+#header #header-top .mini-menu {
+    float: right;
+    margin-top: 25px;
+    display: none;
+}
+
+#header #header-top .mini-menu ul {
+    list-style: none;
+}
+
+#header #header-top .mini-menu ul li {
+}
+
+#header #header-top .mini-menu ul li a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+/* auth-menu */
+#header #header-top .auth-menu {
+    float: right;
+    margin-top: 25px;
+}
+
+#header #header-top .auth-menu ul {
+    list-style: none;
+}
+
+#header #header-top .auth-menu ul li a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+#header #header-bottom {
+    background: #ffffff;
+    border-bottom: 1px solid #37a000;
+    display: none;
+}
+
+/*======================== For Multilevel Dropdown Menu Nevigate============================*/
+#header #header-bottom nav.main-menu {
+    margin-left: 130px;
+}
+
+#header #header-bottom nav.main-menu::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+#header #header-bottom nav.main-menu ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+#header #header-bottom nav.main-menu ul::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+#header #header-bottom nav.main-menu ul li {
+    float: left;
+    position: relative;
+    margin-right: 10px;
+}
+
+#header #header-bottom nav.main-menu ul li > a {
+    position: relative;
+    padding: 7px 15px;
+    display: block;
+}
+
+#header #header-bottom nav.main-menu ul > li.has-sub > a::after {
+    content: "";
+    width: 8px;
+    height: 2px;
+    position: absolute;
+    background: #666666;
+    right: 0px;
+    top: 18px;
+}
+
+#header #header-bottom nav.main-menu ul > li.has-sub > a::before {
+    content: "";
+    width: 2px;
+    height: 8px;
+    position: absolute;
+    background: #666666;
+    right: 3px;
+    top: 15px;
+}
+
+#header #header-bottom nav.main-menu ul > li > a:hover {
+    color: #37a000;
+    text-decoration: none;
+}
+
+#header #header-bottom nav.main-menu ul ul {
+    position: absolute;
+    top: 100%;
+    left: -9999px;
+    background: #333333;
+    width: 160px;
+    z-index: 9;
+}
+
+#header #header-bottom nav.main-menu ul ul ul {
+    position: absolute;
+    top: 0px;
+}
+
+#header #header-bottom nav.main-menu ul li:hover > ul {
+    left: 0px;
+}
+
+#header #header-bottom nav.main-menu ul ul li:hover > ul {
+    left: 100%;
+}
+
+#header #header-bottom nav.main-menu ul li ul li {
+    float: none;
+}
+
+#header #header-bottom nav.main-menu ul li ul > li.has-sub > a::after {
+    content: "";
+    width: 8px;
+    height: 2px;
+    position: absolute;
+    background: #ffffff;
+    right: 0px;
+    top: 18px;
+}
+
+#header #header-bottom nav.main-menu ul li ul > li.has-sub > a::before {
+    content: "";
+    width: 2px;
+    height: 8px;
+    position: absolute;
+    background: #ffffff;
+    right: 3px;
+    top: 15px;
+}
+
+#header #header-bottom nav.main-menu ul > li > a:hover::before {
+    height: 0px;
+}
+
+#header #header-bottom nav.main-menu ul li ul > li > a:hover::before {
+    height: 0px;
+}
+
+#header #header-bottom nav.main-menu ul li ul > li > a {
+    color: #ffffff;
+}
+
+/*================================================================*/
+#bxslider-section {
+}
+
+#bxslider-section .bx-wrapper {
+    border: 0px;
+    height: 400px;
+    overflow: hidden;
+    margin-bottom: 0px;
+}
+
+#bxslider-section .bx-wrapper img {
+    width: 100%;
+}
+
+#bxslider-section .bx-wrapper .bx-controls-direction a {
+    top: 198px;
+}
+
+.bx-wrapper .bx-pager {
+    bottom: 50px;
+}
+
+.bx-wrapper .bx-pager-item {
+    padding: 2px;
+    background: #ffffff;
+    margin-right: 5px;
+}
+
+.bx-wrapper .bx-pager.bx-default-pager a {
+    display: block;
+    padding: 2px;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    margin: 0px;
+}
+
+.bx-wrapper .bx-pager.bx-default-pager a.active {
+    background: #37a000;
+}
+
+#scrollnews marquee {
+    color: red;
+    font-weight: bold;
+}
+
+#instituteinfo {
+    position: relative;
+}
+
+#instituteinfo #inst-bg {
+    position: absolute;
+    display: block;
+    background: url(../img/shohidminar.png) right top no-repeat;
+    background-size: 100% 100%;
+    height: 100%;
+    right: 0;
+    content: "";
+    width: 40%;
+    z-index: -55;
+    display: none;
+}
+
+#instituteinfo .left {
+    padding: 25px 0px 25px;
+}
+
+#instituteinfo .left .title {
+    margin-bottom: 25px;
+}
+
+#instituteinfo .left .pro-pic {
+    margin-bottom: 12px;
+}
+
+#instituteinfo .left .pro-pic img {
+    width: 100%;
+}
+
+#instituteinfo .left .pro-pic .degination {
+    margin-top: 8px;
+}
+
+#instituteinfo .left .pro-pic .degination h3 {
+    font-size: 18px;
+    text-align: center;
+}
+
+#instituteinfo .left .txt {
+}
+
+#instituteinfo .left .txt p {
+}
+
+#instituteinfo .left .txt p a {
+    color: #37a000;
+}
+
+#instituteinfo .right {
+}
+
+#instituteinfo .right .title {
+    margin-bottom: 25px;
+}
+
+#instituteinfo .right .txt {
+}
+
+#instituteinfo .right .txt p {
+    text-align: justify;
+}
+
+#instituteinfo .right .txt p a {
+    color: #37a000;
+}
+/* Project show section */
+.project_show {
+    background: #ffffff;
+}
+/*Aims Counter section*/
+#aims-counter {
+    position: relative;
+    padding: 50px 0px;
+    background: url(../img/slider1.jpg) left center no-repeat;
+}
+
+#aims-counter::after {
+    content: "";
+    background: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    display: block;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    z-index: 0;
+}
+
+#aims-counter .counters {
+}
+
+#aims-counter .counters .item {
+    /*
+    float: left;
+    width: 20%;
+*/
+    text-align: center;
+    color: #ffffff;
+    position: relative;
+    content: "";
+    display: block;
+}
+
+#aims-counter .counters .item span {
+    color: red;
+    top: 0px;
+    left: 0px;
+    z-index: 555;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+#aims-counter .counters .item span.name {
+    display: block;
+    text-align: center;
+}
+
+/*Student Admission Section*/
+#admission {
+    padding: 25px 0px;
+}
+
+#admission .formsegment {
+    display: none;
+}
+#admission .heading {
+    margin-bottom: 25px;
+    position: relative;
+}
+#admission .heading h3 {
+    text-align: center;
+    font-weight: 300;
+}
+.massage {
+    position: absolute;
+    top: 0px;
+    right: 15px;
+}
+#admission .btn {
+    background: #25282a;
+    color: #ffffff;
+}
+#admission .heading span.print-btn {
+    float: right;
+    cursor: pointer;
+    color: #007bff;
+}
+#admission .heading button.print-btn {
+    float: right;
+    cursor: pointer;
+    color: #007bff;
+    position: absolute;
+    top: -60px;
+    right: 10px;
+    padding: 2px 5px;
+    border-style: none;
+    background: #ffffff;
+    border: none;
+}
+#admission .heading button.print-btn:focus {
+    border-style: none;
+    background: #ffffff;
+    border: none;
+}
+/*Footer Top Section*/
+
+#footer-top {
+    background: #25282a;
+    padding: 60px 0px;
+}
+
+#footer-top .ft-item {
+}
+
+#footer-top .ft-item h5 {
+    color: #ffffff;
+}
+
+#footer-top .ft-item ul {
+    padding: 0px;
+    list-style: none;
+}
+
+#footer-top .ft-item ul li {
+    margin-bottom: 5px;
+}
+
+#footer-top .ft-item ul li a {
+    color: #ffffff;
+    padding: 5px 0px 5px 20px;
+    display: block;
+    position: relative;
+}
+
+#footer-top .ft-item ul li a::before {
+    content: "";
+    width: 6px;
+    height: 2px;
+    background: #ffffff;
+    position: absolute;
+    top: 20px;
+    left: 0px;
+    transform: rotate(40deg);
+}
+
+#footer-top .ft-item ul li a::after {
+    content: "";
+    width: 12px;
+    height: 2px;
+    background: #ffffff;
+    position: absolute;
+    top: 17px;
+    left: 3px;
+    transform: rotate(-45deg);
+}
+
+/*Footer Section*/
+#footer {
+    padding: 15px 0px 10px;
+}
+
+#footer .left {
+}
+
+#footer .right {
+}
+
+/*For Print Design*/
+.margin_bottom {
+    margin-bottom: 20px;
+}
+.printarea {
+    border: 2px solid #ccc;
+    padding: 20px;
+}
+.institute_name {
+    position: relative;
+}
+.institute_name::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+.institute_logo {
+    width: 150px;
+    float: left;
+    box-sizing: border-box;
+    padding-right: 25px;
+}
+.institute_logo img {
+    width: 100%;
+}
+.institute_txt {
+    padding-top: 30px;
+}
+.institute_title {
+    color: red;
+}
+.applicant_item {
+    padding-bottom: 20px;
+}
+.applicant_item:last-child {
+    padding-bottom: 0px;
+}
+.applicant_item::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.applicant_item_heading {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    margin-left: -20px;
+    margin-right: -20px;
+    padding: 10px 0px;
+}
+.applicant_item_heading h4 {
+    text-align: center;
+    font-weight: 200;
+    font-size: 19px;
+}
+.applicant_item_desc .photo {
+}
+.applicant_item_desc .photo img {
+    width: 100%;
+    display: block;
+}
+.applicant_item_desc .info {
+}
+.applicant_item_desc table {
+    border-spacing: 5px;
+    border-collapse: unset;
+    width: 100%;
+}
+.applicant_item_desc table,
+.applicant_item_desc tr,
+.applicant_item_desc td {
+    /*border: 1px solid #ccc;*/
+}
+.applicant_item_desc tr,
+.applicant_item_desc td {
+    /* padding: 5px;*/
+}
+.applicant_item_desc td span {
+    float: right;
+    margin-right: 10px;
+}
+.applicant_item_desc .info td:first-child {
+    width: 40%;
+}
+.applicant_item_desc .classinfo {
+}
+.applicant_item_desc .classinfo td:first-child {
+    width: 40%;
+}
+
+#applicationForm .col-md-6:hover{
+ background: #f7f7f7;
+}
+
+@media only screen and (min-width: 768px) {
+    .applicant_item_desc .photo {
+        width: 180px;
+        float: left;
+        padding-right: 30px;
+        box-sizing: border-box;
+    }
+    .applicant_item_desc .info {
+        float: left;
+        padding-right: 30px;
+        width: calc(60% - 90px);
+        box-sizing: border-box;
+    }
+    .applicant_item_desc .classinfo {
+        float: left;
+        width: calc(40% - 90px);
+    }
+}
+.info .exam-details {
+}
+.info .exam-details table {
+    width: 100%;
+}
+.info .exam-details td:nth-child(2n + 1) {
+    width: 20%;
+}
+.info .exam-details td:nth-child(2n) {
+    width: 30%;
+}
+.total_marks p {
+    text-align: center;
+    padding: 7px 0px;
+    margin: 0px;
+}
+.total_marks p span:first-child {
+    color: green;
+}
+/*===================================*/
+.applicant_item_parentinfo table {
+    border-spacing: 5px;
+    border-collapse: unset;
+    width: 100%;
+}
+.applicant_item_parentinfo td:nth-child(1) {
+    width: 15%;
+}
+.applicant_item_parentinfo td:nth-child(3) {
+    width: 15%;
+}
+.applicant_item_parentinfo td span {
+    float: right;
+    margin-right: 10px;
+}
+/*=======================================*/
+.applicant_item_contact table {
+    border-spacing: 5px;
+    border-collapse: unset;
+    width: 100%;
+}
+.applicant_item_contact td:nth-child(1) {
+    width: 15%;
+}
+.applicant_item_contact td:nth-child(3) {
+    width: 15%;
+}
+.applicant_item_contact td span {
+    float: right;
+    margin-right: 10px;
+}
+.controller_signature::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+.controller_signature .content {
+    float: right;
+}
+.print_footer {
+    padding: 6px 0px;
+}
+.print_footer p {
+    text-align: center;
+    font-weight: 400;
+}
+.print_footer p span {
+    color: red;
+}

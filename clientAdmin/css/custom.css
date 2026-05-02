@@ -1,0 +1,471 @@
+.role_menu {
+    padding: 0px;
+}
+.role_menu li {
+}
+.role_menu > li {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0px;
+}
+.role_menu > li:last-child {
+    border-bottom: 0px;
+}
+.role_menu li ul {
+    padding-left: 25px;
+}
+.role_menu li ul li {
+}
+.role_menu li ul li .menu {
+    width: 20%;
+    float: left;
+}
+.role_menu li ul li .permission {
+}
+.role_menu li ul li .permission label {
+    color: green !important;
+    margin-right: 15px;
+}
+.role_menu li ul li .menu label {
+    color: blue;
+}
+fieldset.permission {
+}
+fieldset.permission legend {
+    border: 0px;
+    font-size: 15px;
+    font-weight: 100;
+}
+fieldset.menu {
+}
+fieldset.menu legend {
+    border: 0px;
+    font-size: 15px;
+    font-weight: 100;
+}
+.programinfo {
+    text-align: center;
+}
+.programinfo:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+.programinfo_item {
+    padding: 0px 5px;
+    display: inline-block;
+}
+.programinfo_item span {
+    font-size: 17px;
+}
+.applicant_info {
+    padding: 25px 0px;
+}
+.applicant_info table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.applicant_info td,
+th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+.customtable tbody > tr > td {
+    padding: 2px 8px !important;
+}
+.customtable .form-group {
+    margin: 0px !important;
+}
+.customtable .form-control {
+    height: 30px;
+    padding: 3px 12px 6px !important;
+}
+.plushbtn th {
+    position: relative;
+}
+.plushbtn th span {
+    display: inline-block;
+    height: 12px;
+    width: 12px;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.plushbtn th span::before {
+    content: "";
+    display: block;
+    background-color: #000000;
+    width: 12px;
+    height: 2px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.plushbtn th span::after {
+    content: "";
+    display: block;
+    background-color: #000000;
+    width: 2px;
+    height: 12px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.plushbtn td {
+    position: relative;
+}
+.plushbtn td span {
+    display: inline-block;
+    height: 12px;
+    width: 12px;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.plushbtn td span::before {
+    content: "";
+    display: block;
+    background-color: red;
+    width: 12px;
+    height: 2px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+/* Project table  */
+.project-table-wr {
+    overflow-x: auto;
+}
+.project-table-wr tr th {
+    text-align: center;
+    vertical-align: middle !important;
+}
+.project-table-wr tr td {
+    text-align: center;
+    vertical-align: middle !important;
+    padding: 0px !important;
+}
+.pro div {
+    width: 300px;
+}
+.pro input {
+    width: 100px;
+}
+.in_two div {
+    width: 200px;
+}
+.in_two input {
+    width: 100px;
+}
+.project-table-wr tr td select.mouzaids {
+    width: 117px;
+}
+#plus {
+    cursor: pointer;
+}
+.del {
+    cursor: pointer;
+}
+.project-info {
+    padding: 25px 0px;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+.project-info::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+.project-info .item {
+    float: left;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+/* Owner Notice */
+.notice {
+    width: 850px;
+    margin: 0px auto;
+}
+.notice__wrapper {
+    min-height: 1px;
+    border: 1px solid #000000;
+    padding: 25px;
+}
+[class*="notice__line-"] {
+    min-height: 1px;
+}
+[class*="notice__line-"] p {
+    font-family: sans-serif;
+    font-size: 15px;
+    line-height: 26px;
+}
+[class*="notice_col-"] {
+    min-height: 1px;
+}
+.notice-form {
+    text-align: right;
+}
+.notice-dara {
+    text-align: center;
+}
+.notice-dara p {
+    font-size: 19px;
+}
+.notice_title {
+    text-align: center;
+    margin: 0px;
+}
+.notice_date {
+    text-align: right;
+}
+.item-wrapper {
+    margin-left: -15px;
+    margin-right: -15px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.item-wrapper::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+.item-wrapper .item {
+    /* float: left; */
+    padding-left: 15px;
+    padding-right: 15px;
+    display: inline-block;
+}
+.topsil-table {
+    width: auto;
+    margin: 0px auto;
+    width: 100%;
+}
+.topsil-table tr th {
+    text-align: center;
+    vertical-align: middle !important;
+}
+.topsil-table tr td {
+    text-align: center;
+    vertical-align: middle !important;
+}
+.notice_desc ul {
+    padding: 0px;
+}
+.notice_desc ul li p {
+    font-family: sans-serif;
+    font-size: 15px;
+    line-height: 26px;
+}
+.janom {
+    font-family: sans-serif;
+    font-size: 15px;
+}
+.notice_date {
+    font-family: sans-serif;
+    font-size: 15px;
+}
+.topsil_heading {
+    text-align: center;
+}
+.topsil_heading h4 {
+    font-weight: 700;
+}
+.topsil-wrapper-table {
+    margin-bottom: 25px;
+}
+.gatobbo {
+    margin-bottom: 10px;
+    font-weight: 700;
+    text-decoration: underline;
+}
+.btn_print {
+    min-height: 1px;
+    position: absolute;
+    right: 100px;
+    top: 0px;
+}
+.signature {
+    padding: 50px 0px;
+}
+.center_box {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+.project_heading {
+    text-align: center;
+}
+.case_project-info {
+    min-height: 1px;
+}
+.case_project-info .item {
+    min-height: 1px;
+}
+.case_project-info .item p span {
+    font-size: 18px;
+}
+.case_project-info .item .left {
+    float: left;
+    width: 150px;
+    position: relative;
+}
+.case_project-info .item .left::after {
+    content: ":";
+    display: block;
+    position: absolute;
+    top: 0px;
+    right: 15px;
+    color: green;
+}
+.case_project-info .item .right {
+    float: left;
+    width: calc(100% - 150px);
+}
+.case_project-info .item .left p span {
+    color: green;
+}
+.display_none {
+    display: none;
+}
+.officer-info .item p {
+    font-size: 17px;
+}
+.joint_investi {
+    margin-bottom: 25px;
+}
+.content_wrapper {
+    text-align: center;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+.content_wrapper .item {
+    min-width: 1px;
+    display: inline-block;
+    padding: 0px 15px;
+}
+.content_wrapper .item .left {
+    position: relative;
+    /* width: 120px; */
+    float: left;
+    padding-right: 15px;
+}
+.content_wrapper .item .left::after {
+    content: ":";
+    display: block;
+    position: absolute;
+    top: 0px;
+    right: 8px;
+}
+.content_wrapper .item .right {
+    /* width: calc(100% - 150px); */
+    float: left;
+}
+.tree_investigation {
+    width: 550px;
+    /* margin: 0 auto; */
+}
+.inv_land_class {
+    width: 550px;
+}
+.inv_land_class #project_tbody td select {
+    width: 150px;
+}
+/* .inv_home_others {
+    width: 900px;
+} */
+.joint-inv-report {
+}
+.joint-inv-report tr th {
+    text-align: center;
+    vertical-align: middle !important;
+}
+.joint-inv-report tr td {
+    padding: 2px !important;
+}
+.sig_container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 75px;
+    margin-bottom: 20px;
+}
+.sig_item {
+    width: 20%;
+    text-align: center;
+    /* display: inline-block; */
+}
+.notice__footer {
+    text-align: center;
+}
+.page_gap {
+    margin-bottom: 10px;
+}
+.zero-margin p {
+    margin: 0px;
+    line-height: 23px;
+}
+.notice_right {
+    float: right;
+}
+.notice_right p {
+    margin: 0px;
+    line-height: 20px;
+}
+.notice_padding {
+    padding: 25px 0px 0px;
+}
+.notice_heading {
+    margin-bottom: 15px;
+}
+.notice_heading p {
+    margin: 0px;
+    line-height: 27px;
+    font-weight: 700;
+}
+.boder_none {
+    border: none;
+}
+.notice--width {
+    width: 900px;
+}
+.padding_zero {
+    padding: 0px;
+}
+.notice_8_3 table tbody tr td {
+    padding: 2px 8px;
+}
+.notice_col-4 {
+    width: 33.33%;
+    float: left;
+}
+.notice_col-8 {
+    width: 66.66%;
+    float: left;
+}
+.notice_8_3_sig {
+    margin-top: 50px;
+    margin-bottom: 0px;
+}
+.narow_line_h p {
+    margin: 0px;
+    line-height: 25px;
+}
+.notice_margin {
+    margin-bottom: 15px;
+}
+.project-info-row {
+    padding: 5px 0px;
+    text-align: center;
+}
+.btn_color {
+    background: green;
+    color: #ffffff;
+}

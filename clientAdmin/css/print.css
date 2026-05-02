@@ -1,0 +1,55 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+@media print and (color) {
+    body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    #main-content {
+        margin: 0px;
+    }
+    .container {
+        max-width: 1140px;
+        padding: 0px;
+    }
+    .panel-body {
+        border: 0px !important;
+    }
+    .headernoprint {
+        display: none;
+    }
+    .sidebarnoprint {
+        display: none;
+    }
+    .notprint {
+        display: none;
+    }
+    .wrapper {
+        padding: 0px;
+        margin: 0px;
+    }
+    .printarea .print-row {
+        margin: 0px;
+    }
+    .printarea .print-col {
+        padding: 0px;
+    }
+    .content_wrapper {
+        margin-left: -8px;
+        margin-right: -8px;
+    }
+    .content_wrapper .item {
+        padding: 0px 8px;
+    }
+    /*Design Area Start*/
+    .pagebreak {
+        break-after: page;
+    }
+}
+
+@page {
+    size: A4;
+    margin-top: 1cm;
+    margin-bottom: 2cm;
+    margin-left: 2cm;
+    margin-right: 2cm;
+}

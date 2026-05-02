@@ -1,0 +1,61 @@
+@media only screen and (min-width:768px) {
+    #header #header-top .small-device-logo {
+        display: none;
+    }
+
+    #header .small-device-menu {
+        display: none;
+    }
+
+    #header #header-top .large-device-logo {
+        display: block;
+    }
+
+    #header #header-top .institute-name {
+        margin-left: 130px;
+    }
+
+    #header #header-top .institute-name h1 {
+        font-size: 25px;
+    }
+
+    #header #header-bottom {
+        display: block;
+    }
+
+    #instituteinfo #inst-bg {
+        display: block;
+    }
+
+    #instituteinfo .right {
+        padding: 25px 0px 0px 35px;
+        width: 70%;
+    }
+
+    /*Footer Section*/
+    #footer .left {
+        float: left;
+    }
+
+    #footer .right {
+        float: right;
+    }
+
+    /*Aims Counter section*/
+    #aims-counter .counters .item {
+        float: left;
+        width: 20%;
+    }
+
+    #aims-counter .counters .item span {
+        font-size: 24px;
+    }
+}
+
+@media only screen and (min-width:992px) {
+    #header #header-top .mini-menu {
+        display: block;
+    }
+}
+
+@media only screen and (min-width:768px) {}
