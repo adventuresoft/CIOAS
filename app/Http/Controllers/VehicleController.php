@@ -52,6 +52,15 @@ class VehicleController extends Controller
             'trade_license' => 'nullable|required_if:ownership_type,institutional|max:191',
             'institutional_address' => 'nullable|required_if:ownership_type,institutional|max:500',
             'price' => 'nullable|numeric|min:0',
+            'engine_number' => 'nullable|max:191',
+            'chassis_number' => 'nullable|max:191',
+            'tyre_number' => 'nullable|max:191',
+            'hp_cc' => 'nullable|max:191',
+            'seat_capacity' => 'nullable|max:191',
+            'height' => 'nullable|max:191',
+            'width' => 'nullable|max:191',
+            'tyre_size' => 'nullable|max:191',
+            'color' => 'nullable|max:191',
         ]);
 
         if ($validate->fails()) {
@@ -85,6 +94,15 @@ class VehicleController extends Controller
                 'trade_license' => $isInstitutional ? $request->trade_license : null,
                 'institutional_address' => $isInstitutional ? $request->institutional_address : null,
                 'price' => $request->price,
+                'engine_number' => $request->engine_number,
+                'chassis_number' => $request->chassis_number,
+                'tyre_number' => $request->tyre_number,
+                'hp_cc' => $request->hp_cc,
+                'seat_capacity' => $request->seat_capacity,
+                'height' => $request->height,
+                'width' => $request->width,
+                'tyre_size' => $request->tyre_size,
+                'color' => $request->color,
             ];
 
             $vehicle = new Vehicle();
@@ -171,6 +189,15 @@ class VehicleController extends Controller
             'trade_license' => 'nullable|required_if:ownership_type,institutional|max:191',
             'institutional_address' => 'nullable|required_if:ownership_type,institutional|max:500',
             'price' => 'nullable|numeric|min:0',
+            'engine_number' => 'nullable|max:191',
+            'chassis_number' => 'nullable|max:191',
+            'tyre_number' => 'nullable|max:191',
+            'hp_cc' => 'nullable|max:191',
+            'seat_capacity' => 'nullable|max:191',
+            'height' => 'nullable|max:191',
+            'width' => 'nullable|max:191',
+            'tyre_size' => 'nullable|max:191',
+            'color' => 'nullable|max:191',
         ]);
 
         if ($validate->fails()) {
@@ -204,6 +231,15 @@ class VehicleController extends Controller
                 'trade_license' => $isInstitutional ? $request->trade_license : null,
                 'institutional_address' => $isInstitutional ? $request->institutional_address : null,
                 'price' => $request->price,
+                'engine_number' => $request->engine_number,
+                'chassis_number' => $request->chassis_number,
+                'tyre_number' => $request->tyre_number,
+                'hp_cc' => $request->hp_cc,
+                'seat_capacity' => $request->seat_capacity,
+                'height' => $request->height,
+                'width' => $request->width,
+                'tyre_size' => $request->tyre_size,
+                'color' => $request->color,
             ];
 
             $columns = Schema::getColumnListing($vehicle->getTable());

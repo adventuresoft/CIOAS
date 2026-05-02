@@ -397,6 +397,7 @@
             <img src="{{ asset('images/govt-bd-logo.png') }}" alt="Govt Logo">
         </div>
 
+
         {{-- Citizen Title (centered) --}}
         <div class="citizen-title">
             <h4>নাগরিক তথ্য বিবরণী</h4>

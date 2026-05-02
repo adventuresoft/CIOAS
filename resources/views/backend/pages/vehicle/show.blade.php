@@ -298,11 +298,20 @@
                 <div class="info-row"><span class="info-label">Vehicle Type :</span><span class="info-value">{{ $vehicle->vehicle_type ?? '--' }}</span></div>
                 <div class="info-row"><span class="info-label">Vehicle Category :</span><span class="info-value">{{ $vehicle->vehicle_category ?? '--' }}</span></div>
                 <div class="info-row"><span class="info-label">Vehicle Model :</span><span class="info-value">{{ $vehicle->vehicle_model ?? '--' }}</span></div>
+                <div class="info-row"><span class="info-label">Engine Number :</span><span class="info-value">{{ $vehicle->engine_number ?? '--' }}</span></div>
+                <div class="info-row"><span class="info-label">Chassis Number :</span><span class="info-value">{{ $vehicle->chassis_number ?? '--' }}</span></div>
+                <div class="info-row"><span class="info-label">Tyre Number :</span><span class="info-value">{{ $vehicle->tyre_number ?? '--' }}</span></div>
+                <div class="info-row"><span class="info-label">HP/CC :</span><span class="info-value">{{ $vehicle->hp_cc ?? '--' }}</span></div>
+                <div class="info-row"><span class="info-label">Seat Capacity :</span><span class="info-value">{{ $vehicle->seat_capacity ?? '--' }}</span></div>
             </div>
             <div class="col">
                 <div class="info-row"><span class="info-label">Make Year :</span><span class="info-value">{{ $vehicle->make_year ?? '--' }}</span></div>
                 <div class="info-row"><span class="info-label">Make Company :</span><span class="info-value">{{ $vehicle->make_company ?? '--' }}</span></div>
                 <div class="info-row"><span class="info-label">Price :</span><span class="info-value">{{ isset($vehicle->price) ? number_format((float) $vehicle->price, 2) : '--' }}</span></div>
+                <div class="info-row"><span class="info-label">Height :</span><span class="info-value">{{ $vehicle->height ?? '--' }}</span></div>
+                <div class="info-row"><span class="info-label">Width :</span><span class="info-value">{{ $vehicle->width ?? '--' }}</span></div>
+                <div class="info-row"><span class="info-label">Tyre Size :</span><span class="info-value">{{ $vehicle->tyre_size ?? '--' }}</span></div>
+                <div class="info-row"><span class="info-label">Color :</span><span class="info-value">{{ $vehicle->color ?? '--' }}</span></div>
                 <div class="info-row"><span class="info-label">Ownership Type :</span><span class="info-value">{{ $vehicle->ownership_type ? ucfirst($vehicle->ownership_type) : '--' }}</span></div>
             </div>
         </div>

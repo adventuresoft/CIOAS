@@ -22,5 +22,14 @@ class Vehicle extends Model
         'trade_license',
         'institutional_address',
         'price',
+        'engine_number',
+        'chassis_number',
+        'tyre_number',
+        'hp_cc',
+        'seat_capacity',
+        'height',
+        'width',
+        'tyre_size',
+        'color',
     ];
 }

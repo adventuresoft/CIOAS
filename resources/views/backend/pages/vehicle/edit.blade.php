@@ -87,6 +87,72 @@
                                 </div>
                             </div>
 
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="engine_number">Engine Number - ইঞ্জিন নম্বর</label>
+                                        <input type="text" name="engine_number" class="form-control" id="engine_number" value="{{ $vehicle->engine_number }}" placeholder="Enter Engine Number">
+                                        <span class="error engine_number-error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="chassis_number">Chassis Number - চ্যাসিস নম্বর</label>
+                                        <input type="text" name="chassis_number" class="form-control" id="chassis_number" value="{{ $vehicle->chassis_number }}" placeholder="Enter Chassis Number">
+                                        <span class="error chassis_number-error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="tyre_number">Tyre Number - টায়ারের নম্বর</label>
+                                        <input type="text" name="tyre_number" class="form-control" id="tyre_number" value="{{ $vehicle->tyre_number }}" placeholder="Enter Tyre Number">
+                                        <span class="error tyre_number-error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="hp_cc">HP/CC - হর্সপাওয়ার / সিসি (ইঞ্জিন ক্ষমতা)</label>
+                                        <input type="text" name="hp_cc" class="form-control" id="hp_cc" value="{{ $vehicle->hp_cc }}" placeholder="Enter HP/CC">
+                                        <span class="error hp_cc-error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="seat_capacity">Seat Capacity - আসন সংখ্যা</label>
+                                        <input type="text" name="seat_capacity" class="form-control" id="seat_capacity" value="{{ $vehicle->seat_capacity }}" placeholder="Enter Seat Capacity">
+                                        <span class="error seat_capacity-error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="height">Height - উচ্চতা</label>
+                                        <input type="text" name="height" class="form-control" id="height" value="{{ $vehicle->height }}" placeholder="Enter Height">
+                                        <span class="error height-error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="width">Width - প্রস্থ</label>
+                                        <input type="text" name="width" class="form-control" id="width" value="{{ $vehicle->width }}" placeholder="Enter Width">
+                                        <span class="error width-error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="tyre_size">Tyre Size - টায়ারের সাইজ</label>
+                                        <input type="text" name="tyre_size" class="form-control" id="tyre_size" value="{{ $vehicle->tyre_size }}" placeholder="Enter Tyre Size">
+                                        <span class="error tyre_size-error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="color">Color - রং</label>
+                                        <input type="text" name="color" class="form-control" id="color" value="{{ $vehicle->color }}" placeholder="Enter Color">
+                                        <span class="error color-error text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
                             <hr>
                             <h5 class="text-info mb-3">Owner Info</h5>
 
