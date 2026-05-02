@@ -325,7 +325,8 @@
                         <img src="{{ $ownerUser->image ? asset($ownerUser->image) : asset('public/no-image-found.jpeg') }}" alt="Owner Photo" onerror="this.src='{{ asset('public/no-image-found.jpeg') }}'">
                     </div>
                     <div class="id-info-columns">
-                        <div class="id-info-item"><span>Name :</span> {{ $ownerUser->name ?? '-' }}</div>
+                        <div class="id-info-item"><span>Name (Bangla) :</span> {{ $ownerUser->people?->bn_name ?? '-' }}</div>
+                        <div class="id-info-item"><span>Name (English) :</span> {{ $ownerUser->name ?? '-' }}</div>
                         <div class="id-info-item"><span>NID :</span> {{ $ownerUser->nid ?? '-' }}</div>
                         <div class="id-info-item"><span>ID :</span> {{ $ownerUser->system_id ?? $ownerUser->id ?? '-' }}</div>
                         <div class="id-info-item"><span>Phone :</span> {{ $ownerUser->mobile ?? '-' }}</div>
