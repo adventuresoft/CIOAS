@@ -989,7 +989,13 @@ menu-open
       <li class="nav-item
       @if(
       $subMenu == "VehicleCreate" ||
-      $subMenu == "VehicleList"
+      $subMenu == "VehicleList" ||
+      $subMenu == "VehicleApprovalList" ||
+      $subMenu == "VehicleGenerateInvoice" ||
+      $subMenu == "VehicleLicense" ||
+      $subMenu == "VehicleOwnershipChangeApplication" ||
+      $subMenu == "VehicleOwnershipChangeApproval" ||
+      $subMenu == "VehicleAddFees"
       )
       menu-open
       @endif"
@@ -1016,10 +1022,74 @@ menu-open
         <li class="nav-item">
           <a href="{{route('vehicle.index')}}" class="nav-link @if( $subMenu == "VehicleList") active @endif">
             <i class="far fa-circle nav-icon"></i>
-            <p>View</p>
+            <p>Application List</p>
           </a>
         </li>
         @endif
+
+        @if (view_permission())
+        <li class="nav-item">
+          <a href="#" class="nav-link @if( $subMenu == "VehicleApprovalList") active @endif">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Approval List</p>
+          </a>
+        </li>
+        @endif
+
+        @if (view_permission())
+        <li class="nav-item">
+          <a href="#" class="nav-link @if( $subMenu == "VehicleGenerateInvoice") active @endif">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Generate Invoice</p>
+          </a>
+        </li>
+        @endif
+
+        @if (view_permission())
+        <li class="nav-item">
+          <a href="#" class="nav-link @if( $subMenu == "VehicleLicense") active @endif">
+            <i class="far fa-circle nav-icon"></i>
+            <p>License</p>
+          </a>
+        </li>
+        @endif
+
+        @if (view_permission())
+        <li class="nav-item has-treeview @if($subMenu == "VehicleOwnershipChangeApplication" || $subMenu == "VehicleOwnershipChangeApproval") menu-open @endif">
+          <a href="#" class="nav-link @if($subMenu == "VehicleOwnershipChangeApplication" || $subMenu == "VehicleOwnershipChangeApproval") active @endif">
+            <i class="far fa-circle nav-icon"></i>
+            <p>
+              Ownership Change
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="#" class="nav-link @if( $subMenu == "VehicleOwnershipChangeApplication") active @endif">
+                <i class="far fa-dot-circle nav-icon"></i>
+                <p>Application for Change Ownership</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link @if( $subMenu == "VehicleOwnershipChangeApproval") active @endif">
+                <i class="far fa-dot-circle nav-icon"></i>
+                <p>Approval</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        @endif
+
+        @if (view_permission())
+        <li class="nav-item">
+          <a href="#" class="nav-link @if( $subMenu == "VehicleAddFees") active @endif">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Add Fees</p>
+          </a>
+        </li>
+        @endif
+
+
 
       </ul>
     </li>
