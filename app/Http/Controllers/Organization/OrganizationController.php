@@ -402,7 +402,7 @@ public function getOrganizationBySystemId($system_id)
         $data['message'] = "Organization saved successfully!";
         $data['result'] = $organization;
         $data['code'] = 200;
-        $data['redirect_url'] = route('organization-ownership.edit', $organization->id);
+        $data['redirect_url'] = route('organization-ownership.edit', $organization->id, false);
 
         return response()->json($data, 200);
 

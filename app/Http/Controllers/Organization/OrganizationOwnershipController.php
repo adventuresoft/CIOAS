@@ -28,7 +28,15 @@ class OrganizationOwnershipController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('unionAdmin')->except('index', 'show');
+        $this->middleware(function ($request, $next) {
+            $user = Auth::user();
+
+            if ($user && in_array((int) $user->role_id, [1, 4, 6], true)) {
+                return $next($request);
+            }
+
+            return redirect()->back();
+        })->except('index', 'show');
     }
 
     public function ownershipForm()
@@ -358,18 +366,20 @@ public function saveNewOwnership(Request $request)
 
 
         $user=User::find(Auth::user()->id);
+        $data['user'] = $user;
         $data['religions'] = Religion::where('status', true)->get();
         $data['villages'] = [];
         $data['permanentVillageAreas'] = [];
         $data['presentVillageAreas'] = [];
         $data['wards'] = [];
         $data['permanent_houses'] = [];
+        $data['roads'] = [];
+        $data['post_officeses'] = PostOffice::latest()->get();
 
          if(isset($user->institute->institute_type_id) && $user->institute->institute_type_id == 1) {
             $data['villages'] = Village::where('union_id', $user->institute->union_id)->get();
             $data['wards'] = UnionWard::where('status', true)->get();
             $data['roads'] = Road::where('institute_id',  $user->institute->id)->latest()->get();
-            $data['post_officeses']=PostOffice::latest()->get();
 
         }
 
