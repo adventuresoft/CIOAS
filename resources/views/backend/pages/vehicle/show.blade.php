@@ -359,6 +359,9 @@
                 <a href="{{ route('vehicle.index') }}" class="btn btn-secondary">Back</a>
                 <a href="{{ route('vehicle.edit', $vehicle->id) }}" class="btn btn-primary">Edit</a>
                 <button type="button" class="btn btn-info" onclick="window.print()">Print</button>
+                @if((int)($vehicle->status ?? 0) !== 1)
+                    <button type="button" class="btn btn-success" id="approveVehicleBtn"><i class="fa fa-check"></i> Approve</button>
+                @endif
             </div>
         </div>
     </div>
@@ -366,4 +369,32 @@
 @endsection
 
 @push('script')
+<script>
+$('#approveVehicleBtn').click(function () {
+    if (confirm("Are you sure you want to approve this vehicle?")) {
+        $.ajax({
+            url: "{{ route('vehicle.approve') }}",
+            type: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: "{{ $vehicle->id }}"
+            },
+            success: function (response) {
+                if (response.status) {
+                    alert(response.message || "Approved Successfully");
+                    location.reload();
+                } else {
+                    alert(response.message || "Approval failed");
+                }
+            },
+            error: function (xhr) {
+                const message = xhr.responseJSON && xhr.responseJSON.message
+                    ? xhr.responseJSON.message
+                    : "Something went wrong";
+                alert(message);
+            }
+        });
+    }
+});
+</script>
 @endpush

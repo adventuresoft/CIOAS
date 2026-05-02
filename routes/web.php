@@ -486,6 +486,7 @@ Route::post('/save-new-ownership', [OrganizationOwnershipController::class, 'sav
     Route::resource('house-ownership', HouseOwnershipController::class);
 
     Route::resource('land', LandController::class);
+    Route::post('vehicle/approve', [VehicleController::class, 'approve'])->name('vehicle.approve');
     Route::resource('vehicle', VehicleController::class);
     Route::resource('market', MarketController::class);
     Route::resource('bridge', BridgeController::class);

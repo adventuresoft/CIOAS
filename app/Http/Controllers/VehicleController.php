@@ -279,6 +279,42 @@ class VehicleController extends Controller
         //
     }
 
+    public function approve(Request $request)
+    {
+        $vehicle = Vehicle::find($request->id);
+
+        if (! $vehicle) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Vehicle not found.',
+            ], 404);
+        }
+
+        if (! Schema::hasColumn('vehicles', 'status')) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Vehicle approval setup is incomplete. Please run latest migrations.',
+            ], 422);
+        }
+
+        $vehicle->status = 1;
+
+        if (Schema::hasColumn('vehicles', 'approved_at')) {
+            $vehicle->approved_at = now();
+        }
+
+        if (Schema::hasColumn('vehicles', 'approved_by')) {
+            $vehicle->approved_by = auth()->id();
+        }
+
+        $vehicle->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Vehicle approved successfully.',
+        ]);
+    }
+
     private function resolveOwnerUser(?string $ownerId): ?User
     {
         $ownerId = trim((string) $ownerId);
