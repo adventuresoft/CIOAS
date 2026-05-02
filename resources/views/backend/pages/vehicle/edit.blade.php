@@ -1,51 +1,5 @@
 @extends('backend.master', ['mainMenu' => 'Vehicle', 'subMenu' =>'VehicleList'])
 @push('style')
-<style>
-    .vehicle-info-layout {
-        margin-bottom: 10px;
-    }
-
-    .vehicle-info-panel {
-        background: #f8fbff;
-        border: 1px solid #d8e7ff;
-        border-radius: 10px;
-        padding: 16px 16px 10px;
-        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
-        height: 100%;
-    }
-
-    .primary-info-panel {
-        background: #ffffff;
-        border-color: #c8dcff;
-    }
-
-    .vehicle-info-panel-title {
-        font-size: 15px;
-        font-weight: 600;
-        color: #0f5ba7;
-        margin-bottom: 14px;
-    }
-
-    .vehicle-info-panel label {
-        font-weight: 600;
-        color: #2f3a4b;
-        margin-bottom: 6px;
-    }
-
-    .vehicle-info-panel .form-control {
-        border-radius: 8px;
-    }
-
-    .vehicle-info-panel .select2-container {
-        width: 100% !important;
-    }
-
-    @media (max-width: 991.98px) {
-        .vehicle-info-panel {
-            margin-bottom: 12px;
-        }
-    }
-</style>
 @endpush
 @section('title', 'Vehicle Edit')
 @section('content')
@@ -81,123 +35,120 @@
 
                             <h5 class="text-info mb-3">Vehicle Info</h5>
 
-                            <div class="vehicle-info-layout">
-                                <div class="row">
-                                    <div class="col-lg-6 order-1 order-lg-1">
-                                        <div class="vehicle-info-panel primary-info-panel">
-                                            <h6 class="vehicle-info-panel-title">Primary Vehicle Details</h6>
+                            <div class="form-group row">
+                                <label for="vehicle_type" class="col-sm-2 col-form-label">Vehicle Type</label>
+                                <div class="col-sm-9">
+                                    <select required class="form-control select2" name="vehicle_type" id="vehicle_type">
+                                        <option value="">Select Vehicle Type</option>
+                                    </select>
+                                    <span class="error vehicle_type-error text-danger"></span>
+                                </div>
+                            </div>
 
-                                            <div class="form-group">
-                                                <label for="vehicle_type">Vehicle Type</label>
-                                                <select required class="form-control select2" name="vehicle_type" id="vehicle_type">
-                                                    <option value="">Select Vehicle Type</option>
-                                                </select>
-                                                <span class="error vehicle_type-error text-danger"></span>
-                                            </div>
+                            <div class="form-group row">
+                                <label for="vehicle_category" class="col-sm-2 col-form-label">Vehicle Category</label>
+                                <div class="col-sm-9">
+                                    <select required class="form-control select2" name="vehicle_category" id="vehicle_category">
+                                        <option value="">Select Vehicle Category</option>
+                                    </select>
+                                    <span class="error vehicle_category-error text-danger"></span>
+                                </div>
+                            </div>
 
-                                            <div class="form-group">
-                                                <label for="vehicle_category">Vehicle Category</label>
-                                                <select required class="form-control select2" name="vehicle_category" id="vehicle_category">
-                                                    <option value="">Select Vehicle Category</option>
-                                                </select>
-                                                <span class="error vehicle_category-error text-danger"></span>
-                                            </div>
+                            <div class="form-group row">
+                                <label for="vehicle_model" class="col-sm-2 col-form-label">Vehicle Model</label>
+                                <div class="col-sm-9">
+                                    <input type="text" required class="form-control" name="vehicle_model" id="vehicle_model" value="{{ $vehicle->vehicle_model }}" placeholder="Enter Vehicle Model">
+                                    <span class="error vehicle_model-error text-danger"></span>
+                                </div>
+                            </div>
 
-                                            <div class="form-group">
-                                                <label for="vehicle_model">Vehicle Model</label>
-                                                <input type="text" required class="form-control" name="vehicle_model" id="vehicle_model" value="{{ $vehicle->vehicle_model }}" placeholder="Enter Vehicle Model">
-                                                <span class="error vehicle_model-error text-danger"></span>
-                                            </div>
+                            <div class="form-group row">
+                                <label for="make_year" class="col-sm-2 col-form-label">Make Year</label>
+                                <div class="col-sm-9">
+                                    <input type="number" required class="form-control" name="make_year" id="make_year" value="{{ $vehicle->make_year }}" placeholder="Enter Year (e.g. 2024)" min="1900" max="2099">
+                                    <span class="error make_year-error text-danger"></span>
+                                </div>
+                            </div>
 
-                                            <div class="form-group">
-                                                <label for="make_year">Make Year</label>
-                                                <input type="number" required class="form-control" name="make_year" id="make_year" value="{{ $vehicle->make_year }}" placeholder="Enter Year (e.g. 2024)" min="1900" max="2099">
-                                                <span class="error make_year-error text-danger"></span>
-                                            </div>
+                            <div class="form-group row">
+                                <label for="make_company" class="col-sm-2 col-form-label">Make Company</label>
+                                <div class="col-sm-9">
+                                    <input type="text" required class="form-control" name="make_company" id="make_company" value="{{ $vehicle->make_company }}" placeholder="Enter Company Name">
+                                    <span class="error make_company-error text-danger"></span>
+                                </div>
+                            </div>
 
-                                            <div class="form-group">
-                                                <label for="make_company">Make Company</label>
-                                                <input type="text" required class="form-control" name="make_company" id="make_company" value="{{ $vehicle->make_company }}" placeholder="Enter Company Name">
-                                                <span class="error make_company-error text-danger"></span>
-                                            </div>
+                            <div class="form-group row">
+                                <label for="price" class="col-sm-2 col-form-label">Price</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="price" class="form-control" id="price" value="{{ $vehicle->price }}" placeholder="Price">
+                                    <span class="error price-error text-danger"></span>
+                                </div>
+                            </div>
 
-                                            <div class="form-group mb-0">
-                                                <label for="price">Price</label>
-                                                <input type="text" name="price" class="form-control" id="price" value="{{ $vehicle->price }}" placeholder="Price">
-                                                <span class="error price-error text-danger"></span>
-                                            </div>
-                                        </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="engine_number">Engine Number - ইঞ্জিন নম্বর</label>
+                                        <input type="text" name="engine_number" class="form-control" id="engine_number" value="{{ $vehicle->engine_number }}" placeholder="Enter Engine Number">
+                                        <span class="error engine_number-error text-danger"></span>
                                     </div>
-
-                                    <div class="col-lg-6 order-2 order-lg-2">
-                                        <div class="vehicle-info-panel">
-                                            <h6 class="vehicle-info-panel-title">Technical Specifications</h6>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="engine_number">Engine Number - ইঞ্জিন নম্বর</label>
-                                                        <input type="text" name="engine_number" class="form-control" id="engine_number" value="{{ $vehicle->engine_number }}" placeholder="Enter Engine Number">
-                                                        <span class="error engine_number-error text-danger"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="chassis_number">Chassis Number - চ্যাসিস নম্বর</label>
-                                                        <input type="text" name="chassis_number" class="form-control" id="chassis_number" value="{{ $vehicle->chassis_number }}" placeholder="Enter Chassis Number">
-                                                        <span class="error chassis_number-error text-danger"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="tyre_number">Tyre Number - টায়ারের নম্বর</label>
-                                                        <input type="text" name="tyre_number" class="form-control" id="tyre_number" value="{{ $vehicle->tyre_number }}" placeholder="Enter Tyre Number">
-                                                        <span class="error tyre_number-error text-danger"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="hp_cc">HP/CC - হর্সপাওয়ার / সিসি (ইঞ্জিন ক্ষমতা)</label>
-                                                        <input type="text" name="hp_cc" class="form-control" id="hp_cc" value="{{ $vehicle->hp_cc }}" placeholder="Enter HP/CC">
-                                                        <span class="error hp_cc-error text-danger"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="seat_capacity">Seat Capacity - আসন সংখ্যা</label>
-                                                        <input type="text" name="seat_capacity" class="form-control" id="seat_capacity" value="{{ $vehicle->seat_capacity }}" placeholder="Enter Seat Capacity">
-                                                        <span class="error seat_capacity-error text-danger"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="height">Height - উচ্চতা</label>
-                                                        <input type="text" name="height" class="form-control" id="height" value="{{ $vehicle->height }}" placeholder="Enter Height">
-                                                        <span class="error height-error text-danger"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="width">Width - প্রস্থ</label>
-                                                        <input type="text" name="width" class="form-control" id="width" value="{{ $vehicle->width }}" placeholder="Enter Width">
-                                                        <span class="error width-error text-danger"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="tyre_size">Tyre Size - টায়ারের সাইজ</label>
-                                                        <input type="text" name="tyre_size" class="form-control" id="tyre_size" value="{{ $vehicle->tyre_size }}" placeholder="Enter Tyre Size">
-                                                        <span class="error tyre_size-error text-danger"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="color">Color - রং</label>
-                                                        <input type="text" name="color" class="form-control" id="color" value="{{ $vehicle->color }}" placeholder="Enter Color">
-                                                        <span class="error color-error text-danger"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="chassis_number">Chassis Number - চ্যাসিস নম্বর</label>
+                                        <input type="text" name="chassis_number" class="form-control" id="chassis_number" value="{{ $vehicle->chassis_number }}" placeholder="Enter Chassis Number">
+                                        <span class="error chassis_number-error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="tyre_number">Tyre Number - টায়ারের নম্বর</label>
+                                        <input type="text" name="tyre_number" class="form-control" id="tyre_number" value="{{ $vehicle->tyre_number }}" placeholder="Enter Tyre Number">
+                                        <span class="error tyre_number-error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="hp_cc">HP/CC - হর্সপাওয়ার / সিসি (ইঞ্জিন ক্ষমতা)</label>
+                                        <input type="text" name="hp_cc" class="form-control" id="hp_cc" value="{{ $vehicle->hp_cc }}" placeholder="Enter HP/CC">
+                                        <span class="error hp_cc-error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="seat_capacity">Seat Capacity - আসন সংখ্যা</label>
+                                        <input type="text" name="seat_capacity" class="form-control" id="seat_capacity" value="{{ $vehicle->seat_capacity }}" placeholder="Enter Seat Capacity">
+                                        <span class="error seat_capacity-error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="height">Height - উচ্চতা</label>
+                                        <input type="text" name="height" class="form-control" id="height" value="{{ $vehicle->height }}" placeholder="Enter Height">
+                                        <span class="error height-error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="width">Width - প্রস্থ</label>
+                                        <input type="text" name="width" class="form-control" id="width" value="{{ $vehicle->width }}" placeholder="Enter Width">
+                                        <span class="error width-error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="tyre_size">Tyre Size - টায়ারের সাইজ</label>
+                                        <input type="text" name="tyre_size" class="form-control" id="tyre_size" value="{{ $vehicle->tyre_size }}" placeholder="Enter Tyre Size">
+                                        <span class="error tyre_size-error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="color">Color - রং</label>
+                                        <input type="text" name="color" class="form-control" id="color" value="{{ $vehicle->color }}" placeholder="Enter Color">
+                                        <span class="error color-error text-danger"></span>
                                     </div>
                                 </div>
                             </div>
