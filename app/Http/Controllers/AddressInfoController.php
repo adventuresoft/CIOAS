@@ -43,36 +43,58 @@ class AddressInfoController extends Controller
             $address->with('presentUnion', 'permanentHouse', 'presentHouse', 'presentRoad', 'permanentRoad',  'presentVillage', 'presentDistrict', 'presentThana');
         }))
         ->find($id);
+
+        if (! $user) {
+            return redirect()->route('people.index')->with('error', 'User not found.');
+        }
+
+        if (! $user->addressInfo) {
+            $user->setRelation('addressInfo', new AddressInfo());
+        }
+
+        $institute = $user->institute;
+
         $data['user'] = $user;
         $data['religions'] = Religion::where('status', true)->get();
         $data['villages'] = [];
         $data['permanentVillageAreas'] = [];
         $data['presentVillageAreas'] = [];
+        $data['present_villages'] = [];
         $data['wards'] = [];
         $data['permanent_houses'] = [];
-        if(isset($user->institute->institute_type_id) && $user->institute->institute_type_id == 1) {
-            $data['villages'] = Village::where('union_id', $user->institute->union_id)->get();
+        $data['roads'] = [];
+        $data['post_officeses'] = [];
+
+        if(isset($institute?->institute_type_id) && $institute->institute_type_id == 1) {
+            $data['villages'] = Village::where('union_id', $institute->union_id)->get();
             $data['wards'] = UnionWard::where('status', true)->get();
-            $data['roads'] = Road::where('institute_id',  $user->institute->id)->latest()->get();
+            $data['roads'] = Road::where('institute_id',  $institute->id)->latest()->get();
             $data['post_officeses']=PostOffice::latest()->get();
             
-        } else if (isset($user->institute->institute_type_id) && $user->institute->institute_type_id == 2) {
+        } else if (isset($institute?->institute_type_id) && $institute->institute_type_id == 2) {
            
-        } else if (isset($user->institute->institute_type_id) && $user->institute->institute_type_id == 3) {
+        } else if (isset($institute?->institute_type_id) && $institute->institute_type_id == 3) {
 
         }
         $data['divisions'] = Division::where('status', true)->get();
-        $data['present_villages'] = Village::where('union_id', $user->addressInfo->present_union_id)->get();
+
+        if (! empty($user->addressInfo->present_union_id)) {
+            $data['present_villages'] = Village::where('union_id', $user->addressInfo->present_union_id)->get();
+        }
         
         if($user->addressInfo){
-            if($user->addressInfo->permanent_ward_id){
-                $data['permanent_houses'] = House::where('institute_id',  $user->institute->id)
+            if($user->addressInfo->permanent_ward_id && $institute){
+                $data['permanent_houses'] = House::where('institute_id',  $institute->id)
                 ->where('union_ward_id', $user->addressInfo->permanent_ward_id)
                 ->latest()
                 ->get();
             }
-            $data['permanentVillageAreas'] = VillageArea::where('village_id',$user->addressInfo->permanent_village_id)->get();
-            $data['presentVillageAreas'] = VillageArea::where('village_id',$user->addressInfo->present_village_id)->get();
+            if (! empty($user->addressInfo->permanent_village_id)) {
+                $data['permanentVillageAreas'] = VillageArea::where('village_id', $user->addressInfo->permanent_village_id)->get();
+            }
+            if (! empty($user->addressInfo->present_village_id)) {
+                $data['presentVillageAreas'] = VillageArea::where('village_id', $user->addressInfo->present_village_id)->get();
+            }
 
         }
 

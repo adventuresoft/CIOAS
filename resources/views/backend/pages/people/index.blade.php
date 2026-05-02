@@ -309,7 +309,7 @@ Permanent:</strong>
             order: [[0, 'asc']],
             columnDefs: [
                 { targets: 1, orderable: false }, // Disable sorting on photo column
-                { targets: 6, orderable: false }  // Disable sorting on action column
+                { targets: 9, orderable: false }  // Disable sorting on action column
             ],
             language: {
                 emptyTable: '<div class="empty-state"><i class="fas fa-folder-open"></i><h5>No data available</h5></div>',

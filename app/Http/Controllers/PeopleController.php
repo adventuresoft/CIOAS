@@ -33,7 +33,7 @@ class PeopleController extends Controller
 
     public function __construct()
     {
-        $this->middleware('unionAdmin')->except('index', 'show', 'searchUser', 'edit', 'update');
+        $this->middleware('unionAdmin')->except('index', 'approvedlist', 'show', 'searchUser', 'edit', 'update');
     }
 
 
@@ -68,37 +68,56 @@ class PeopleController extends Controller
      */
     public function index()
     {
+        $query = User::with([
+            'people',
+            'professionalInfos',
+            'addressInfo.presentWard',
+            'addressInfo.presentDistrict',
+            'addressInfo.presentThana',
+            'addressInfo.presentPostoffice',
+            'addressInfo.presentVillage',
+            'addressInfo.presentRoad',
+            'addressInfo.presentHouse',
+            'addressInfo.permanentDistrict',
+            'addressInfo.permanentThana',
+            'addressInfo.permanentPostOffice',
+            'addressInfo.permanentVillage',
+            'addressInfo.permanentRoad',
+            'addressInfo.permanentHouse',
+        ])->whereHas('people', function ($q) {
+            $q->whereNull('approved_id');
+        });
+
         if (Auth::user()->institute_id) {
-            $data['users'] = User::with('people')->where('institute_id', Auth::user()->institute_id)
-             ->whereHas('people', function ($query) {
-                $query->whereNull('approved_id');
-            })
-            ->latest()->get();
-        } else {
-            $data['users'] = User::with('people')->where('institute_id', '!=', NULL) ->whereHas('people', function ($query) {
-                $query->whereNull('approved_id');
-            })->latest()->get();
+            $query->where('institute_id', Auth::user()->institute_id);
         }
+
+        $data['users'] = $query->latest()->get();
         return view('backend.pages.people.index', $data);
     }
 
     public function approvedlist()
     {
         $data['subMenu']='approvedList';
+        $query = User::with([
+            'people',
+            'professionalInfos',
+            'addressInfo.presentDistrict',
+            'addressInfo.presentThana',
+            'addressInfo.presentPostoffice',
+            'addressInfo.presentVillage',
+            'addressInfo.presentWard',
+            'addressInfo.presentRoad',
+            'addressInfo.presentHouse',
+        ])->whereHas('people', function ($q) {
+            $q->whereNotNull('approved_id');
+        });
+
         if (Auth::user()->institute_id) {
-            $data['users'] = User::with('people')->where('institute_id', Auth::user()->institute_id)
-             ->whereHas('people', function ($query) {
-        $query->whereNotNull('approved_id');
-    })
-            
-            ->latest()->get();
-        } else {
-            $data['users'] = User::with('people')->where('institute_id', '!=', NULL)
-            ->whereHas('people', function ($query) {
-        $query->whereNotNull('approved_id');
-    })
-            ->latest()->get();
+            $query->where('institute_id', Auth::user()->institute_id);
         }
+
+        $data['users'] = $query->latest()->get();
         return view('backend.pages.people.approvedList', $data);
     }
     
@@ -242,26 +261,32 @@ class PeopleController extends Controller
         }))
         ->find($id);
 
+        if (! $user) {
+            return redirect()->route('people.index')->with('error', 'User not found.');
+        }
+
+        $institute = $user->institute;
         $data['people']=People::where('user_id',$id)->first();
         
         $data['religions'] = Religion::where('status', true)->get();
         $data['villages'] = [];
         $data['wards'] = [];
         $data['permanent_houses'] = [];
-        if(isset($user->institute->institute_type_id) && $user->institute->institute_type_id == 1) {
-            $data['villages'] = Village::where('union_id', $user->institute->union_id)->get();
+        $data['roads'] = [];
+        if(isset($institute?->institute_type_id) && $institute->institute_type_id == 1) {
+            $data['villages'] = Village::where('union_id', $institute->union_id)->get();
             $data['wards'] = UnionWard::where('status', true)->get();
-            $data['roads'] = Road::where('institute_id',  $user->institute->id)->latest()->get();
-        } else if (isset($user->institute->institute_type_id) && $user->institute->institute_type_id == 2) {
+            $data['roads'] = Road::where('institute_id',  $institute->id)->latest()->get();
+        } else if (isset($institute?->institute_type_id) && $institute->institute_type_id == 2) {
            
-        } else if (isset($user->institute->institute_type_id) && $user->institute->institute_type_id == 3) {
+        } else if (isset($institute?->institute_type_id) && $institute->institute_type_id == 3) {
 
         }
         $data['divisions'] = Division::where('status', true)->get();
 
         if($user->addressInfo){
-            if($user->addressInfo->permanent_ward_id){
-                $data['permanent_houses'] = House::where('institute_id',  $user->institute->id)
+            if($user->addressInfo->permanent_ward_id && $institute){
+                $data['permanent_houses'] = House::where('institute_id',  $institute->id)
                 ->where('union_ward_id', $user->addressInfo->permanent_ward_id)
                 ->latest()
                 ->get();
@@ -299,8 +324,13 @@ class PeopleController extends Controller
         $data['districts'] =  District::where('status', true)->orderBy('name')->get(); 
         $data['countries'] =  Country::orderBy('name')->get(); 
         $data['user'] =  $user=User::with('people')->find($id);
-        
-        $data['villages'] = Village::where('union_id',$user->addressInfo->present_union_id)->get();
+
+        if (! $user) {
+            return redirect()->route('people.index')->with('error', 'User not found.');
+        }
+
+        $presentUnionId = $user->addressInfo ? $user->addressInfo->present_union_id : null;
+        $data['villages'] = $presentUnionId ? Village::where('union_id', $presentUnionId)->get() : [];
 
         
 
@@ -457,23 +487,38 @@ public function approve($id)
 
     try {
         $people = People::findOrFail($id);
-        $district_id=$people->user->addressInfo->permanent_district_id??$people->user->addressInfo->present_district_id;
+        if (!empty($people->approved_id)) {
+            DB::commit();
+            return redirect()->route('peopleapprovedlist')
+                ->with('success', 'Already approved.');
+        }
+
+        $district_id = $people->district_id
+            ?? ($people->user->addressInfo->permanent_district_id ?? null)
+            ?? ($people->user->addressInfo->present_district_id ?? null);
+
         if (!$people->date_of_birth || !$district_id) {
+            DB::rollBack();
             return redirect()->back()->with('error', 'DOB or District missing');
         }
 
         $approvedId = $this->generateApprovedId(
             $people->date_of_birth,
-            $people->district_id
+            $district_id
         );
 
         $people->approved_id = $approvedId;
         
+        if (empty($people->user->institute_id) && !empty(Auth::user()->institute_id)) {
+            $people->user->institute_id = Auth::user()->institute_id;
+            $people->user->save();
+        }
+
         $people->save();
         
         DB::commit();
 
-        return redirect()->route('people.index')
+        return redirect()->route('peopleapprovedlist')
             ->with('success', 'Approved Successfully!');
 
     } catch (\Throwable $e) {

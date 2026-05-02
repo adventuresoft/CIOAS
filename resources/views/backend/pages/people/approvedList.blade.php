@@ -234,7 +234,7 @@
 
                                         <td>
                                             <div class="table-action">
-                                                @if (Auth::user()->institute_id && create_permission())
+                                                @if (view_permission())
                                                 <a href="{{ route('people.edit', $user->id) }}" 
                                                     class="btn btn-primary btn-sm btn-action" title="Edit">
                                                     <i class="fa fa-edit"></i>
@@ -288,7 +288,7 @@
             order: [[0, 'asc']],
             columnDefs: [
                 { targets: 1, orderable: false }, // Disable sorting on photo column
-                { targets: 6, orderable: false }  // Disable sorting on action column
+                { targets: 7, orderable: false }  // Disable sorting on action column
             ],
             language: {
                 emptyTable: '<div class="empty-state"><i class="fas fa-folder-open"></i><h5>No data available</h5></div>',

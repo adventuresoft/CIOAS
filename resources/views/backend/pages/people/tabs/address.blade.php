@@ -128,14 +128,14 @@
                                     <div class="col-sm-4">
                                         <label for="present_district_id">District</label>
                                         <select name="present_district_id" class="form-control select2 select2bs4" id="present_district_id">
-                                            <option value="{{$user->addressInfo->present_district_id ?? ''}}">{{$user->addressInfo->presentDistrict->name ?? 'Select District'}}</option>
+                                            <option value="{{$user->addressInfo->present_district_id ?? ''}}">{{$user->addressInfo?->presentDistrict?->name ?? 'Select District'}}</option>
                                         </select>
                                         <small class="text-danger error present_district_id_error"></small>
                                     </div>
                                     <div class="col-sm-4">
                                         <label for="present_thana_id">Thana</label>
                                         <select name="present_thana_id" class="form-control select2 select2bs4" id="present_thana_id">
-                                            <option value="{{$user->addressInfo->present_thana_id ?? ''}}">{{$user->addressInfo->presentThana->name ?? 'Select Thana'}}</option>
+                                            <option value="{{$user->addressInfo->present_thana_id ?? ''}}">{{$user->addressInfo?->presentThana?->name ?? 'Select Thana'}}</option>
                                         </select>
                                         <small class="text-danger error present_thana_id_error"></small>
                                     </div>
@@ -158,7 +158,7 @@
                                     <div class="col-sm-4">
                                         <label for="present_union_id">UP (Union Parishad)</label>
                                         <select name="present_union_id" class="form-control select2 select2bs4" id="present_union_id">
-                                            <option value="{{$user->addressInfo->present_union_id ?? ''}}">{{$user->addressInfo->presentUnion->name ?? 'Select Union'}}</option>
+                                            <option value="{{$user->addressInfo->present_union_id ?? ''}}">{{$user->addressInfo?->presentUnion?->name ?? 'Select Union'}}</option>
                                         </select>
                                         <small class="text-danger error present_union_id_error"></small>
                                     </div>

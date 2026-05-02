@@ -461,7 +461,7 @@
   @endif
 
   {{-- People Info --}}
-  <li class="nav-item @if($subMenu == "Create" || $subMenu == "View" || $subMenu == "Show") menu-open @endif">
+  <li class="nav-item @if($subMenu == "Create" || $subMenu == "View" || $subMenu == "Show" || $subMenu == "approvedList") menu-open @endif">
     <a href="#" class="nav-link @if($mainMenu == "People") active @endif">
       <i class="nav-icon fas fa-users"></i>
       <p>
