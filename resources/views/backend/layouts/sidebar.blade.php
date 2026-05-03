@@ -1047,6 +1047,15 @@ menu-open
 
         @if (view_permission())
         <li class="nav-item">
+          <a href="#" class="nav-link @if( $subMenu == "VehicleAddFees") active @endif">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Add Fees</p>
+          </a>
+        </li>
+        @endif
+
+        @if (view_permission())
+        <li class="nav-item">
           <a href="#" class="nav-link @if( $subMenu == "VehicleLicense") active @endif">
             <i class="far fa-circle nav-icon"></i>
             <p>License</p>
@@ -1080,14 +1089,7 @@ menu-open
         </li>
         @endif
 
-        @if (view_permission())
-        <li class="nav-item">
-          <a href="#" class="nav-link @if( $subMenu == "VehicleAddFees") active @endif">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Add Fees</p>
-          </a>
-        </li>
-        @endif
+
 
 
 
