@@ -133,14 +133,14 @@
                         class="btn btn-sm btn-info">
                         <i class="fa fa-hand-holding-usd"></i>
                       </a>
-                      
-                      
+
+
                        <a href="{{route('organizationA.trade-license.show', $license->id )}}"
                         title="Show"
                         class="btn btn-sm btn-success">
                         <i class="fa fa-eye"></i>
                       </a>
-                      
+
 
                       <a target="_blank"
                         href="{{ $license->status == 2 ? route('organizationA.trade-license.preview', $license->id) :'#' }}"

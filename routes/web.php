@@ -116,210 +116,216 @@ use App\Http\Controllers\SuccessionController;
 use App\Http\Controllers\CertificateVerifyController;
 use Illuminate\Support\Facades\Route;
 
+// HotelRestaurantController
+use App\Http\Controllers\HotelRestaurant\HotelRestaurantController;
+use App\Http\Controllers\HotelRestaurant\HotelCategoryController;
+use App\Http\Controllers\HotelRestaurant\HotelSubCategoryController;
+use App\Http\Controllers\HotelRestaurant\HotelOwnershipController;
 
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/sms', function(){
+
+Route::get('/', [ HomeController::class, 'index' ])->name('home');
+Route::get('/sms', function () {
     return view('frontend.pages.sms');
 });
 
-Route::get('test-api', [HomeController::class, 'testHttpRequest']);
+Route::get('test-api', [ HomeController::class, 'testHttpRequest' ]);
 
 // Login
-Route::get('/login', [LoginController::class, 'login'])->name('login');
-Route::post('/login-check', [LoginController::class, 'loginCheck'])->name('login.check');
+Route::get('/login', [ LoginController::class, 'login' ])->name('login');
+Route::post('/login-check', [ LoginController::class, 'loginCheck' ])->name('login.check');
 
 // Register
-Route::get('/register', [LoginController::class, 'register'])->name('register');
-Route::post('/register/store', [LoginController::class, 'registerStore'])->name('register.store');
-Route::get('/profile', [LoginController::class, 'profile'])->name('profile')->middleware('auth');
+Route::get('/register', [ LoginController::class, 'register' ])->name('register');
+Route::post('/register/store', [ LoginController::class, 'registerStore' ])->name('register.store');
+Route::get('/profile', [ LoginController::class, 'profile' ])->name('profile')->middleware('auth');
 
 // Application
 Route::prefix('application')->name('application.')->group(function () {
-    Route::get('/', [ApplicationController::class, 'create'])->name('create');
-    Route::post('store', [ApplicationController::class, 'store'])->name('store');
-    Route::get('success/{system_id}', [ApplicationController::class, 'success'])->name('success');
+    Route::get('/', [ ApplicationController::class, 'create' ])->name('create');
+    Route::post('store', [ ApplicationController::class, 'store' ])->name('store');
+    Route::get('success/{system_id}', [ ApplicationController::class, 'success' ])->name('success');
 });
 
 
 /* permisison */
 // Role route start
 Route::controller(RoleController::class)->group(function () {
-    Route::get('role','index')->name('role.index');
-    Route::post('role','store')->name('role.store');
-    Route::get('role/{id}/edit','edit')->name('role.edit');
-    Route::patch('role/{id}','update')->name('role.update');
+    Route::get('role', 'index')->name('role.index');
+    Route::post('role', 'store')->name('role.store');
+    Route::get('role/{id}/edit', 'edit')->name('role.edit');
+    Route::patch('role/{id}', 'update')->name('role.update');
 });
 
 // Permission route start
 Route::controller(PermissionController::class)->group(function () {
-    Route::get('permission','index')->name('permission.index');
-    Route::post('permission','store')->name('permission.store');
-    Route::get('permission/{id}/edit','edit')->name('permission.edit');
-    Route::patch('permission/{id}','update')->name('permission.update');
+    Route::get('permission', 'index')->name('permission.index');
+    Route::post('permission', 'store')->name('permission.store');
+    Route::get('permission/{id}/edit', 'edit')->name('permission.edit');
+    Route::patch('permission/{id}', 'update')->name('permission.update');
 });
 
 // Role Permission route start
 Route::controller(RolePermissionController::class)->group(function () {
-    Route::get('rolepermission','index')->name('rolepermission.index');
-    Route::post('rolepermission','store')->name('rolepermission.store');
-    Route::get('rolepermission/{role_id}/edit/{permission_id}','edit')->name('rolepermission.edit');
-    Route::patch('rolepermission/{id}','update')->name('rolepermission.update');
+    Route::get('rolepermission', 'index')->name('rolepermission.index');
+    Route::post('rolepermission', 'store')->name('rolepermission.store');
+    Route::get('rolepermission/{role_id}/edit/{permission_id}', 'edit')->name('rolepermission.edit');
+    Route::patch('rolepermission/{id}', 'update')->name('rolepermission.update');
 
-    Route::post('rolepermission/destroy','destroy')->name('rolepermission.destroy');
+    Route::post('rolepermission/destroy', 'destroy')->name('rolepermission.destroy');
 });
 
 // Role User route start
 Route::controller(RoleUserController::class)->group(function () {
-    Route::get('roleuser','index')->name('roleuser.index');
-    Route::get('roleuser/create','create')->name('roleuser.create');
-    Route::post('roleuser','store')->name('roleuser.store');
-    Route::get('roleuser/{role_id}/edit/{user_id}','edit')->name('roleuser.edit');
-    Route::patch('roleuser/{id}','update')->name('roleuser.update');
-    Route::post('roleuser/roleusersoft','roleusersoft')->name('roleuser.roleusersoft');
+    Route::get('roleuser', 'index')->name('roleuser.index');
+    Route::get('roleuser/create', 'create')->name('roleuser.create');
+    Route::post('roleuser', 'store')->name('roleuser.store');
+    Route::get('roleuser/{role_id}/edit/{user_id}', 'edit')->name('roleuser.edit');
+    Route::patch('roleuser/{id}', 'update')->name('roleuser.update');
+    Route::post('roleuser/roleusersoft', 'roleusersoft')->name('roleuser.roleusersoft');
 
 });
 
 // User Permission route start
 Route::controller(UserPermissionController::class)->group(function () {
-    Route::get('userper','index')->name('userper.index');
-    Route::get('userper/create','create')->name('userper.create');
-    Route::post('userper','store')->name('userper.store');
-    Route::get('userper/{model_id}/edit/{permission_id}','edit')->name('userper.edit');
-    Route::patch('userper/{id}','update')->name('userper.update');
-    Route::post('userper/delete','destroy')->name('userper.destroy');
+    Route::get('userper', 'index')->name('userper.index');
+    Route::get('userper/create', 'create')->name('userper.create');
+    Route::post('userper', 'store')->name('userper.store');
+    Route::get('userper/{model_id}/edit/{permission_id}', 'edit')->name('userper.edit');
+    Route::patch('userper/{id}', 'update')->name('userper.update');
+    Route::post('userper/delete', 'destroy')->name('userper.destroy');
 });
 
-Route::resource('user',UserController::class);
+Route::resource('user', UserController::class);
 
-Route::get('/certificate/verify', [CertificateVerifyController::class, 'index'])->name('certificate.verify');
-Route::post('/certificate/verify/search', [CertificateVerifyController::class, 'search'])->name('certificate.verify.search');
+Route::get('/certificate/verify', [ CertificateVerifyController::class, 'index' ])->name('certificate.verify');
+Route::post('/certificate/verify/search', [ CertificateVerifyController::class, 'search' ])->name('certificate.verify.search');
 
 /* end permission */
-Route::post('/load-project-type-content', [ProjectTypeController::class, 'projectTypeContent'])->name('projectTypeContent');
-Route::post('/backend/load-project-type-content', [ProjectTypeController::class, 'backendProjectTypeContent'])->name('backendProjectTypeContent');
+Route::post('/load-project-type-content', [ ProjectTypeController::class, 'projectTypeContent' ])->name('projectTypeContent');
+Route::post('/backend/load-project-type-content', [ ProjectTypeController::class, 'backendProjectTypeContent' ])->name('backendProjectTypeContent');
 
 // Find Dependencies
-Route::get('/get-districts-by-division/{divisionID}', [DistrictController::class, 'districtsByDivision']);
-Route::get('/get-thanas-by-district/{districtID}', [ThanaController::class, 'thanasByDistrict']);
-Route::get('/get-word-by-union/{unionID}', [UnionWardController::class, 'wordByUnion']);
-Route::get('/get-citi-corporation-by-district/{districtID}', [CityCorporationController::class, 'cityCorporationByDistrict']);
-Route::get('/get-unions-by-thana/{thanaID}', [UnionController::class, 'unionsByThana']);
-Route::get('/get-villages-by-union/{unionID}', [VillageController::class, 'villagesByUnion']);
-Route::get('/get-mouzas-by-thana/{thanaID}', [MouzaController::class, 'mouzasByThana']);
-Route::get('/get-areas-by-village/{villageID}', [VillageAreaController::class, 'areasByVillage']);
-Route::get('/get-houses-by-village-area/{areaID}', [HouseController::class, 'getHouseByArea']);
-Route::get('/search-user-by-system-id/{systemID}', [PeopleController::class, 'searchUser'])->name('user.searchBySystemID');
-Route::get('/get-organization-info-by-system-id/{systemID}', [OrganizationController::class, 'getOrganizationBySystemId'])->name('getOrganizationBySystemId');
-Route::post('/organization-approve', [OrganizationController::class, 'approve'])
+Route::get('/get-districts-by-division/{divisionID}', [ DistrictController::class, 'districtsByDivision' ]);
+Route::get('/get-thanas-by-district/{districtID}', [ ThanaController::class, 'thanasByDistrict' ]);
+Route::get('/get-word-by-union/{unionID}', [ UnionWardController::class, 'wordByUnion' ]);
+Route::get('/get-citi-corporation-by-district/{districtID}', [ CityCorporationController::class, 'cityCorporationByDistrict' ]);
+Route::get('/get-unions-by-thana/{thanaID}', [ UnionController::class, 'unionsByThana' ]);
+Route::get('/get-villages-by-union/{unionID}', [ VillageController::class, 'villagesByUnion' ]);
+Route::get('/get-mouzas-by-thana/{thanaID}', [ MouzaController::class, 'mouzasByThana' ]);
+Route::get('/get-areas-by-village/{villageID}', [ VillageAreaController::class, 'areasByVillage' ]);
+Route::get('/get-houses-by-village-area/{areaID}', [ HouseController::class, 'getHouseByArea' ]);
+Route::get('/search-user-by-system-id/{systemID}', [ PeopleController::class, 'searchUser' ])->name('user.searchBySystemID');
+Route::get('/get-organization-info-by-system-id/{systemID}', [ OrganizationController::class, 'getOrganizationBySystemId' ])->name('getOrganizationBySystemId');
+Route::post('/organization-approve', [ OrganizationController::class, 'approve' ])
     ->name('organization.approve');
 
-Route::get('/profession-type-options-by-profession/{professionID}', [ProfessionTypeController::class, 'professionTypeOptions']);
-Route::get('/profession-category-options-by-profession-type/{professionTypeID}', [ProfessionCategoryController::class, 'professionCategoryOptions' ]);
-Route::get('/profession-subcategory-options-by-profession-category/{professionCategoryID}', [ ProfessionSubcategoryController::class, 'professionSubcategoryOptions'  ] );
+Route::get('/profession-type-options-by-profession/{professionID}', [ ProfessionTypeController::class, 'professionTypeOptions' ]);
+Route::get('/profession-category-options-by-profession-type/{professionTypeID}', [ ProfessionCategoryController::class, 'professionCategoryOptions' ]);
+Route::get('/profession-subcategory-options-by-profession-category/{professionCategoryID}', [ ProfessionSubcategoryController::class, 'professionSubcategoryOptions' ]);
 
-Route::get('/house-category-options-by-type-id/{type_id}', [HouseCategoryController::class, 'getCategoryOptions']);
-Route::get('/house-single-ownership-form', [HouseOwnershipController::class, 'loadOwnershipForm']);
-Route::get('/house-ownership-remove/{id}', [HouseOwnershipController::class, 'destroy']);
+Route::get('/house-category-options-by-type-id/{type_id}', [ HouseCategoryController::class, 'getCategoryOptions' ]);
+Route::get('/house-single-ownership-form', [ HouseOwnershipController::class, 'loadOwnershipForm' ]);
+Route::get('/house-ownership-remove/{id}', [ HouseOwnershipController::class, 'destroy' ]);
 
-Route::get('/organization-subcategory-options/{id}', [OrganizationSubCategoryController::class, 'options']);
-Route::get('/house-options/{id}', [HouseController::class, 'options']);
-Route::get('/organization-work-area-options/{id}', [OrganizationWorkAreaController::class, 'options']);
-Route::get('/organization-type-options/{id}', [OrganizationTypeController::class, 'options']);
+Route::get('/organization-subcategory-options/{id}', [ OrganizationSubCategoryController::class, 'options' ]);
+Route::get('/house-options/{id}', [ HouseController::class, 'options' ]);
+Route::get('/organization-work-area-options/{id}', [ OrganizationWorkAreaController::class, 'options' ]);
+Route::get('/organization-type-options/{id}', [ OrganizationTypeController::class, 'options' ]);
 
-Route::get('/organization-single-ownership-form', [OrganizationOwnershipController::class, 'ownershipForm']);
-Route::get('/organization-ownership-remove/{id}', [OrganizationOwnershipController::class, 'destroy']);
+Route::get('/organization-single-ownership-form', [ OrganizationOwnershipController::class, 'ownershipForm' ]);
+Route::get('/organization-ownership-remove/{id}', [ OrganizationOwnershipController::class, 'destroy' ]);
 
-Route::post('/get-organization-registration-fees', [OrganizationFeeController::class, "registrationFees"])->name('organization.registration.fees');
+Route::post('/get-organization-registration-fees', [ OrganizationFeeController::class, "registrationFees" ])->name('organization.registration.fees');
 // Admin with Auth
-Route::get('get-people-by-union/{union_id}', [ChairmanController::class, 'getPeopleByUnion']);
-Route::get('changeMember/{councilor_member_id}', [ChairmanController::class, 'changeMember'])->name('chairman.changeMember');
-Route::post('/councilorUpdate', [ChairmanController::class, "councilorUpdate"])->name('chairman.councilorUpdate');
+Route::get('get-people-by-union/{union_id}', [ ChairmanController::class, 'getPeopleByUnion' ]);
+Route::get('changeMember/{councilor_member_id}', [ ChairmanController::class, 'changeMember' ])->name('chairman.changeMember');
+Route::post('/councilorUpdate', [ ChairmanController::class, "councilorUpdate" ])->name('chairman.councilorUpdate');
 
-Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::group([ 'prefix' => 'dashboard', 'middleware' => [ 'auth' ] ], function () {
+    Route::post('/logout', [ LoginController::class, 'logout' ])->name('logout');
+    Route::get('/', [ DashboardController::class, 'index' ])->name('dashboard');
     Route::resource('people', PeopleController::class);
 
-    Route::get('/people/family/{userID}', [FamilyInfoController::class, 'create'])->name('people.family');
-    Route::post('/people/family-store', [FamilyInfoController::class, 'store'])->name('people.familyStore');
+    Route::get('/people/family/{userID}', [ FamilyInfoController::class, 'create' ])->name('people.family');
+    Route::post('/people/family-store', [ FamilyInfoController::class, 'store' ])->name('people.familyStore');
 
-    Route::get('/people/address/{userID}', [AddressInfoController::class, 'create'])->name('people.address');
-    Route::post('/people/address-store', [AddressInfoController::class, 'store'])->name('people.addressStore');
+    Route::get('/people/address/{userID}', [ AddressInfoController::class, 'create' ])->name('people.address');
+    Route::post('/people/address-store', [ AddressInfoController::class, 'store' ])->name('people.addressStore');
 
-    Route::get('/people/health/{userID}', [HealthInfoController::class, 'create'])->name('people.health');
-    Route::post('/people/health-store', [HealthInfoController::class, 'store'])->name('people.healthStore');
+    Route::get('/people/health/{userID}', [ HealthInfoController::class, 'create' ])->name('people.health');
+    Route::post('/people/health-store', [ HealthInfoController::class, 'store' ])->name('people.healthStore');
 
-    Route::get('/people/disability/{userID}', [DisabilityInfoController::class, 'create'])->name('people.disability');
-    Route::post('/people/disability-store', [DisabilityInfoController::class, 'store'])->name('people.disabilityStore');
+    Route::get('/people/disability/{userID}', [ DisabilityInfoController::class, 'create' ])->name('people.disability');
+    Route::post('/people/disability-store', [ DisabilityInfoController::class, 'store' ])->name('people.disabilityStore');
 
-    Route::get('/people/freedom/{userID}', [FreedomFighterInfoController::class, 'create'])->name('people.freedom');
-    Route::post('/people/freedom-store', [FreedomFighterInfoController::class, 'store'])->name('people.freedomStore');
+    Route::get('/people/freedom/{userID}', [ FreedomFighterInfoController::class, 'create' ])->name('people.freedom');
+    Route::post('/people/freedom-store', [ FreedomFighterInfoController::class, 'store' ])->name('people.freedomStore');
 
-    Route::get('/people/education/{userID}', [EducationalInfoController::class, 'create'])->name('people.education');
-    Route::post('/people/education-store', [EducationalInfoController::class, 'store'])->name('people.educationStore');
-    Route::get('/people/education-delete/{eduID}', [EducationalInfoController::class, 'destroy'])->name('people.educationDelete');
+    Route::get('/people/education/{userID}', [ EducationalInfoController::class, 'create' ])->name('people.education');
+    Route::post('/people/education-store', [ EducationalInfoController::class, 'store' ])->name('people.educationStore');
+    Route::get('/people/education-delete/{eduID}', [ EducationalInfoController::class, 'destroy' ])->name('people.educationDelete');
 
-    Route::get('/people/professional/{userID}', [ProfessionalInfoController::class, 'create'])->name('people.professional');
-    Route::post('/people/professional-store', [ProfessionalInfoController::class, 'store'])->name('people.professionalStore');
-    Route::get('/people/professional-delete/{proID}', [ProfessionalInfoController::class, 'destroy'])->name('people.professionalDelete');
+    Route::get('/people/professional/{userID}', [ ProfessionalInfoController::class, 'create' ])->name('people.professional');
+    Route::post('/people/professional-store', [ ProfessionalInfoController::class, 'store' ])->name('people.professionalStore');
+    Route::get('/people/professional-delete/{proID}', [ ProfessionalInfoController::class, 'destroy' ])->name('people.professionalDelete');
 
-    Route::get('/people/financial/{userID}', [FinancialInfoController::class, 'create'])->name('people.financial');
-    Route::post('/people/financial-store', [FinancialInfoController::class, 'store'])->name('people.financialStore');
-    Route::get('/people/financial-delete/{proID}', [FinancialInfoController::class, 'destroy'])->name('people.financialDelete');
+    Route::get('/people/financial/{userID}', [ FinancialInfoController::class, 'create' ])->name('people.financial');
+    Route::post('/people/financial-store', [ FinancialInfoController::class, 'store' ])->name('people.financialStore');
+    Route::get('/people/financial-delete/{proID}', [ FinancialInfoController::class, 'destroy' ])->name('people.financialDelete');
 
-    Route::get('/people/property/{userID}', [PropertyInfoController::class, 'create'])->name('people.property');
-    Route::post('/people/property-store', [PropertyInfoController::class, 'store'])->name('people.propertyStore');
-    Route::get('/people/property-delete/{proID}', [PropertyInfoController::class, 'destroy'])->name('people.propertyDelete');
+    Route::get('/people/property/{userID}', [ PropertyInfoController::class, 'create' ])->name('people.property');
+    Route::post('/people/property-store', [ PropertyInfoController::class, 'store' ])->name('people.propertyStore');
+    Route::get('/people/property-delete/{proID}', [ PropertyInfoController::class, 'destroy' ])->name('people.propertyDelete');
 
     Route::resource('certificate/citizen', CitizenCertificateController::class);
-    Route::get('certificate/citizen/bn/{id}', [CitizenCertificateController::class, 'bn_certificate'])->name('citizen.bn_certificate');
+    Route::get('certificate/citizen/bn/{id}', [ CitizenCertificateController::class, 'bn_certificate' ])->name('citizen.bn_certificate');
     Route::resource('certificate/character', CharacterCertificateController::class);
-    Route::get('certificate/character/bn/{id}', [CharacterCertificateController::class, 'bn_certificate'])->name('character.bn_certificate');
+    Route::get('certificate/character/bn/{id}', [ CharacterCertificateController::class, 'bn_certificate' ])->name('character.bn_certificate');
 
     Route::resource('certificate/death', DeathCertificateController::class);
-    Route::get('certificate/death/bn/{id}', [DeathCertificateController::class, 'bn_certificate'])->name('death.bn_certificate');
+    Route::get('certificate/death/bn/{id}', [ DeathCertificateController::class, 'bn_certificate' ])->name('death.bn_certificate');
 
     Route::resource('certificate/succession', SuccessionController::class);
-    Route::get('certificate/succession/bn/{id}', [SuccessionController::class, 'bn_certificate'])->name('succession.bn_certificate');
+    Route::get('certificate/succession/bn/{id}', [ SuccessionController::class, 'bn_certificate' ])->name('succession.bn_certificate');
 
 
     Route::resource('certificate/birth', BirthCertificateController::class);
     Route::resource('certificate/unmarried', UnmarriedCertificateController::class);
-    Route::get('certificate/unmarried/bn/{id}', [UnmarriedCertificateController::class, 'bn_certificate'])->name('unmarried.bn_certificate');
+    Route::get('certificate/unmarried/bn/{id}', [ UnmarriedCertificateController::class, 'bn_certificate' ])->name('unmarried.bn_certificate');
     Route::resource('certificate/married', MarriedCertificateController::class);
-    Route::get('certificate/married/bn/{id}', [MarriedCertificateController::class, 'bn_certificate'])->name('married.bn_certificate');
+    Route::get('certificate/married/bn/{id}', [ MarriedCertificateController::class, 'bn_certificate' ])->name('married.bn_certificate');
     Route::resource('certificate/remarried', RemarriedCertificateController::class);
-    Route::get('certificate/remarried/bn/{id}', [RemarriedCertificateController::class, 'bn_certificate'])->name('remarried.bn_certificate');
+    Route::get('certificate/remarried/bn/{id}', [ RemarriedCertificateController::class, 'bn_certificate' ])->name('remarried.bn_certificate');
     Route::resource('certificate/landless', LandlessCertificateController::class);
-    Route::get('certificate/landless/bn/{id}', [LandlessCertificateController::class, 'bn_certificate'])->name('landless.bn_certificate');
+    Route::get('certificate/landless/bn/{id}', [ LandlessCertificateController::class, 'bn_certificate' ])->name('landless.bn_certificate');
     Route::resource('certificate/name', NameCertificateController::class);
-    Route::get('certificate/name/bn/{id}', [NameCertificateController::class, 'bn_certificate'])->name('name.bn_certificate');
+    Route::get('certificate/name/bn/{id}', [ NameCertificateController::class, 'bn_certificate' ])->name('name.bn_certificate');
     Route::resource('certificate/income', YearlyIncomeCertificateController::class);
-    Route::get('certificate/income/bn/{id}', [YearlyIncomeCertificateController::class, 'bn_certificate'])->name('income.bn_certificate');
+    Route::get('certificate/income/bn/{id}', [ YearlyIncomeCertificateController::class, 'bn_certificate' ])->name('income.bn_certificate');
     Route::resource('certificate/disability-certificate', DisabilityCertificateController::class);
-    Route::get('certificate/disability/bn/{id}', [DisabilityCertificateController::class, 'bn_certificate'])->name('disability.bn_certificate');
+    Route::get('certificate/disability/bn/{id}', [ DisabilityCertificateController::class, 'bn_certificate' ])->name('disability.bn_certificate');
     Route::resource('certificate/voter-area', VoterAreaCertificateController::class);
-    Route::get('certificate/voter-area/bn/{id}', [VoterAreaCertificateController::class, 'bn_certificate'])->name('voter-area.bn_certificate');
+    Route::get('certificate/voter-area/bn/{id}', [ VoterAreaCertificateController::class, 'bn_certificate' ])->name('voter-area.bn_certificate');
     Route::resource('certificate/voter-list', VoterListCertificateController::class);
-    Route::get('certificate/voter-list/bn/{id}', [VoterListCertificateController::class, 'bn_certificate'])->name('voter-list.bn_certificate');
+    Route::get('certificate/voter-list/bn/{id}', [ VoterListCertificateController::class, 'bn_certificate' ])->name('voter-list.bn_certificate');
     Route::resource('certificate/nid-correction', NidCorrectionCertificateController::class);
-    Route::get('certificate/nid-correction/bn/{id}', [NidCorrectionCertificateController::class, 'bn_certificate'])->name('nid-correction.bn_certificate');
+    Route::get('certificate/nid-correction/bn/{id}', [ NidCorrectionCertificateController::class, 'bn_certificate' ])->name('nid-correction.bn_certificate');
     Route::resource('certificate/childless', ChildlessCertificateController::class);
-    Route::get('certificate/childless/bn/{id}', [ChildlessCertificateController::class, 'bn_certificate'])->name('childless.bn_certificate');
+    Route::get('certificate/childless/bn/{id}', [ ChildlessCertificateController::class, 'bn_certificate' ])->name('childless.bn_certificate');
 
     Route::resource('certificate/orphan', OrphanCertificateController::class);
-    Route::get('certificate/orphan/bn/{id}', [OrphanCertificateController::class, 'bn_certificate'])->name('orphan.bn_certificate');
+    Route::get('certificate/orphan/bn/{id}', [ OrphanCertificateController::class, 'bn_certificate' ])->name('orphan.bn_certificate');
     Route::resource('certificate/financial-instability', FinancialInstabilityCertificateController::class);
-    Route::get('certificate/financial-instability/bn/{id}', [FinancialInstabilityCertificateController::class, 'bn_certificate'])->name('financial-instability.bn_certificate');
+    Route::get('certificate/financial-instability/bn/{id}', [ FinancialInstabilityCertificateController::class, 'bn_certificate' ])->name('financial-instability.bn_certificate');
     Route::resource('certificate/age', AgeCertificateController::class);
-    Route::get('certificate/age/bn/{id}', [AgeCertificateController::class, 'bn_certificate'])->name('age.bn_certificate');
+    Route::get('certificate/age/bn/{id}', [ AgeCertificateController::class, 'bn_certificate' ])->name('age.bn_certificate');
     Route::resource('certificate/permanent-citizen', PermanentCitizenCertificateController::class);
-    Route::get('certificate/permanent-citizen/bn/{id}', [PermanentCitizenCertificateController::class, 'bn_certificate'])->name('permanent-citizen.bn_certificate');
+    Route::get('certificate/permanent-citizen/bn/{id}', [ PermanentCitizenCertificateController::class, 'bn_certificate' ])->name('permanent-citizen.bn_certificate');
     Route::resource('certificate/residential', ResidentialCertificateController::class);
-    Route::get('certificate/residential/bn/{id}', [ResidentialCertificateController::class, 'bn_certificate'])->name('residential.bn_certificate');
+    Route::get('certificate/residential/bn/{id}', [ ResidentialCertificateController::class, 'bn_certificate' ])->name('residential.bn_certificate');
     Route::resource('certificate/guardian-income', GuardianCertificateController::class);
-    Route::get('certificate/guardian-income/bn/{id}', [GuardianCertificateController::class, 'bn_certificate'])->name('guardian-income.bn_certificate');
+    Route::get('certificate/guardian-income/bn/{id}', [ GuardianCertificateController::class, 'bn_certificate' ])->name('guardian-income.bn_certificate');
 
 
     Route::prefix('basic-settings')->name('basic-settings.')->group(function () {
@@ -343,7 +349,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
         Route::resource('land-class', LandClassController::class);
         Route::resource('land-ownership-type', LandOwnershipTypeController::class);
 
-        Route::resource('house-ownership-type', HouseOwnerTypeController::class );
+        Route::resource('house-ownership-type', HouseOwnerTypeController::class);
         Route::resource('house-type', HouseTypeController::class);
         Route::resource('house-category', HouseCategoryController::class);
 
@@ -366,69 +372,79 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
         Route::resource('market-type', MarketTypeController::class);
         Route::resource('market-category', MarketCategoryController::class);
         Route::resource('market-ownership-type', MarketOwnershipTypeController::class);
+
+        // hotel-restaurant category
+        Route::resource('hotel-category', HotelCategoryController::class);
+        Route::resource('hotel-subcategory', HotelSubCategoryController::class);
+        Route::resource('hotel-ownership', HotelOwnerShipController::class);
     });
 
     Route::resource('organization', OrganizationController::class);
+
+    // HotelRestaurantController
+
+    Route::resource('hotel-restaurant', HotelRestaurantController::class);
+
     Route::resource('chairman', ChairmanController::class);
 
-    Route::post('/fromupdate', [ChairmanController::class,'fromupdate'])->name('chairman.fromupdate');
+    Route::post('/fromupdate', [ ChairmanController::class, 'fromupdate' ])->name('chairman.fromupdate');
 
     Route::controller(ChairmanController::class)->prefix('chairman')->name('chairman.')->group(function () {
-         Route::post('/personalstore', 'personalstore')->name('personalstore');
-         Route::post('/autocomplete/fetch', 'fetch')->name('fetch');
+        Route::post('/personalstore', 'personalstore')->name('personalstore');
+        Route::post('/autocomplete/fetch', 'fetch')->name('fetch');
 
-         // Route::get('/family/{user_id}', 'family')->name('family');
-         // Route::post('/familyStore', 'familyStore')->name('familyStore');
-         // Route::get('/address/{user_id}', 'address')->name('address');
-         // Route::post('/addressStore', 'addressStore')->name('addressStore');
-         // Route::get('/education/{user_id}', 'education')->name('education');
-         // Route::post('/educationStore', 'educationStore')->name('educationStore');
+        // Route::get('/family/{user_id}', 'family')->name('family');
+        // Route::post('/familyStore', 'familyStore')->name('familyStore');
+        // Route::get('/address/{user_id}', 'address')->name('address');
+        // Route::post('/addressStore', 'addressStore')->name('addressStore');
+        // Route::get('/education/{user_id}', 'education')->name('education');
+        // Route::post('/educationStore', 'educationStore')->name('educationStore');
 
-         // Route::get('/professional/{user_id}', 'professional')->name('professional');
-         // Route::post('/professionalStore', 'professionalStore')->name('professionalStore');
-         // Route::get('/financial/{user_id}', 'financial')->name('financial');
-         // Route::post('/financialStore', 'financialStore')->name('financialStore');
+        // Route::get('/professional/{user_id}', 'professional')->name('professional');
+        // Route::post('/professionalStore', 'professionalStore')->name('professionalStore');
+        // Route::get('/financial/{user_id}', 'financial')->name('financial');
+        // Route::post('/financialStore', 'financialStore')->name('financialStore');
 
-         // Route::get('/property/{user_id}', 'property')->name('property');
-         // Route::post('/propertyStore', 'propertyStore')->name('propertyStore');
+        // Route::get('/property/{user_id}', 'property')->name('property');
+        // Route::post('/propertyStore', 'propertyStore')->name('propertyStore');
 
-         // Route::get('/disability/{user_id}', 'disability')->name('disability');
-         // Route::post('/disabilityStore', 'disabilityStore')->name('disabilityStore');
+        // Route::get('/disability/{user_id}', 'disability')->name('disability');
+        // Route::post('/disabilityStore', 'disabilityStore')->name('disabilityStore');
 
-         // Route::get('/freedom/{user_id}', 'freedom')->name('freedom');
-         // Route::post('/freedomStore', 'freedomStore')->name('freedomStore');
+        // Route::get('/freedom/{user_id}', 'freedom')->name('freedom');
+        // Route::post('/freedomStore', 'freedomStore')->name('freedomStore');
 
-         // Route::get('/area/{user_id}', 'area')->name('area');
-         // Route::post('/areaStore', 'areaStore')->name('areaStore');
+        // Route::get('/area/{user_id}', 'area')->name('area');
+        // Route::post('/areaStore', 'areaStore')->name('areaStore');
     });
 
 
     Route::resource('councilor', CouncilorController::class);
     Route::controller(CouncilorController::class)->prefix('councilor')->name('councilor.')->group(function () {
-         Route::post('/personalstore', 'personalstore')->name('personalstore');
-         Route::get('/family/{user_id}', 'family')->name('family');
-         Route::post('/familyStore', 'familyStore')->name('familyStore');
-         Route::get('/address/{user_id}', 'address')->name('address');
-         Route::post('/addressStore', 'addressStore')->name('addressStore');
-         Route::get('/education/{user_id}', 'education')->name('education');
-         Route::post('/educationStore', 'educationStore')->name('educationStore');
+        Route::post('/personalstore', 'personalstore')->name('personalstore');
+        Route::get('/family/{user_id}', 'family')->name('family');
+        Route::post('/familyStore', 'familyStore')->name('familyStore');
+        Route::get('/address/{user_id}', 'address')->name('address');
+        Route::post('/addressStore', 'addressStore')->name('addressStore');
+        Route::get('/education/{user_id}', 'education')->name('education');
+        Route::post('/educationStore', 'educationStore')->name('educationStore');
 
-         Route::get('/professional/{user_id}', 'professional')->name('professional');
-         Route::post('/professionalStore', 'professionalStore')->name('professionalStore');
-         Route::get('/financial/{user_id}', 'financial')->name('financial');
-         Route::post('/financialStore', 'financialStore')->name('financialStore');
+        Route::get('/professional/{user_id}', 'professional')->name('professional');
+        Route::post('/professionalStore', 'professionalStore')->name('professionalStore');
+        Route::get('/financial/{user_id}', 'financial')->name('financial');
+        Route::post('/financialStore', 'financialStore')->name('financialStore');
 
-         Route::get('/property/{user_id}', 'property')->name('property');
-         Route::post('/propertyStore', 'propertyStore')->name('propertyStore');
+        Route::get('/property/{user_id}', 'property')->name('property');
+        Route::post('/propertyStore', 'propertyStore')->name('propertyStore');
 
-         Route::get('/disability/{user_id}', 'disability')->name('disability');
-         Route::post('/disabilityStore', 'disabilityStore')->name('disabilityStore');
+        Route::get('/disability/{user_id}', 'disability')->name('disability');
+        Route::post('/disabilityStore', 'disabilityStore')->name('disabilityStore');
 
-         Route::get('/freedom/{user_id}', 'freedom')->name('freedom');
-         Route::post('/freedomStore', 'freedomStore')->name('freedomStore');
+        Route::get('/freedom/{user_id}', 'freedom')->name('freedom');
+        Route::post('/freedomStore', 'freedomStore')->name('freedomStore');
 
-         Route::get('/area/{user_id}', 'area')->name('area');
-         Route::post('/areaStore', 'areaStore')->name('areaStore');
+        Route::get('/area/{user_id}', 'area')->name('area');
+        Route::post('/areaStore', 'areaStore')->name('areaStore');
     });
     Route::resource('organization-ownership', OrganizationOwnershipController::class);
 
@@ -438,41 +454,41 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::prefix('organizations')->name('organizationA.')->group(function () {
         Route::resource('trade-license', TradeLicenseController::class);
 
-        Route::get('trade-license/invoice/{id}', [TradeLicenseController::class, 'invoice'])->name('trade-license.invoice');
-        Route::get('trade-license/preview/{id}', [TradeLicenseController::class, 'preview'])->name('trade-license.preview');
-        Route::get('trade-license/confirmed/{id}', [TradeLicenseController::class, 'confirmedLicense'])->name('trade-license.confirmed');
-        Route::post('trade-license/confirmation/{id}', [TradeLicenseController::class, 'licenseConfirmation'])->name('trade-license.confirmation');
+        Route::get('trade-license/invoice/{id}', [ TradeLicenseController::class, 'invoice' ])->name('trade-license.invoice');
+        Route::get('trade-license/preview/{id}', [ TradeLicenseController::class, 'preview' ])->name('trade-license.preview');
+        Route::get('trade-license/confirmed/{id}', [ TradeLicenseController::class, 'confirmedLicense' ])->name('trade-license.confirmed');
+        Route::post('trade-license/confirmation/{id}', [ TradeLicenseController::class, 'licenseConfirmation' ])->name('trade-license.confirmation');
 
-        Route::get('get-trade-license', [TradeLicenseController::class, 'getTradeLicense'])->name('trade-license.getTradeLicense');
+        Route::get('get-trade-license', [ TradeLicenseController::class, 'getTradeLicense' ])->name('trade-license.getTradeLicense');
 
 
 
         Route::resource('registration-fees', OrganizationFeeController::class);
         Route::resource('renew-fees', OrganizationRenewController::class);
     });
-Route::post('/organization/trade-license/{id}/manual-payment/store', [TradeLicenseController::class, 'storeManualPayment'])
-    ->name('organizationA.trade-license.manual-payment.store');
+    Route::post('/organization/trade-license/{id}/manual-payment/store', [ TradeLicenseController::class, 'storeManualPayment' ])
+        ->name('organizationA.trade-license.manual-payment.store');
 
-Route::get('/organization/trade-license/{id}/online-payment', [TradeLicenseController::class, 'onlinePayment'])
-    ->name('organizationA.trade-license.online-payment');
-Route::get('/people/approve/{id}', [PeopleController::class, 'approve'])
-    ->name('people.approve');
-    
-    Route::get('peopleapprovedlist', [PeopleController::class, 'approvedlist'])
-    ->name('peopleapprovedlist');
+    Route::get('/organization/trade-license/{id}/online-payment', [ TradeLicenseController::class, 'onlinePayment' ])
+        ->name('organizationA.trade-license.online-payment');
+    Route::get('/people/approve/{id}', [ PeopleController::class, 'approve' ])
+        ->name('people.approve');
 
-Route::post('/save-new-ownership', [OrganizationOwnershipController::class, 'saveNewOwnership'])
-    ->name('savenewownership');
-    
+    Route::get('peopleapprovedlist', [ PeopleController::class, 'approvedlist' ])
+        ->name('peopleapprovedlist');
+
+    Route::post('/save-new-ownership', [ OrganizationOwnershipController::class, 'saveNewOwnership' ])
+        ->name('savenewownership');
+
     Route::resource('institute', InstituteController::class);
 
     Route::prefix('institutes')->name('instituteA.')->group(function () {
 
-        Route::get('admin/{id}', [InstituteController::class, 'admin'])->name('adminCreate');
-        Route::post('admin-store', [InstituteController::class, 'adminStore'])->name('adminStore');
+        Route::get('admin/{id}', [ InstituteController::class, 'admin' ])->name('adminCreate');
+        Route::post('admin-store', [ InstituteController::class, 'adminStore' ])->name('adminStore');
 
-        Route::get('images/{id}', [InstituteController::class, 'images'])->name('imagesCreate');
-        Route::post('images-store', [InstituteController::class, 'imagesStore'])->name('imagesStore');
+        Route::get('images/{id}', [ InstituteController::class, 'images' ])->name('imagesCreate');
+        Route::post('images-store', [ InstituteController::class, 'imagesStore' ])->name('imagesStore');
     });
 
     Route::resource('institutional-admin', InstitutionalAdminController::class);
@@ -486,14 +502,21 @@ Route::post('/save-new-ownership', [OrganizationOwnershipController::class, 'sav
     Route::resource('house-ownership', HouseOwnershipController::class);
 
     Route::resource('land', LandController::class);
-    Route::post('vehicle/approve', [VehicleController::class, 'approve'])->name('vehicle.approve');
+    Route::post('vehicle/approve', [ VehicleController::class, 'approve' ])->name('vehicle.approve');
+    Route::get('vehicle/fees', [ VehicleController::class, 'feesHub' ])->name('vehicle.fees.hub');
+    Route::get('vehicle/fees/setup', [ VehicleController::class, 'vehicleFees' ])->name('vehicle.fees.vehicle');
+    Route::get('vehicle/fees/setup-list', [ VehicleController::class, 'vehicleFeesList' ])->name('vehicle.fees.list');
+    Route::get('vehicle/fees/setup/{id}/view', [ VehicleController::class, 'vehicleFeesShow' ])->name('vehicle.fees.show');
+    Route::get('vehicle/fees/setup/{id}/edit', [ VehicleController::class, 'vehicleFeesEdit' ])->name('vehicle.fees.edit');
+    Route::post('vehicle/fees/setup/{id}/update', [ VehicleController::class, 'updateVehicleFees' ])->name('vehicle.fees.update');
+    Route::post('vehicle/fees/setup', [ VehicleController::class, 'storeVehicleFees' ])->name('vehicle.fees.vehicle.store');
     Route::resource('vehicle', VehicleController::class);
     Route::resource('market', MarketController::class);
     Route::resource('bridge', BridgeController::class);
     Route::resource('road', RoadController::class);
 
     Route::resource('tax', TaxController::class);
-    Route::post('tax-status', [TaxController::class, 'taxStatus'])->name('tax.status');
+    Route::post('tax-status', [ TaxController::class, 'taxStatus' ])->name('tax.status');
 
     Route::get('taxes', function () {
         return redirect()->route('tax.index');
@@ -502,9 +525,9 @@ Route::post('/save-new-ownership', [OrganizationOwnershipController::class, 'sav
     Route::prefix('taxes')->name('taxes.')->group(function () {
         Route::resource('tax-year', TaxYearController::class);
         Route::resource('tax-rate', TaxRateController::class);
-        Route::get('receipt/{id}', [TaxController::class, 'taxReceipt'])->name('receipt');
-        Route::get('received', [TaxController::class, 'taxReceived'])->name('tax.received');
-        Route::get('confirmed/{id}', [TaxController::class, 'taxConfirmed'])->name('confirmed');
+        Route::get('receipt/{id}', [ TaxController::class, 'taxReceipt' ])->name('receipt');
+        Route::get('received', [ TaxController::class, 'taxReceived' ])->name('tax.received');
+        Route::get('confirmed/{id}', [ TaxController::class, 'taxConfirmed' ])->name('confirmed');
 
     });
 

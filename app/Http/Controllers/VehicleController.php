@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Vehicle;
+use App\Models\VehicleFee;
 use App\Models\Organization\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -315,6 +316,219 @@ class VehicleController extends Controller
         ]);
     }
 
+    public function feesHub()
+    {
+        return redirect()->route('vehicle.fees.vehicle');
+    }
+
+    public function vehicleFees()
+    {
+        $data['financeYears'] = $this->financeYearOptions();
+        $data['vehicleData'] = $this->vehicleTypeCategoryMap();
+        $data['feesTableReady'] = Schema::hasTable('vehicle_fees');
+
+        return view('backend.pages.vehicle.fees.vehicle', $data);
+    }
+
+    public function vehicleFeesList()
+    {
+        $data['feesTableReady'] = Schema::hasTable('vehicle_fees');
+        $data['vehicleFees'] = $data['feesTableReady']
+            ? VehicleFee::latest()->get()
+            : collect();
+
+        return view('backend.pages.vehicle.fees.list', $data);
+    }
+
+    public function vehicleFeesShow($id)
+    {
+        if (! Schema::hasTable('vehicle_fees')) {
+            return redirect()->route('vehicle.fees.list');
+        }
+
+        $data['fee'] = VehicleFee::findOrFail($id);
+        return view('backend.pages.vehicle.fees.show', $data);
+    }
+
+    public function vehicleFeesEdit($id)
+    {
+        if (! Schema::hasTable('vehicle_fees')) {
+            return redirect()->route('vehicle.fees.list');
+        }
+
+        $data['fee'] = VehicleFee::findOrFail($id);
+        $data['financeYears'] = $this->financeYearOptions();
+        $data['vehicleData'] = $this->vehicleTypeCategoryMap();
+        $data['feesTableReady'] = true;
+
+        return view('backend.pages.vehicle.fees.edit', $data);
+    }
+
+    public function storeVehicleFees(Request $request)
+    {
+        if (! Schema::hasTable('vehicle_fees')) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Vehicle fees table is missing. Please run php artisan migrate first.',
+            ], 422);
+        }
+
+        $validate = Validator::make($request->all(), [
+            'finance_year' => 'required|max:191',
+            'vehicle_type' => 'required|max:191',
+            'vehicle_category' => 'required|max:191',
+            'fee_for' => 'required|in:new,renew',
+            'registration_fee' => 'required|numeric|min:0',
+            'road_fee' => 'required|numeric|min:0',
+            'fitness_fee' => 'required|numeric|min:0',
+            'vat_fee' => 'required|numeric|min:0',
+            'tax_fee' => 'required|numeric|min:0',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Sorry! Invalid entry.',
+                'errors' => $validate->errors(),
+            ], 422);
+        }
+
+        $vehicleData = $this->vehicleTypeCategoryMap();
+        $allowedCategories = $vehicleData[$request->vehicle_type] ?? [];
+
+        if (! in_array($request->vehicle_category, $allowedCategories, true)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid vehicle category for selected vehicle type.',
+                'errors' => [
+                    'vehicle_category' => ['Invalid category for selected vehicle type.'],
+                ],
+            ], 422);
+        }
+
+        $registrationFee = (float) $request->registration_fee;
+        $roadFee = (float) $request->road_fee;
+        $fitnessFee = (float) $request->fitness_fee;
+        $vatFee = (float) $request->vat_fee;
+        $taxFee = (float) $request->tax_fee;
+
+        $totalFee = $registrationFee + $roadFee + $fitnessFee + $vatFee + $taxFee;
+
+        VehicleFee::updateOrCreate(
+            [
+                'finance_year' => $request->finance_year,
+                'vehicle_type' => $request->vehicle_type,
+                'vehicle_category' => $request->vehicle_category,
+                'fee_for' => $request->fee_for,
+            ],
+            [
+                'registration_fee' => $registrationFee,
+                'road_fee' => $roadFee,
+                'fitness_fee' => $fitnessFee,
+                'vat_fee' => $vatFee,
+                'tax_fee' => $taxFee,
+                'total_fee' => $totalFee,
+            ]
+        );
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Vehicle fees saved successfully.',
+            'redirect_url' => route('vehicle.fees.vehicle'),
+        ]);
+    }
+
+    public function updateVehicleFees(Request $request, $id)
+    {
+        if (! Schema::hasTable('vehicle_fees')) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Vehicle fees table is missing. Please run php artisan migrate first.',
+            ], 422);
+        }
+
+        $fee = VehicleFee::find($id);
+        if (! $fee) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Vehicle fees setup not found.',
+            ], 404);
+        }
+
+        $validate = Validator::make($request->all(), [
+            'finance_year' => 'required|max:191',
+            'vehicle_type' => 'required|max:191',
+            'vehicle_category' => 'required|max:191',
+            'fee_for' => 'required|in:new,renew',
+            'registration_fee' => 'required|numeric|min:0',
+            'road_fee' => 'required|numeric|min:0',
+            'fitness_fee' => 'required|numeric|min:0',
+            'vat_fee' => 'required|numeric|min:0',
+            'tax_fee' => 'required|numeric|min:0',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Sorry! Invalid entry.',
+                'errors' => $validate->errors(),
+            ], 422);
+        }
+
+        $vehicleData = $this->vehicleTypeCategoryMap();
+        $allowedCategories = $vehicleData[$request->vehicle_type] ?? [];
+
+        if (! in_array($request->vehicle_category, $allowedCategories, true)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid vehicle category for selected vehicle type.',
+                'errors' => [
+                    'vehicle_category' => ['Invalid category for selected vehicle type.'],
+                ],
+            ], 422);
+        }
+
+        $duplicate = VehicleFee::query()
+            ->where('finance_year', $request->finance_year)
+            ->where('vehicle_type', $request->vehicle_type)
+            ->where('vehicle_category', $request->vehicle_category)
+            ->where('fee_for', $request->fee_for)
+            ->where('id', '!=', $fee->id)
+            ->exists();
+
+        if ($duplicate) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Same finance year, vehicle type, category and new/renew setup already exists.',
+            ], 422);
+        }
+
+        $registrationFee = (float) $request->registration_fee;
+        $roadFee = (float) $request->road_fee;
+        $fitnessFee = (float) $request->fitness_fee;
+        $vatFee = (float) $request->vat_fee;
+        $taxFee = (float) $request->tax_fee;
+        $totalFee = $registrationFee + $roadFee + $fitnessFee + $vatFee + $taxFee;
+
+        $fee->finance_year = $request->finance_year;
+        $fee->vehicle_type = $request->vehicle_type;
+        $fee->vehicle_category = $request->vehicle_category;
+        $fee->fee_for = $request->fee_for;
+        $fee->registration_fee = $registrationFee;
+        $fee->road_fee = $roadFee;
+        $fee->fitness_fee = $fitnessFee;
+        $fee->vat_fee = $vatFee;
+        $fee->tax_fee = $taxFee;
+        $fee->total_fee = $totalFee;
+        $fee->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Vehicle fees updated successfully.',
+            'redirect_url' => route('vehicle.fees.list'),
+        ]);
+    }
+
     private function resolveOwnerUser(?string $ownerId): ?User
     {
         $ownerId = trim((string) $ownerId);
@@ -406,5 +620,35 @@ class VehicleController extends Controller
             ->where('name', $institutionalName)
             ->orWhere('bn_name', $institutionalName)
             ->first();
+    }
+
+    private function financeYearOptions(): array
+    {
+        $options = [];
+        $startYear = 1990;
+        $currentYear = (int) now()->format('Y');
+        $currentFiscalStartYear = max($startYear, $currentYear - 1);
+
+        for ($year = $currentFiscalStartYear; $year >= $startYear; $year--) {
+            $options[] = $year . '-' . ($year + 1);
+        }
+
+        return $options;
+    }
+
+    private function vehicleTypeCategoryMap(): array
+    {
+        return [
+            'Auto' => [
+                'Rickshaw - রিকশা',
+                'Van - ভ্যান / ভ্যানগাড়ি',
+            ],
+            'Manual' => [
+                'Rickshaw - রিকশা',
+                'Van - ভ্যান / ভ্যানগাড়ি',
+                'Thela Gari - ঠেলাগাড়ি',
+                'Gorur Gari - গরুর গাড়ি',
+            ],
+        ];
     }
 }
