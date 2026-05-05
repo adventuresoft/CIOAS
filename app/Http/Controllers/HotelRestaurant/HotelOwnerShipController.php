@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HotelRestaurant;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\HotelRestaurant\HotelOwnerShip;
 
 class HotelOwnerShipController extends Controller
 {
@@ -14,7 +15,8 @@ class HotelOwnerShipController extends Controller
      */
     public function index()
     {
-        //
+        $ownership = HotelOwnerShip::latest()->get();
+        return view('backend.pages.hotel-restaurant.ownership.index', compact('ownership'));
     }
 
     /**
@@ -24,7 +26,7 @@ class HotelOwnerShipController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.pages.hotel-restaurant.ownership.create');
     }
 
     /**
@@ -35,7 +37,23 @@ class HotelOwnerShipController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'en_name' => 'required|unique:hotel_categories,en_name',
+            'bn_name' => 'required|unique:hotel_categories,bn_name',
+        ]);
+
+        $category             = new HotelOwnerShip();
+        $category->en_name    = $request->en_name;
+        $category->bn_name    = $request->bn_name;
+        $category->status     = $request->status ? $request->status : true;
+        $category->created_by = Auth()->user()->id;
+        $category->slug       = str_replace(' ', '-', $request->en_name);
+        $category->save();
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Hotel Category Created Successfully!',
+        ], 200);
     }
 
     /**
@@ -46,7 +64,9 @@ class HotelOwnerShipController extends Controller
      */
     public function show($id)
     {
-        //
+        $ownership = HotelOwnerShip::findOrFail($id);
+
+        return view('backend.pages.hotel-restaurant.ownership.show', compact('ownership'));
     }
 
     /**
@@ -57,7 +77,9 @@ class HotelOwnerShipController extends Controller
      */
     public function edit($id)
     {
-        //
+        $ownership = HotelOwnerShip::findOrFail($id);
+
+        return view('backend.pages.hotel-restaurant.ownership.edit', compact('ownership'));
     }
 
     /**
@@ -69,7 +91,22 @@ class HotelOwnerShipController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'en_name' => 'required|unique:hotel_categories,en_name,' . $id,
+            'bn_name' => 'required|unique:hotel_categories,bn_name,' . $id,
+        ]);
+
+        $ownership             = HotelOwnerShip::findOrFail($id);
+        $ownership->en_name    = $request->en_name;
+        $ownership->bn_name    = $request->bn_name;
+        $ownership->status     = $request->status ? $request->status : true;
+        $ownership->updated_by = Auth()->user()->id;
+        $ownership->slug       = str_replace(' ', '-', $request->en_name);
+        $ownership->save();
+        return response()->json([
+            'status'  => true,
+            'message' => 'Hotel Category Updated Successfully!',
+        ], 200);
     }
 
     /**
@@ -80,6 +117,12 @@ class HotelOwnerShipController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $ownership = HotelOwnerShip::findOrFail($id);
+        $ownership->delete();
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Hotel Ownership Deleted Successfully!',
+        ], 200);
     }
 }

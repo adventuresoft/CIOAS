@@ -95,6 +95,9 @@
                     url: "{{ route('basic-settings.hotel-category.store') }}",
                     data: new FormData(this),
                     dataType: "json",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
                     beforeSend: function() {
                         thisForm.find('button[type="submit"]').prop("disabled", true);
                         $('.error').text('');
@@ -105,7 +108,7 @@
                         toastr.success(response.message);
                         setTimeout(function() {
                             location.href =
-                                "{{ route('basic-settings.family-category.index') }}";
+                                "{{ route('basic-settings.hotel-category.index') }}";
                         }, 2000)
                     },
                     error: function(xhr, status, error) {

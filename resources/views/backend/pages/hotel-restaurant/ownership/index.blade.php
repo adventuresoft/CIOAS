@@ -1,19 +1,19 @@
-@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'HotelCategory'])
+@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'HotelOwnership'])
 @push('style')
 @endpush
-@section('title', 'Hotel Category')
+@section('title', 'Hotel Ownership')
 @section('content')
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Hotel Category</h1>
+                    <h1>Hotel ownership</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.hotel-category.index') }}">Hotel
-                                Category</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.hotel-ownership.index') }}">Hotel
+                                Ownership</a></li>
                         <li class="breadcrumb-item active">View</li>
                     </ol>
                 </div>
@@ -33,10 +33,10 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-md-6 text-left">
-                                    <h3 class="card-title">Hotel Category List</h3>
+                                    <h3 class="card-title">Hotel Ownership List</h3>
                                 </div>
                                 <div class="col-md-6 text-right">
-                                    <a href="{{ route('basic-settings.hotel-category.create') }}"
+                                    <a href="{{ route('basic-settings.hotel-ownership.create') }}"
                                         class="btn btn-primary">Create</a>
                                 </div>
                             </div>
@@ -57,8 +57,8 @@
                                     </thead>
                                     <tbody>
 
-                                        @if ($categories)
-                                            @foreach ($categories as $key => $item)
+                                        @if ($ownership)
+                                            @foreach ($ownership as $key => $item)
                                                 <tr>
                                                     <td>{{ ++$key }}</td>
                                                     <td>{{ $item->en_name }}</td>
@@ -68,11 +68,11 @@
                                                         <div class="table-action">
                                                             <a class="btn btn-sm btn-primary" title="Edit"
                                                                 data-toggle="tooltip"
-                                                                href="{{ route('basic-settings.hotel-category.edit', $item->id) }}"><i
+                                                                href="{{ route('basic-settings.hotel-ownership.edit', $item->id) }}"><i
                                                                     class="fa fa-edit"></i></a>
                                                             <a class="btn btn-sm btn-info" title="Show"
                                                                 data-toggle="tooltip"
-                                                                href="{{ route('basic-settings.hotel-category.show', $item->id) }}"><i
+                                                                href="{{ route('basic-settings.hotel-ownership.show', $item->id) }}"><i
                                                                     class="fa fa-eye"></i></a>
 
                                                             <form class="deleteCategory" method="post">
@@ -81,7 +81,7 @@
                                                                 <input type="hidden" class="id" name="id"
                                                                     value="{{ $item->id }}">
                                                                 <input type="hidden" class="deleteUrl" name="deleteUrl"
-                                                                    value="{{ route('basic-settings.hotel-category.destroy', $item->id) }}">
+                                                                    value="{{ route('basic-settings.hotel-ownership.destroy', $item->id) }}">
                                                                 <button type="submit" title="Delete" data-toggle="tooltip"
                                                                     class="btn btn-sm btn-danger"><i
                                                                         class="fa fa-trash"></i></button>
@@ -140,7 +140,7 @@
                                         toastr.success(response.message);
                                         setTimeout(function() {
                                             location.href =
-                                                "{{ route('basic-settings.hotel-category.index') }}";
+                                                "{{ route('basic-settings.hotel-ownership.index') }}";
                                         }, 2000)
                                     },
                                     error: function(xhr, status, error) {

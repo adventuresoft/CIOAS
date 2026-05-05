@@ -1,19 +1,19 @@
-@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'FamilyCategory'])
+@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'HotelOwnership'])
 @push('style')
 @endpush
-@section('title', 'Family Category')
+@section('title', 'Hotel Ownership')
 @section('content')
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Family Category</h1>
+                    <h1>Hotel Category</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.family-category.index') }}">Family
-                                Category</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.hotel-ownership.index') }}">Hotel
+                                Ownership</a></li>
                         <li class="breadcrumb-item active">Create</li>
                     </ol>
                 </div>
@@ -31,11 +31,11 @@
                     <!-- Horizontal Form -->
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Family Category Info</h3>
+                            <h3 class="card-title">Hotel Category Info</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form class="form-horizontal" id="familyCateogryForm" method="POST" enctype="multipart/form-data">
+                        <form class="form-horizontal" id="hotelCategoryForm" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
 
@@ -43,7 +43,7 @@
                                     <label for="en_name" class="col-sm-2 col-form-label">Category <span class="text-danger"
                                             data-toggle="tooltip" title="Required">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="en_name" placeholder="Family Category Name"
+                                        <input type="text" name="en_name" placeholder="Hotel Category Name"
                                             class="form-control" id="en_name">
                                         <small class="text-danger error en_name_error"></small>
                                     </div>
@@ -52,7 +52,7 @@
                                     <label for="bn_name" class="col-sm-2 col-form-label">Category Bangla <span
                                             class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="bn_name" placeholder="Family Category Name In Bangla"
+                                        <input type="text" name="bn_name" placeholder="Hotel Category Name In Bangla"
                                             class="form-control" id="bn_name">
                                         <small class="text-danger error bn_name_error"></small>
 
@@ -87,12 +87,12 @@
     <script>
         $(document).ready(function() {
             $(".select2").select2();
-            $("#familyCateogryForm").on('submit', function(e) {
+            $("#hotelCategoryForm").on('submit', function(e) {
                 e.preventDefault();
                 let thisForm = $(this);
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('basic-settings.family-category.store') }}",
+                    url: "{{ route('basic-settings.hotel-ownership.store') }}",
                     data: new FormData(this),
                     dataType: "json",
                     contentType: false,
@@ -108,7 +108,7 @@
                         toastr.success(response.message);
                         setTimeout(function() {
                             location.href =
-                                "{{ route('basic-settings.family-category.index') }}";
+                                "{{ route('basic-settings.hotel-ownership.index') }}";
                         }, 2000)
                     },
                     error: function(xhr, status, error) {

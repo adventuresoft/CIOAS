@@ -1,19 +1,19 @@
-@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'FamilyCategory'])
+@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'HotelSubcategory'])
 @push('style')
 @endpush
-@section('title', 'Family Category')
+@section('title', 'Edit Family Subcategory')
 @section('content')
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Family Category</h1>
+                    <h1>Hotel Subcategory</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.family-category.index') }}">Family
-                                Category</a></li>
+                        {{-- {{route('death.index')}} --}}
+                        <li class="breadcrumb-item"><a href="">Hotel Subcategory</a></li>
                         <li class="breadcrumb-item active">Create</li>
                     </ol>
                 </div>
@@ -31,29 +31,50 @@
                     <!-- Horizontal Form -->
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Family Category Info</h3>
+                            <h3 class="card-title">Edit Hotel Subcategory Info</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form class="form-horizontal" id="familyCateogryForm" method="POST" enctype="multipart/form-data">
+                        <form class="form-horizontal" id="familySubcateogryEditForm" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
+                            @method('put')
                             <div class="card-body">
-
                                 <div class="form-group row">
-                                    <label for="en_name" class="col-sm-2 col-form-label">Category <span class="text-danger"
-                                            data-toggle="tooltip" title="Required">*</span></label>
+                                    <label for="family_category_id" class="col-sm-2 col-form-label">Hotel Category <span
+                                            class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="en_name" placeholder="Family Category Name"
-                                            class="form-control" id="en_name">
-                                        <small class="text-danger error en_name_error"></small>
+                                        <select required class="form-control select2" name="hotel_category_id"
+                                            id="family_category_id">
+                                            <option value="">Hotel Category</option>
+                                            @if ($categories)
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}"
+                                                        @if ($category->id == $subcategory->hotel_category_id) selected @endif>
+                                                        {{ $category->en_name }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                        <small class="text-danger error family_category_id_error"></small>
+
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="bn_name" class="col-sm-2 col-form-label">Category Bangla <span
+                                    <label for="en_name" class="col-sm-2 col-form-label">Subcategory <span
                                             class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="bn_name" placeholder="Family Category Name In Bangla"
-                                            class="form-control" id="bn_name">
+                                        <input type="text" name="en_name" value="{{ $subcategory->en_name }}"
+                                            placeholder="Family Sub-Category" class="form-control" id="en_name">
+                                        <small class="text-danger error en_name_error"></small>
+
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="bn_name" class="col-sm-2 col-form-label">Subcategory Bangla <span
+                                            class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="bn_name" value="{{ $subcategory->bn_name }}"
+                                            placeholder="Family Sub-Category Bangla" class="form-control" id="bn_name">
                                         <small class="text-danger error bn_name_error"></small>
 
                                     </div>
@@ -64,10 +85,11 @@
                             <!-- /.card-body -->
                             <div class="card-footer">
                                 <div class="form-group row">
-                                    <a href="{{ route('basic-settings.family-category.index') }}"
+                                    {{-- {{route('death.index')}} --}}
+                                    <a href="{{ route('basic-settings.family-subcategory.index') }}"
                                         class="btn btn-default float-right">Cancel</a>
                                     <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-info">Submit</button>
+                                        <button type="submit" class="btn btn-info">Update</button>
                                     </div>
                                 </div>
                             </div>
@@ -82,17 +104,18 @@
     </section>
     <!-- /.content -->
 
+    {{-- {{ route('death.store') }} --}}
 @endsection
 @push('script')
     <script>
         $(document).ready(function() {
             $(".select2").select2();
-            $("#familyCateogryForm").on('submit', function(e) {
+            $("#familySubcateogryEditForm").on('submit', function(e) {
                 e.preventDefault();
                 let thisForm = $(this);
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('basic-settings.family-category.store') }}",
+                    url: "{{ route('basic-settings.hotel-subcategory.update', $subcategory->id) }}",
                     data: new FormData(this),
                     dataType: "json",
                     contentType: false,
@@ -101,14 +124,13 @@
                     beforeSend: function() {
                         thisForm.find('button[type="submit"]').prop("disabled", true);
                         $('.error').text('');
-
                     },
                     success: function(response) {
                         thisForm.find('button[type="submit"]').prop("disabled", false);
                         toastr.success(response.message);
                         setTimeout(function() {
                             location.href =
-                                "{{ route('basic-settings.family-category.index') }}";
+                                "{{ route('basic-settings.hotel-subcategory.index') }}";
                         }, 2000)
                     },
                     error: function(xhr, status, error) {

@@ -4,6 +4,10 @@ namespace App\Http\Controllers\HotelRestaurant;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\HotelRestaurant\HotelCategory;
+use App\Models\HotelRestaurant\HotelSubCategory;
+use App\Models\HotelRestaurant\HotelOwnerShip;
+use Illuminate\Support\Facades\Auth;
 
 class HotelSubCategoryController extends Controller
 {
@@ -14,7 +18,8 @@ class HotelSubCategoryController extends Controller
      */
     public function index()
     {
-        //
+        $subcategories = HotelSubCategory::latest()->get();
+        return view('backend.pages.hotel-restaurant.subcategory.index', compact('subcategories'));
     }
 
     /**
@@ -24,7 +29,9 @@ class HotelSubCategoryController extends Controller
      */
     public function create()
     {
-        //
+        $categories = HotelCategory::latest()->get();
+
+        return view('backend.pages.hotel-restaurant.subcategory.create', compact('categories'));
     }
 
     /**
@@ -35,7 +42,24 @@ class HotelSubCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'en_name'           => 'required',
+            'bn_name'           => 'required',
+            'hotel_category_id' => 'required',
+        ]);
+
+        $subcategory                    = new HotelSubCategory();
+        $subcategory->en_name           = $request->en_name;
+        $subcategory->bn_name           = $request->bn_name;
+        $subcategory->hotel_category_id = $request->hotel_category_id;
+        $subcategory->created_by        = Auth::user()->id;
+        $subcategory->slug              = str_replace(' ', '-', $request->en_name);
+        $subcategory->save();
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Hotel SubCategory Created Successfully!',
+        ], 200);
     }
 
     /**
@@ -46,7 +70,9 @@ class HotelSubCategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $categories  = HotelCategory::latest()->get();
+        $subcategory = HotelSubCategory::findOrFail($id);
+        return view('backend.pages.hotel-restaurant.subcategory.show', compact('subcategory', 'categories'));
     }
 
     /**
@@ -57,7 +83,9 @@ class HotelSubCategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $categories  = HotelCategory::latest()->get();
+        $subcategory = HotelSubCategory::findOrFail($id);
+        return view('backend.pages.hotel-restaurant.subcategory.edit', compact('subcategory', 'categories'));
     }
 
     /**
@@ -69,7 +97,24 @@ class HotelSubCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'en_name'           => 'required',
+            'bn_name'           => 'required',
+            'hotel_category_id' => 'required',
+        ]);
+
+        $subcategory                    = HotelSubCategory::findOrFail($id);
+        $subcategory->en_name           = $request->en_name;
+        $subcategory->bn_name           = $request->bn_name;
+        $subcategory->hotel_category_id = $request->hotel_category_id;
+        $subcategory->updated_by        = Auth::user()->id;
+        $subcategory->slug              = str_replace(' ', '-', $request->en_name);
+        $subcategory->save();
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Hotel SubCategory Updated Successfully!',
+        ], 200);
     }
 
     /**
@@ -80,6 +125,12 @@ class HotelSubCategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $subcategory = HotelSubCategory::findOrFail($id);
+        $subcategory->delete();
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Hotel SubCategory Deleted Successfully!',
+        ], 200);
     }
 }

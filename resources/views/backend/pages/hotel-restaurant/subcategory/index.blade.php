@@ -1,19 +1,19 @@
-@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'HotelCategory'])
+@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'HotelSubcategory'])
 @push('style')
 @endpush
-@section('title', 'Hotel Category')
+@section('title', 'Family Subcategory')
 @section('content')
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Hotel Category</h1>
+                    <h1>Hotel Subcategory</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.hotel-category.index') }}">Hotel
-                                Category</a></li>
+                        {{-- {{route('death.index')}} --}}
+                        <li class="breadcrumb-item"><a href="">Hotel Subcategory</a></li>
                         <li class="breadcrumb-item active">View</li>
                     </ol>
                 </div>
@@ -33,12 +33,14 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-md-6 text-left">
-                                    <h3 class="card-title">Hotel Category List</h3>
+                                    <h3 class="card-title">Family Subcategory List</h3>
                                 </div>
                                 <div class="col-md-6 text-right">
-                                    <a href="{{ route('basic-settings.hotel-category.create') }}"
+                                    {{-- {{route('death.create')}} --}}
+                                    <a href="{{ route('basic-settings.hotel-subcategory.create') }}"
                                         class="btn btn-primary">Create</a>
                                 </div>
+
                             </div>
                         </div>
                         <!-- /.card-header -->
@@ -50,39 +52,45 @@
                                         <tr>
                                             <th>Sl.</th>
                                             <th>Name</th>
-                                            <th>Bengali Name</th>
-                                            <th>Created at</th>
+                                            <th>Bangla Name</th>
+                                            <th>Hotel Category</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
-                                        @if ($categories)
-                                            @foreach ($categories as $key => $item)
+                                        @if ($subcategories)
+                                            @foreach ($subcategories as $key => $subcategory)
                                                 <tr>
                                                     <td>{{ ++$key }}</td>
-                                                    <td>{{ $item->en_name }}</td>
-                                                    <td>{{ $item->bn_name }}</td>
-                                                    <td>{{ date('d M, Y', strtotime($item->updated_at)) }}</td>
+                                                    <td>{{ $subcategory->en_name }}</td>
+                                                    <td>{{ $subcategory->bn_name }}</td>
+                                                    <td>
+                                                        @if ($subcategory->hotel_category_id)
+                                                            {{ $subcategory->category->en_name }}
+                                                        @endif
+
+
+                                                    </td>
                                                     <td>
                                                         <div class="table-action">
-                                                            <a class="btn btn-sm btn-primary" title="Edit"
-                                                                data-toggle="tooltip"
-                                                                href="{{ route('basic-settings.hotel-category.edit', $item->id) }}"><i
+                                                            <a class="btn btn-sm btn-primary" data-toggle="tooltip"
+                                                                title="Edit"
+                                                                href="{{ route('basic-settings.hotel-subcategory.edit', $subcategory->id) }}"><i
                                                                     class="fa fa-edit"></i></a>
-                                                            <a class="btn btn-sm btn-info" title="Show"
-                                                                data-toggle="tooltip"
-                                                                href="{{ route('basic-settings.hotel-category.show', $item->id) }}"><i
+                                                            <a class="btn btn-sm btn-info" data-toggle="tooltip"
+                                                                title="Show"
+                                                                href="{{ route('basic-settings.hotel-subcategory.show', $subcategory->id) }}"><i
                                                                     class="fa fa-eye"></i></a>
 
-                                                            <form class="deleteCategory" method="post">
+                                                            <form class="deleteSubCategory" method="post">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <input type="hidden" class="id" name="id"
-                                                                    value="{{ $item->id }}">
+                                                                    value="{{ $subcategory->id }}">
                                                                 <input type="hidden" class="deleteUrl" name="deleteUrl"
-                                                                    value="{{ route('basic-settings.hotel-category.destroy', $item->id) }}">
-                                                                <button type="submit" title="Delete" data-toggle="tooltip"
+                                                                    value="{{ route('basic-settings.hotel-subcategory.destroy', $subcategory->id) }}">
+                                                                <button type="submit" data-toggle='tooltip' title="Delete"
                                                                     class="btn btn-sm btn-danger"><i
                                                                         class="fa fa-trash"></i></button>
                                                             </form>
@@ -93,7 +101,9 @@
                                         @endif
 
 
+
                                     </tbody>
+
                                 </table>
                             </div>
 
@@ -113,7 +123,7 @@
 @push('script')
     <script>
         $(document).ready(function() {
-            $(".deleteCategory").on('submit', function(e) {
+            $(".deleteSubCategory").on('submit', function(e) {
                 e.preventDefault();
                 var thisForm = $(this);
                 var formData = $(this).serialize();
@@ -140,7 +150,7 @@
                                         toastr.success(response.message);
                                         setTimeout(function() {
                                             location.href =
-                                                "{{ route('basic-settings.hotel-category.index') }}";
+                                                "{{ route('basic-settings.hotel-subcategory.index') }}";
                                         }, 2000)
                                     },
                                     error: function(xhr, status, error) {

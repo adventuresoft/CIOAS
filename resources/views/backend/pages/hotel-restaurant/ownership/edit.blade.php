@@ -1,20 +1,20 @@
-@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'FamilyCategory'])
+@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'HotelOwnership'])
 @push('style')
 @endpush
-@section('title', 'Family Category')
+@section('title', 'Hotel Ownership')
 @section('content')
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Family Category</h1>
+                    <h1>Edit Hotel Ownership</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.family-category.index') }}">Family
-                                Category</a></li>
-                        <li class="breadcrumb-item active">Create</li>
+                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.hotel-ownership.index') }}">Hotel
+                                Ownership</a></li>
+                        <li class="breadcrumb-item active">Edit</li>
                     </ol>
                 </div>
             </div>
@@ -31,29 +31,31 @@
                     <!-- Horizontal Form -->
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Family Category Info</h3>
+                            <h3 class="card-title">Hotel Ownership Info</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form class="form-horizontal" id="familyCateogryForm" method="POST" enctype="multipart/form-data">
+                        <form class="form-horizontal" id="hotelOwnershipForm" method="POST" enctype="multipart/form-data">
                             @csrf
+                            @method('PUT')
                             <div class="card-body">
 
                                 <div class="form-group row">
-                                    <label for="en_name" class="col-sm-2 col-form-label">Category <span class="text-danger"
-                                            data-toggle="tooltip" title="Required">*</span></label>
+                                    <label for="en_name" class="col-sm-2 col-form-label">Ownership Name <span
+                                            class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="en_name" placeholder="Family Category Name"
-                                            class="form-control" id="en_name">
+                                        <input type="text" name="en_name" value="{{ $ownership->en_name }}"
+                                            placeholder="Hotel Ownership" class="form-control" id="en_name">
                                         <small class="text-danger error en_name_error"></small>
+
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="bn_name" class="col-sm-2 col-form-label">Category Bangla <span
+                                    <label for="bn_name" class="col-sm-2 col-form-label">Ownership Bangla <span
                                             class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="bn_name" placeholder="Family Category Name In Bangla"
-                                            class="form-control" id="bn_name">
+                                        <input type="text" name="bn_name" value="{{ $ownership->bn_name }}"
+                                            placeholder="Family Category Bangla" class="form-control" id="bn_name">
                                         <small class="text-danger error bn_name_error"></small>
 
                                     </div>
@@ -64,10 +66,11 @@
                             <!-- /.card-body -->
                             <div class="card-footer">
                                 <div class="form-group row">
-                                    <a href="{{ route('basic-settings.family-category.index') }}"
+                                    {{-- {{route('death.index')}} --}}
+                                    <a href="{{ route('basic-settings.hotel-ownership.index') }}"
                                         class="btn btn-default float-right">Cancel</a>
                                     <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-info">Submit</button>
+                                        <button type="submit" class="btn btn-info">Update</button>
                                     </div>
                                 </div>
                             </div>
@@ -87,12 +90,12 @@
     <script>
         $(document).ready(function() {
             $(".select2").select2();
-            $("#familyCateogryForm").on('submit', function(e) {
+            $("#hotelOwnershipForm").on('submit', function(e) {
                 e.preventDefault();
                 let thisForm = $(this);
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('basic-settings.family-category.store') }}",
+                    url: "{{ route('basic-settings.hotel-ownership.update', $ownership->id) }}",
                     data: new FormData(this),
                     dataType: "json",
                     contentType: false,
@@ -101,14 +104,13 @@
                     beforeSend: function() {
                         thisForm.find('button[type="submit"]').prop("disabled", true);
                         $('.error').text('');
-
                     },
                     success: function(response) {
                         thisForm.find('button[type="submit"]').prop("disabled", false);
                         toastr.success(response.message);
                         setTimeout(function() {
                             location.href =
-                                "{{ route('basic-settings.family-category.index') }}";
+                                "{{ route('basic-settings.hotel-ownership.index') }}";
                         }, 2000)
                     },
                     error: function(xhr, status, error) {
