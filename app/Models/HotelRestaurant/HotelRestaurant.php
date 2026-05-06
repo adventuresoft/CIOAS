@@ -31,29 +31,7 @@ class HotelRestaurant extends Model
 
     public static $snakeAttributes = false;
     protected     $table           = "hotel_restaurants";
-    // protected $fillable = [
-    //     'system_id',
-    //     'name',
-    //     'bn_name',
-    //     'institute_id',
-    //     'organization_category_id',
-    //     'organization_subcategory_id',
-    //     'organization_work_area_id',
-    //     'organization_type_id',
-    //     'rjsc_reg_no',
-    //     'organization_ownership_type_id',
-    //     'no_of_owner',
-    //     'village_id',
-    //     'union_ward_id',
-    //     'village_area_id',
-    //     'road_id',
-    //     'house_id',
-    //     'capital',
-    //     'application_type',
-    //     'establish_year',
-    //     'remarks',
-    //     'status'
-    // ];
+
 
     protected $fillable = [
         'institute_id',
@@ -71,7 +49,6 @@ class HotelRestaurant extends Model
         'district_id',
         'thana_id',
         'post_office_id',
-        'union_id',
         'village_id',
         'ward_id',
         'road',

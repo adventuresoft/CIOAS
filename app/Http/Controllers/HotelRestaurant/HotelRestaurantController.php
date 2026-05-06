@@ -101,10 +101,8 @@ class HotelRestaurantController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'id'                             => 'nullable|integer',
-
             'name'                           => 'required|max:190',
             'bn_name'                        => 'nullable|max:190',
-
             'organization_category_id'       => 'nullable|integer',
             'organization_subcategory_id'    => 'nullable|integer',
             'organization_work_area_id'      => 'nullable|array',
@@ -141,8 +139,7 @@ class HotelRestaurantController extends Controller
             'office_house_bn'                => 'nullable|max:190',
             'no_of_dir'                      => 'nullable|integer',
             'premises_ownership'             => 'nullable|in:owned,rented',
-            // 'owned_document_file.*'          => 'nullable|image|max:2048',
-
+            'document_files.*'               => 'nullable|image|max:2048',
             'status'                         => 'nullable|boolean',
         ]);
 
@@ -174,54 +171,49 @@ class HotelRestaurantController extends Controller
 
         try {
             $payload = [
-                'name'                           => $request->name,
-                'bn_name'                        => $request->bn_name,
+                'name'                        => $request->name,
+                'bn_name'                     => $request->bn_name,
 
-                'institute_id'                   => Auth::user()->institute_id,
+                'institute_id'                => Auth::user()->institute_id,
 
-                'organization_category_id'       => $request->organization_category_id,
-                'organization_subcategory_id'    => $request->organization_subcategory_id,
-                'organization_work_area_id'      => !empty($request->organization_work_area_id)
+                'organization_category_id'    => $request->organization_category_id,
+                'organization_subcategory_id' => $request->organization_subcategory_id,
+                'organization_work_area_id'   => !empty($request->organization_work_area_id)
                     ? json_encode($request->organization_work_area_id)
                     : null,
-                'organization_type_id'           => $request->organization_type_id,
-                'organization_ownership_type_id' => $request->organization_ownership_type_id,
-
-                'rjsc_reg_no'                    => $request->rjsc_reg_no,
-                'no_of_owner'                    => $request->no_of_owner,
-                'no_of_dir'                      => $request->no_of_dir,
+                'organization_type_id'        => $request->organization_type_id,
+                'rjsc_reg_no'                 => $request->rjsc_reg_no,
+                'no_of_owner'                 => $request->no_of_owner,
+                'no_of_dir'                   => $request->no_of_dir,
 
                 // Address fields
-                'division_id'                    => $request->division_id,
-                'district_id'                    => $request->district_id,
-                'thana_id'                       => $request->thana_id,
-                'post_office_id'                 => $request->post_office_id,
-                'union_id'                       => $request->union_id,
-                'village_id'                     => $request->village_id,
-                'ward_id'                        => $request->ward_id,
-                'road'                           => $request->road,
-                'house'                          => $request->house,
-                'house_bn'                       => $request->house_bn,
-                'office_division_id'             => $request->office_division_id,
-                'office_district_id'             => $request->office_district_id,
-                'office_thana_id'                => $request->office_thana_id,
-                'office_post_office_id'          => $request->office_post_office_id,
-                'office_village_id'              => $request->office_village_id,
-                'office_ward_id'                 => $request->office_ward_id,
-                'office_road'                    => $request->office_road,
-                'office_house'                   => $request->office_house,
-                'office_house_bn'                => $request->office_house_bn,
-                'premises_ownership'             => $request->premises_ownership,
+                'division_id'                 => $request->division_id,
+                'district_id'                 => $request->district_id,
+                'thana_id'                    => $request->thana_id,
+                'post_office_id'              => $request->post_office_id,
+                'union_id'                    => $request->union_id,
+                'village_id'                  => $request->village_id,
+                'ward_id'                     => $request->ward_id,
+                'road'                        => $request->road,
+                'house'                       => $request->house,
+                'house_bn'                    => $request->house_bn,
+                'office_division_id'          => $request->office_division_id,
+                'office_district_id'          => $request->office_district_id,
+                'office_thana_id'             => $request->office_thana_id,
+                'office_post_office_id'       => $request->office_post_office_id,
+                'office_village_id'           => $request->office_village_id,
+                'office_ward_id'              => $request->office_ward_id,
+                'office_road'                 => $request->office_road,
+                'office_house'                => $request->office_house,
+                'office_house_bn'             => $request->office_house_bn,
+                'premises_ownership'          => $request->premises_ownership,
 
-                'capital'                        => $request->capital,
-                'establish_year'                 => $request->establish_year,
-                'application_type'               => $request->application_type,
-                'remarks'                        => $request->remarks,
-
-                // rented_document_files
-                'document_files'                 => $document_files ?? null,
-                // 'status' => $request->has('status') ? $request->status : 1,
-                'status'                         => 0,
+                'capital'                     => $request->capital,
+                'establish_year'              => $request->establish_year,
+                'application_type'            => $request->application_type,
+                'remarks'                     => $request->remarks,
+                'document_files'              => $document_files ?? null,
+                'status'                      => 0,
             ];
 
 

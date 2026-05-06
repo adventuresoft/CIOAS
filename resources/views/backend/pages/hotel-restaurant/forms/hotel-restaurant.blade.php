@@ -94,92 +94,6 @@
     </div>
 
 
-    <!-- {{-- Village --}}-->
-    <!-- <div class="form-group row">-->
-    <!--    <label for="village_id" class="col-sm-2 col-form-label">Village</label>-->
-    <!--    <div class="col-sm-9">-->
-    <!--        <select class="form-control" id="village_id" name="village_id">-->
-    <!--            <option value="">Select Village</option>-->
-    <!--            @if (count($villages))
--->
-    <!--                @foreach ($villages as $village)
--->
-    <!--                    <option value="{{ $village->id }}">{{ $village->en_name }}</option>-->
-    <!--
-@endforeach-->
-    <!--
-@endif-->
-    <!--        </select>-->
-    <!--    </div>-->
-    <!--</div>-->
-
-    <!-- {{-- Ward No. --}}-->
-    <!-- <div class="form-group row">-->
-    <!--    <label for="ward_no_id" class="col-sm-2 col-form-label">Ward No.</label>-->
-    <!--    <div class="col-sm-9">-->
-    <!--        <select  class="form-control select2" name="union_ward_id" id="ward_no_id">-->
-    <!--            <option value="">Ward No.</option>-->
-    <!--            @if (count($wards))
--->
-    <!--                @foreach ($wards as $ward)
--->
-    <!--                    <option value="{{ $ward->id }}"-->
-    <!--                        {{ isset($organization->union_ward_id) ? ($organization->union_ward_id == $ward->id ? 'selected' : '') : '' }}>-->
-    <!--                        {{ $ward->en_ward_no }}</option>-->
-    <!--
-@endforeach-->
-    <!--
-@endif-->
-    <!--        </select>-->
-    <!--    </div>-->
-    <!--</div>-->
-
-    <!--{{-- Area --}}-->
-    <!--<div class="form-group row">-->
-    <!--    <label for="village_area_id" class="col-sm-2 col-form-label">Area</label>-->
-    <!--    <div class="col-sm-9">-->
-    <!--        <select class="form-control" id="village_area_id" name="village_area_id">-->
-    <!--            <option value="">Select Village Area</option>-->
-    <!--        </select>-->
-    <!--    </div>-->
-    <!--</div>-->
-
-    <!-- {{-- Road --}}-->
-    <!-- <div class="form-group row">-->
-    <!--    <label for="road_id" class="col-sm-2 col-form-label">Road</label>-->
-    <!--    <div class="col-sm-9">-->
-    <!--        <select  class="form-control select2" name="road_id" id="road_id">-->
-    <!--            <option value="">Select Road</option>-->
-    <!--            @if (count($roads))
--->
-    <!--                @foreach ($roads as $road)
--->
-    <!--                    <option value="{{ $road->id }}"-->
-    <!--                        {{ isset($organization->road_id) ? ($organization->road_id == $road->id ? 'selected' : '') : '' }}>-->
-    <!--                        {{ $road->name }}</option>-->
-    <!--
-@endforeach-->
-    <!--
-@endif-->
-    <!--        </select>-->
-    <!--    </div>-->
-    <!--</div>-->
-
-    <!--{{-- House --}}-->
-    <!--<div class="form-group row">-->
-    <!--    <label for="house_id" class="col-sm-2 col-form-label">House</label>-->
-    <!--    <div class="col-sm-9">-->
-    <!--        <select  class="form-control select2" name="house_id" id="house_id">-->
-    <!--            @if (isset($organization->house_id))
--->
-    <!--                <option value="{{ $organization->house_id }}">{{ $organization->house->en_name }}</option>-->
-    <!--
-@endif-->
-    <!--        </select>-->
-    <!--    </div>-->
-    <!--</div>-->
-
-
     <div class="form-group row">
         <div class="col-sm-12">
             <h5 class="text-secondary mb-2">Registered Address</h5>
@@ -577,53 +491,6 @@
 
 @push('script')
     <script>
-        $(document).on('change', '#organization_ownership_type_id', function(e) {
-            e.preventDefault();
-            if ($(this).val() == 2) {
-                $('.number_of_owner').removeClass('d-none');
-            } else {
-                $('.number_of_owner').removeClass('d-none').addClass('d-none');
-            }
-        })
-
-        $(document).on('change', 'input[name="premises_ownership"]', function() {
-            if ($(this).val() === 'owned') {
-                $('.premises-docs-owned').removeClass('d-none');
-                $('.premises-docs-rented').addClass('d-none');
-            } else if ($(this).val() === 'rented') {
-                $('.premises-docs-rented').removeClass('d-none');
-                $('.premises-docs-owned').addClass('d-none');
-            }
-        })
-
-        $(document).on('click', '.add-doc-row', function() {
-            let target = $(this).data('target');
-            let listSelector = target === 'owned' ? '.premises-docs-owned-list' : '.premises-docs-rented-list';
-            let nameField = target === 'owned' ? 'owned_document_name[]' : 'rented_document_name[]';
-            let fileField = target === 'owned' ? 'owned_document_file[]' : 'rented_document_file[]';
-
-            let row = [
-                '<div class="row align-items-center mb-2 premises-doc-row">',
-                '  <div class="col-sm-5">',
-                '    <input type="text" name="' + nameField +
-                '" class="form-control" placeholder="Document Name">',
-                '  </div>',
-                '  <div class="col-sm-5">',
-                '    <input type="file" name="' + fileField + '" class="form-control-file">',
-                '  </div>',
-                '  <div class="col-sm-2 text-right">',
-                '    <button type="button" class="btn btn-danger btn-sm remove-doc-row">-</button>',
-                '  </div>',
-                '</div>'
-            ].join('');
-
-            $(listSelector).append(row);
-        })
-
-        $(document).on('click', '.remove-doc-row', function() {
-            $(this).closest('.premises-doc-row').remove();
-        })
-
         $(document).on('change', '#organization_category_id', function(e) {
             e.preventDefault();
             let _this_value = $(this).val();
@@ -645,23 +512,6 @@
                     }
 
                 });
-                //   $.ajax({
-                //     type: "GET",
-                //     url: "{{ url('organization-type-options') }}/"+_this_value,
-                //     beforeSend: function() {
-                //         $('#organization_type_id').prop("disabled", true);
-                //         console.log("Searcing organization type");
-                //     },
-                //     success: function(response) {
-                //         $('#organization_type_id').html(response)
-                //         $('#organization_type_id').prop("disabled", false);
-                //     },
-                //     error: function(xhr, status, error) {
-                //         $('#organization_type_id').prop("disabled", false);
-                //         var responseText = jQuery.parseJSON(xhr.responseText);
-                //         toastr.error(responseText.message);
-                //     }
-                //   });
             }
         })
 
@@ -670,7 +520,6 @@
         $('#no_of_owner_div').hide();
         $('#no_of_dir_div').hide();
         $(document).on('change', '#organization_type_id', function(e) {
-
             let or_type_id = $(this).val();
             if (or_type_id == 2) {
                 $('#rjsc_reg_no_div').hide();
@@ -853,37 +702,6 @@
             } else {
                 union_id.prop("disabled", true);
             }
-        })
-
-
-        $(document).on('change', '#union_id', function(e) {
-            e.preventDefault();
-            let union_id = $(this).val();
-            let village_id = $('#village_id');
-            if (union_id) {
-                $.ajax({
-                    type: "GET",
-
-                    url: "{{ url('/get-villages-by-union') }}/" + union_id,
-                    beforeSend: function() {
-                        village_id.prop("disabled", true);
-                        console.log("Searcing Villege");
-                    },
-                    success: function(response) {
-                        village_id.html(response.villageOptions)
-                        village_id.prop("disabled", false);
-                        $("#road").html(response.roadOptions);
-                    },
-                    error: function(xhr, status, error) {
-                        village_id.prop("disabled", true);
-                        var responseText = jQuery.parseJSON(xhr.responseText);
-                        toastr.error(responseText.message);
-                    }
-                });
-            } else {
-                village_id.prop("disabled", true);
-            }
-
         })
 
 
