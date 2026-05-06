@@ -133,4 +133,24 @@ class HotelSubCategoryController extends Controller
             'message' => 'Hotel SubCategory Deleted Successfully!',
         ], 200);
     }
+
+
+
+    public function options($id)
+    {
+        $html = '<option value="">Select Subcategory</option>';
+
+        $subcategories = HotelSubCategory::where('hotel_category_id', $id)->get();
+
+        if (count($subcategories)) {
+            foreach ($subcategories as $subcategory) {
+                $html .= '<option value="' . $subcategory->id . '">' . $subcategory->en_name . '</option>';
+            }
+        }
+
+        $html .= '';
+
+        return $html;
+
+    }
 }

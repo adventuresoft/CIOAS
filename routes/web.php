@@ -229,6 +229,7 @@ Route::get('/house-single-ownership-form', [ HouseOwnershipController::class, 'l
 Route::get('/house-ownership-remove/{id}', [ HouseOwnershipController::class, 'destroy' ]);
 
 Route::get('/organization-subcategory-options/{id}', [ OrganizationSubCategoryController::class, 'options' ]);
+Route::get('/hotel-subcategory-options/{id}', [ HotelSubCategoryController::class, 'options' ]);
 Route::get('/house-options/{id}', [ HouseController::class, 'options' ]);
 Route::get('/organization-work-area-options/{id}', [ OrganizationWorkAreaController::class, 'options' ]);
 Route::get('/organization-type-options/{id}', [ OrganizationTypeController::class, 'options' ]);

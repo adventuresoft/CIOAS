@@ -2,7 +2,7 @@
 
 namespace App\Models\HotelRestaurant;
 
-use App\Models\BasicSettings\OrganizationCategory;
+use App\Models\HotelRestaurant\HotelCategory;
 use App\Models\BasicSettings\OrganizationSubCategory;
 use App\Models\BasicSettings\Village;
 use App\Models\House;
@@ -92,13 +92,14 @@ class HotelRestaurant extends Model
         'application_type',
         'remarks',
         'status',
+        'document_files'
     ];
 
     public static function boot()
     {
         parent::boot();
         self::creating(function ($model) {
-            $model->system_id = IdGenerator::generate([ 'table' => 'organizations', 'field' => 'system_id', 'length' => 11, 'prefix' => date("Ymd") ]);
+            $model->system_id = IdGenerator::generate([ 'table' => 'hotel_restaurants', 'field' => 'system_id', 'length' => 11, 'prefix' => date("Ymd") ]);
         });
     }
 
@@ -179,33 +180,21 @@ class HotelRestaurant extends Model
 
     public function category()
     {
-        return $this->belongsTo(OrganizationCategory::class, 'organization_category_id', 'id');
+        return $this->belongsTo(HotelCategory::class, 'hotel_category_id', 'id');
     }
 
     public function subcategory()
     {
-        return $this->belongsTo(OrganizationSubCategory::class, 'organization_subcategory_id', 'id');
+        return $this->belongsTo(HotelSubCategory::class, 'hotel_subcategory_id', 'id');
     }
 
-    public function house()
-    {
-        return $this->belongsTo(House::class, 'house_id', 'id');
-    }
 
-    public function road()
-    {
-        return $this->belongsTo(Road::class, 'road_id', 'id');
-    }
 
     public function villageArea()
     {
         return $this->belongsTo(VillageArea::class, 'village_area_id', 'id');
     }
 
-    // public function village()
-    // {
-    //     return $this->belongsTo(Village::class, 'village_id', 'id');
-    // }
 
     public function type()
     {

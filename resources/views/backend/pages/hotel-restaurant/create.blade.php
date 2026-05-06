@@ -39,7 +39,7 @@
 
                             <input type="hidden" name="id" value="">
 
-                            @include('backend.pages.HotelRestaurant.forms.hotel-restaurant', [
+                            @include('backend.pages.hotel-restaurant.forms.hotel-restaurant', [
                                 'organization' => null,
                             ])
 

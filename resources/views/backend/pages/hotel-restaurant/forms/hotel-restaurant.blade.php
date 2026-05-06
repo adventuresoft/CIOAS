@@ -40,6 +40,7 @@
         <div class="col-sm-4">
             <label for="organization_type_id">Type</label>
             <select class="form-control select2" name="organization_type_id" id="organization_type_id">
+                <option value="">Select Type</option>
                 @if (isset($types))
                     @foreach ($types as $type)
                         <option value="{{ $type->id }}"
@@ -53,10 +54,20 @@
 
     {{-- Organization Type, RJSC Reg., Capital, Established Year, Application Type --}}
     <div class="form-group row">
-        <div class="col-sm-4">
+        <div class="col-sm-4" id="rjsc_reg_no_div">
             <label for="rjsc_reg_no">RJSC Reg.</label>
             <input type="text" name="rjsc_reg_no" value="{{ $organization->rjsc_reg_no ?? '' }}"
                 placeholder="RJSC Reg. No." class="form-control" id="rjsc_reg_no">
+        </div>
+        <div class="col-sm-4" id="no_of_owner_div">
+            <label for="no_of_owner">Owner</label>
+            <input type="text" name="no_of_owner" value="{{ $organization->no_of_owner ?? '' }}"
+                placeholder="Number of Owners" class="form-control" id="no_of_owner">
+        </div>
+        <div class="col-sm-4" id="no_of_dir_div">
+            <label for="no_of_dir">Director</label>
+            <input type="text" name="no_of_dir" value="{{ $organization->no_of_dir ?? '' }}"
+                placeholder="Number of Directors" class="form-control" id="no_of_dir">
         </div>
         <div class="col-sm-4">
             <label for="capital">Capital</label>
@@ -619,7 +630,7 @@
             if (_this_value) {
                 $.ajax({
                     type: "GET",
-                    url: "{{ url('organization-subcategory-options') }}/" + _this_value,
+                    url: "{{ url('hotel-subcategory-options') }}/" + _this_value,
                     beforeSend: function() {
                         $('#organization_subcategory_id').prop("disabled", true);
                         console.log("Searcing organization category");
@@ -653,6 +664,29 @@
                 //   });
             }
         })
+
+        // organization_type_id change
+        $('#rjsc_reg_no_div').hide();
+        $('#no_of_owner_div').hide();
+        $('#no_of_dir_div').hide();
+        $(document).on('change', '#organization_type_id', function(e) {
+
+            let or_type_id = $(this).val();
+            if (or_type_id == 2) {
+                $('#rjsc_reg_no_div').hide();
+                $('#no_of_dir_div').hide();
+                $('#no_of_owner_div').show();
+            } else if (or_type_id == 3) {
+                $('#no_of_owner_div').hide();
+                $('#rjsc_reg_no_div').show();
+                $('#no_of_dir_div').show();
+            } else if (or_type_id == 1) {
+                $('#rjsc_reg_no_div').hide();
+                $('#no_of_owner_div').hide();
+                $('#no_of_dir_div').hide();
+            }
+
+        });
 
         $(document).on('change', '#organization_subcategory_id', function(e) {
             e.preventDefault();
