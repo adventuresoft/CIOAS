@@ -3,6 +3,7 @@
 namespace App\Models\HotelRestaurant;
 
 use App\Models\HotelRestaurant\HotelCategory;
+use App\Models\HotelRestaurant\HotelOwnerShip;
 use App\Models\BasicSettings\OrganizationSubCategory;
 use App\Models\BasicSettings\Village;
 use App\Models\House;
@@ -38,11 +39,11 @@ class HotelRestaurant extends Model
         'application_id',
         'name',
         'bn_name',
-        'organization_category_id',
-        'organization_subcategory_id',
-        'organization_work_area_id',
-        'organization_type_id',
-        'organization_ownership_type_id',
+        'hotel_category_id',
+        'hotel_subcategory_id',
+        'hotel_work_area_id',
+        'hotel_type_id',
+        'hotel_ownership_type_id',
         'rjsc_reg_no',
         'no_of_owner',
         'division_id',
@@ -175,7 +176,7 @@ class HotelRestaurant extends Model
 
     public function type()
     {
-        return $this->belongsTo(OrganizationType::class, 'organization_type_id', 'id');
+        return $this->belongsTo(HotelOwnerShip::class, 'hotel_type_id', 'id');
     }
 
     public function institute()

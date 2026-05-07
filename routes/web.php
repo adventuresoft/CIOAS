@@ -384,6 +384,8 @@ Route::group([ 'prefix' => 'dashboard', 'middleware' => [ 'auth' ] ], function (
 
     // HotelRestaurantController
 
+    Route::post('hotel-restaurant/approve', [ HotelRestaurantController::class, 'approve' ])->name('hotel-restaurant.approve');
+
     Route::resource('hotel-restaurant', HotelRestaurantController::class);
 
     Route::resource('chairman', ChairmanController::class);

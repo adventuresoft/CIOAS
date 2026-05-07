@@ -48,14 +48,8 @@
 
                                 <!-- Organization Name Filter -->
                                 <div class="col-md-2">
-                                    <input type="text" id="search_org_name" class="form-control form-control-sm"
-                                        placeholder="Organization Name">
-                                </div>
-
-                                <!-- Owner Name Filter -->
-                                <div class="col-md-2">
-                                    <input type="text" id="search_owner_name" class="form-control form-control-sm"
-                                        placeholder="Owner Name">
+                                    <input type="text" id="search_hotel_name" class="form-control form-control-sm"
+                                        placeholder="Hotel & Restaurant Name">
                                 </div>
 
                                 <!-- Category Filter -->
@@ -82,10 +76,10 @@
                                     <tr>
                                         <th>Sl.</th>
                                         <th>Application ID</th>
-                                        <th>Orgazition Name</th>
-                                        <th>Owner Name</th>
+                                        <th>Hotel & Restaurant Name</th>
                                         <th>Category</th>
                                         <th>Subcategory</th>
+                                        <th>Status</th>
                                         <th>Applied Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -98,38 +92,42 @@
                                                 <td>{{ ++$key }}</td>
                                                 <td>{{ $organization->application_id }}</td>
                                                 <td>{{ $organization->name }}</td>
+                                                <td>{{ optional($organization->category)->en_name ?? '' }}</td>
+                                                <td>{{ optional($organization->subcategory)->en_name ?? '' }}</td>
                                                 <td>
-                                                    @php
-                                                        $owner = $organization->ownership->first() ?? null;
-                                                    @endphp
-                                                    <div>{{ $owner?->user?->name ?? ($owner?->user_name ?? '-') }}</div>
-                                                    <div>{{ $owner?->user?->people?->bn_name ?? '-' }}</div>
+                                                    @if ($organization->status == 1)
+                                                        <span class="badge badge-success">Approved</span>
+                                                    @elseif($organization->status == 0)
+                                                        <span class="badge badge-warning">Pending</span>
+                                                    @else
+                                                        <span class="badge badge-danger">Rejected</span>
+                                                    @endif
                                                 </td>
-                                                <td>{{ $organization->category->en_name }}</td>
-                                                <td>{{ $organization->subcategory?->en_name }}</td>
-
                                                 <td>
                                                     {{ date('d-m-Y', strtotime($organization->created_at)) }}
                                                 </td>
                                                 <td>
                                                     <div class="d-flex">
                                                         @if (view_permission())
-                                                            <a href="{{ route('organization.edit', $organization->id) }}"
+                                                            <a href="{{ route('hotel-restaurant.edit', $organization->id) }}"
                                                                 title="Edit" class="btn btn-primary btn-sm mx-1"><i
                                                                     class="fa fa-edit"></i></a>
                                                         @endif
                                                         @if (view_permission())
-                                                            <a href="{{ route('organization.show', $organization->id) }}"
+                                                            <a href="{{ route('hotel-restaurant.show', $organization->id) }}"
                                                                 title="View" class="btn btn-info btn-sm mx-1"><i
                                                                     class="fa fa-eye"></i></a>
 
 
-                                                            <!--<form class="deleteHouse" method="post">-->
-                                                            <!--  @csrf-->
-                                                            <!--  @method('Delete')-->
-                                                            <!--  <input type="hidden" class="deleteUrl" name="delete_url" value="{{ route('organization.destroy', $organization->id) }}">-->
-                                                            <!--  <button type="submit" class="btn btn-danger mx-2" title="Delete"><i class="fa fa-trash"></i></button>-->
-                                                            <!--</form>-->
+                                                            <form class="deleteHouse" method="post">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <input type="hidden" class="deleteUrl" name="delete_url"
+                                                                    value="{{ route('hotel-restaurant.destroy', $organization->id) }}">
+                                                                <button type="submit" data-toggle='tooltip' title="Delete"
+                                                                    class="btn btn-sm btn-danger"><i
+                                                                        class="fa fa-trash"></i></button>
+                                                            </form>
                                                         @endif
                                                     </div>
                                                 </td>
@@ -157,48 +155,7 @@
 @push('script')
     <script>
         $(document).ready(function() {
-            let table = $('#example1').DataTable({
-                dom: 'rtip',
-                responsive: true,
-                autoWidth: false,
-                pageLength: 10,
-                lengthChange: false,
-                order: [
-                    [0, 'asc']
-                ],
-                columnDefs: [{
-                    targets: 7,
-                    orderable: false
-                }],
-                language: {
-                    emptyTable: '<div class="empty-state"><i class="fas fa-folder-open"></i><h5>No data available</h5></div>',
-                    zeroRecords: '<div class="empty-state"><i class="fas fa-folder-open"></i><h5>No matching records found</h5></div>'
-                }
-            });
 
-            $('#search_org_name').keyup(function() {
-                table.column(2).search(this.value).draw();
-            });
-
-            $('#search_owner_name').keyup(function() {
-                table.column(3).search(this.value).draw();
-            });
-
-            $('#search_category').keyup(function() {
-                table.column(4).search(this.value).draw();
-            });
-
-            $('#search_subcategory').keyup(function() {
-                table.column(5).search(this.value).draw();
-            });
-
-            $('#search_global').keyup(function() {
-                table.search(this.value).draw();
-            });
-
-            $('#tableLength').change(function() {
-                table.page.len($(this).val()).draw();
-            });
 
             $(".deleteHouse").on('submit', function(e) {
                 e.preventDefault();
@@ -246,6 +203,47 @@
                         }
                     });
             })
+
+            let table = $('#example1').DataTable({
+                dom: 'rtip',
+                responsive: true,
+                autoWidth: false,
+                pageLength: 10,
+                lengthChange: false,
+                order: [
+                    [0, 'asc']
+                ],
+                columnDefs: [{
+                    targets: 6,
+                    orderable: false
+                }],
+                language: {
+                    emptyTable: '<div class="empty-state"><i class="fas fa-folder-open"></i><h5>No data available</h5></div>',
+                    zeroRecords: '<div class="empty-state"><i class="fas fa-folder-open"></i><h5>No matching records found</h5></div>'
+                }
+            });
+
+            $('#search_hotel_name').keyup(function() {
+                table.column(2).search(this.value).draw();
+            });
+
+
+            $('#search_category').keyup(function() {
+                table.column(3).search(this.value).draw();
+            });
+
+            $('#search_subcategory').keyup(function() {
+                table.column(4).search(this.value).draw();
+            });
+
+            $('#search_global').keyup(function() {
+                table.search(this.value).draw();
+            });
+
+            $('#tableLength').change(function() {
+                table.page.len($(this).val()).draw();
+            });
+
         });
     </script>
 @endpush

@@ -22,7 +22,7 @@
                 @if (count($categories))
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}"
-                            {{ isset($organization->organization_category_id) ? ($organization->organization_category_id == $category->id ? 'selected' : '') : '' }}>
+                            {{ isset($organization->hotel_category_id) ? ($organization->hotel_category_id == $category->id ? 'selected' : '') : '' }}>
                             {{ $category->en_name }}</option>
                     @endforeach
                 @endif
@@ -31,20 +31,20 @@
         <div class="col-sm-4">
             <label for="organization_subcategory_id">Sub Category</label>
             <select class="form-control select2" name="organization_subcategory_id" id="organization_subcategory_id">
-                @if (isset($organization->organization_subcategory_id))
-                    <option value="{{ $organization->organization_subcategory_id }}">
+                @if (isset($organization->hotel_subcategory_id))
+                    <option value="{{ $organization->hotel_subcategory_id }}">
                         {{ $organization->subcategory->en_name }}</option>
                 @endif
             </select>
         </div>
         <div class="col-sm-4">
-            <label for="organization_type_id">Type</label>
+            <label for="organization_type_id">Type </label>
             <select class="form-control select2" name="organization_type_id" id="organization_type_id">
-                <option value="">Select Type</option>
+                <option value="">Select Type </option>
                 @if (isset($types))
                     @foreach ($types as $type)
                         <option value="{{ $type->id }}"
-                            {{ isset($organization->organization_type_id) ? ($organization->organization_type_id == $type->id ? 'selected' : '') : '' }}>
+                            {{ isset($organization->hotel_type_id) ? ($organization->hotel_type_id == $type->id ? 'selected' : '') : '' }}>
                             {{ $type->en_name }}</option>
                     @endforeach
                 @endif
@@ -168,7 +168,7 @@
             <select name="village_id" class="form-control select2 select2bs4" id="village_id">
                 @if ($villages)
                     @foreach ($villages as $village)
-                        <option value="{{ $organization->village_id ?? '' }}"
+                        <option value="{{ $village->id ?? '' }}"
                             {{ isset($organization->village_id) && $organization->village_id == $village->id ? 'selected' : '' }}>
                             {{ $village->bn_name ?? 'Select Village' }}</option>
                     @endforeach
@@ -290,7 +290,7 @@
             <select name="office_village_id" class="form-control select2 select2bs4" id="office_village_id">
                 @if ($villages)
                     @foreach ($villages as $village)
-                        <option value="{{ $organization->office_village_id ?? '' }}"
+                        <option value="{{ $village->id ?? '' }}"
                             {{ isset($organization->office_village_id) && $organization->office_village_id == $village->id ? 'selected' : '' }}>
                             {{ $village->bn_name ?? 'Select Village' }}</option>
                     @endforeach
@@ -336,6 +336,18 @@
                 value="{{ $organization->office_house_bn ?? '' }}" placeholder="Present House Bangla">
 
             <small class="text-danger error office_house_error"></small>
+        </div>
+    </div>
+
+    <div class="row align-items-center mb-2">
+        <div class="col-sm-5">
+            <input type="text" class="form-control" value="Hotel & Restaurant Logo" readonly>
+        </div>
+        <div class="col-sm-5">
+            <input type="file" name="hotelRestaurantLogo" class="form-control-file">
+        </div>
+        <div class="col-sm-2 text-right">
+            <button type="button" class="btn btn-primary btn-sm add-doc-row" data-target="rented">+</button>
         </div>
     </div>
 
@@ -585,7 +597,7 @@
 
                 });
             } else {
-                district_id.prop("disabled", true);
+                // district_id.prop("disabled", true);
             }
         })
 
@@ -613,7 +625,7 @@
 
                 });
             } else {
-                district_id.prop("disabled", true);
+                // district_id.prop("disabled", true);
             }
         })
 
@@ -677,87 +689,97 @@
 
         })
 
-        $(document).on('change', '#thana_id', function(e) {
-            e.preventDefault();
-            let thana_id = $(this).val();
-            let union_id = $('#union_id');
-            if (thana_id) {
-                $.ajax({
-                    type: "GET",
-                    url: "{{ url('/get-unions-by-thana') }}/" + thana_id,
-                    beforeSend: function() {
-                        union_id.prop("disabled", true);
-                        console.log("Searcing Unions");
-                    },
-                    success: function(response) {
-                        union_id.html(response)
-                        union_id.prop("disabled", false);
-                    },
-                    error: function(xhr, status, error) {
-                        union_id.prop("disabled", true);
-                        var responseText = jQuery.parseJSON(xhr.responseText);
-                        toastr.error(responseText.message);
-                    }
-                });
-            } else {
-                union_id.prop("disabled", true);
-            }
-        })
+        // $(document).on('change', '#thana_id', function(e) {
+        //     e.preventDefault();
+        //     let thana_id = $(this).val();
+        //     let union_id = $('#union_id');
+        //     if (thana_id) {
+        //         $.ajax({
+        //             type: "GET",
+        //             url: "{{ url('/get-unions-by-thana') }}/" + thana_id,
+        //             beforeSend: function() {
+        //                 union_id.prop("disabled", true);
+        //                 console.log("Searcing Unions");
+        //             },
+        //             success: function(response) {
+        //                 union_id.html(response)
+        //                 union_id.prop("disabled", false);
+        //             },
+        //             error: function(xhr, status, error) {
+        //                 union_id.prop("disabled", true);
+        //                 var responseText = jQuery.parseJSON(xhr.responseText);
+        //                 toastr.error(responseText.message);
+        //             }
+        //         });
+        //     } else {
+        //         union_id.prop("disabled", true);
+        //     }
+        // })
 
 
-        $(document).on('change', '#permanent_village_id', function(e) {
-            e.preventDefault();
-            let permanent_village_area = $('#permanent_village_area_id')
-            let _this_value = $(this).val();
-            if (_this_value) {
-                $.ajax({
-                    type: "GET",
-                    url: "{{ url('/get-areas-by-village') }}/" + _this_value,
-                    beforeSend: function() {
-                        permanent_village_area.prop("disabled", true);
-                        console.log("Searcing Districts");
-                    },
-                    success: function(response) {
-                        permanent_village_area.html(response)
-                        permanent_village_area.prop("disabled", false);
-                    },
-                    error: function(xhr, status, error) {
-                        permanent_village_area.prop("disabled", true);
-                        var responseText = jQuery.parseJSON(xhr.responseText);
-                        toastr.error(responseText.message);
-                    }
+        // $(document).on('change', '#permanent_village_id', function(e) {
+        //     e.preventDefault();
+        //     let permanent_village_area = $('#permanent_village_area_id')
+        //     let _this_value = $(this).val();
+        //     if (_this_value) {
+        //         $.ajax({
+        //             type: "GET",
+        //             url: "{{ url('/get-areas-by-village') }}/" + _this_value,
+        //             beforeSend: function() {
+        //                 permanent_village_area.prop("disabled", true);
+        //                 console.log("Searcing Districts");
+        //             },
+        //             success: function(response) {
+        //                 permanent_village_area.html(response)
+        //                 permanent_village_area.prop("disabled", false);
+        //             },
+        //             error: function(xhr, status, error) {
+        //                 permanent_village_area.prop("disabled", true);
+        //                 var responseText = jQuery.parseJSON(xhr.responseText);
+        //                 toastr.error(responseText.message);
+        //             }
 
-                });
-            } else {
-                district_id.prop("disabled", true);
-            }
-        })
+        //         });
+        //     } else {
+        //         // district_id.prop("disabled", true);
+        //     }
+        // })
 
-        $(document).on('change', '#village_id', function(e) {
-            e.preventDefault();
-            let village_area_id = $('#village_area_id')
-            let _this_value = $(this).val();
-            if (_this_value) {
-                $.ajax({
-                    type: "GET",
-                    url: "{{ url('/get-areas-by-village') }}/" + _this_value,
-                    beforeSend: function() {
-                        village_area_id.prop("disabled", true);
-                        console.log("Searcing Districts");
-                    },
-                    success: function(response) {
-                        village_area_id.html(response)
-                        village_area_id.prop("disabled", false);
-                    },
-                    error: function(xhr, status, error) {
-                        village_area_id.prop("disabled", true);
-                        var responseText = jQuery.parseJSON(xhr.responseText);
-                        toastr.error(responseText.message);
-                    }
+        // $(document).on('change', '#village_id', function(e) {
+        //     e.preventDefault();
+        //     let village_area_id = $('#village_area_id')
+        //     let _this_value = $(this).val();
+        //     if (_this_value) {
+        //         $.ajax({
+        //             type: "GET",
+        //             url: "{{ url('/get-areas-by-village') }}/" + _this_value,
+        //             beforeSend: function() {
+        //                 village_area_id.prop("disabled", true);
+        //                 console.log("Searcing Districts");
+        //             },
+        //             success: function(response) {
+        //                 village_area_id.html(response)
+        //                 village_area_id.prop("disabled", false);
+        //             },
+        //             error: function(xhr, status, error) {
+        //                 village_area_id.prop("disabled", true);
+        //                 var responseText = jQuery.parseJSON(xhr.responseText);
+        //                 toastr.error(responseText.message);
+        //             }
 
-                });
-            } else {
-                district_id.prop("disabled", true);
+        //         });
+        //     } else {
+        //         // district_id.prop("disabled", true);
+        //     }
+        // })
+
+        $(document).on('change', 'input[name="premises_ownership"]', function() {
+            if ($(this).val() === 'owned') {
+                $('.premises-docs-owned').removeClass('d-none');
+                $('.premises-docs-rented').addClass('d-none');
+            } else if ($(this).val() === 'rented') {
+                $('.premises-docs-rented').removeClass('d-none');
+                $('.premises-docs-owned').addClass('d-none');
             }
         })
     </script>
