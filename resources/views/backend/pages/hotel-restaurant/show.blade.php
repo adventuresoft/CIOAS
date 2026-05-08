@@ -81,9 +81,9 @@
         }
 
         .section-header {
-            background: #006600;
-            color: #fff;
-            font-weight: bold;
+            background: #e9ecef;
+            color: #343434;
+            font-weight: 600;
             padding: 6px 12px;
             margin: 20px 0 12px 0;
             font-size: 16px;
@@ -168,6 +168,7 @@
             display: flex;
             gap: 30px;
             margin-top: 10px;
+            padding: 5px;
         }
 
         .col {
@@ -298,7 +299,7 @@
 
             <div class="photo-badge">
                 <div class="photo-box">
-                    <img src="{{ $organization->logo ? asset($organization->logo) : asset('public/no-image-found.jpeg') }}"
+                    <img src="{{ $organization->hotel_logo ? asset($organization->hotel_logo) : asset('uploads/no-image-found.png') }}"
                         alt="Organization Logo">
                 </div>
                 <div class="id-info-columns">
@@ -382,9 +383,12 @@
                 </div>
             </div>
 
-            <div class="section-header">Self-Owned Premises Documents</div>
-            <div class="info-row">
+            <div class="section-header">Self-Owned Premises Documents
+                {{ $organization->premises_ownership == 'owned' ? '(Documents Attached)' : null }}</div>
+            <div class="info-row docs_files_row">
                 @if ($organization->premises_ownership == 'owned')
+
+                    <h5>Attached Documents</h5>
 
                     @php
                         $files = json_decode($organization->document_files);
@@ -414,8 +418,9 @@
                 @endif
             </div>
 
-            <div class="section-header">Rented Premises Documents</div>
-            <div class="info-row">
+            <div class="section-header">Rented Premises Documents
+                {{ $organization->premises_ownership == 'rented' ? '(Documents Attached)' : null }}</div>
+            <div class="info-row docs_files_row">
                 @if ($organization->premises_ownership == 'rented')
 
                     @php
@@ -427,19 +432,18 @@
                             $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
                         @endphp
 
-                        <div class="mb-3">
+                        <div class="mb-3 pl-2">
                             @if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']))
                                 <!-- Image -->
-                                <img src="{{ asset($file) }}" width="200" alt="Image">
-                                <br>
-                                <a href="{{ asset($file) }}" target="_blank">View Image</a>
+                                <a href="{{ asset($file) }}" target="_blank">
+                                    <img src="{{ asset($file) }}" width="200" alt="Image">
+                                </a>
                             @elseif($ext == 'pdf')
                                 <!-- PDF -->
-                                <iframe src="{{ asset($file) }}" width="100%" height="400px"></iframe>
-
+                                <a href="{{ asset($file) }}" target="_blank">
+                                    <iframe src="{{ asset($file) }}" width="100%" height="400px"></iframe>
+                                </a>
                                 <!-- Optional PDF link -->
-                                <br>
-                                <a href="{{ asset($file) }}" target="_blank">View PDF</a>
                             @endif
                         </div>
                     @endforeach
@@ -457,11 +461,11 @@
                 @endif
             </div>
             <div>
-                <a href="{{ route('organization.index') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('hotel-restaurant.index') }}" class="btn btn-secondary">Back</a>
                 @if ($organization->status == 0)
-                    <a href="{{ route('organization.edit', $organization->id) }}" class="btn btn-primary">Edit</a>
+                    <a href="{{ route('hotel-restaurant.edit', $organization->id) }}" class="btn btn-primary">Edit</a>
                 @endif
-                <button type="button" class="btn btn-info" onclick="window.print()">Print</button>
+                <button type="button" class="btn btn-info" id="print_out">Print</button>
                 @if ($organization->status != 1)
                     <button class="btn btn-success" id="approveBtn">✔ Approve</button>
                 @endif
@@ -473,6 +477,21 @@
 
 @push('script')
     <script>
+        $("#print_out").click(function(e) {
+            e.preventDefault();
+
+            $('.docs_files_row').hide();
+            $('.action-row').hide();
+
+            window.print();
+
+            setTimeout(() => {
+                $('.docs_files_row').show();
+                $('.action-row').show();
+            }, 1000);
+
+        });
+
         $('#approveBtn').click(function() {
 
             if (confirm("Are you sure you want to approve this organization?")) {

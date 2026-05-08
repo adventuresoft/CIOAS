@@ -6,60 +6,60 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\HotelRestaurant\HotelCategory;
 use App\Models\BasicSettings\OrganizationOwnershipType;
-use App\Models\BasicSettings\OrganizationWorkArea;
 use App\Models\BasicSettings\Village;
 use App\Models\Institute;
 use App\Models\District;
 use App\Models\Division;
 use App\Models\Thana;
-use App\Models\Union;
 use App\Models\PostOffice;
 use App\Models\HotelRestaurant\HotelRestaurant;
 use App\Models\HotelRestaurant\HotelOwnerShip;
 use App\Models\Organization\OrganizationOwnership;
-use App\Models\Road;
 use App\Models\People\AddressInfo;
-use App\Models\User;
 use App\Models\UnionWard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
+use App\Traits\FileUploadTrait;
 
 
 class HotelRestaurantController extends Controller
 {
+    use FileUploadTrait;
     /**
-     * Display a listing of the resource.
+     * Display a listing of all hotel restaurants.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $data['organizations'] = HotelRestaurant::with('category')->latest()->get();
-
-        // dd($data);
+        // Fetch all hotel restaurants with their category and subcategory relationships
+        $data['organizations'] = HotelRestaurant::with('category', 'subcategory')
+            ->latest()
+            ->get();
 
         return view('backend.pages.hotel-restaurant.index', $data);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Generate a unique application ID based on date and sequential number.
      *
-     * @return \Illuminate\Http\Response
+     * @return string
      */
-
-
     private function generateApplicationId()
     {
+        // Get today's date in YMD format (e.g., 260509 for 2026-05-09)
         $datePart = Carbon::now()->format('ymd');
 
+        // Find the last application created today to continue the sequence
         $last = HotelRestaurant::whereDate('created_at', Carbon::today())
             ->whereNotNull('application_id')
             ->orderBy('id', 'desc')
             ->first();
 
+        // Extract serial number from last application or start with 1
         if ($last) {
             $lastSerial = (int) substr($last->application_id, -5);
             $newSerial  = $lastSerial + 1;
@@ -67,39 +67,41 @@ class HotelRestaurantController extends Controller
             $newSerial = 1;
         }
 
+        // Return application ID as date + 5-digit serial (e.g., 26050900001)
         return $datePart . str_pad($newSerial, 5, '0', STR_PAD_LEFT);
     }
+
+    /**
+     * Show the form for creating a new hotel restaurant.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
+        // Load all lookup data for the form
         $data['types']           = HotelOwnerShip::where('status', true)->latest()->get();
         $data['categories']      = HotelCategory::where('status', true)->latest()->get();
         $data['ownership_types'] = OrganizationOwnershipType::where('status', true)->latest()->get();
         $data['wards']           = UnionWard::where('status', true)->get();
         $data['divisions']       = Division::where('status', true)->get();
-        // dd($data['divisions']);
+        $data['post_officeses']  = PostOffice::latest()->get();
 
-        $data['post_officeses'] = PostOffice::latest()->get();
-        $institute              = Institute::find(Auth::user()->institute_id);
-        if ($institute) {
-            $data['villages'] = Village::where('union_id', $institute->union_id)->get();
-
-        } else {
-            $data['villages'] = [];
-        }
+        // Load villages for the current user's institute
+        $institute        = Institute::find(Auth::user()->institute_id);
+        $data['villages'] = $institute ? Village::where('union_id', $institute->union_id)->get() : [];
 
         return view('backend.pages.hotel-restaurant.create', $data);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created hotel restaurant in the database.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-
-
+        // Validate all incoming request data
         $validate = Validator::make($request->all(), [
             'id'                          => 'nullable|integer',
             'name'                        => 'required|max:190',
@@ -139,124 +141,124 @@ class HotelRestaurantController extends Controller
             'no_of_dir'                   => 'nullable|integer',
             'premises_ownership'          => 'nullable|in:owned,rented',
             'document_files.*'            => 'nullable|image|max:2048',
-            'hotelRestaurantLogo.*'       => 'nullable|image|max:2048',
+            'hotel_logo.*'                => 'nullable|image|max:2048',
             'status'                      => 'nullable|boolean',
         ]);
 
+        // Return validation errors if validation fails
         if ($validate->fails()) {
-            $data['status']  = false;
-            $data['message'] = $validate->errors();
-            $data['errors']  = $validate->errors();
-
-            return response()->json($data, 400);
+            return response()->json([
+                'status'  => false,
+                'message' => $validate->errors(),
+                'errors'  => $validate->errors(),
+            ], 400);
         }
 
+        // Handle hotel logo upload
         $logoName = null;
-        if ($request->hasFile('hotelRestaurantLogo')) {
-            $extLogo  = $request->hotelRestaurantLogo->getClientOriginalExtension();
-            $fileLogo = 'logo_' . time() . '_' . uniqid() . '.' . $extLogo;
-            $request->hotelRestaurantLogo->move(public_path('uploads/hotel/logo/'), $fileLogo);
-            $logoName = 'uploads/hotel/logo/' . $fileLogo;
+        if ($request->hasFile('hotel_logo')) {
+            $logoName = $this->uploadFile(
+                $request->hotel_logo,
+                'uploads/hotel/logo/',
+                'logo_'
+            );
         }
 
-
+        // Handle document files upload (owned or rented premises)
+        $document_files = null;
         if ($request->hasFile('owned_document_file') || $request->hasFile('rented_document_file')) {
-            $files = $request->file('owned_document_file') ?? $request->file('rented_document_file');
+            $files             = $request->file('owned_document_file') ?? $request->file('rented_document_file');
+            $uploadedDocuments = [];
 
             foreach ($files as $file) {
-                $ext      = $file->getClientOriginalExtension();
-                $filename = 'rented_doc_' . time() . '_' . uniqid() . '.' . $ext;
-                $file->move(public_path('uploads/hotel/documents'), $filename);
-                $rentedDocumentNames[] = 'uploads/hotel/documents/' . $filename;
+                $filePath            = $this->uploadFile(
+                    $file,
+                    'uploads/hotel/documents/',
+                    'rented_doc_'
+                );
+                $uploadedDocuments[] = $filePath;
             }
 
-            if (!empty($rentedDocumentNames)) {
-                $document_files = json_encode($rentedDocumentNames);
+            if (!empty($uploadedDocuments)) {
+                $document_files = json_encode($uploadedDocuments);
             }
-
         }
 
 
 
-        try {
-            $payload = [
-                'name'                  => $request->name,
-                'bn_name'               => $request->bn_name,
+        // Prepare data for database insertion
+        $payload = [
+            // Basic information
+            'name'                  => $request->name,
+            'bn_name'               => $request->bn_name,
+            'institute_id'          => Auth::user()->institute_id,
+            'application_id'        => $this->generateApplicationId(),
 
-                'institute_id'          => Auth::user()->institute_id,
+            // Category and type information
+            'hotel_category_id'     => $request->organization_category_id,
+            'hotel_subcategory_id'  => $request->organization_subcategory_id,
+            'hotel_type_id'         => $request->organization_type_id,
 
-                'hotel_category_id'     => $request->organization_category_id,
-                'hotel_subcategory_id'  => $request->organization_subcategory_id,
-                'hotel_type_id'         => $request->organization_type_id,
-                'rjsc_reg_no'           => $request->rjsc_reg_no,
-                'no_of_owner'           => $request->no_of_owner,
-                'no_of_dir'             => $request->no_of_dir,
+            // Registration and ownership details
+            'rjsc_reg_no'           => $request->rjsc_reg_no,
+            'no_of_owner'           => $request->no_of_owner,
+            'no_of_dir'             => $request->no_of_dir,
+            'capital'               => $request->capital,
+            'establish_year'        => $request->establish_year,
+            'application_type'      => $request->application_type,
+            'premises_ownership'    => $request->premises_ownership,
 
-                // Address fields
-                'division_id'           => $request->division_id,
-                'district_id'           => $request->district_id,
-                'thana_id'              => $request->thana_id,
-                'post_office_id'        => $request->post_office_id,
-                'village_id'            => $request->village_id,
-                'ward_id'               => $request->ward_id,
-                'road'                  => $request->road,
-                'house'                 => $request->house,
-                'house_bn'              => $request->house_bn,
-                'office_division_id'    => $request->office_division_id,
-                'office_district_id'    => $request->office_district_id,
-                'office_thana_id'       => $request->office_thana_id,
-                'office_post_office_id' => $request->office_post_office_id,
-                'office_village_id'     => $request->office_village_id,
-                'office_ward_id'        => $request->office_ward_id,
-                'office_road'           => $request->office_road,
-                'office_house'          => $request->office_house,
-                'office_house_bn'       => $request->office_house_bn,
-                'premises_ownership'    => $request->premises_ownership,
+            // Primary address fields
+            'division_id'           => $request->division_id,
+            'district_id'           => $request->district_id,
+            'thana_id'              => $request->thana_id,
+            'post_office_id'        => $request->post_office_id,
+            'village_id'            => $request->village_id,
+            'ward_id'               => $request->ward_id,
+            'road'                  => $request->road,
+            'house'                 => $request->house,
+            'house_bn'              => $request->house_bn,
 
-                'capital'               => $request->capital,
-                'establish_year'        => $request->establish_year,
-                'application_type'      => $request->application_type,
-                'document_files'        => $document_files ?? null,
-                'hotelRestaurantLogo'   => $logoName,
-                'status'                => 0,
-            ];
+            // Office address fields
+            'office_division_id'    => $request->office_division_id,
+            'office_district_id'    => $request->office_district_id,
+            'office_thana_id'       => $request->office_thana_id,
+            'office_post_office_id' => $request->office_post_office_id,
+            'office_village_id'     => $request->office_village_id,
+            'office_ward_id'        => $request->office_ward_id,
+            'office_road'           => $request->office_road,
+            'office_house'          => $request->office_house,
+            'office_house_bn'       => $request->office_house_bn,
 
+            // Files and status
+            'document_files'        => $document_files,
+            'hotel_logo'            => $logoName,
+            'status'                => 0, // New entries start as pending
+        ];
 
-            $payload['institute_id'] = Auth::user()->institute_id;
+        // Save the hotel restaurant to database
+        $organization = HotelRestaurant::create($payload);
 
-            $payload['application_id'] = $this->generateApplicationId();
-
-            // dd($payload);
-            $organization = HotelRestaurant::create($payload);
-
-
-            $data['status']       = true;
-            $data['message']      = "Organization saved successfully!";
-            $data['result']       = $organization;
-            $data['code']         = 200;
-            $data['redirect_url'] = route('hotel-restaurant.index');
-
-            return response()->json($data, 200);
-
-        } catch (\Throwable $th) {
-            $data['status']  = false;
-            $data['message'] = "Something went wrong! Please try again...";
-            $data['errors']  = $th->getMessage();
-
-            return response()->json($data, 500);
-        }
+        // Return success response
+        return response()->json([
+            'status'       => true,
+            'message'      => 'Organization saved successfully!',
+            'result'       => $organization,
+            'code'         => 200,
+            'redirect_url' => route('hotel-restaurant.index'),
+        ], 200);
     }
 
     /**
-     * Display the specified resource.
+     * Display the details of a specific hotel restaurant.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-
-        $data['organization'] = $HotelRestaurant = HotelRestaurant::with([
+        // Fetch hotel restaurant with related data
+        $data['organization'] = HotelRestaurant::with([
             'category',
             'subcategory',
             'type',
@@ -270,54 +272,73 @@ class HotelRestaurantController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing an existing hotel restaurant.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $data['organization'] = $organization = HotelRestaurant::find($id);
-        if ($data['organization']) {
-            $data['types']           = HotelOwnerShip::where('status', true)->latest()->get();
-            $data['categories']      = HotelCategory::where('status', true)->latest()->get();
-            $data['ownership_types'] = OrganizationOwnershipType::where('status', true)->latest()->get();
-            $data['wards']           = UnionWard::where('status', true)->get();
-            $data['divisions']       = Division::where('status', true)->get();
-            $data['districts']       = District::where('status', true)->where('division_id', $data['organization']->division_id)->get();
-            $data['thanas']          = Thana::where('status', true)->where('district_id', $data['organization']->district_id)->get();
+        // Find the hotel restaurant by ID
+        $data['organization'] = HotelRestaurant::find($id);
 
-            $data['office_districts'] = District::where('status', true)->where('division_id', $data['organization']->office_division_id)->get();
-            $data['office_thanas']    = Thana::where('status', true)->where('district_id', $data['organization']->office_district_id)->get();
-
-            $data['post_officeses'] = PostOffice::latest()->get();
-            $institute              = Institute::find(Auth::user()->institute_id);
-            if ($institute) {
-                $data['villages'] = Village::where('union_id', $institute->union_id)->get();
-
-            } else {
-                $data['villages'] = [];
-            }
-
-
-            return view('backend.pages.hotel-restaurant.edit', $data);
-        } else {
-            return "Not found";
+        // Return 404 if not found
+        if (!$data['organization']) {
+            return response('Not found', 404);
         }
+
+        // Load all lookup data for the edit form
+        $data['types']           = HotelOwnerShip::where('status', true)->latest()->get();
+        $data['categories']      = HotelCategory::where('status', true)->latest()->get();
+        $data['ownership_types'] = OrganizationOwnershipType::where('status', true)->latest()->get();
+        $data['wards']           = UnionWard::where('status', true)->get();
+        $data['divisions']       = Division::where('status', true)->get();
+
+        // Load districts and thanas for primary address
+        $data['districts'] = District::where('status', true)
+            ->where('division_id', $data['organization']->division_id)
+            ->get();
+        $data['thanas']    = Thana::where('status', true)
+            ->where('district_id', $data['organization']->district_id)
+            ->get();
+
+        // Load districts and thanas for office address
+        $data['office_districts'] = District::where('status', true)
+            ->where('division_id', $data['organization']->office_division_id)
+            ->get();
+        $data['office_thanas']    = Thana::where('status', true)
+            ->where('district_id', $data['organization']->office_district_id)
+            ->get();
+
+        // Load other location data
+        $data['post_officeses'] = PostOffice::latest()->get();
+        $institute              = Institute::find(Auth::user()->institute_id);
+        $data['villages']       = $institute
+            ? Village::where('union_id', $institute->union_id)->get()
+            : [];
+
+        return view('backend.pages.hotel-restaurant.edit', $data);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the hotel restaurant in the database.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-
+        // Find the hotel restaurant or return error
         $hotelRestaurant = HotelRestaurant::find($id);
+        if (!$hotelRestaurant) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Hotel restaurant not found',
+            ], 404);
+        }
 
+        // Validate all incoming request data
         $validate = Validator::make($request->all(), [
             'id'                          => 'nullable|integer',
             'name'                        => 'required|max:190',
@@ -357,155 +378,176 @@ class HotelRestaurantController extends Controller
             'no_of_dir'                   => 'nullable|integer',
             'premises_ownership'          => 'nullable|in:owned,rented',
             'document_files.*'            => 'nullable|image|max:2048',
-            'hotelRestaurantLogo'         => 'nullable|image|max:2048',
+            'hotel_logo'                  => 'nullable|image|max:2048',
             'status'                      => 'nullable|boolean',
         ]);
 
+        // Return validation errors if validation fails
         if ($validate->fails()) {
-            $data['status']  = false;
-            $data['message'] = $validate->errors();
-            $data['errors']  = $validate->errors();
-
-            return response()->json($data, 400);
+            return response()->json([
+                'status'  => false,
+                'message' => $validate->errors(),
+                'errors'  => $validate->errors(),
+            ], 400);
         }
 
+        // Handle hotel logo upload and delete old one if exists
         $logoName = null;
-
-        if ($request->hasFile('hotelRestaurantLogo')) {
-            if (File::exists(public_path($hotelRestaurant->hotelRestaurantLogo))) {
-                File::delete(public_path($hotelRestaurant->hotelRestaurantLogo));
+        if ($request->hasFile('hotel_logo')) {
+            // Delete old logo if it exists
+            if ($hotelRestaurant->hotel_logo && File::exists(public_path($hotelRestaurant->hotel_logo))) {
+                File::delete(public_path($hotelRestaurant->hotel_logo));
             }
-            $extLogo  = $request->hotelRestaurantLogo->getClientOriginalExtension();
-            $fileLogo = 'logo_' . time() . '_' . uniqid() . '.' . $extLogo;
-            $request->hotelRestaurantLogo->move(public_path('uploads/hotel/logo/'), $fileLogo);
-            $logoName = 'uploads/hotel/logo/' . $fileLogo;
+
+            // Upload new logo
+            $logoName = $this->uploadFile(
+                $request->hotel_logo,
+                'uploads/hotel/logo/',
+                'logo_'
+            );
         }
 
+        // Handle document files upload (delete old and upload new)
+        $document_files = null;
         if ($request->hasFile('owned_document_file') || $request->hasFile('rented_document_file')) {
-            $hotelRestaurant = HotelRestaurant::find($id);
-            $document_files  = json_decode($hotelRestaurant->document_files);
-            if (!empty($document_files)) {
-                foreach ($document_files as $file) {
-
-                    if (File::exists(public_path($file))) {
-                        File::delete(public_path($file));
+            // Delete old documents if they exist
+            if ($hotelRestaurant->document_files) {
+                $oldDocuments = json_decode($hotelRestaurant->document_files);
+                if (!empty($oldDocuments)) {
+                    foreach ($oldDocuments as $file) {
+                        if (File::exists(public_path($file))) {
+                            File::delete(public_path($file));
+                        }
                     }
                 }
             }
 
-            $files = $request->file('owned_document_file') ? $request->file('owned_document_file') : $request->file('rented_document_file');
+            // Upload new documents
+            $files             = $request->file('owned_document_file') ?? $request->file('rented_document_file');
+            $uploadedDocuments = [];
 
             foreach ($files as $file) {
-                $ext      = $file->getClientOriginalExtension();
-                $filename = 'rented_doc_' . time() . '_' . uniqid() . '.' . $ext;
-                $file->move(public_path('uploads/hotel/documents/'), $filename);
-                $rentedDocumentNames[] = 'uploads/hotel/documents/' . $filename;
+                $filePath            = $this->uploadFile(
+                    $file,
+                    'uploads/hotel/documents/',
+                    'rented_doc_'
+                );
+                $uploadedDocuments[] = $filePath;
             }
-            if (!empty($rentedDocumentNames)) {
-                $document_files = json_encode($rentedDocumentNames);
+
+            if (!empty($uploadedDocuments)) {
+                $document_files = json_encode($uploadedDocuments);
             }
         }
 
-        try {
-            $payload = [
-                'name'                  => $request->name,
-                'bn_name'               => $request->bn_name,
+        // Prepare data for database update
+        $payload = [
+            // Basic information
+            'name'                  => $request->name,
+            'bn_name'               => $request->bn_name,
+            'institute_id'          => Auth::user()->institute_id,
 
-                'institute_id'          => Auth::user()->institute_id,
+            // Category and type information
+            'hotel_category_id'     => $request->organization_category_id,
+            'hotel_subcategory_id'  => $request->organization_subcategory_id,
+            'hotel_type_id'         => $request->organization_type_id,
 
-                'hotel_category_id'     => $request->organization_category_id,
-                'hotel_subcategory_id'  => $request->organization_subcategory_id,
-                'hotel_type_id'         => $request->organization_type_id,
-                'rjsc_reg_no'           => $request->rjsc_reg_no,
-                'no_of_owner'           => $request->no_of_owner,
-                'no_of_dir'             => $request->no_of_dir,
+            // Registration and ownership details
+            'rjsc_reg_no'           => $request->rjsc_reg_no,
+            'no_of_owner'           => $request->no_of_owner,
+            'no_of_dir'             => $request->no_of_dir,
+            'capital'               => $request->capital,
+            'establish_year'        => $request->establish_year,
+            'application_type'      => $request->application_type,
+            'premises_ownership'    => $request->premises_ownership,
 
-                // Address fields
-                'division_id'           => $request->division_id,
-                'district_id'           => $request->district_id,
-                'thana_id'              => $request->thana_id,
-                'post_office_id'        => $request->post_office_id,
-                'village_id'            => $request->village_id,
-                'ward_id'               => $request->ward_id,
-                'road'                  => $request->road,
-                'house'                 => $request->house,
-                'house_bn'              => $request->house_bn,
-                'office_division_id'    => $request->office_division_id,
-                'office_district_id'    => $request->office_district_id,
-                'office_thana_id'       => $request->office_thana_id,
-                'office_post_office_id' => $request->office_post_office_id,
-                'office_village_id'     => $request->office_village_id,
-                'office_ward_id'        => $request->office_ward_id,
-                'office_road'           => $request->office_road,
-                'office_house'          => $request->office_house,
-                'office_house_bn'       => $request->office_house_bn,
-                'premises_ownership'    => $request->premises_ownership,
+            // Primary address fields
+            'division_id'           => $request->division_id,
+            'district_id'           => $request->district_id,
+            'thana_id'              => $request->thana_id,
+            'post_office_id'        => $request->post_office_id,
+            'village_id'            => $request->village_id,
+            'ward_id'               => $request->ward_id,
+            'road'                  => $request->road,
+            'house'                 => $request->house,
+            'house_bn'              => $request->house_bn,
 
-                'capital'               => $request->capital,
-                'establish_year'        => $request->establish_year,
-                'application_type'      => $request->application_type,
-                'document_files'        => $document_files ?? null,
-                'hotelRestaurantLogo'   => $logoName,
-            ];
+            // Office address fields
+            'office_division_id'    => $request->office_division_id,
+            'office_district_id'    => $request->office_district_id,
+            'office_thana_id'       => $request->office_thana_id,
+            'office_post_office_id' => $request->office_post_office_id,
+            'office_village_id'     => $request->office_village_id,
+            'office_ward_id'        => $request->office_ward_id,
+            'office_road'           => $request->office_road,
+            'office_house'          => $request->office_house,
+            'office_house_bn'       => $request->office_house_bn,
 
-            $payload['institute_id'] = Auth::user()->institute_id;
+            // Files (only update if new files provided)
+            'document_files'        => $document_files ?? $hotelRestaurant->document_files,
+            'hotel_logo'            => $logoName ?? $hotelRestaurant->hotel_logo,
+        ];
 
-            $payload['application_id'] = $this->generateApplicationId();
+        // Update the hotel restaurant in database
+        HotelRestaurant::where('id', $id)->update($payload);
 
-            $organization = HotelRestaurant::where('id', $id)->update($payload);
-
-            $data['status']       = true;
-            $data['message']      = "Organization saved successfully!";
-            $data['result']       = $organization;
-            $data['code']         = 200;
-            $data['redirect_url'] = route('hotel-restaurant.index');
-
-            return response()->json($data, 200);
-
-        } catch (\Throwable $th) {
-            $data['status']  = false;
-            $data['message'] = "Something went wrong! Please try again...";
-            $data['errors']  = $th->getMessage();
-
-            return response()->json($data, 500);
-        }
+        // Return success response
+        return response()->json([
+            'status'       => true,
+            'message'      => 'Organization updated successfully!',
+            'code'         => 200,
+            'redirect_url' => route('hotel-restaurant.index'),
+        ], 200);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete a hotel restaurant from the database.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        $house = HotelRestaurant::find($id);
-        if ($house) {
+        // Find the hotel restaurant by ID
+        $hotelRestaurant = HotelRestaurant::find($id);
 
-            try {
-                $house->delete();
-                $data['status']  = true;
-                $data['message'] = "Organization Deleted Successfully";
-                return response()->json($data, 200);
-            } catch (\Throwable $th) {
-                $data['status']  = false;
-                $data['message'] = "Failed to delete";
-                $data['errors']  = $th;
-                return response()->json($data, 500);
-            }
-
-        } else {
-            $data['status']  = false;
-            $data['message'] = "Noting found to delete";
-            return response()->json($data, 404);
+        // Return error if not found
+        if (!$hotelRestaurant) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Nothing found to delete',
+            ], 404);
         }
+
+
+        // Delete hotel logo if it exists
+        $this->deleteFile($hotelRestaurant->hotel_logo);
+
+
+        // Delete document files if they exist
+        $this->deleteFiles(json_decode($hotelRestaurant->document_files, true) ?? []);
+
+        // Delete the hotel restaurant
+        $hotelRestaurant->delete();
+
+        // Return success response
+        return response()->json([
+            'status'  => true,
+            'message' => 'Organization deleted successfully',
+        ], 200);
     }
 
+    /**
+     * Approve a hotel restaurant application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function approve(Request $request)
     {
-        $organization = HotelRestaurant::findOrFail($request->id);
-
-        $organization->status = 1; // approved
+        // Find and approve the hotel restaurant
+        $organization         = HotelRestaurant::findOrFail($request->id);
+        $organization->status = 1; // Mark as approved
         $organization->save();
 
         return response()->json([ 'success' => true ]);

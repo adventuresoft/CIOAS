@@ -841,14 +841,7 @@
                 {{-- Organization Info --}}
                 <li class="nav-item
 
-  @if (
-      $subMenu == 'HotelRestaurant' ||
-          $subMenu == 'HotelRestaurantist' ||
-          $subMenu == 'HotelRestaurantShow' ||
-          $subMenu == 'HotelRestaurantFees' ||
-          $subMenu == 'HotelRestaurantRenewFees' ||
-          $subMenu == 'HotelRestaurantTradeLicense' ||
-          $subMenu == 'HotelRestaurantGetTradeLicense') menu-open @endif
+  @if ($subMenu == 'HotelRestaurant' || $subMenu == 'HotelRestaurantist') menu-open @endif
   ">
                     <a href="#" class="nav-link @if ($mainMenu == 'HotelRestaurant') active @endif ">
                         <i class="nav-icon fas fa-briefcase"></i>
@@ -874,32 +867,12 @@
                                 <a href="{{ route('hotel-restaurant.index') }}"
                                     class="nav-link @if ($subMenu == 'HotelRestaurantList') active @endif">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Applicant Org. List</p>
-                                </a>
-                            </li>
-                        @endif
-
-                        @if (basic_settings_permissions())
-                            <li class="nav-item">
-                                <a href="{{ route('organizationA.registration-fees.index') }}"
-                                    class="nav-link @if ($subMenu == 'RegistrationFees') active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Fees</p>
+                                    <p>Hotel & Restaurant List</p>
                                 </a>
                             </li>
                         @endif
 
 
-
-                        @if (view_permission())
-                            <li class="nav-item">
-                                <a href="{{ route('organizationA.trade-license.index') }}"
-                                    class="nav-link @if ($subMenu == 'TradeLicense') active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Generate Invoice </p>
-                                </a>
-                            </li>
-                        @endif
 
                         @if (create_permission())
                             <li class="nav-item">

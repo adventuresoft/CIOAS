@@ -61,12 +61,12 @@
         </div>
         <div class="col-sm-4" id="no_of_owner_div">
             <label for="no_of_owner">Owner</label>
-            <input type="text" name="no_of_owner" value="{{ $organization->no_of_owner ?? '' }}"
+            <input type="number" name="no_of_owner" value="{{ $organization->no_of_owner ?? '' }}"
                 placeholder="Number of Owners" class="form-control" id="no_of_owner">
         </div>
         <div class="col-sm-4" id="no_of_dir_div">
             <label for="no_of_dir">Director</label>
-            <input type="text" name="no_of_dir" value="{{ $organization->no_of_dir ?? '' }}"
+            <input type="number" name="no_of_dir" value="{{ $organization->no_of_dir ?? '' }}"
                 placeholder="Number of Directors" class="form-control" id="no_of_dir">
         </div>
         <div class="col-sm-4">
@@ -344,7 +344,7 @@
             <input type="text" class="form-control" value="Hotel & Restaurant Logo" readonly>
         </div>
         <div class="col-sm-5">
-            <input type="file" name="hotelRestaurantLogo" class="form-control-file">
+            <input type="file" name="hotel_logo" class="form-control-file">
         </div>
         <div class="col-sm-2 text-right">
             <button type="button" class="btn btn-primary btn-sm add-doc-row" data-target="rented">+</button>

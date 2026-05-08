@@ -70,6 +70,7 @@ class HotelRestaurant extends Model
         'application_type',
         'remarks',
         'status',
+        'hotel_logo',
         'document_files'
     ];
 
