@@ -33,14 +33,125 @@ class HotelRestaurantController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Fetch all hotel restaurants with their category and subcategory relationships
-        $data['organizations'] = HotelRestaurant::with('category', 'subcategory')
-            ->latest()
-            ->get();
+        // Handle AJAX request for DataTables server-side processing
+        if ($request->ajax()) {
+            $query = HotelRestaurant::with('category', 'subcategory');
 
-        return view('backend.pages.hotel-restaurant.index', $data);
+            // Apply custom search filters
+            if ($request->has('search_hotel_name') && !empty($request->search_hotel_name)) {
+                $query->where('name', 'like', '%' . $request->search_hotel_name . '%');
+            }
+
+            if ($request->has('search_category') && !empty($request->search_category)) {
+                $query->whereHas('category', function ($q) use ($request) {
+                    $q->where('en_name', 'like', '%' . $request->search_category . '%');
+                });
+            }
+
+            if ($request->has('search_subcategory') && !empty($request->search_subcategory)) {
+                $query->whereHas('subcategory', function ($q) use ($request) {
+                    $q->where('en_name', 'like', '%' . $request->search_subcategory . '%');
+                });
+            }
+
+            // Handle global search
+            if ($request->has('search_global') && !empty($request->search_global)) {
+                $searchTerm = $request->search_global;
+                $query->where(function ($q) use ($searchTerm) {
+                    $q->where('name', 'like', '%' . $searchTerm . '%')
+                        ->orWhere('application_id', 'like', '%' . $searchTerm . '%')
+                        ->orWhereHas('category', function ($subQ) use ($searchTerm) {
+                            $subQ->where('en_name', 'like', '%' . $searchTerm . '%');
+                        })
+                        ->orWhereHas('subcategory', function ($subQ) use ($searchTerm) {
+                            $subQ->where('en_name', 'like', '%' . $searchTerm . '%');
+                        });
+                });
+            }
+
+            // Handle DataTables server-side parameters
+            $totalRecords = $query->count();
+
+            // Apply ordering
+            if ($request->has('order')) {
+                $columnIndex = $request->order[0]['column'];
+                $columnName  = $request->columns[$columnIndex]['name'];
+                $direction   = $request->order[0]['dir'];
+
+                if ($columnName && $columnName !== 'sl' && $columnName !== 'action') {
+                    if (str_contains($columnName, '.')) {
+                        // Handle relationship columns
+                        $parts = explode('.', $columnName);
+                        $query->join($parts[0], 'hotel_restaurants.' . $parts[0] . '_id', '=', $parts[0] . '.id')
+                            ->orderBy($parts[0] . '.' . $parts[1], $direction);
+                    } else {
+                        $query->orderBy($columnName, $direction);
+                    }
+                }
+            } else {
+                $query->latest();
+            }
+
+            // Apply pagination
+            $start         = $request->start ?? 0;
+            $length        = $request->length ?? 10;
+            $organizations = $query->skip($start)->take($length)->get();
+
+            // Format data for DataTables
+            $data = [];
+            foreach ($organizations as $key => $organization) {
+                $statusBadge = '';
+                if ($organization->status == 1) {
+                    $statusBadge = '<span class="badge badge-success">Approved</span>';
+                } elseif ($organization->status == 0) {
+                    $statusBadge = '<span class="badge badge-warning">Pending</span>';
+                } else {
+                    $statusBadge = '<span class="badge badge-danger">Rejected</span>';
+                }
+
+                $actionButtons = '<div class="d-flex">';
+
+                if (view_permission()) {
+                    $actionButtons .= '<a href="' . route('hotel-restaurant.edit', $organization->id) . '" title="Edit" class="btn btn-primary btn-sm mx-1"><i class="fa fa-edit"></i></a>';
+                }
+
+                if (view_permission()) {
+                    $actionButtons .= '<a href="' . route('hotel-restaurant.show', $organization->id) . '" title="View" class="btn btn-info btn-sm mx-1"><i class="fa fa-eye"></i></a>';
+
+                    $actionButtons .= '<form class="deleteHouse d-inline" method="post">
+                        ' . csrf_field() . '
+                        ' . method_field('DELETE') . '
+                        <input type="hidden" class="deleteUrl" name="delete_url" value="' . route('hotel-restaurant.destroy', $organization->id) . '">
+                        <button type="submit" data-toggle="tooltip" title="Delete" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                    </form>';
+                }
+
+                $actionButtons .= '</div>';
+
+                $data[] = [
+                    'sl'               => $start + $key + 1,
+                    'application_id'   => $organization->application_id,
+                    'name'             => $organization->name,
+                    'category_name'    => optional($organization->category)->en_name ?? '',
+                    'subcategory_name' => optional($organization->subcategory)->en_name ?? '',
+                    'status'           => $statusBadge,
+                    'created_at'       => date('d-m-Y', strtotime($organization->created_at)),
+                    'action'           => $actionButtons
+                ];
+            }
+
+            return response()->json([
+                'draw'            => intval($request->draw),
+                'recordsTotal'    => $totalRecords,
+                'recordsFiltered' => $totalRecords, // For now, same as total (no additional filtering)
+                'data'            => $data
+            ]);
+        }
+
+        // Return view for regular page load
+        return view('backend.pages.hotel-restaurant.index');
     }
 
     /**
