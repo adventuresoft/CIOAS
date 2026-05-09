@@ -1,4 +1,4 @@
-@extends('backend.master', ['mainMenu' => 'Organization', 'subMenu' => 'OrganizationCreate'])
+@extends('backend.master', ['mainMenu' => 'HotelRestaurant', 'subMenu' => 'HotelRestaurantCreate'])
 
 @section('title', 'Organization Create')
 
@@ -8,11 +8,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Organization Create</h1>
+                    <h1>Hotel & Restaurant Create</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('organization.index') }}">Organization</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('hotel-restaurant.index') }}">Hotel & Restaurant</a>
+                        </li>
                         <li class="breadcrumb-item active">Create</li>
                     </ol>
                 </div>
@@ -29,8 +30,8 @@
                     <div class="card card-info">
                         <div class="card-header">
                             <h3 class="card-title">
-                                <a href="{{ route('organization.edit', $organization->id) }}">
-                                    <span class="text-dark">Organization Information</span>
+                                <a href="{{ route('hotel-restaurant.edit', $organization->id) }}">
+                                    <span class="text-dark">Hotel & Restaurant Information</span>
                                 </a>
                                 <span class="text-secondary">|</span>
                                 <a href="{{ route('organization-ownership.edit', $organization->id) }}">
@@ -53,7 +54,7 @@
 
                                     @for ($i = 0; $i < $no_of_owners; $i++)
                                         @include('backend.pages.hotel-restaurant.forms.ownership', [
-                                            'ownership' => $ownerships[$i] ?? null,
+                                            'ownership' => $ownerships[$i] ?? [],
                                             'index' => $i,
                                             'districts' => $districts[$i] ?? [],
                                             'thanas' => $thanas[$i] ?? [],

@@ -383,6 +383,79 @@
                 </div>
             </div>
 
+            <div class="section-header">Hotel & Restaurant Owners/Directors</div>
+
+            <div class="row">
+                @foreach ($organization->ownership as $ownership)
+                    <div class="col-md-6">
+                        <div class="card border shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <img src="{{ $ownership->image ? asset($ownership->image) : asset('no-image-found.jpeg') }}"
+                                        class="rounded mr-3" width="60" height="60">
+                                </div>
+
+                                <div class="row mb-1">
+                                    <div class="col-5 font-weight-bold">Father Name:</div>
+                                    <div class="col-7">{{ $ownership->father_name ?? '-' }}</div>
+                                </div>
+
+                                <div class="row mb-1">
+                                    <div class="col-5 font-weight-bold">Mother Name:</div>
+                                    <div class="col-7">{{ $ownership->mother_name ?? '-' }}</div>
+                                </div>
+
+                                <div class="row mb-1">
+                                    <div class="col-5 font-weight-bold">Phone:</div>
+                                    <div class="col-7">{{ $ownership->mobile ?? '-' }}</div>
+                                </div>
+
+                                <div class="row mb-1">
+                                    <div class="col-5 font-weight-bold">Email:</div>
+                                    <div class="col-7">{{ $ownership->email ?? '-' }}</div>
+                                </div>
+
+                                <div class="row mb-1">
+                                    <div class="col-5 font-weight-bold">NID:</div>
+                                    <div class="col-7">{{ $ownership->nid ?? '-' }}</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-5 font-weight-bold">Present Address:</div>
+                                    <div class="col-7">
+                                        {{ $ownership->present_house ?? '-' }}
+                                        {{ $ownership->present_road ?? '-' }}
+                                        {{ $ownership->presentVillage?->name ?? '-' }}
+                                        {{ $ownership->presentWard?->en_ward_no ?? '-' }}
+                                        {{ $ownership->presentPostOffice?->name ?? '-' }}
+                                        {{ $ownership->presentThana?->name ?? '-' }}
+                                        {{ $ownership->presentDistrict?->name ?? '-' }}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-5 font-weight-bold">Permanent Address:</div>
+                                    <div class="col-7">
+                                        {{ $ownership->permanent_house ?? '-' }}
+                                        {{ $ownership->permanent_road ?? '-' }}
+                                        {{ $ownership->permanentVillage?->name ?? '-' }}
+                                        {{ $ownership->permanentWard?->en_ward_no ?? '-' }}
+                                        {{ $ownership->permanentPostOffice?->name ?? '-' }}
+                                        {{ $ownership->permanentThana?->name ?? '-' }}
+                                        {{ $ownership->permanentDistrict?->name ?? '-' }}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                @endforeach
+
+            </div>
+
+
+
             <div class="section-header">Self-Owned Premises Documents
                 {{ $organization->premises_ownership == 'owned' ? '(Documents Attached)' : null }}</div>
             <div class="info-row docs_files_row">

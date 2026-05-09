@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\Model;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use App\Models\Organization\OrganizationOwnership;
 use App\Models\Organization\OrganizationType;
+use App\Models\HotelRestaurant\HotelRestaurantOwnership;
+
 
 
 class HotelRestaurant extends Model
@@ -84,7 +86,7 @@ class HotelRestaurant extends Model
 
     public function ownership()
     {
-        return $this->hasMany(OrganizationOwnership::class, 'organization_id', 'id');
+        return $this->hasMany(HotelRestaurantOwnership::class, 'hotel_restaurant_id', 'id');
     }
 
 

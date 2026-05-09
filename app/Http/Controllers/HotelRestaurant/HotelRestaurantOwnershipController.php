@@ -16,10 +16,12 @@ use App\Models\UnionWard;
 use App\Models\Religion;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-
+use \App\Traits\FileUploadTrait;
 
 class HotelRestaurantOwnershipController extends Controller
 {
+
+    use FileUploadTrait;
     /**
      * Display a listing of the resource.
      *
@@ -49,6 +51,7 @@ class HotelRestaurantOwnershipController extends Controller
     public function store(Request $request)
     {
 
+
         $request->validate([
             'hotel_restaurant_id'      => 'required|integer',
 
@@ -62,6 +65,7 @@ class HotelRestaurantOwnershipController extends Controller
             'blood_group.*'            => 'nullable|string',
             'mobile.*'                 => 'required|string|max:20',
             'email.*'                  => 'nullable|email',
+            'image.*'                  => 'nullable|image|max:2048',
 
             'father_name.*'            => 'nullable|string',
             'father_name_bn.*'         => 'nullable|string',
@@ -87,11 +91,32 @@ class HotelRestaurantOwnershipController extends Controller
 
 
         foreach ($request->name as $key => $name) {
+            $ownerId   = $request->owner_id[$key] ?? null;
+            $imagePath = null;
 
+            if ($ownerId && $ownershipRecord = HotelRestaurantOwnership::find($ownerId)) {
+                $imagePath = $ownershipRecord->image;
+            }
+
+            if ($request->hasFile('image') && isset($request->file('image')[$key])) {
+                $imageFile = $request->file('image')[$key];
+
+                if ($imageFile) {
+                    if (!empty($imagePath)) {
+                        $this->deleteFile($imagePath);
+                    }
+
+                    $imagePath = $this->uploadFile(
+                        $imageFile,
+                        'uploads/hotel/ownership/',
+                        'owner_'
+                    );
+                }
+            }
 
             HotelRestaurantOwnership::updateOrCreate(
                 [
-                    'id' => $request->owner_id[$key] ?? null
+                    'id' => $ownerId
                 ],
                 [
                     'hotel_restaurant_id'    => $request->hotel_restaurant_id,
@@ -106,6 +131,7 @@ class HotelRestaurantOwnershipController extends Controller
                     'blood_group'            => $request->blood_group[$key] ?? null,
                     'mobile'                 => $request->mobile[$key] ?? null,
                     'email'                  => $request->email[$key] ?? null,
+                    'image'                  => $imagePath,
 
                     'father_name'            => $request->father_name[$key] ?? null,
                     'father_name_bn'         => $request->father_name_bn[$key] ?? null,
@@ -175,12 +201,12 @@ class HotelRestaurantOwnershipController extends Controller
                     ->get();
 
                 $data['present_districts'][$key] = District::where('status', true)
-                        ->where('division_id', $ownership->present_division)
-                        ->get();
+                    ->where('division_id', $ownership->present_division)
+                    ->get();
 
                 $data['present_thanas'][$key] = Thana::where('status', true)
-                        ->where('district_id', $ownership->present_district_id)
-                        ->get();
+                    ->where('district_id', $ownership->present_district_id)
+                    ->get();
 
             }
 
@@ -193,6 +219,9 @@ class HotelRestaurantOwnershipController extends Controller
         // Load villages for the current user's institute
         $institute        = Institute::find(Auth::user()->institute_id);
         $data['villages'] = $institute ? Village::where('union_id', $institute->union_id)->get() : [];
+
+
+
 
         return view('backend.pages.hotel-restaurant.tabs.ownership', $data);
     }

@@ -54,17 +54,17 @@
 
     {{-- Organization Type, RJSC Reg., Capital, Established Year, Application Type --}}
     <div class="form-group row">
-        <div class="col-sm-4" id="rjsc_reg_no_div">
+        <div class="col-sm-4" id="rjsc_reg_no_div" {{ !empty($organization->rjsc_reg_no) ? '' : 'd-none' }}>
             <label for="rjsc_reg_no">RJSC Reg.</label>
             <input type="text" name="rjsc_reg_no" value="{{ $organization->rjsc_reg_no ?? '' }}"
                 placeholder="RJSC Reg. No." class="form-control" id="rjsc_reg_no">
         </div>
-        <div class="col-sm-4" id="no_of_owner_div">
+        <div class="col-sm-4 {{ !empty($organization->no_of_owner) ? '' : 'd-none' }}" id="no_of_owner_div">
             <label for="no_of_owner">Owner</label>
             <input type="number" name="no_of_owner" value="{{ $organization->no_of_owner ?? '' }}"
                 placeholder="Number of Owners" class="form-control" id="no_of_owner">
         </div>
-        <div class="col-sm-4" id="no_of_dir_div">
+        <div class="col-sm-4 {{ !empty($organization->no_of_dir) ? '' : 'd-none' }}" id="no_of_dir_div">
             <label for="no_of_dir">Director</label>
             <input type="number" name="no_of_dir" value="{{ $organization->no_of_dir ?? '' }}"
                 placeholder="Number of Directors" class="form-control" id="no_of_dir">
@@ -528,9 +528,6 @@
         })
 
         // organization_type_id change
-        $('#rjsc_reg_no_div').hide();
-        $('#no_of_owner_div').hide();
-        $('#no_of_dir_div').hide();
         $(document).on('change', '#organization_type_id', function(e) {
             let or_type_id = $(this).val();
             if (or_type_id == 2) {

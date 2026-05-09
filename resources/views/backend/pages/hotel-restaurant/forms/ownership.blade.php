@@ -4,7 +4,7 @@
             {{ $ownership->name ?? $index + 1 }}</h3>
     </div>
 
-    @if ($ownership->id)
+    @if (!empty($ownership))
         <input type="hidden" name="owner_id[]" value="{{ $ownership->id }}">
     @endif
     <div class="card-body">
@@ -57,7 +57,8 @@
                     <option value="">Select Gender</option>
                     @if (count(people_constant_option('gender')))
                         @foreach (people_constant_option('gender') as $key => $item)
-                            <option value="{{ $key }}" {{ $ownership->gender == $key ? 'selected' : '' }}>
+                            <option value="{{ $key }}"
+                                {{ !empty($ownership->gender) && $ownership->gender == $key ? 'selected' : '' }}>
                                 {{ $item }}
                             </option>
                         @endforeach
@@ -72,7 +73,7 @@
                     @if (count($religions))
                         @foreach ($religions as $religion)
                             <option value="{{ $religion->id }}"
-                                {{ $ownership->religion == $religion->id ? 'selected' : '' }}>
+                                {{ !empty($ownership->religion) && $ownership->religion == $religion->id ? 'selected' : '' }}>
                                 {{ $religion->name }}</option>
                         @endforeach
                     @endif
@@ -86,7 +87,7 @@
                     @if (count(people_constant_option('blood_group')))
                         @foreach (people_constant_option('blood_group') as $key => $item)
                             <option value="{{ $key }}"
-                                {{ $ownership->blood_group == $key ? 'selected' : '' }}>
+                                {{ !empty($ownership->blood_group) && $ownership->blood_group == $key ? 'selected' : '' }}>
                                 {{ $item }}</option>
                         @endforeach
                     @endif
@@ -143,7 +144,7 @@
                 </label>
                 <input type="text" required class="form-control" name="mother_name[]"
                     id="mother_name_{{ $index }}" placeholder="Mother Name English"
-                    value="{{ $ownership->mother_name }}">
+                    value="{{ $ownership->mother_name ?? '' }}">
                 <small class="error mother_name-error text-danger"></small>
             </div>
 
@@ -153,7 +154,7 @@
                 </label>
                 <input type="text" required class="form-control" name="mother_name_bn[]"
                     id="mother_name_bn_{{ $index }}" placeholder="Mother Name Bangla"
-                    value="{{ $ownership->mother_name_bn }}">
+                    value="{{ $ownership->mother_name_bn ?? '' }}">
                 <small class="error mother_name_bn-error text-danger"></small>
             </div>
         </div>
@@ -173,7 +174,7 @@
                         @if ($divisions)
                             @foreach ($divisions as $division)
                                 <option value="{{ $division->id }}"
-                                    {{ $ownership->permanent_division == $division->id ? 'selected' : '' }}>
+                                    {{ !empty($ownership->permanent_division) && $ownership->permanent_division == $division->id ? 'selected' : '' }}>
                                     {{ $division->name }}</option>
                             @endforeach
                         @endif
@@ -188,7 +189,7 @@
                         @if ($districts)
                             @foreach ($districts as $district)
                                 <option value="{{ $district->id }}"
-                                    {{ $ownership->permanent_district == $district->id ? 'selected' : '' }}>
+                                    {{ !empty($ownership->permanent_district) && $ownership->permanent_district == $district->id ? 'selected' : '' }}>
                                     {{ $district->name }}
                                 </option>
                             @endforeach
@@ -203,7 +204,7 @@
                         @if ($thanas)
                             @foreach ($thanas as $thana)
                                 <option value="{{ $thana->id }}"
-                                    {{ $ownership->permanent_thana == $thana->id ? 'selected' : '' }}>
+                                    {{ !empty($ownership->permanent_thana) && $ownership->permanent_thana == $thana->id ? 'selected' : '' }}>
                                     {{ $thana->name }}
                                 </option>
                             @endforeach
@@ -223,7 +224,7 @@
                         @if ($post_officeses)
                             @foreach ($post_officeses as $post_officese)
                                 <option value="{{ $post_officese->id }}"
-                                    {{ $ownership->permanent_post_office == $post_officese->id ? 'selected' : '' }}>
+                                    {{ !empty($ownership->permanent_post_office) && $ownership->permanent_post_office == $post_officese->id ? 'selected' : '' }}>
                                     {{ $post_officese->bn_name }}</option>
                             @endforeach
                         @endif
@@ -242,7 +243,7 @@
                         @if ($villages)
                             @foreach ($villages as $village)
                                 <option value="{{ $village->id }}"
-                                    {{ $ownership->permanent_village_id == $village->id ? 'selected' : '' }}>
+                                    {{ !empty($ownership->permanent_village_id) && $ownership->permanent_village_id == $village->id ? 'selected' : '' }}>
                                     {{ $village->bn_name }}</option>
                             @endforeach
                         @endif
@@ -259,7 +260,7 @@
                         @if ($wards)
                             @foreach ($wards as $ward)
                                 <option value="{{ $ward->id }}"
-                                    {{ $ownership->permanent_ward_id == $ward->id ? 'selected' : '' }}>
+                                    {{ !empty($ownership->permanent_ward_id) && $ownership->permanent_ward_id == $ward->id ? 'selected' : '' }}>
                                     {{ $ward->en_ward_no }}</option>
                             @endforeach
                         @endif
@@ -311,7 +312,7 @@
                         @if ($divisions)
                             @foreach ($divisions as $division)
                                 <option value="{{ $division->id }}"
-                                    {{ $ownership->present_division == $division->id ? 'selected' : '' }}>
+                                    {{ !empty($ownership->present_division) && $ownership->present_division == $division->id ? 'selected' : '' }}>
                                     {{ $division->name }}</option>
                             @endforeach
                         @endif
@@ -325,7 +326,7 @@
                         @if ($present_districts)
                             @foreach ($present_districts as $district)
                                 <option value="{{ $district->id }}"
-                                    {{ $ownership->present_district_id == $district->id ? 'selected' : '' }}>
+                                    {{ !empty($ownership->present_district_id) && $ownership->present_district_id == $district->id ? 'selected' : '' }}>
                                     {{ $district->name }}
                                 </option>
                             @endforeach
@@ -340,7 +341,7 @@
                         @if ($present_thanas)
                             @foreach ($present_thanas as $thana)
                                 <option value="{{ $thana->id }}"
-                                    {{ $ownership->present_thana_id == $thana->id ? 'selected' : '' }}>
+                                    {{ !empty($ownership->present_thana_id) && $ownership->present_thana_id == $thana->id ? 'selected' : '' }}>
                                     {{ $thana->name }}
                                 </option>
                             @endforeach
@@ -360,7 +361,7 @@
                         @if ($post_officeses)
                             @foreach ($post_officeses as $post_officese)
                                 <option value="{{ $post_officese->id }}"
-                                    {{ $ownership->present_post_office_id == $post_officese->id ? 'selected' : '' }}>
+                                    {{ !empty($ownership->present_post_office_id) && $ownership->present_post_office_id == $post_officese->id ? 'selected' : '' }}>
                                     {{ $post_officese->bn_name }}</option>
                             @endforeach
                         @endif
@@ -375,7 +376,7 @@
                         @if ($villages)
                             @foreach ($villages as $village)
                                 <option value="{{ $village->id }}"
-                                    {{ $ownership->present_village_id == $village->id ? 'selected' : '' }}>
+                                    {{ !empty($ownership->present_village_id) && $ownership->present_village_id == $village->id ? 'selected' : '' }}>
                                     {{ $village->bn_name }}</option>
                             @endforeach
                         @endif
@@ -394,7 +395,7 @@
                         @if ($wards)
                             @foreach ($wards as $ward)
                                 <option value="{{ $ward->id }}"
-                                    {{ $ownership->present_ward_id == $ward->id ? 'selected' : '' }}>
+                                    {{ !empty($ownership->present_ward_id) && $ownership->present_ward_id == $ward->id ? 'selected' : '' }}>
                                     {{ $ward->en_ward_no }}</option>
                             @endforeach
                         @endif
@@ -433,7 +434,8 @@
                     <span class="error image-error text-danger"></span>
                 </div>
                 <div class="col-sm-6">
-                    <img class="img-fluid img-thumbnail" src="{{ asset('no-image-found.jpeg') }}"
+                    <img class="img-fluid img-thumbnail"
+                        src="{{ $ownership->image ? asset($ownership->image) : asset('no-image-found.jpeg') }}"
                         id="preview_{{ $index }}" alt="Preview" width="100" height="100">
                 </div>
             </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\HotelRestaurant;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\HotelRestaurant\HotelCategory;
+use App\Models\HotelRestaurant\HotelRestaurantOwnership;
 use App\Models\BasicSettings\OrganizationOwnershipType;
 use App\Models\BasicSettings\Village;
 use App\Models\Institute;
@@ -372,12 +373,19 @@ class HotelRestaurantController extends Controller
         $data['organization'] = HotelRestaurant::with([
             'category',
             'subcategory',
+            'ownership',
             'type',
             'Division',
             'District',
             'Thana',
             'Village',
         ])->find($id);
+
+
+        $ownerships         = HotelRestaurantOwnership::where('hotel_restaurant_id', $id)->get();
+        $data['ownerships'] = $ownerships;
+
+
 
         return view('backend.pages.hotel-restaurant.show', $data);
     }
@@ -607,7 +615,7 @@ class HotelRestaurantController extends Controller
             'status'       => true,
             'message'      => 'Organization updated successfully!',
             'code'         => 200,
-            'redirect_url' => route('hotel-restaurant.index'),
+            'redirect_url' => route('hotelRestaurant-ownership.edit', $id),
         ], 200);
     }
 

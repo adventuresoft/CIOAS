@@ -31,10 +31,10 @@
                     <div class="card card-info">
                         <div class="card-header">
                             <h3 class="card-title">
-                                <a href="{{ route('organization.edit', $organization->id) }}"> <span
-                                        class="text-dark">Organization Information</span> </a> <span
+                                <a href="{{ route('hotel-restaurant.edit', $organization->id) }}"> <span
+                                        class="text-dark">Hotel Restaurant Information</span> </a> <span
                                     class="text-secondary">|</span>
-                                <a href="{{ route('organization-ownership.edit', $organization->id) }}"> <span
+                                <a href="{{ route('hotelRestaurant-ownership.edit', $organization->id) }}"> <span
                                         class="text-light">Ownership Information</span> </a>
                             </h3>
                         </div>
@@ -58,7 +58,7 @@
                                     <a href="{{ route('organization.index') }}"
                                         class="btn btn-default float-right">Cancel</a>
                                     <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-info">Submit & Next</button>
+                                        <button type="submit" class="btn btn-info">Update & Next</button>
                                     </div>
                                 </div>
                             </div>

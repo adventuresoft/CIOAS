@@ -61,6 +61,7 @@ class HotelRestaurantOwnership extends Model
         'present_road',
         'present_house',
         'present_house_bn',
+        'image',
     ];
 
     public function permanentDistrict()
@@ -85,6 +86,44 @@ class HotelRestaurantOwnership extends Model
     public function presentThana()
     {
         return $this->belongsTo(Thana::class, 'present_thana_id', 'id');
+
+    }
+
+
+    public function presentVillage()
+    {
+        return $this->belongsTo(Village::class, 'present_village_id', 'id');
+
+    }
+
+    public function permanentVillage()
+    {
+        return $this->belongsTo(Village::class, 'permanent_village_id', 'id');
+
+    }
+
+    public function permanentPostOffice()
+    {
+        return $this->belongsTo(PostOffice::class, 'permanent_post_office', 'id');
+
+    }
+
+
+    public function presentPostOffice()
+    {
+        return $this->belongsTo(PostOffice::class, 'present_post_office_id', 'id');
+
+    }
+
+    public function presentWard()
+    {
+        return $this->belongsTo(UnionWard::class, 'present_ward_id', 'id');
+
+    }
+
+    public function permanentWard()
+    {
+        return $this->belongsTo(UnionWard::class, 'permanent_ward_id', 'id');
 
     }
 }
