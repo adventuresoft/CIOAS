@@ -120,7 +120,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HotelRestaurant\HotelRestaurantController;
 use App\Http\Controllers\HotelRestaurant\HotelCategoryController;
 use App\Http\Controllers\HotelRestaurant\HotelSubCategoryController;
-use App\Http\Controllers\HotelRestaurant\HotelOwnershipController;
+use App\Http\Controllers\HotelRestaurant\HotelOwnerShipTypeController;
+use App\Http\Controllers\HotelRestaurant\HotelRestaurantOwnershipController;
 
 
 
@@ -377,7 +378,7 @@ Route::group([ 'prefix' => 'dashboard', 'middleware' => [ 'auth' ] ], function (
         // hotel-restaurant category
         Route::resource('hotel-category', HotelCategoryController::class);
         Route::resource('hotel-subcategory', HotelSubCategoryController::class);
-        Route::resource('hotel-ownership', HotelOwnerShipController::class);
+        Route::resource('hotel-ownership', HotelOwnerShipTypeController::class);
     });
 
     Route::resource('organization', OrganizationController::class);
@@ -450,6 +451,8 @@ Route::group([ 'prefix' => 'dashboard', 'middleware' => [ 'auth' ] ], function (
         Route::post('/areaStore', 'areaStore')->name('areaStore');
     });
     Route::resource('organization-ownership', OrganizationOwnershipController::class);
+
+    Route::resource('hotelRestaurant-ownership', HotelRestaurantOwnershipController::class);
 
     Route::get('organizations', function () {
         return redirect()->route('organization.index');

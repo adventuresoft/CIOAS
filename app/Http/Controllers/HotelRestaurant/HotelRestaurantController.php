@@ -13,7 +13,7 @@ use App\Models\Division;
 use App\Models\Thana;
 use App\Models\PostOffice;
 use App\Models\HotelRestaurant\HotelRestaurant;
-use App\Models\HotelRestaurant\HotelOwnerShip;
+use App\Models\HotelRestaurant\HotelOwnerShipType;
 use App\Models\Organization\OrganizationOwnership;
 use App\Models\People\AddressInfo;
 use App\Models\UnionWard;
@@ -190,7 +190,7 @@ class HotelRestaurantController extends Controller
     public function create()
     {
         // Load all lookup data for the form
-        $data['types']           = HotelOwnerShip::where('status', true)->latest()->get();
+        $data['types']           = HotelOwnerShipType::where('status', true)->latest()->get();
         $data['categories']      = HotelCategory::where('status', true)->latest()->get();
         $data['ownership_types'] = OrganizationOwnershipType::where('status', true)->latest()->get();
         $data['wards']           = UnionWard::where('status', true)->get();
@@ -356,7 +356,7 @@ class HotelRestaurantController extends Controller
             'message'      => 'Organization saved successfully!',
             'result'       => $organization,
             'code'         => 200,
-            'redirect_url' => route('hotel-restaurant.index'),
+            'redirect_url' => route('hotelRestaurant-ownership.edit', $organization->id),
         ], 200);
     }
 
@@ -399,7 +399,7 @@ class HotelRestaurantController extends Controller
         }
 
         // Load all lookup data for the edit form
-        $data['types']           = HotelOwnerShip::where('status', true)->latest()->get();
+        $data['types']           = HotelOwnerShipType::where('status', true)->latest()->get();
         $data['categories']      = HotelCategory::where('status', true)->latest()->get();
         $data['ownership_types'] = OrganizationOwnershipType::where('status', true)->latest()->get();
         $data['wards']           = UnionWard::where('status', true)->get();
