@@ -531,17 +531,17 @@
         $(document).on('change', '#organization_type_id', function(e) {
             let or_type_id = $(this).val();
             if (or_type_id == 2) {
-                $('#rjsc_reg_no_div').hide();
-                $('#no_of_dir_div').hide();
-                $('#no_of_owner_div').show();
+                $('#rjsc_reg_no_div').addClass('d-none');
+                $('#no_of_dir_div').addClass('d-none');
+                $('#no_of_owner_div').removeClass('d-none');
             } else if (or_type_id == 3) {
-                $('#no_of_owner_div').hide();
-                $('#rjsc_reg_no_div').show();
-                $('#no_of_dir_div').show();
+                $('#no_of_owner_div').addClass('d-none');
+                $('#rjsc_reg_no_div').removeClass('d-none');
+                $('#no_of_dir_div').removeClass('d-none');
             } else if (or_type_id == 1) {
-                $('#rjsc_reg_no_div').hide();
-                $('#no_of_owner_div').hide();
-                $('#no_of_dir_div').hide();
+                $('#rjsc_reg_no_div').addClass('d-none');
+                $('#no_of_owner_div').addClass('d-none');
+                $('#no_of_dir_div').addClass('d-none');
             }
 
         });
@@ -686,32 +686,32 @@
 
         })
 
-        // $(document).on('change', '#thana_id', function(e) {
-        //     e.preventDefault();
-        //     let thana_id = $(this).val();
-        //     let union_id = $('#union_id');
-        //     if (thana_id) {
-        //         $.ajax({
-        //             type: "GET",
-        //             url: "{{ url('/get-unions-by-thana') }}/" + thana_id,
-        //             beforeSend: function() {
-        //                 union_id.prop("disabled", true);
-        //                 console.log("Searcing Unions");
-        //             },
-        //             success: function(response) {
-        //                 union_id.html(response)
-        //                 union_id.prop("disabled", false);
-        //             },
-        //             error: function(xhr, status, error) {
-        //                 union_id.prop("disabled", true);
-        //                 var responseText = jQuery.parseJSON(xhr.responseText);
-        //                 toastr.error(responseText.message);
-        //             }
-        //         });
-        //     } else {
-        //         union_id.prop("disabled", true);
-        //     }
-        // })
+        $(document).on('change', '#thana_id', function(e) {
+            e.preventDefault();
+            let thana_id = $(this).val();
+            let union_id = $('#post_offices');
+            if (thana_id) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('/get-unions-by-thana') }}/" + thana_id,
+                    beforeSend: function() {
+                        union_id.prop("disabled", true);
+                        console.log("Searcing Unions");
+                    },
+                    success: function(response) {
+                        union_id.html(response)
+                        union_id.prop("disabled", false);
+                    },
+                    error: function(xhr, status, error) {
+                        union_id.prop("disabled", true);
+                        var responseText = jQuery.parseJSON(xhr.responseText);
+                        toastr.error(responseText.message);
+                    }
+                });
+            } else {
+                union_id.prop("disabled", true);
+            }
+        })
 
 
         // $(document).on('change', '#permanent_village_id', function(e) {
