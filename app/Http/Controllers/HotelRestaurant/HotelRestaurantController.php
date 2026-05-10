@@ -36,6 +36,13 @@ class HotelRestaurantController extends Controller
      */
     public function index(Request $request)
     {
+        // Return view for regular page load
+        return view('backend.pages.hotel-restaurant.index');
+    }
+
+
+    public function records(Request $request)
+    {
         // Handle AJAX request for DataTables server-side processing
         if ($request->ajax()) {
             $query = HotelRestaurant::with('category', 'subcategory');
@@ -150,9 +157,6 @@ class HotelRestaurantController extends Controller
                 'data'            => $data
             ]);
         }
-
-        // Return view for regular page load
-        return view('backend.pages.hotel-restaurant.index');
     }
 
     /**

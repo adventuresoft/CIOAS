@@ -112,10 +112,11 @@
             let table = $('#hotelRestaurant').DataTable({
                 serverSide: true,
                 ajax: {
-                    url: '{{ route('hotel-restaurant.index') }}',
-                    type: 'GET',
+                    url: '{{ route('hotel-restaurant.records') }}',
+                    type: 'POST',
                     data: function(d) {
                         // Add custom search parameters
+                        d.csrf_token = $('meta[name="csrf-token"]').attr('content');
                         d.search_hotel_name = $('#search_hotel_name').val();
                         d.search_category = $('#search_category').val();
                         d.search_subcategory = $('#search_subcategory').val();
