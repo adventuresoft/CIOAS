@@ -12,7 +12,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.hotel-ownership.index') }}">Hotel
+                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.ownership-type.index') }}">Hotel
                                 Ownership</a></li>
                         <li class="breadcrumb-item active">Edit</li>
                     </ol>
@@ -67,7 +67,7 @@
                             <div class="card-footer">
                                 <div class="form-group row">
                                     {{-- {{route('death.index')}} --}}
-                                    <a href="{{ route('basic-settings.hotel-ownership.index') }}"
+                                    <a href="{{ route('basic-settings.ownership-type.index') }}"
                                         class="btn btn-default float-right">Cancel</a>
                                     <div class="col-sm-9">
                                         <button type="submit" class="btn btn-info">Update</button>
@@ -95,7 +95,7 @@
                 let thisForm = $(this);
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('basic-settings.hotel-ownership.update', $ownership->id) }}",
+                    url: "{{ route('basic-settings.ownership-type.update', $ownership->id) }}",
                     data: new FormData(this),
                     dataType: "json",
                     contentType: false,
@@ -110,7 +110,7 @@
                         toastr.success(response.message);
                         setTimeout(function() {
                             location.href =
-                                "{{ route('basic-settings.hotel-ownership.index') }}";
+                                "{{ route('basic-settings.ownership-type.index') }}";
                         }, 2000)
                     },
                     error: function(xhr, status, error) {

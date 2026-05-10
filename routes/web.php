@@ -378,7 +378,7 @@ Route::group([ 'prefix' => 'dashboard', 'middleware' => [ 'auth' ] ], function (
         // hotel-restaurant category
         Route::resource('hotel-category', HotelCategoryController::class);
         Route::resource('hotel-subcategory', HotelSubCategoryController::class);
-        Route::resource('hotel-ownership', HotelOwnerShipTypeController::class);
+        Route::resource('ownership-type', HotelOwnerShipTypeController::class);
     });
 
     Route::resource('organization', OrganizationController::class);

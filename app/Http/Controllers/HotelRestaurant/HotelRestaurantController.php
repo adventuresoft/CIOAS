@@ -14,7 +14,7 @@ use App\Models\Division;
 use App\Models\Thana;
 use App\Models\PostOffice;
 use App\Models\HotelRestaurant\HotelRestaurant;
-use App\Models\HotelRestaurant\HotelOwnerShipType;
+use App\Models\OwnerShipType;
 use App\Models\Organization\OrganizationOwnership;
 use App\Models\People\AddressInfo;
 use App\Models\UnionWard;
@@ -191,7 +191,7 @@ class HotelRestaurantController extends Controller
     public function create()
     {
         // Load all lookup data for the form
-        $data['types']           = HotelOwnerShipType::where('status', true)->latest()->get();
+        $data['types']           = OwnerShipType::where('status', true)->latest()->get();
         $data['categories']      = HotelCategory::where('status', true)->latest()->get();
         $data['ownership_types'] = OrganizationOwnershipType::where('status', true)->latest()->get();
         $data['wards']           = UnionWard::where('status', true)->get();
@@ -408,7 +408,7 @@ class HotelRestaurantController extends Controller
         }
 
         // Load all lookup data for the edit form
-        $data['types']           = HotelOwnerShipType::where('status', true)->latest()->get();
+        $data['types']           = OwnerShipType::where('status', true)->latest()->get();
         $data['categories']      = HotelCategory::where('status', true)->latest()->get();
         $data['ownership_types'] = OrganizationOwnershipType::where('status', true)->latest()->get();
         $data['wards']           = UnionWard::where('status', true)->get();

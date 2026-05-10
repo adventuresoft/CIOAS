@@ -12,7 +12,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.hotel-ownership.index') }}">Hotel
+                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.ownership-type.index') }}">Hotel
                                 Ownership</a></li>
                         <li class="breadcrumb-item active">Edit</li>
                     </ol>

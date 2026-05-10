@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models\HotelRestaurant;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class HotelOwnerShip extends Model
+class OwnerShipType extends Model
 {
     use HasFactory;
 
-    protected $table = "hotel_ownerships";
+    protected $table = "hotel_ownership_type";
 }

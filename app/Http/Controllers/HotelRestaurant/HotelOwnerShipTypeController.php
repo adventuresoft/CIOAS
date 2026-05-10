@@ -4,7 +4,7 @@ namespace App\Http\Controllers\HotelRestaurant;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\HotelRestaurant\HotelOwnerShipType;
+use App\Models\OwnerShipType;
 
 class HotelOwnerShipTypeController extends Controller
 {
@@ -15,8 +15,8 @@ class HotelOwnerShipTypeController extends Controller
      */
     public function index()
     {
-        $ownership = HotelOwnerShipType::latest()->get();
-        return view('backend.pages.hotel-restaurant.ownership-type.index', compact('ownership'));
+        $ownership = OwnerShipType::latest()->get();
+        return view('backend.pages.ownership-type.index', compact('ownership'));
     }
 
     /**
@@ -26,7 +26,7 @@ class HotelOwnerShipTypeController extends Controller
      */
     public function create()
     {
-        return view('backend.pages.hotel-restaurant.ownership-type.create');
+        return view('backend.pages.ownership-type.create');
     }
 
     /**
@@ -42,7 +42,7 @@ class HotelOwnerShipTypeController extends Controller
             'bn_name' => 'required|unique:hotel_categories,bn_name',
         ]);
 
-        $category             = new HotelOwnerShipType();
+        $category             = new OwnerShipType();
         $category->en_name    = $request->en_name;
         $category->bn_name    = $request->bn_name;
         $category->status     = $request->status ? $request->status : true;
@@ -64,9 +64,9 @@ class HotelOwnerShipTypeController extends Controller
      */
     public function show($id)
     {
-        $ownership = HotelOwnerShipType::findOrFail($id);
+        $ownership = OwnerShipType::findOrFail($id);
 
-        return view('backend.pages.hotel-restaurant.ownership-type.show', compact('ownership'));
+        return view('backend.pages.ownership-type.show', compact('ownership'));
     }
 
     /**
@@ -77,9 +77,9 @@ class HotelOwnerShipTypeController extends Controller
      */
     public function edit($id)
     {
-        $ownership = HotelOwnerShipType::findOrFail($id);
+        $ownership = OwnerShipType::findOrFail($id);
 
-        return view('backend.pages.hotel-restaurant.ownership-type.edit', compact('ownership'));
+        return view('backend.pages.ownership-type.edit', compact('ownership'));
     }
 
     /**
@@ -96,7 +96,7 @@ class HotelOwnerShipTypeController extends Controller
             'bn_name' => 'required|unique:hotel_categories,bn_name,' . $id,
         ]);
 
-        $ownership             = HotelOwnerShipType::findOrFail($id);
+        $ownership             = OwnerShipType::findOrFail($id);
         $ownership->en_name    = $request->en_name;
         $ownership->bn_name    = $request->bn_name;
         $ownership->status     = $request->status ? $request->status : true;
@@ -117,7 +117,7 @@ class HotelOwnerShipTypeController extends Controller
      */
     public function destroy($id)
     {
-        $ownership = HotelOwnerShipType::findOrFail($id);
+        $ownership = OwnerShipType::findOrFail($id);
         $ownership->delete();
 
         return response()->json([
