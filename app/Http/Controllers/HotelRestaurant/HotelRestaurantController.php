@@ -654,14 +654,14 @@ class HotelRestaurantController extends Controller
         // Delete the hotel restaurant
         $hotelRestaurant->delete();
 
-        // $hotelOwners = HotelRestaurantOwnership::findOrFail($id);
+        $hotelOwners = HotelRestaurantOwnership::where('hotel_restaurant_id', $id)->get();
 
-        // if($hotelOwners){
-        //     foreach($hotelOwners as $hotelOwner){
-        //         $this->deleteFile($hotelOwner->image);
-        //         $hotelOwner->delete();
-        //     }
-        // }
+        if ($hotelOwners) {
+            foreach ($hotelOwners as $hotelOwner) {
+                $this->deleteFile($hotelOwner->image);
+                $hotelOwner->delete();
+            }
+        }
 
         // Return success response
         return response()->json([
