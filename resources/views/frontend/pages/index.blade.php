@@ -45,7 +45,7 @@
                     <img src="{{ asset('assets/images/logo/govt-bd-logo.png') }}" class="govt-logo" alt="" />
                     <div class="text-black text-center md:text-left">
                         <h1 class="md:text-[25px] font-semibold">
-                            Central Office Integrated Automation System to bangla
+                            Central Integrate Office Automation System
                         </h1>
                         <p>Local Government Division, Local Government Ministry, Bangladesh</p>
                     </div>
@@ -181,7 +181,7 @@
             <div class="container mx-auto max-w-screen-xl px-4">
                 <div class="mx-auto max-w-5xl text-center">
                     <h2 class="-mt-8 text-xl font-bold tracking-tight text-black sm:-mt-10 sm:text-2xl lg:text-3xl">
-                        কেন্দ্রীয় অফিস ইন্টিগ্রেটেড অটোমেশন সিস্টেম
+                        কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম
                     </h2>
                     <p
                         class="mx-auto mt-7 max-w-4xl text-base leading-relaxed text-black sm:mt-2 sm:text-lg md:text-xl">
