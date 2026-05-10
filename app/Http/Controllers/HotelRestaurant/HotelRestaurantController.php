@@ -374,6 +374,7 @@ class HotelRestaurantController extends Controller
             'category',
             'subcategory',
             'ownership',
+            'ownershipType',
             'type',
             'Division',
             'District',

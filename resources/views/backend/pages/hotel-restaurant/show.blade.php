@@ -308,7 +308,7 @@
                     <div class="id-info-item"><span>Category :</span> {{ $organization->category->en_name ?? '' }}</div>
                     <div class="id-info-item"><span>Sub Category :</span> {{ $organization->subcategory->en_name ?? '' }}
                     </div>
-                    <div class="id-info-item"><span>Type :</span> {{ $organization->type->en_name ?? '' }}</div>
+                    <div class="id-info-item"><span>Type :</span> {{ $organization->ownershipType->en_name ?? '' }}</div>
                     <div class="id-info-item"><span>Capital :</span> ৳ {{ $organization->capital }}</div>
                     <div class="id-info-item"><span>Est. Year :</span> {{ $organization->establish_year }}</div>
                     @if ($organization->no_of_owner)

@@ -435,7 +435,7 @@
                 </div>
                 <div class="col-sm-6">
                     <img class="img-fluid img-thumbnail"
-                        src="{{ $ownership->image ? asset($ownership->image) : asset('no-image-found.jpeg') }}"
+                        src="{{ !empty($ownership->image) ? asset($ownership->image) : asset('no-image-found.jpeg') }}"
                         id="preview_{{ $index }}" alt="Preview" width="100" height="100">
                 </div>
             </div>

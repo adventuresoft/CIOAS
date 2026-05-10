@@ -3,7 +3,7 @@
 namespace App\Models\HotelRestaurant;
 
 use App\Models\HotelRestaurant\HotelCategory;
-use App\Models\HotelRestaurant\HotelOwnerShip;
+use App\Models\HotelRestaurant\HotelOwnerShipType;
 use App\Models\BasicSettings\OrganizationSubCategory;
 use App\Models\BasicSettings\Village;
 use App\Models\House;
@@ -45,7 +45,6 @@ class HotelRestaurant extends Model
         'hotel_subcategory_id',
         'hotel_work_area_id',
         'hotel_type_id',
-        'hotel_ownership_type_id',
         'rjsc_reg_no',
         'no_of_owner',
         'division_id',
@@ -87,6 +86,12 @@ class HotelRestaurant extends Model
     public function ownership()
     {
         return $this->hasMany(HotelRestaurantOwnership::class, 'hotel_restaurant_id', 'id');
+    }
+
+
+    public function ownershipType()
+    {
+        return $this->belongsTo(HotelOwnerShipType::class, 'hotel_type_id', 'id');
     }
 
 
