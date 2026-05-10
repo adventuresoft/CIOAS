@@ -113,7 +113,7 @@
                 serverSide: true,
                 ajax: {
                     url: '{{ route('hotel-restaurant.records') }}',
-                    type: 'get',
+                    type: 'post',
                     data: function(d) {
                         // Add custom search parameters
                         d.csrf_token = $('meta[name="csrf-token"]').attr('content');
