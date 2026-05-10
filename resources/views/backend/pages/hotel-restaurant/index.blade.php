@@ -113,7 +113,7 @@
                 serverSide: true,
                 ajax: {
                     url: '{{ route('hotel-restaurant.records') }}',
-                    type: 'POST',
+                    type: 'get',
                     data: function(d) {
                         // Add custom search parameters
                         d.csrf_token = $('meta[name="csrf-token"]').attr('content');
@@ -130,6 +130,9 @@
                 pageLength: 10,
                 lengthChange: false,
                 processing: true,
+                drawCallback: function(settings) {
+                    bindDeleteEvents();
+                },
                 order: [
                     [0, 'asc']
                 ],

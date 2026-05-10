@@ -128,7 +128,7 @@ class HotelRestaurantController extends Controller
                 if (view_permission()) {
                     $actionButtons .= '<a href="' . route('hotel-restaurant.show', $organization->id) . '" title="View" class="btn btn-info btn-sm mx-1"><i class="fa fa-eye"></i></a>';
 
-                    $actionButtons .= '<form class="deleteHouse d-inline" method="post">
+                    $actionButtons .= '<form  class="deleteHouse d-inline" method="post">
                         ' . csrf_field() . '
                         ' . method_field('DELETE') . '
                         <input type="hidden" class="deleteUrl" name="delete_url" value="' . route('hotel-restaurant.destroy', $organization->id) . '">
@@ -653,6 +653,15 @@ class HotelRestaurantController extends Controller
 
         // Delete the hotel restaurant
         $hotelRestaurant->delete();
+
+        // $hotelOwners = HotelRestaurantOwnership::findOrFail($id);
+
+        // if($hotelOwners){
+        //     foreach($hotelOwners as $hotelOwner){
+        //         $this->deleteFile($hotelOwner->image);
+        //         $hotelOwner->delete();
+        //     }
+        // }
 
         // Return success response
         return response()->json([
