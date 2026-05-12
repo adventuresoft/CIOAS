@@ -10,13 +10,13 @@ class UnionController extends Controller
 
     public function unionsByThana(Request $request, $id)
     {
-        $html = '<option value="">Select '.($request->id ? ucfirst($request->id) : '').' Union</option>';
+        $html = '<option value="">Select ' . ($request->id ? ucfirst($request->id) : '') . ' Union</option>';
 
         $unions = Union::where('thana_id', $id)->get();
 
-        if(count($unions)) {
+        if (count($unions)) {
             foreach ($unions as $union) {
-               $html .='<option value="'.$union->id.'">'.$union->name.'</option>';
+                $html .= '<option value="' . $union->id . '">' . $union->bn_name . '</option>';
             }
         }
 

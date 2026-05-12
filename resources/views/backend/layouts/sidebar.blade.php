@@ -120,13 +120,6 @@
                                     <p>Hotel Subcategory</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('basic-settings.ownership-type.index') }}"
-                                    class="nav-link {{ $subMenu == 'HotelOwnership' ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Hotel Ownership</p>
-                                </a>
-                            </li>
 
                             <li class="nav-item">
                                 <a href="{{ route('basic-settings.family-type.index') }}"

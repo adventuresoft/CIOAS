@@ -12,6 +12,23 @@ class CityCorporationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function cityByDistrict(Request $request, $id)
+    {
+
+        $city_ids = CityCorporation::where('district_id', $id)->get();
+
+        $html = '<option value="">Select City Corporation</option>';
+
+        if (count($city_ids)) {
+            foreach ($city_ids as $city) {
+                $html .= '<option value="' . $city->id . '">' . $city->bn_name . '</option>';
+            }
+        }
+
+        return $html;
+
+    }
     public function index()
     {
         //
@@ -83,5 +100,5 @@ class CityCorporationController extends Controller
         //
     }
 
-    
+
 }

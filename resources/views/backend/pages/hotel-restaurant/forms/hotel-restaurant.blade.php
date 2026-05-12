@@ -130,8 +130,8 @@
             </select>
 
             <small class="text-danger error district_id_error"></small>
-
         </div>
+
         <div class="col-sm-4">
             <label for="thana_id">Thana</label>
             <select name="thana_id" class="form-control select2 select2bs4" id="thana_id">
@@ -146,23 +146,55 @@
             <small class="text-danger error thana_id_error"></small>
 
         </div>
+
     </div>
 
     <div class="form-group row">
+
         <div class="col-sm-4">
-            <label for="post_office_id">Post Office</label>
-            <select name="post_office_id" class="form-control select2 select2bs4" id="post_office_id">
-                <option value="">Select Post Office</option>
-                @if ($post_officeses)
+            <label for="city_corporation_id">City Corporation</label>
+            <select name="city_corporation_id" class="form-control select2 select2bs4" id="city_corporation_id">
+                <option value="">Select City Corporation</option>
+                {{-- @if ($post_officeses)
                     @foreach ($post_officeses as $post_officese)
                         <option value="{{ $post_officese->id }}"
                             {{ isset($organization->post_office_id) ? ($organization->post_office_id == $post_officese->id ? 'selected' : '') : '' }}>
                             {{ $post_officese->bn_name }}</option>
                     @endforeach
-                @endif
+                @endif --}}
             </select>
             <small class="text-danger error permanent_village_id_error"></small>
         </div>
+
+        <div class="col-sm-4">
+            <label for="post_office_id">Post Office</label>
+            <select name="post_office_id" class="form-control select2 select2bs4" id="post_office_id">
+                <option value="">Select Post Office</option>
+                {{-- @if ($post_officeses)
+                    @foreach ($post_officeses as $post_officese)
+                        <option value="{{ $post_officese->id }}"
+                            {{ isset($organization->post_office_id) ? ($organization->post_office_id == $post_officese->id ? 'selected' : '') : '' }}>
+                            {{ $post_officese->bn_name }}</option>
+                    @endforeach
+                @endif --}}
+            </select>
+            <small class="text-danger error permanent_village_id_error"></small>
+        </div>
+
+        <div class="col-sm-4">
+            <label for="union_id">Union</label>
+            <select name="union_id" class="form-control select2 select2bs4" id="union_id">
+                {{-- @if (isset($unions))
+                    @foreach ($unions as $union)
+                        <option
+                            {{ isset($organization->union_id) && $organization->union_id == $union->id ? 'selected' : '' }}
+                            value="{{ $organization->union_id ?? '' }}">{{ $union->name ?? 'Select Union' }}</option>
+                    @endforeach
+                @endif --}}
+            </select>
+            <small class="text-danger error union_id_error"></small>
+        </div>
+
         <div class="col-sm-4">
             <label for="village_id">Village</label>
             <select name="village_id" class="form-control select2 select2bs4" id="village_id">
@@ -689,7 +721,34 @@
         $(document).on('change', '#thana_id', function(e) {
             e.preventDefault();
             let thana_id = $(this).val();
-            let union_id = $('#post_offices');
+            let postOffice_id = $('#post_office_id');
+            if (thana_id) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('/get-postOffice-by-thana') }}/" + thana_id,
+                    beforeSend: function() {
+                        postOffice_id.prop("disabled", true);
+                        console.log("Searcing Post Offices");
+                    },
+                    success: function(response) {
+                        postOffice_id.html(response)
+                        postOffice_id.prop("disabled", false);
+                    },
+                    error: function(xhr, status, error) {
+                        postOffice_id.prop("disabled", true);
+                        var responseText = jQuery.parseJSON(xhr.responseText);
+                        toastr.error(responseText.message);
+                    }
+                });
+            } else {
+                postOffice_id.prop("disabled", true);
+            }
+        })
+
+        $(document).on('change', '#thana_id', function(e) {
+            e.preventDefault();
+            let thana_id = $(this).val();
+            let union_id = $('#union_id');
             if (thana_id) {
                 $.ajax({
                     type: "GET",
@@ -709,8 +768,40 @@
                     }
                 });
             } else {
-                union_id.prop("disabled", true);
+                postOffice_id.prop("disabled", true);
             }
+        })
+
+
+
+        $(document).on('change', '#district_id', function(e) {
+            e.preventDefault();
+            let district_id = $(this).val();
+            let city_corporation_id = $("#city_corporation_id");
+
+            if (district_id) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('/get-city-corporation-by-district') }}/" + district_id,
+                    beforeSend: function() {
+                        city_corporation_id.prop("disabled", true);
+                        console.log("Searcing City Corporation");
+                    },
+                    success: function(response) {
+                        city_corporation_id.html(response)
+                        city_corporation_id.prop("disabled", false);
+                    },
+                    error: function(xhr, status, error) {
+                        city_corporation_id.prop("disabled", true);
+                        var responseText = jQuery.parseJSON(xhr.responseText);
+                        toastr.error(responseText.message);
+                    }
+
+                });
+            } else {
+                city_corporation_id.prop("disabled", true);
+            }
+
         })
 
 

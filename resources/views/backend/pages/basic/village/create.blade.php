@@ -1,24 +1,24 @@
-@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' =>'Village'])
+@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'Village'])
 @push('style')
 @endpush
 @section('title', 'Village')
 @section('content')
-   <!-- Content Header (Page header) -->
-   <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1>Village</h1>
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{route('basic-settings.village.index')}}">Village</a></li>
-            <li class="breadcrumb-item active">Create</li>
-          </ol>
-        </div>
-      </div>
-    </div><!-- /.container-fluid -->
-  </section>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Village</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.village.index') }}">Village</a></li>
+                        <li class="breadcrumb-item active">Create</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
 
     <!-- Main content -->
     <section class="content">
@@ -39,13 +39,14 @@
                             <div class="card-body">
 
                                 <div class="form-group row">
-                                    <label for="division_id" class="col-sm-2 col-form-label">Division <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                                    <label for="division_id" class="col-sm-2 col-form-label">Division <span
+                                            class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
                                     <div class="col-sm-9">
                                         <select required class="form-control select2" name="division_id" id="division_id">
                                             <option value="">Division</option>
                                             @if ($divisions)
                                                 @foreach ($divisions as $division)
-                                                    <option value="{{$division->id}}">{{$division->name}}</option>
+                                                    <option value="{{ $division->id }}">{{ $division->name }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -53,13 +54,14 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="district_id" class="col-sm-2 col-form-label">District <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                                    <label for="district_id" class="col-sm-2 col-form-label">District <span
+                                            class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
                                     <div class="col-sm-9">
                                         <select required class="form-control select2" name="district_id" id="district_id">
                                             <option value="">District</option>
                                             @if ($districts)
-                                                @foreach($districts as $district)
-                                                    <option value="{{$district->id}}">{{$district->name}}</option>
+                                                @foreach ($districts as $district)
+                                                    <option value="{{ $district->id }}">{{ $district->name }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -68,13 +70,14 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="thana_id" class="col-sm-2 col-form-label">Thana <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                                    <label for="thana_id" class="col-sm-2 col-form-label">Thana <span class="text-danger"
+                                            title="Required" data-toggle="tooltip">*</span></label>
                                     <div class="col-sm-9">
                                         <select required class="form-control select2" name="thana_id" id="thana_id">
                                             <option value="">Thana</option>
                                             @if ($thanas)
-                                                @foreach($thanas as $thana)
-                                                    <option value="{{$thana->id}}">{{$thana->name}}</option>
+                                                @foreach ($thanas as $thana)
+                                                    <option value="{{ $thana->id }}">{{ $thana->name }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -82,14 +85,53 @@
 
                                     </div>
                                 </div>
+
                                 <div class="form-group row">
-                                    <label for="union_id" class="col-sm-2 col-form-label">Union <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                                    <label for="city_corporation_id" class="col-sm-2 col-form-label">City Corporation<span
+                                            class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select required class="form-control select2" name="city_corporation_id"
+                                            id="city_corporation_id">
+                                            <option value="">City Corporation</option>
+                                            {{-- @if ($cityCorporations)
+                                                @foreach ($cityCorporations as $cityCorporation)
+                                                    <option value="{{ $cityCorporation->id }}">{{ $cityCorporation->name }}
+                                                    </option>
+                                                @endforeach
+                                            @endif --}}
+                                        </select>
+                                        <small class="text-danger error union_id_error"></small>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="post_office_id" class="col-sm-2 col-form-label">Post Office<span
+                                            class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select required class="form-control select2" name="post_office_id"
+                                            id="post_office_id">
+                                            <option value="">Post Office </option>
+                                            {{-- @if ($postOffices)
+                                                @foreach ($postOffices as $postOffice)
+                                                    <option value="{{ $postOffice->id }}">{{ $postOffice->name }}</option>
+                                                @endforeach
+                                            @endif --}}
+                                        </select>
+                                        <small class="text-danger error union_id_error"></small>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="union_id" class="col-sm-2 col-form-label">Union <span class="text-danger"
+                                            title="Required" data-toggle="tooltip">*</span></label>
                                     <div class="col-sm-9">
                                         <select required class="form-control select2" name="union_id" id="union_id">
                                             <option value="">Union</option>
                                             @if ($unions)
-                                                @foreach($unions as $union)
-                                                    <option value="{{$union->id}}">{{$union->name}}</option>
+                                                @foreach ($unions as $union)
+                                                    <option value="{{ $union->id }}">{{ $union->name }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -98,18 +140,24 @@
                                     </div>
                                 </div>
 
+
+
                                 <div class="form-group row">
-                                    <label for="en_name" class="col-sm-2 col-form-label">Village Name <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                                    <label for="en_name" class="col-sm-2 col-form-label">Village Name <span
+                                            class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="en_name" placeholder="Village Name" class="form-control" id="en_name">
+                                        <input type="text" name="en_name" placeholder="Village Name"
+                                            class="form-control" id="en_name">
                                         <small class="text-danger error en_name_error"></small>
 
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="bn_name" class="col-sm-2 col-form-label">Village Name Bangla <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                                    <label for="bn_name" class="col-sm-2 col-form-label">Village Name Bangla <span
+                                            class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="bn_name" placeholder="Village Name Bangla" class="form-control" id="bn_name">
+                                        <input type="text" name="bn_name" placeholder="Village Name Bangla"
+                                            class="form-control" id="bn_name">
                                         <small class="text-danger error bn_name_error"></small>
 
                                     </div>
@@ -119,7 +167,8 @@
                             <!-- /.card-body -->
                             <div class="card-footer">
                                 <div class="form-group row">
-                                    <a href="{{route('basic-settings.village.index')}}" class="btn btn-default float-right">Cancel</a>
+                                    <a href="{{ route('basic-settings.village.index') }}"
+                                        class="btn btn-default float-right">Cancel</a>
                                     <div class="col-sm-9">
                                         <button type="submit" class="btn btn-info">Submit</button>
                                     </div>
@@ -136,37 +185,37 @@
     </section>
     <!-- /.content -->
 
-{{-- {{ route('death.store') }} --}}
+    {{-- {{ route('death.store') }} --}}
 @endsection
 @push('script')
-
     <script>
-         $(document).ready(function() {
-             $(".select2").select2();
+        $(document).ready(function() {
+            $(".select2").select2();
             $("#unionForm").on('submit', function(e) {
                 e.preventDefault();
                 let thisForm = $(this);
                 $.ajax({
                     type: "POST",
-                    url: "{{route('basic-settings.village.store')}}",
+                    url: "{{ route('basic-settings.village.store') }}",
                     data: new FormData(this),
                     dataType: "json",
-                    contentType:false,
-                    cache:false,
-                    processData:false,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
                     beforeSend: function() {
-                        thisForm.find('button[type="submit"]').prop("disabled",true);
+                        thisForm.find('button[type="submit"]').prop("disabled", true);
                         $('.error').text('');
                     },
-                    success: function (response) {
-                        thisForm.find('button[type="submit"]').prop("disabled",false);
+                    success: function(response) {
+                        thisForm.find('button[type="submit"]').prop("disabled", false);
                         toastr.success(response.message);
                         setTimeout(function() {
-                            location.href = "{{route('basic-settings.village.index')}}";
+                            location.href =
+                                "{{ route('basic-settings.village.index') }}";
                         }, 2000)
                     },
                     error: function(xhr, status, error) {
-                        thisForm.find('button[type="submit"]').prop("disabled",false);
+                        thisForm.find('button[type="submit"]').prop("disabled", false);
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
                         $.each(responseText.errors, function(key, val) {
@@ -177,17 +226,17 @@
             })
         })
 
-        $(document).on('change', '#division_id', function(e){
+        $(document).on('change', '#division_id', function(e) {
             e.preventDefault();
             let divisionID = $(this).val();
 
             $.ajax({
                 type: "GET",
-                url: "{{url('/get-districts-by-division')}}/"+divisionID,
+                url: "{{ url('/get-districts-by-division') }}/" + divisionID,
                 beforeSend: function() {
                     console.log("Loading districts");
                 },
-                success: function (response) {
+                success: function(response) {
                     $("#district_id").html(response);
                 },
                 error: function(xhr, status, error) {
@@ -197,17 +246,17 @@
             });
         })
 
-        $(document).on('change', '#district_id', function(e){
+        $(document).on('change', '#district_id', function(e) {
             e.preventDefault();
             let divisionID = $(this).val();
 
             $.ajax({
                 type: "GET",
-                url: "{{url('/get-thanas-by-district')}}/"+divisionID,
+                url: "{{ url('/get-thanas-by-district') }}/" + divisionID,
                 beforeSend: function() {
                     console.log("Loading tahans");
                 },
-                success: function (response) {
+                success: function(response) {
                     $("#thana_id").html(response);
                 },
                 error: function(xhr, status, error) {
@@ -217,17 +266,17 @@
             });
         })
 
-        $(document).on('change', '#thana_id', function(e){
+        $(document).on('change', '#thana_id', function(e) {
             e.preventDefault();
             let divisionID = $(this).val();
 
             $.ajax({
                 type: "GET",
-                url: "{{url('/get-unions-by-thana')}}/"+divisionID,
+                url: "{{ url('/get-unions-by-thana') }}/" + divisionID,
                 beforeSend: function() {
                     console.log("Loading tahans");
                 },
-                success: function (response) {
+                success: function(response) {
                     $("#union_id").html(response);
                 },
                 error: function(xhr, status, error) {
@@ -237,5 +286,92 @@
             });
         })
 
+        $(document).on('change', '#office_district_id', function(e) {
+            e.preventDefault();
+            let district_id = $(this).val();
+            let thana_id = $("#office_thana_id");
+
+            if (district_id) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('/get-thanas-by-district') }}/" + district_id,
+                    beforeSend: function() {
+                        thana_id.prop("disabled", true);
+                        console.log("Searcing Thana");
+                    },
+                    success: function(response) {
+                        thana_id.html(response)
+                        thana_id.prop("disabled", false);
+                    },
+                    error: function(xhr, status, error) {
+                        thana_id.prop("disabled", true);
+                        var responseText = jQuery.parseJSON(xhr.responseText);
+                        toastr.error(responseText.message);
+                    }
+
+                });
+            } else {
+                thana_id.prop("disabled", true);
+            }
+
+        })
+
+        $(document).on('change', '#thana_id', function(e) {
+            e.preventDefault();
+            let thana_id = $(this).val();
+            let postOffice_id = $('#post_office_id');
+            if (thana_id) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('/get-postOffice-by-thana') }}/" + thana_id,
+                    beforeSend: function() {
+                        postOffice_id.prop("disabled", true);
+                        console.log("Searcing Post Offices");
+                    },
+                    success: function(response) {
+                        postOffice_id.html(response)
+                        postOffice_id.prop("disabled", false);
+                    },
+                    error: function(xhr, status, error) {
+                        postOffice_id.prop("disabled", true);
+                        var responseText = jQuery.parseJSON(xhr.responseText);
+                        toastr.error(responseText.message);
+                    }
+                });
+            } else {
+                postOffice_id.prop("disabled", true);
+            }
+        })
+
+
+        $(document).on('change', '#district_id', function(e) {
+            e.preventDefault();
+            let district_id = $(this).val();
+            let city_corporation_id = $("#city_corporation_id");
+
+            if (district_id) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('/get-city-corporation-by-district') }}/" + district_id,
+                    beforeSend: function() {
+                        city_corporation_id.prop("disabled", true);
+                        console.log("Searcing City Corporation");
+                    },
+                    success: function(response) {
+                        city_corporation_id.html(response)
+                        city_corporation_id.prop("disabled", false);
+                    },
+                    error: function(xhr, status, error) {
+                        city_corporation_id.prop("disabled", true);
+                        var responseText = jQuery.parseJSON(xhr.responseText);
+                        toastr.error(responseText.message);
+                    }
+
+                });
+            } else {
+                city_corporation_id.prop("disabled", true);
+            }
+
+        })
     </script>
 @endpush

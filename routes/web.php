@@ -5,7 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApplicationController;
 
 use App\Http\Controllers\BasicSettings\CityCorporationWardController;
-use App\Http\Controllers\BasicSettings\CityCorporationController;
+use App\Http\Controllers\CityCorporationController;
 use App\Http\Controllers\BasicSettings\FamilyCategoryController;
 use App\Http\Controllers\BasicSettings\FamilySubCategoryController;
 use App\Http\Controllers\BasicSettings\FamilyTypeController;
@@ -38,7 +38,7 @@ use App\Http\Controllers\BasicSettings\VehicleSubCategoryController;
 use App\Http\Controllers\BasicSettings\VehicleTypeController;
 use App\Http\Controllers\BasicSettings\VillageController;
 use App\Http\Controllers\BasicSettings\VillageAreaController;
-use App\Http\Controllers\BasicSettings\UnionController as BasicUnionController;
+use App\Http\Controllers\UnionController as BasicUnionController;
 use App\Http\Controllers\BridgeController;
 use App\Http\Controllers\Certificate\BirthCertificateController;
 use App\Http\Controllers\Certificate\CharacterCertificateController;
@@ -114,13 +114,13 @@ use App\Http\Controllers\ChairmanController;
 use App\Http\Controllers\CouncilorController;
 use App\Http\Controllers\SuccessionController;
 use App\Http\Controllers\CertificateVerifyController;
+use App\Http\Controllers\PostOfficeController;
 use Illuminate\Support\Facades\Route;
 
 // HotelRestaurantController
 use App\Http\Controllers\HotelRestaurant\HotelRestaurantController;
 use App\Http\Controllers\HotelRestaurant\HotelCategoryController;
 use App\Http\Controllers\HotelRestaurant\HotelSubCategoryController;
-use App\Http\Controllers\HotelRestaurant\HotelOwnerShipTypeController;
 use App\Http\Controllers\HotelRestaurant\HotelRestaurantOwnershipController;
 
 
@@ -209,8 +209,10 @@ Route::post('/backend/load-project-type-content', [ ProjectTypeController::class
 // Find Dependencies
 Route::get('/get-districts-by-division/{divisionID}', [ DistrictController::class, 'districtsByDivision' ]);
 Route::get('/get-thanas-by-district/{districtID}', [ ThanaController::class, 'thanasByDistrict' ]);
+Route::get('/get-postOffice-by-thana/{thanaID}', [ PostOfficeController::class, 'postOfficeByThana' ]);
 Route::get('/get-word-by-union/{unionID}', [ UnionWardController::class, 'wordByUnion' ]);
-Route::get('/get-citi-corporation-by-district/{districtID}', [ CityCorporationController::class, 'cityCorporationByDistrict' ]);
+Route::get('/get-city-corporation-by-district/{districtID}', [ CityCorporationController::class, 'cityByDistrict' ]);
+
 Route::get('/get-unions-by-thana/{thanaID}', [ UnionController::class, 'unionsByThana' ]);
 Route::get('/get-villages-by-union/{unionID}', [ VillageController::class, 'villagesByUnion' ]);
 Route::get('/get-mouzas-by-thana/{thanaID}', [ MouzaController::class, 'mouzasByThana' ]);
@@ -378,7 +380,6 @@ Route::group([ 'prefix' => 'dashboard', 'middleware' => [ 'auth' ] ], function (
         // hotel-restaurant category
         Route::resource('hotel-category', HotelCategoryController::class);
         Route::resource('hotel-subcategory', HotelSubCategoryController::class);
-        Route::resource('ownership-type', HotelOwnerShipTypeController::class);
     });
 
     Route::resource('organization', OrganizationController::class);

@@ -63,9 +63,9 @@
                                         ])
                                     @endfor
                                     <div class="row">
-                                        <a href="{{ route('organization.edit', $organization->id) }}"
+                                        <a href="{{ route('hotel-restaurant.edit', $organization->id) }}"
                                             class="btn btn-danger float-right">
-                                            Organization Info
+                                            Hotel & Restaurant Info
                                         </a>
 
                                         <div class="col-sm-9">
