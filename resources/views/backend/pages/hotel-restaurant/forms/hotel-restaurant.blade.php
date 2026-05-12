@@ -118,7 +118,7 @@
         <div class="col-sm-4">
             <label for="district_id">District</label>
             <select name="district_id" class="form-control select2 select2bs4" id="district_id">
-
+                <option value="">Select District</option>
                 @if (isset($districts))
                     @foreach ($districts as $district)
                         <option value="{{ $organization->district_id ?? '' }}"
@@ -135,6 +135,7 @@
         <div class="col-sm-4">
             <label for="thana_id">Thana</label>
             <select name="thana_id" class="form-control select2 select2bs4" id="thana_id">
+                <option value="">Select Thana</option>
                 @if (isset($thanas))
                     @foreach ($thanas as $thana)
                         <option
@@ -166,6 +167,23 @@
             <small class="text-danger error permanent_village_id_error"></small>
         </div>
 
+
+        <div class="col-sm-4">
+            <label for="pourashova_id">Pourashova</label>
+            <select name="pourashova_id" class="form-control select2 select2bs4" id="pourashova_id"
+                data-type="pourashova">
+                <option value="">Select City Pourashova</option>
+                {{-- @if ($post_officeses)
+                    @foreach ($post_officeses as $post_officese)
+                        <option value="{{ $post_officese->id }}"
+                            {{ isset($organization->post_office_id) ? ($organization->post_office_id == $post_officese->id ? 'selected' : '') : '' }}>
+                            {{ $post_officese->bn_name }}</option>
+                    @endforeach
+                @endif --}}
+            </select>
+            <small class="text-danger error permanent_village_id_error"></small>
+        </div>
+
         <div class="col-sm-4">
             <label for="post_office_id">Post Office</label>
             <select name="post_office_id" class="form-control select2 select2bs4" id="post_office_id">
@@ -183,7 +201,7 @@
 
         <div class="col-sm-4">
             <label for="union_id">Union</label>
-            <select name="union_id" class="form-control select2 select2bs4" id="union_id">
+            <select name="union_id" class="form-control select2 select2bs4" id="union_id" data-type="union">
                 {{-- @if (isset($unions))
                     @foreach ($unions as $union)
                         <option
@@ -198,13 +216,13 @@
         <div class="col-sm-4">
             <label for="village_id">Village</label>
             <select name="village_id" class="form-control select2 select2bs4" id="village_id">
-                @if ($villages)
+                {{-- @if ($villages)
                     @foreach ($villages as $village)
                         <option value="{{ $village->id ?? '' }}"
                             {{ isset($organization->village_id) && $organization->village_id == $village->id ? 'selected' : '' }}>
                             {{ $village->bn_name ?? 'Select Village' }}</option>
                     @endforeach
-                @endif
+                @endif --}}
             </select>
             <small class="text-danger error village_id_error"></small>
         </div>
@@ -804,34 +822,63 @@
 
         })
 
+        $(document).on('change', '#district_id', function(e) {
+            e.preventDefault();
+            let district_id = $(this).val();
+            let pourashova_id = $("#pourashova_id");
 
-        // $(document).on('change', '#permanent_village_id', function(e) {
-        //     e.preventDefault();
-        //     let permanent_village_area = $('#permanent_village_area_id')
-        //     let _this_value = $(this).val();
-        //     if (_this_value) {
-        //         $.ajax({
-        //             type: "GET",
-        //             url: "{{ url('/get-areas-by-village') }}/" + _this_value,
-        //             beforeSend: function() {
-        //                 permanent_village_area.prop("disabled", true);
-        //                 console.log("Searcing Districts");
-        //             },
-        //             success: function(response) {
-        //                 permanent_village_area.html(response)
-        //                 permanent_village_area.prop("disabled", false);
-        //             },
-        //             error: function(xhr, status, error) {
-        //                 permanent_village_area.prop("disabled", true);
-        //                 var responseText = jQuery.parseJSON(xhr.responseText);
-        //                 toastr.error(responseText.message);
-        //             }
+            if (district_id) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('/get-pourashava-by-district') }}/" + district_id,
+                    beforeSend: function() {
+                        pourashova_id.prop("disabled", true);
+                        console.log("Searcing Pourashava");
+                    },
+                    success: function(response) {
+                        pourashova_id.html(response)
+                        pourashova_id.prop("disabled", false);
+                    },
+                    error: function(xhr, status, error) {
+                        pourashova_id.prop("disabled", true);
+                        var responseText = jQuery.parseJSON(xhr.responseText);
+                        toastr.error(responseText.message);
+                    }
 
-        //         });
-        //     } else {
-        //         // district_id.prop("disabled", true);
-        //     }
-        // })
+                });
+            } else {
+                city_corporation_id.prop("disabled", true);
+            }
+
+        })
+        $('#pourashova_id, #union_id').change(function(e) {
+            e.preventDefault();
+            let village_id = $('#village_id')
+            let _this_value = $(this).val();
+            let _this_type = $(this).data('type');
+            if (_this_value) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('/get-villages-by-type') }}/" + _this_value + '/' + _this_type,
+                    beforeSend: function() {
+                        village_id.prop("disabled", true);
+                        console.log("Searcing Districts");
+                    },
+                    success: function(response) {
+                        village_id.html(response)
+                        village_id.prop("disabled", false);
+                    },
+                    error: function(xhr, status, error) {
+                        village_id.prop("disabled", true);
+                        var responseText = jQuery.parseJSON(xhr.responseText);
+                        toastr.error(responseText.message);
+                    }
+
+                });
+            } else {
+                // district_id.prop("disabled", true);
+            }
+        })
 
         // $(document).on('change', '#village_id', function(e) {
         //     e.preventDefault();

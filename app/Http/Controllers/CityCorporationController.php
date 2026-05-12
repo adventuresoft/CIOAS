@@ -18,7 +18,7 @@ class CityCorporationController extends Controller
 
         $city_ids = CityCorporation::where('district_id', $id)->get();
 
-        $html = '<option value="">Select City Corporation</option>';
+        $html = '<option value="0">Select City Corporation</option>';
 
         if (count($city_ids)) {
             foreach ($city_ids as $city) {

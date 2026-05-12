@@ -14,8 +14,8 @@ class Village extends Model
     use HasFactory;
 
     public static $snakeAttributes = false;
-    public $table = 'villages';
-    protected $fillable = ['division_id', 'district_id', 'thana_id', 'union_id', 'en_name', 'bn_name', 'slug', 'status', 'created_by', 'updated_by'];
+    protected     $table           = 'villages';
+    protected     $fillable        = [ 'division_id', 'district_id', 'thana_id', 'union_id', 'en_name', 'bn_name', 'slug', 'status', 'created_by', 'updated_by' ];
 
 
     public function division()

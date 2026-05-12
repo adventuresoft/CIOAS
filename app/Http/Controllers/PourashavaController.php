@@ -17,6 +17,20 @@ class PourashavaController extends Controller
         //
     }
 
+
+    public function pourashavaByDistrict(Request $request, $id)
+    {
+        $Pourashavas = Pourashava::where('district_id', $id)->get();
+        $html        = '<option value="0">Select Pourashava</option>';
+        if (count($Pourashavas)) {
+            foreach ($Pourashavas as $pourashava) {
+                $html .= '<option value="' . $pourashava->id . '">' . $pourashava->name . '</option>';
+            }
+        }
+        return $html;
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *

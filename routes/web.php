@@ -76,6 +76,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DisabilityInfoController;
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\PourashavaController;
 use App\Http\Controllers\DivorceController;
 use App\Http\Controllers\EducationalInfoController;
 use App\Http\Controllers\FamilyInfoController;
@@ -209,12 +210,14 @@ Route::post('/backend/load-project-type-content', [ ProjectTypeController::class
 // Find Dependencies
 Route::get('/get-districts-by-division/{divisionID}', [ DistrictController::class, 'districtsByDivision' ]);
 Route::get('/get-thanas-by-district/{districtID}', [ ThanaController::class, 'thanasByDistrict' ]);
+Route::get('/get-pourashava-by-district/{districtID}', [ PourashavaController::class, 'pourashavaByDistrict' ]);
 Route::get('/get-postOffice-by-thana/{thanaID}', [ PostOfficeController::class, 'postOfficeByThana' ]);
 Route::get('/get-word-by-union/{unionID}', [ UnionWardController::class, 'wordByUnion' ]);
 Route::get('/get-city-corporation-by-district/{districtID}', [ CityCorporationController::class, 'cityByDistrict' ]);
 
 Route::get('/get-unions-by-thana/{thanaID}', [ UnionController::class, 'unionsByThana' ]);
 Route::get('/get-villages-by-union/{unionID}', [ VillageController::class, 'villagesByUnion' ]);
+Route::get('/get-villages-by-type/{ID}/{type}', [ VillageController::class, 'villagesByUnion' ]);
 Route::get('/get-mouzas-by-thana/{thanaID}', [ MouzaController::class, 'mouzasByThana' ]);
 Route::get('/get-areas-by-village/{villageID}', [ VillageAreaController::class, 'areasByVillage' ]);
 Route::get('/get-houses-by-village-area/{areaID}', [ HouseController::class, 'getHouseByArea' ]);

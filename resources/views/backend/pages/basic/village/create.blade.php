@@ -34,7 +34,8 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form class="form-horizontal" id="unionForm" method="POST" enctype="multipart/form-data">
+                        <form class="form-horizontal" action="{{ route('basic-settings.village.store') }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
 
@@ -59,38 +60,46 @@
                                     <div class="col-sm-9">
                                         <select required class="form-control select2" name="district_id" id="district_id">
                                             <option value="">District</option>
-                                            @if ($districts)
+                                            {{-- @if ($districts)
                                                 @foreach ($districts as $district)
                                                     <option value="{{ $district->id }}">{{ $district->name }}</option>
                                                 @endforeach
-                                            @endif
+                                            @endif --}}
                                         </select>
                                         <small class="text-danger error district_id_error"></small>
 
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="thana_id" class="col-sm-2 col-form-label">Thana <span class="text-danger"
-                                            title="Required" data-toggle="tooltip">*</span></label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="thana_id" id="thana_id">
-                                            <option value="">Thana</option>
-                                            @if ($thanas)
-                                                @foreach ($thanas as $thana)
-                                                    <option value="{{ $thana->id }}">{{ $thana->name }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        <small class="text-danger error thana_id_error"></small>
 
+                                <div class="form-group row location_cat d-none">
+                                    <label class="col-sm-2 col-form-label">Location Type </label>
+                                    <div class="col-sm-9">
+                                        <div class="d-flex flex-wrap">
+                                            <div class="form-check mr-4">
+                                                <input class="form-check-input location_type" type="radio"
+                                                    name="location_type" id="city_corporation" value="city_type">
+                                                <label class="form-check-label" for="city_corporation">City
+                                                    Corporation</label>
+                                            </div>
+                                            <div class="form-check mr-4">
+                                                <input class="form-check-input location_type" type="radio"
+                                                    name="location_type" id="pourashava" value="pos_type">
+                                                <label class="form-check-label" for="pourashava">Pourashava</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input location_type" type="radio"
+                                                    name="location_type" id="union" value="union_type">
+                                                <label class="form-check-label" for="union">Union</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
+                                <div class="form-group row city_type d-none">
                                     <label for="city_corporation_id" class="col-sm-2 col-form-label">City Corporation<span
-                                            class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                                            class="text-danger" data-toggle="tooltip">*</span></label>
                                     <div class="col-sm-9">
-                                        <select required class="form-control select2" name="city_corporation_id"
+                                        <select class="form-control select2" name="city_corporation_id"
                                             id="city_corporation_id">
                                             <option value="">City Corporation</option>
                                             {{-- @if ($cityCorporations)
@@ -105,12 +114,46 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <label for="post_office_id" class="col-sm-2 col-form-label">Post Office<span
-                                            class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                                <div class="form-group row thana_list d-none">
+                                    <label for="thana_id" class="col-sm-2 col-form-label">Thana <span class="text-danger"
+                                            title="Required" data-toggle="tooltip">*</span></label>
                                     <div class="col-sm-9">
-                                        <select required class="form-control select2" name="post_office_id"
-                                            id="post_office_id">
+                                        <select required class="form-control select2" name="thana_id" id="thana_id">
+                                            <option value="">Thana</option>
+                                            {{-- @if ($thanas)
+                                                @foreach ($thanas as $thana)
+                                                    <option value="{{ $thana->id }}">{{ $thana->name }}</option>
+                                                @endforeach
+                                            @endif --}}
+                                        </select>
+                                        <small class="text-danger error thana_id_error"></small>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group row pos_type d-none">
+                                    <label for="union_id" class="col-sm-2 col-form-label">Pourashava<span
+                                            class="text-danger" data-toggle="tooltip">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control select2" name="pourashava_id" id="pourashava_id">
+                                            <option value="">Pourashava</option>
+                                            {{-- @if ($unions)
+                                                @foreach ($unions as $union)
+                                                    <option value="{{ $union->id }}">{{ $union->name }}</option>
+                                                @endforeach
+                                            @endif --}}
+                                        </select>
+                                        <small class="text-danger error union_id_error"></small>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row po_list d-none">
+                                    <label for="post_office_id" class="col-sm-2 col-form-label">Post Office<span
+                                            class="text-danger" data-toggle="tooltip">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control select2" name="post_office_id" id="post_office_id">
                                             <option value="">Post Office </option>
                                             {{-- @if ($postOffices)
                                                 @foreach ($postOffices as $postOffice)
@@ -123,17 +166,17 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
+                                <div class="form-group row union_type d-none">
                                     <label for="union_id" class="col-sm-2 col-form-label">Union <span class="text-danger"
                                             title="Required" data-toggle="tooltip">*</span></label>
                                     <div class="col-sm-9">
                                         <select required class="form-control select2" name="union_id" id="union_id">
                                             <option value="">Union</option>
-                                            @if ($unions)
+                                            {{-- @if ($unions)
                                                 @foreach ($unions as $union)
                                                     <option value="{{ $union->id }}">{{ $union->name }}</option>
                                                 @endforeach
-                                            @endif
+                                            @endif --}}
                                         </select>
                                         <small class="text-danger error union_id_error"></small>
 
@@ -250,6 +293,8 @@
             e.preventDefault();
             let divisionID = $(this).val();
 
+            $('.location_cat').removeClass('d-none');
+
             $.ajax({
                 type: "GET",
                 url: "{{ url('/get-thanas-by-district') }}/" + divisionID,
@@ -264,6 +309,29 @@
                     toastr.error(responseText.message);
                 }
             });
+        })
+
+        $('.location_type').on('click', function() {
+            let val = $(this).val();
+
+            console.log($(this).val());
+
+            $('.thana_list').removeClass('d-none');
+            $('.po_list').removeClass('d-none');
+
+            if (val == 'city_type') {
+                $('.' + val).removeClass('d-none');
+                $('.union_type').addClass('d-none');
+                $('.pos_type').addClass('d-none');
+            } else if (val == 'union_type') {
+                $('.' + val).removeClass('d-none');
+                $('.city_type').addClass('d-none');
+                $('.pos_type').addClass('d-none');
+            } else if (val == 'pos_type') {
+                $('.' + val).removeClass('d-none');
+                $('.city_type').addClass('d-none');
+                $('.union_type').addClass('d-none');
+            }
         })
 
         $(document).on('change', '#thana_id', function(e) {
@@ -347,8 +415,37 @@
         $(document).on('change', '#district_id', function(e) {
             e.preventDefault();
             let district_id = $(this).val();
-            let city_corporation_id = $("#city_corporation_id");
+            let pourashava_id = $("#pourashava_id");
 
+            if (district_id) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('/get-pourashava-by-district') }}/" + district_id,
+                    beforeSend: function() {
+                        pourashava_id.prop("disabled", true);
+                        console.log("Searcing Pourashava");
+                    },
+                    success: function(response) {
+                        pourashava_id.html(response)
+                        pourashava_id.prop("disabled", false);
+                    },
+                    error: function(xhr, status, error) {
+                        pourashava_id.prop("disabled", true);
+                        var responseText = jQuery.parseJSON(xhr.responseText);
+                        toastr.error(responseText.message);
+                    }
+
+                });
+            } else {
+                city_corporation_id.prop("disabled", true);
+            }
+
+        })
+
+        $(document).on('change', '#district_id', function(e) {
+            e.preventDefault();
+            let district_id = $(this).val();
+            let city_corporation_id = $("#city_corporation_id");
             if (district_id) {
                 $.ajax({
                     type: "GET",
@@ -371,7 +468,6 @@
             } else {
                 city_corporation_id.prop("disabled", true);
             }
-
         })
     </script>
 @endpush

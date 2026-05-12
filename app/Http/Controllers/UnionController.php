@@ -10,7 +10,7 @@ class UnionController extends Controller
 
     public function unionsByThana(Request $request, $id)
     {
-        $html = '<option value="">Select ' . ($request->id ? ucfirst($request->id) : '') . ' Union</option>';
+        $html = '<option value="0">Select ' . ($request->id ? ucfirst($request->id) : '') . ' Union</option>';
 
         $unions = Union::where('thana_id', $id)->get();
 
