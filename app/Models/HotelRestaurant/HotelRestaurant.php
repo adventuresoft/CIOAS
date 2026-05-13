@@ -72,7 +72,17 @@ class HotelRestaurant extends Model
         'remarks',
         'status',
         'hotel_logo',
-        'document_files'
+        'document_files',
+        'no_of_dir',
+        'union_id',
+        'city_id',
+        'pos_id',
+        'office_union_id',
+        'office_city_id',
+        'office_pos_id',
+        'location_type',
+        'office_location_type'
+
     ];
 
     public static function boot()

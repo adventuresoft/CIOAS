@@ -18,6 +18,9 @@ use App\Models\OwnerShipType;
 use App\Models\Organization\OrganizationOwnership;
 use App\Models\People\AddressInfo;
 use App\Models\UnionWard;
+use App\Models\Union;
+use App\Models\CityCorporation;
+use App\Models\Pourashava;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -240,7 +243,10 @@ class HotelRestaurantController extends Controller
             'district_id'                 => 'nullable|integer',
             'thana_id'                    => 'nullable|integer',
             'post_office_id'              => 'nullable|integer',
+            'union_id'                    => 'nullable|integer',
             'village_id'                  => 'nullable|integer',
+            'city_id'                     => 'nullable|integer',
+            'pos_id'                      => 'nullable|integer',
             'ward_id'                     => 'nullable|integer',
             'road'                        => 'nullable|max:190',
             'house'                       => 'nullable|max:190',
@@ -250,11 +256,16 @@ class HotelRestaurantController extends Controller
             'office_thana_id'             => 'nullable|integer',
             'office_post_office_id'       => 'nullable|integer',
             'office_village_id'           => 'nullable|integer',
+            'office_union_id'             => 'nullable|integer',
+            'office_city_id'              => 'nullable|integer',
+            'office_pos_id'               => 'nullable|integer',
             'office_ward_id'              => 'nullable|integer',
             'office_road'                 => 'nullable|max:190',
             'office_house'                => 'nullable|max:190',
             'office_house_bn'             => 'nullable|max:190',
             'no_of_dir'                   => 'nullable|integer',
+            'location_type'               => 'nullable',
+            'office_location_type'        => 'nullable',
             'premises_ownership'          => 'nullable|in:owned,rented',
             'document_files.*'            => 'nullable|image|max:2048',
             'hotel_logo.*'                => 'nullable|image|max:2048',
@@ -307,7 +318,7 @@ class HotelRestaurantController extends Controller
             // Basic information
             'name'                  => $request->name,
             'bn_name'               => $request->bn_name,
-            'institute_id'          => Auth::user()->institute_id,
+            'institute_id'          => Auth::user()->institute_id ?? 0,
             'application_id'        => $this->generateApplicationId(),
 
             // Category and type information
@@ -329,7 +340,10 @@ class HotelRestaurantController extends Controller
             'district_id'           => $request->district_id,
             'thana_id'              => $request->thana_id,
             'post_office_id'        => $request->post_office_id,
+            'union_id'              => $request->union_id,
             'village_id'            => $request->village_id,
+            'city_id'               => $request->city_corporation_id,
+            'pos_id'                => $request->pourashova_id,
             'ward_id'               => $request->ward_id,
             'road'                  => $request->road,
             'house'                 => $request->house,
@@ -340,11 +354,16 @@ class HotelRestaurantController extends Controller
             'office_district_id'    => $request->office_district_id,
             'office_thana_id'       => $request->office_thana_id,
             'office_post_office_id' => $request->office_post_office_id,
+            'office_union_id'       => $request->office_union_id,
             'office_village_id'     => $request->office_village_id,
+            'office_city_id'        => $request->office_city_corporation_id,
+            'office_pos_id'         => $request->office_pourashova_id,
             'office_ward_id'        => $request->office_ward_id,
             'office_road'           => $request->office_road,
             'office_house'          => $request->office_house,
             'office_house_bn'       => $request->office_house_bn,
+            'location_type'         => $request->location_type,
+            'office_location_type'  => $request->office_location_type,
 
             // Files and status
             'document_files'        => $document_files,
@@ -426,6 +445,41 @@ class HotelRestaurantController extends Controller
             ->where('district_id', $data['organization']->district_id)
             ->get();
 
+        $data['post_officeses'] = PostOffice::where('status', true)
+            ->where('thana_id', $data['organization']->thana_id)
+            ->get();
+
+        $data['unions'] = Union::where('status', true)
+            ->where('thana_id', $data['organization']->thana_id)
+            ->get();
+
+
+
+        $data['pourashavas'] = Pourashava::where('status', true)
+            ->where('district_id', $data['organization']->district_id)
+            ->get();
+
+        $data['city_corporations'] = CityCorporation::where('status', true)
+            ->where('district_id', $data['organization']->district_id)
+            ->get();
+
+        if (!empty($data['organization']->union_id)) {
+
+            $data['villages'] = Village::where('status', true)
+                ->where('thana_id', $data['organization']->thana_id)
+                ->get();
+        } elseif (!empty($data['organization']->office_pos_id)) {
+            $data['villages'] = Village::where('status', true)
+                ->where('pos_id', $data['organization']->pos_id)
+                ->get();
+        } elseif (!empty($data['organization']->city_id)) {
+
+            $data['villages'] = Village::where('status', true)
+                ->where('city_id', $data['organization']->city_id)
+                ->get();
+        }
+
+
         // Load districts and thanas for office address
         $data['office_districts'] = District::where('status', true)
             ->where('division_id', $data['organization']->office_division_id)
@@ -434,12 +488,42 @@ class HotelRestaurantController extends Controller
             ->where('district_id', $data['organization']->office_district_id)
             ->get();
 
+        $data['office_unions'] = Union::where('status', true)
+            ->where('thana_id', $data['organization']->office_thana_id)
+            ->get();
+
+        $data['office_pourashavas'] = Pourashava::where('status', true)
+            ->where('district_id', $data['organization']->office_district_id)
+            ->get();
+
+        $data['office_city_corporations'] = CityCorporation::where('status', true)
+            ->where('district_id', $data['organization']->office_district_id)
+            ->get();
+
+        $data['office_post_officeses'] = PostOffice::where('status', true)
+            ->where('thana_id', $data['organization']->office_thana_id)
+            ->get();
+
+
+        if (!empty($data['organization']->office_union_id)) {
+
+            $data['office_villages'] = Village::where('status', true)
+                ->where('thana_id', $data['organization']->office_thana_id)
+                ->get();
+        } elseif (!empty($data['organization']->office_pos_id)) {
+            $data['office_villages'] = Village::where('status', true)
+                ->where('pos_id', $data['organization']->office_pos_id)
+                ->get();
+        } elseif (!empty($data['organization']->office_city_id)) {
+
+            $data['office_villages'] = Village::where('status', true)
+                ->where('city_id', $data['organization']->office_city_id)
+                ->get();
+        }
+
         // Load other location data
-        $data['post_officeses'] = PostOffice::latest()->get();
-        $institute              = Institute::find(Auth::user()->institute_id);
-        $data['villages']       = $institute
-            ? Village::where('union_id', $institute->union_id)->get()
-            : [];
+
+        $institute = Institute::find(Auth::user()->institute_id);
 
         return view('backend.pages.hotel-restaurant.edit', $data);
     }
@@ -485,7 +569,10 @@ class HotelRestaurantController extends Controller
             'district_id'                 => 'nullable|integer',
             'thana_id'                    => 'nullable|integer',
             'post_office_id'              => 'nullable|integer',
+            'union_id'                    => 'nullable|integer',
             'village_id'                  => 'nullable|integer',
+            'city_id'                     => 'nullable|integer',
+            'pos_id'                      => 'nullable|integer',
             'ward_id'                     => 'nullable|integer',
             'road'                        => 'nullable|max:190',
             'house'                       => 'nullable|max:190',
@@ -494,7 +581,10 @@ class HotelRestaurantController extends Controller
             'office_district_id'          => 'nullable|integer',
             'office_thana_id'             => 'nullable|integer',
             'office_post_office_id'       => 'nullable|integer',
+            'office_union_id'             => 'nullable|integer',
             'office_village_id'           => 'nullable|integer',
+            'office_city_id'              => 'nullable|integer',
+            'office_pos_id'               => 'nullable|integer',
             'office_ward_id'              => 'nullable|integer',
             'office_road'                 => 'nullable|max:190',
             'office_house'                => 'nullable|max:190',
@@ -504,6 +594,8 @@ class HotelRestaurantController extends Controller
             'document_files.*'            => 'nullable|image|max:2048',
             'hotel_logo'                  => 'nullable|image|max:2048',
             'status'                      => 'nullable|boolean',
+            'location_type'               => 'nullable',
+            'office_location_type'        => 'nullable',
         ]);
 
         // Return validation errors if validation fails
@@ -590,7 +682,10 @@ class HotelRestaurantController extends Controller
             'district_id'           => $request->district_id,
             'thana_id'              => $request->thana_id,
             'post_office_id'        => $request->post_office_id,
+            'union_id'              => $request->union_id,
             'village_id'            => $request->village_id,
+            'city_id'               => $request->city_corporation_id,
+            'pos_id'                => $request->pourashova_id,
             'ward_id'               => $request->ward_id,
             'road'                  => $request->road,
             'house'                 => $request->house,
@@ -601,11 +696,16 @@ class HotelRestaurantController extends Controller
             'office_district_id'    => $request->office_district_id,
             'office_thana_id'       => $request->office_thana_id,
             'office_post_office_id' => $request->office_post_office_id,
+            'office_union_id'       => $request->office_union_id,
             'office_village_id'     => $request->office_village_id,
+            'office_city_id'        => $request->office_city_corporation_id,
+            'office_pos_id'         => $request->office_pourashova_id,
             'office_ward_id'        => $request->office_ward_id,
             'office_road'           => $request->office_road,
             'office_house'          => $request->office_house,
             'office_house_bn'       => $request->office_house_bn,
+            'location_type'         => $request->location_type,
+            'office_location_type'  => $request->office_location_type,
 
             // Files (only update if new files provided)
             'document_files'        => $document_files ?? $hotelRestaurant->document_files,

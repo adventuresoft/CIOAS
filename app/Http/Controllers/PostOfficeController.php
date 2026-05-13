@@ -16,7 +16,7 @@ class PostOfficeController extends Controller
 
         if (count($postOffice)) {
             foreach ($postOffice as $office) {
-                $html .= '<option value="' . $office->id . '">' . $office->bn_name . '</option>';
+                $html .= '<option value="' . $office->id . '">' . $office->name . '</option>';
             }
         }
 
