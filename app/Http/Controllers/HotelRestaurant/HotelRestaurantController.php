@@ -342,8 +342,8 @@ class HotelRestaurantController extends Controller
             'post_office_id'        => $request->post_office_id,
             'union_id'              => $request->union_id,
             'village_id'            => $request->village_id,
-            'city_id'               => $request->city_corporation_id,
-            'pos_id'                => $request->pourashova_id,
+            'city_id'               => $request->city_id,
+            'pos_id'                => $request->city_id,
             'ward_id'               => $request->ward_id,
             'road'                  => $request->road,
             'house'                 => $request->house,
@@ -356,8 +356,8 @@ class HotelRestaurantController extends Controller
             'office_post_office_id' => $request->office_post_office_id,
             'office_union_id'       => $request->office_union_id,
             'office_village_id'     => $request->office_village_id,
-            'office_city_id'        => $request->office_city_corporation_id,
-            'office_pos_id'         => $request->office_pourashova_id,
+            'office_city_id'        => $request->office_city_id,
+            'office_pos_id'         => $request->office_pos_id,
             'office_ward_id'        => $request->office_ward_id,
             'office_road'           => $request->office_road,
             'office_house'          => $request->office_house,
@@ -520,6 +520,8 @@ class HotelRestaurantController extends Controller
                 ->where('city_id', $data['organization']->office_city_id)
                 ->get();
         }
+
+        // dd($data);
 
         // Load other location data
 
@@ -684,8 +686,8 @@ class HotelRestaurantController extends Controller
             'post_office_id'        => $request->post_office_id,
             'union_id'              => $request->union_id,
             'village_id'            => $request->village_id,
-            'city_id'               => $request->city_corporation_id,
-            'pos_id'                => $request->pourashova_id,
+            'city_id'               => $request->city_id,
+            'pos_id'                => $request->pos_id,
             'ward_id'               => $request->ward_id,
             'road'                  => $request->road,
             'house'                 => $request->house,
@@ -698,8 +700,8 @@ class HotelRestaurantController extends Controller
             'office_post_office_id' => $request->office_post_office_id,
             'office_union_id'       => $request->office_union_id,
             'office_village_id'     => $request->office_village_id,
-            'office_city_id'        => $request->office_city_corporation_id,
-            'office_pos_id'         => $request->office_pourashova_id,
+            'office_city_id'        => $request->office_city_id,
+            'office_pos_id'         => $request->office_pos_id,
             'office_ward_id'        => $request->office_ward_id,
             'office_road'           => $request->office_road,
             'office_house'          => $request->office_house,

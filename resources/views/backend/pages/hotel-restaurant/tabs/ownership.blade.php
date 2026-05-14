@@ -34,7 +34,7 @@
                                     <span class="text-dark">Hotel & Restaurant Information</span>
                                 </a>
                                 <span class="text-secondary">|</span>
-                                <a href="{{ route('organization-ownership.edit', $organization->id) }}">
+                                <a href="{{ route('hotelRestaurant-ownership.edit', $organization->id) }}">
                                     <span class="text-light">Ownership Information</span>
                                 </a>
                             </h3>
