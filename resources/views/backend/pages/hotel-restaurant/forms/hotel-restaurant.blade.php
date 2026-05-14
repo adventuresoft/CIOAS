@@ -163,43 +163,6 @@
 
                 <small class="text-danger error district_id_error"></small>
             </div>
-            <div class="col-sm-4">
-                <label for="thana_id">Thana</label>
-                <select name="thana_id" class="form-control select2 select2bs4" id="thana_id">
-                    <option value="">Select Thana</option>
-                    @if (isset($thanas))
-                        @foreach ($thanas as $thana)
-                            <option value="{{ $thana->id }}"
-                                {{ isset($organization->thana_id) && $organization->thana_id == $thana->id ? 'selected' : '' }}>
-                                {{ $thana->name ?? 'Select Thana' }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error thana_id_error"></small>
-
-            </div>
-
-        </div>
-
-        <div class="form-group row">
-
-            {{-- Registered address postal and location selectors --}}
-            <div class="col-sm-4">
-                <label for="post_office_id">Post Office</label>
-                <select name="post_office_id" class="form-control select2 select2bs4" id="post_office_id">
-                    <option value="">Select Post Office</option>
-                    @if (isset($post_officeses))
-                        @foreach ($post_officeses as $post_officese)
-                            <option value="{{ $post_officese->id }}"
-                                {{ isset($organization->post_office_id) ? ($organization->post_office_id == $post_officese->id ? 'selected' : '') : '' }}>
-                                {{ $post_officese->bn_name }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error permanent_village_id_error"></small>
-            </div>
-
-
 
             {{-- City corporation option shown when location type is city corporation --}}
             <div class="col-sm-4 city_type {{ !empty($organization->city_id) ? '' : 'd-none' }}">
@@ -217,6 +180,21 @@
                 <small class="text-danger error permanent_village_id_error"></small>
             </div>
 
+            <div class="col-sm-4">
+                <label for="thana_id">Thana</label>
+                <select name="thana_id" class="form-control select2 select2bs4" id="thana_id">
+                    <option value="">Select Thana</option>
+                    @if (isset($thanas))
+                        @foreach ($thanas as $thana)
+                            <option value="{{ $thana->id }}"
+                                {{ isset($organization->thana_id) && $organization->thana_id == $thana->id ? 'selected' : '' }}>
+                                {{ $thana->name ?? 'Select Thana' }}</option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error thana_id_error"></small>
+
+            </div>
 
             {{-- Pourashava option shown when location type is pourashava --}}
             <div class="col-sm-4 pos_type {{ !empty($organization->pos_id) ? '' : 'd-none' }}">
@@ -236,7 +214,6 @@
             </div>
 
 
-
             {{-- Union option shown when location type is union --}}
             <div class="col-sm-4 union_type {{ !empty($organization->union_id) ? '' : 'd-none' }}">
                 <label for="union_id">Union</label>
@@ -253,6 +230,22 @@
                 <small class="text-danger error union_id_error"></small>
             </div>
 
+            {{-- Registered address postal and location selectors --}}
+            <div class="col-sm-4">
+                <label for="post_office_id">Post Office</label>
+                <select name="post_office_id" class="form-control select2 select2bs4" id="post_office_id">
+                    <option value="">Select Post Office</option>
+                    @if (isset($post_officeses))
+                        @foreach ($post_officeses as $post_officese)
+                            <option value="{{ $post_officese->id }}"
+                                {{ isset($organization->post_office_id) ? ($organization->post_office_id == $post_officese->id ? 'selected' : '') : '' }}>
+                                {{ $post_officese->bn_name }}</option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error permanent_village_id_error"></small>
+            </div>
+
             <div class="col-sm-4">
                 <label for="village_id">Village</label>
                 <select name="village_id" class="form-control select2 select2bs4" id="village_id">
@@ -266,6 +259,7 @@
                 </select>
                 <small class="text-danger error village_id_error"></small>
             </div>
+
         </div>
 
         <div class="form-group row">
@@ -362,6 +356,7 @@
             <div class="col-sm-4">
                 <label for="office_district_id">District</label>
                 <select name="office_district_id" class="form-control select2 select2bs4" id="office_district_id">
+                    <option value="">Select District</option>
                     @if (isset($office_districts))
                         @foreach ($office_districts as $district)
                             <option value="{{ $district->id }}"
@@ -372,41 +367,6 @@
                 </select>
 
                 <small class="text-danger error office_district_id_error"></small>
-
-            </div>
-            <div class="col-sm-4">
-                <label for="office_thana_id">Thana</label>
-                <select name="office_thana_id" class="form-control select2 select2bs4" id="office_thana_id">
-                    @if (isset($office_thanas))
-                        @foreach ($office_thanas as $thana)
-                            <option value="{{ $thana->id }}"
-                                {{ isset($organization->office_thana_id) && $organization->office_thana_id == $thana->id ? 'selected' : '' }}>
-                                {{ $thana->name ?? 'Select Thana' }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error office_thana_id_error"></small>
-            </div>
-        </div>
-
-        <!-- Office/corporate address section -->
-        {{-- Corporate office address fields and dependent location selectors --}}
-        <div class="form-group row">
-            {{-- Corporate office postal and location selectors --}}
-            <div class="col-sm-4">
-                <label for="office_post_office_id">Post Office</label>
-                <select name="office_post_office_id" class="form-control select2 select2bs4"
-                    id="office_post_office_id">
-                    <option value="">Select Post Office </option>
-                    @if (isset($office_post_officeses))
-                        @foreach ($office_post_officeses as $post_officese)
-                            <option value="{{ $post_officese->id }}"
-                                {{ isset($organization->office_post_office_id) ? ($organization->office_post_office_id == $post_officese->id ? 'selected' : '') : '' }}>
-                                {{ $post_officese->name }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error office_post_office_id_error"></small>
             </div>
 
             {{-- Office city corporation option shown when office location type is city corporation --}}
@@ -423,9 +383,23 @@
                         @endforeach
                     @endif
                 </select>
-                <small class="text-danger error permanent_village_id_error"></small>
+                <small class="text-danger error office_city_id"></small>
             </div>
 
+            <div class="col-sm-4">
+                <label for="office_thana_id">Thana</label>
+                <select name="office_thana_id" class="form-control select2 select2bs4" id="office_thana_id">
+                    <option value="">Select Thana</option>
+                    @if (isset($office_thanas))
+                        @foreach ($office_thanas as $thana)
+                            <option value="{{ $thana->id }}"
+                                {{ isset($organization->office_thana_id) && $organization->office_thana_id == $thana->id ? 'selected' : '' }}>
+                                {{ $thana->name ?? 'Select Thana' }}</option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error office_thana_id_error"></small>
+            </div>
 
             {{-- Office pourashava option shown when office location type is pourashava --}}
             <div class="col-sm-4 office_pos_type {{ !empty($organization->office_pos_id) ? '' : 'd-none' }}">
@@ -462,9 +436,27 @@
                 <small class="text-danger error office_union_id_error"></small>
             </div>
 
+            {{-- Corporate office postal and location selectors --}}
+            <div class="col-sm-4">
+                <label for="office_post_office_id">Post Office</label>
+                <select name="office_post_office_id" class="form-control select2 select2bs4"
+                    id="office_post_office_id">
+                    <option value="">Select Post Office </option>
+                    @if (isset($office_post_officeses))
+                        @foreach ($office_post_officeses as $post_officese)
+                            <option value="{{ $post_officese->id }}"
+                                {{ isset($organization->office_post_office_id) ? ($organization->office_post_office_id == $post_officese->id ? 'selected' : '') : '' }}>
+                                {{ $post_officese->name }}</option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error office_post_office_id_error"></small>
+            </div>
+
             <div class="col-sm-4">
                 <label for="office_village_id">Village</label>
                 <select name="office_village_id" class="form-control select2 select2bs4" id="office_village_id">
+                    <option value="">Select Village</option>
                     @if (isset($office_villages))
                         @foreach ($office_villages as $village)
                             <option value="{{ $village->id ?? '' }}"
@@ -476,6 +468,9 @@
                 <small class="text-danger error office_village_id_error"></small>
             </div>
         </div>
+
+
+
 
         <div class="form-group row">
             <div class="col-sm-3">
@@ -907,6 +902,7 @@
             let village_id = $('#village_id')
             let _this_value = $(this).val();
             let _this_type = $(this).data('type');
+            console.log(_this_type);
             if (_this_value) {
                 $.ajax({
                     type: "GET",

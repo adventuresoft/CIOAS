@@ -125,6 +125,11 @@ use App\Http\Controllers\HotelRestaurant\HotelSubCategoryController;
 use App\Http\Controllers\HotelRestaurant\HotelRestaurantOwnershipController;
 
 
+// Application Form
+
+use App\Http\Controllers\ApplicationForm\ApplicationFormController;
+
+
 
 Route::get('/', [ HomeController::class, 'index' ])->name('home');
 Route::get('/sms', function () {
@@ -394,6 +399,11 @@ Route::group([ 'prefix' => 'dashboard', 'middleware' => [ 'auth' ] ], function (
     Route::post('hotel-restaurant/records', [ HotelRestaurantController::class, 'records' ])->name('hotel-restaurant.records');
 
     Route::resource('hotel-restaurant', HotelRestaurantController::class);
+
+
+    // ApplicationFormController
+
+    Route::resource('application-form', ApplicationFormController::class);
 
     Route::resource('chairman', ChairmanController::class);
 

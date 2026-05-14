@@ -24,6 +24,32 @@
                     </a>
                 </li>
 
+                <li class="nav-item @if ($mainMenu == 'Application Form') menu-open @endif">
+                    <a href="#" class="nav-link @if ($mainMenu == 'Application Form') active @endif">
+                        <i class="nav-icon fas fa-file-alt"></i>
+                        <p>
+                            Application Form
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('application-form.create') }}"
+                                class="nav-link @if ($subMenu == 'ApplicationFormCreate') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('application-form.index') }}"
+                                class="nav-link @if ($subMenu == 'ApplicationFormList') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Application Form List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 @if (basic_settings_permissions())
                     {{-- Basic Settings --}}
                     <li class="nav-item

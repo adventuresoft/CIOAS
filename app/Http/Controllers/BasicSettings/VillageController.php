@@ -40,22 +40,22 @@ class VillageController extends Controller
 
             $villages_ps = Village::where('pourashava_id', $id)->get() ?? null;
 
-        } elseif ($type == 'Union') {
+        } elseif ($type == 'union') {
 
             $villages_union = Village::where('union_id', $id)->get() ?? null;
+
+        } elseif ($type == 'City') {
+
+            $villages_union = Village::where('city_id', $id)->get() ?? null;
         }
 
-        $villages_union = Village::where('union_id', $id)->get();
+        // $villages_union = Village::where('union_id', $id)->get();
 
         $villages = $villages_union ?? $villages_ps;
 
 
         $villageOptions = '<option value=""> Select ' . ($request->id ? ucfirst($request->id) : '') . ' Village</option>';
 
-
-        Log::info('hello');
-
-        Log::info($villages_union);
 
         if (count($villages)) {
             foreach ($villages as $village) {
