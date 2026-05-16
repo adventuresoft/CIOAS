@@ -28,12 +28,11 @@ if (!function_exists('institute_permissions')) {
 if (!function_exists('create_permission')) {
     function create_permission()
     {
-        return true;
-        // if (Auth::user()->role_id == 6) {
-        //     return true;
-        // } else {
-        //     return false;
-        // }
+        if (Auth::user()->role_id == 6) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 
