@@ -23,7 +23,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">পত্র লিখন </h3>
+                            <h3 class="card-title">পত্র লিখন</h3>
                         </div>
 
                         <form class="form-horizontal" id="applicationForm" method="POST" enctype="multipart/form-data">
@@ -85,7 +85,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <select name="form-type" id="" class="form-control select2">
+                                            <select name="form_type" class="form-control select2">
                                                 <option value="">ফর্মের ধরণ নির্বাচন করুন</option>
                                                 <option value="regular">নিয়মিত ভিত্তিতে (Regular)</option>
                                                 <option value="urgent">জরুরি ভিত্তিতে (Urgent)</option>

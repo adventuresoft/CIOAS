@@ -60,15 +60,11 @@
                         <div class="card-header">
                             <div class="row align-items-center">
                                 <div class="col-md-7">
-                                    <h3 class="card-title mb-0">আবেদন ফরম</h3>
+                                    <h3 class="card-title mb-0">দাখিল করা চিঠি</h3>
                                 </div>
                                 <div class="col-md-5 text-right">
-                                    <a href="{{ route('application-form.index') }}" class="btn btn-sm btn-default">
+                                    <a href="{{ route('application-form.index') }}" class="btn btn-sm btn-dark">
                                         <i class="fa fa-arrow-left"></i> Back
-                                    </a>
-                                    <a href="{{ route('application-form.edit', $applicationForm->id) }}"
-                                        class="btn btn-sm btn-primary">
-                                        <i class="fa fa-edit"></i> Edit
                                     </a>
                                 </div>
                             </div>
@@ -90,7 +86,7 @@
                                 <div class="col-md-3 col-sm-6">
                                     <div class="info-box p-3">
                                         <div>
-                                            <div class="info-label">Recipient</div>
+                                            <div class="info-label">প্রাপক (Recipient)</div>
                                             <p class="info-value">{{ $applicationForm->recipient ?? '-' }}</p>
                                         </div>
                                     </div>
@@ -99,7 +95,7 @@
                                 <div class="col-md-3 col-sm-6">
                                     <div class="info-box p-3">
                                         <div>
-                                            <div class="info-label">Sender</div>
+                                            <div class="info-label">প্রেরক (Sender)</div>
                                             <p class="info-value">{{ $applicationForm->sender ?? '-' }}</p>
                                         </div>
                                     </div>
@@ -108,7 +104,7 @@
                                 <div class="col-md-3 col-sm-6">
                                     <div class="info-box p-3">
                                         <div>
-                                            <div class="info-label">Mobile</div>
+                                            <div class="info-label">মোবাইল নম্বর (Mobile Number)</div>
                                             <p class="info-value">{{ $applicationForm->mobile ?? '-' }}</p>
                                         </div>
                                     </div>
@@ -116,10 +112,41 @@
                             </div>
 
                             <div class="row mt-2">
+
+                                <div class="col-md-4">
+                                    <div class="info-box p-3">
+                                        <div>
+                                            <div class="info-label">এনআইডি নম্বর (NID NO)</div>
+                                            <p class="info-value">{{ $applicationForm->nid_no ?? '-' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="info-box p-3">
+                                        <div>
+                                            <div class="info-label">ঠিকানা (Address)</div>
+                                            <p class="info-value">{{ $applicationForm->address ?? '-' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="info-box p-3">
+                                        <div>
+                                            <div class="info-label">ফর্মের ধরণ</div>
+                                            <p class="info-value">{{ $applicationForm->form_type ?? '-' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row mt-2">
                                 <div class="col-md-8">
                                     <div class="info-box p-3">
                                         <div>
-                                            <div class="info-label">Subject</div>
+                                            <div class="info-label">বিষয় (Subject)</div>
                                             <p class="info-value">{{ $applicationForm->subject ?? '-' }}</p>
                                         </div>
                                     </div>
@@ -128,8 +155,24 @@
                                 <div class="col-md-4">
                                     <div class="info-box p-3">
                                         <div>
-                                            <div class="info-label">NID No</div>
-                                            <p class="info-value">{{ $applicationForm->nid_no ?? '-' }}</p>
+                                            <div class="info-label">Status</div>
+                                            @php
+                                                $badge = match ($applicationForm->status) {
+                                                    'pending' => 'secondary',
+                                                    'assigned' => 'info',
+                                                    'received' => 'primary',
+                                                    'forwarded' => 'warning',
+                                                    'in_review' => 'dark',
+                                                    'approved' => 'success',
+                                                    'rejected' => 'danger',
+                                                    'completed' => 'success',
+                                                    default => 'secondary',
+                                                };
+                                            @endphp
+
+                                            <div class="badge badge-{{ $badge }}">
+                                                {{ ucfirst($applicationForm->status) }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -137,7 +180,7 @@
 
                             <div class="row mt-2">
                                 <div class="col-md-12">
-                                    <div class="info-label">Message</div>
+                                    <div class="info-label">বার্তা (Message)</div>
                                     <div class="message-box">
                                         {{ $applicationForm->message ?: '-' }}
                                     </div>
@@ -148,7 +191,7 @@
                                 <div class="col-md-6">
                                     <div class="info-box p-3">
                                         <div>
-                                            <div class="info-label">Attachment</div>
+                                            <div class="info-label">সংযুক্তি (Attachment)</div>
                                             @if ($applicationForm->attachment)
                                                 <a href="{{ asset($applicationForm->attachment) }}" target="_blank"
                                                     class="btn btn-sm btn-secondary">
@@ -177,7 +220,11 @@
                         <div class="card-footer text-right">
                             <a href="{{ route('application-form.index') }}" class="btn btn-default">Back to List</a>
                             <a href="{{ route('application-form.edit', $applicationForm->id) }}"
-                                class="btn btn-info">Edit Application</a>
+                                class="btn btn-info">received</a>
+                            <a href="{{ route('application-form.edit', $applicationForm->id) }}"
+                                class="btn btn-success">Approved</a>
+                            <a href="{{ route('application-form.edit', $applicationForm->id) }}"
+                                class="btn btn-danger">Rejected</a>
                         </div>
                     </div>
                 </div>

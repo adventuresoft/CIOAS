@@ -6,9 +6,14 @@ use App\Models\ApplicationForm\ApplicationFrom;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use App\Models\ApplicationForm\ApplicationAssign;
+use Illuminate\Support\Facades\Log;
+use App\Traits\FileUploadTrait;
 
 class ApplicationFormController extends Controller
 {
+
+    use FileUploadTrait;
     /**
      * Display a listing of the resource.
      *
@@ -40,20 +45,25 @@ class ApplicationFormController extends Controller
     {
         $request->validate($this->rules());
 
+        // dd($request->all());
+
         $applicationForm = new ApplicationFrom();
         $applicationForm->fill($request->only($this->formFields()));
         $applicationForm->created_by = optional(auth()->user())->id;
+        $applicationForm->status     = 'pending';
 
         if ($request->hasFile('attachment')) {
-            $applicationForm->attachment = $this->uploadFile('uploads/application-form/', $request->file('attachment'), $applicationForm->id);
+            $applicationForm->attachment = $this->uploadFile($request->attachment, 'uploads/application-form/', 'app_doc_');
         }
 
         $applicationForm->save();
 
-        return response()->json([
-            'status'  => true,
-            'message' => 'Application Form Created Successfully!',
-        ], 200);
+
+        return
+            response()->json([
+                'status'  => true,
+                'message' => 'Application Form Created Successfully!',
+            ], 200);
     }
 
     /**
@@ -117,7 +127,7 @@ class ApplicationFormController extends Controller
     public function destroy($id)
     {
         $applicationForm = ApplicationFrom::findOrFail($id);
-        $this->deleteAttachment($applicationForm->attachment);
+        $this->deleteFile($applicationForm->attachment);
         $applicationForm->delete();
 
         return response()->json([
@@ -129,14 +139,18 @@ class ApplicationFormController extends Controller
     private function rules()
     {
         return [
-            'date'       => 'nullable|date',
-            'recipient'  => 'required|string|max:255',
-            'subject'    => 'required|string|max:255',
-            'sender'     => 'required|string|max:255',
-            'nid_no'     => 'nullable|string|max:30',
-            'mobile'     => 'nullable|string|max:20',
-            'message'    => 'nullable|string',
-            'attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
+            'date'        => 'nullable|date',
+            'recipient'   => 'required|string|max:255',
+            'subject'     => 'required|string|max:255',
+            'sender'      => 'required|string|max:255',
+            'nid_no'      => 'nullable|string|max:30',
+            'mobile'      => 'nullable|string|max:20',
+            'address'     => 'nullable|string|max:20',
+            'father_name' => 'nullable|string|max:20',
+            'email'       => 'nullable|string|max:20',
+            'form-type'   => 'nullable|string|max:20',
+            'message'     => 'nullable|string',
+            'attachment'  => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
         ];
     }
 
@@ -149,25 +163,12 @@ class ApplicationFormController extends Controller
             'sender',
             'nid_no',
             'mobile',
+            'address',
+            'father_name',
+            'email',
+            'form_type',
             'message',
         ];
     }
 
-    private function uploadAttachment($file)
-    {
-        $directory = 'uploads/application-form/';
-        $filename  = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-
-        File::ensureDirectoryExists(public_path($directory));
-        $file->move(public_path($directory), $filename);
-
-        return $directory . $filename;
-    }
-
-    private function deleteAttachment($attachment)
-    {
-        if ($attachment && File::exists(public_path($attachment))) {
-            File::delete(public_path($attachment));
-        }
-    }
 }

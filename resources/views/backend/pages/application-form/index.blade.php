@@ -45,7 +45,6 @@
                                             <th>Sender</th>
                                             <th>NID</th>
                                             <th>Mobile</th>
-                                            <th>Attachment</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -60,24 +59,10 @@
                                                 <td>{{ $item->nid_no ?? '-' }}</td>
                                                 <td>{{ $item->mobile ?? '-' }}</td>
                                                 <td>
-                                                    @if ($item->attachment)
-                                                        <a href="{{ asset($item->attachment) }}" target="_blank"
-                                                            class="btn btn-sm btn-secondary">View</a>
-                                                    @else
-                                                        -
-                                                    @endif
-                                                </td>
-                                                <td>
                                                     <div class="table-action">
-                                                        <a class="btn btn-sm btn-info" title="View"
-                                                            data-toggle="tooltip"
+                                                        <a class="btn btn-sm btn-info" title="View" data-toggle="tooltip"
                                                             href="{{ route('application-form.show', $item->id) }}"><i
                                                                 class="fa fa-eye"></i></a>
-
-                                                        <a class="btn btn-sm btn-primary" title="Edit"
-                                                            data-toggle="tooltip"
-                                                            href="{{ route('application-form.edit', $item->id) }}"><i
-                                                                class="fa fa-edit"></i></a>
 
                                                         <form class="deleteApplicationForm" method="post">
                                                             @csrf
@@ -125,18 +110,23 @@
                                     url: deleteUrl,
                                     data: formData,
                                     beforeSend: function() {
-                                        thisForm.find('button[type="submit"]').prop("disabled", true);
+                                        thisForm.find('button[type="submit"]')
+                                            .prop("disabled", true);
                                     },
                                     success: function(response) {
-                                        thisForm.find('button[type="submit"]').prop("disabled", false);
+                                        thisForm.find('button[type="submit"]')
+                                            .prop("disabled", false);
                                         toastr.success(response.message);
                                         setTimeout(function() {
-                                            location.href = "{{ route('application-form.index') }}";
+                                            location.href =
+                                                "{{ route('application-form.index') }}";
                                         }, 2000);
                                     },
                                     error: function(xhr) {
-                                        thisForm.find('button[type="submit"]').prop("disabled", false);
-                                        let responseText = jQuery.parseJSON(xhr.responseText);
+                                        thisForm.find('button[type="submit"]')
+                                            .prop("disabled", false);
+                                        let responseText = jQuery.parseJSON(xhr
+                                            .responseText);
                                         toastr.error(responseText.message);
                                     }
                                 });

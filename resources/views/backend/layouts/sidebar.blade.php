@@ -474,19 +474,21 @@
                         <ul class="nav nav-treeview">
 
 
-                            {{-- <li class="nav-item">
-        <a href="{{route('institute-type.index')}}" class="nav-link @if ($subMenu == 'InstituteType') active @endif">
-          <i class="far fa-circle nav-icon"></i>
-          <p>Type</p>
-        </a>
-      </li>
+                            <li class="nav-item">
+                                <a href="{{ route('institute-type.index') }}"
+                                    class="nav-link @if ($subMenu == 'InstituteType') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Type</p>
+                                </a>
+                            </li>
 
-      <li class="nav-item">
-        <a href="{{route('institute-category.index')}}" class="nav-link @if ($subMenu == 'InstituteCategory') active @endif">
-          <i class="far fa-circle nav-icon"></i>
-          <p>Category</p>
-        </a>
-      </li> --}}
+                            <li class="nav-item">
+                                <a href="{{ route('institute-category.index') }}"
+                                    class="nav-link @if ($subMenu == 'InstituteCategory') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Category</p>
+                                </a>
+                            </li>
 
 
 
@@ -551,15 +553,15 @@
                     </a>
                     <ul class="nav nav-treeview">
 
-                        @if (create_permission())
-                            <li class="nav-item">
-                                <a href="{{ route('people.create') }}"
-                                    class="nav-link @if ($subMenu == 'Create') active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Create</p>
-                                </a>
-                            </li>
-                        @endif
+                        {{-- @if (create_permission()) --}}
+                        <li class="nav-item">
+                            <a href="{{ route('people.create') }}"
+                                class="nav-link @if ($subMenu == 'Create') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create</p>
+                            </a>
+                        </li>
+                        {{-- @endif --}}
 
                         @if (view_permission())
                             <li class="nav-item">
@@ -871,15 +873,15 @@
                     </a>
                     <ul class="nav nav-treeview">
 
-                        {{-- @if (create_permission()) --}}
-                        <li class="nav-item">
-                            <a href="{{ route('hotel-restaurant.create') }}"
-                                class="nav-link @if ($subMenu == 'HotelRestaurantCreate') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Create</p>
-                            </a>
-                        </li>
-                        {{-- @endif --}}
+                        @if (create_permission())
+                            <li class="nav-item">
+                                <a href="{{ route('hotel-restaurant.create') }}"
+                                    class="nav-link @if ($subMenu == 'HotelRestaurantCreate') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Create</p>
+                                </a>
+                            </li>
+                        @endif
 
                         @if (view_permission())
                             <li class="nav-item">
