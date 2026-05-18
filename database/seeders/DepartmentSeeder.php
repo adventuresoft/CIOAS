@@ -15,11 +15,10 @@ class DepartmentSeeder extends Seeder
     public function run()
     {
         $departments = [
-            [ 'name' => 'Administration', 'bn_name' => 'প্রশাসন' ],
+            [ 'name' => 'General Administration', 'bn_name' => 'প্রশাসন' ],
             [ 'name' => 'Revenue', 'bn_name' => 'রাজস্ব' ],
             [ 'name' => 'Land Administration', 'bn_name' => 'ভূমি প্রশাসন' ],
             [ 'name' => 'General', 'bn_name' => 'সাধারণ' ],
-            [ 'name' => 'Nazir', 'bn_name' => 'নাজির' ],
             [ 'name' => 'Disaster Management', 'bn_name' => 'দুর্যোগ ব্যবস্থাপনা' ],
             [ 'name' => 'Certificate', 'bn_name' => 'সার্টিফিকেট' ],
             [ 'name' => 'Legal', 'bn_name' => 'আইন' ],

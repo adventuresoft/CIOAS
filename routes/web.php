@@ -124,6 +124,11 @@ use App\Http\Controllers\HotelRestaurant\HotelCategoryController;
 use App\Http\Controllers\HotelRestaurant\HotelSubCategoryController;
 use App\Http\Controllers\HotelRestaurant\HotelRestaurantOwnershipController;
 
+// DepartmentController
+use App\Http\Controllers\Departments\DepartmentController;
+use App\Http\Controllers\Departments\DepartmentSectionController;
+
+
 
 // Application Form
 
@@ -388,6 +393,18 @@ Route::group([ 'prefix' => 'dashboard', 'middleware' => [ 'auth' ] ], function (
         // hotel-restaurant category
         Route::resource('hotel-category', HotelCategoryController::class);
         Route::resource('hotel-subcategory', HotelSubCategoryController::class);
+
+        //Department
+        Route::resource('department', DepartmentController::class);
+
+        // Department Section
+        Route::get('department-section/{department_id}', [ DepartmentSectionController::class, 'index' ])->name('department-section.index');
+        Route::get('department-section/create/{department_id}', [ DepartmentSectionController::class, 'create' ])->name('department-section.create');
+        Route::post('department-section/store', [ DepartmentSectionController::class, 'store' ])->name('department-section.store');
+        Route::post('department-section/show/{id}', [ DepartmentSectionController::class, 'show' ])->name('department-section.show');
+        Route::delete('department-section/delete/{id}', [ DepartmentSectionController::class, 'destroy' ])->name('department-section.destroy');
+
+
     });
 
     Route::resource('organization', OrganizationController::class);
