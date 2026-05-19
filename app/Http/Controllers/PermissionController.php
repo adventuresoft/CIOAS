@@ -4,104 +4,84 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Auth;
 
 class PermissionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-     public function __construct() {
-        // $this->middleware('auth:admin');
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->guardSuperadmin();
+            return $next($request);
+        });
     }
-    
+
+    protected function guardSuperadmin()
+    {
+        if (!is_superadmin()) {
+            abort(403, 'Unauthorized access.');
+        }
+    }
+
     public function index()
     {
-        $permissions = Permission::paginate(20);        
-        return view('backend.pages.permission.index', compact('permissions'))->with(['title'=>'Permission','page'=>'permission']);
+        $permissions = Permission::paginate(10);        
+        return view('backend.pages.permission.index', compact('permissions'))
+            ->with(['title' => 'Permission Pool', 'page' => 'permission']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required',            
+        $request->validate([
+            'name' => 'required|string|max:191|unique:permissions,name',            
         ]);
-        Permission::create(['name' => $request->name]);
-        session()->flash("success", "Information saved Successfully");
-        return redirect(route('permission.index'));
+
+        try {
+            Permission::create(['name' => strtolower($request->name)]);
+            session()->flash("success", "Permission registered successfully.");
+            return redirect()->route('permission.index');
+        } catch (\Throwable $th) {
+            session()->flash("error", "Failed to register permission: " . $th->getMessage());
+            return redirect()->back()->withInput();
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        $permission = Permission::find($id);
-        $permissions = Permission::paginate(20);
-        return view('backend.pages.permission.index', compact('permission', 'permissions'))->with('title', 'Edit Complain Type')->with('page', 'comType');
+        $permission = Permission::findOrFail($id);
+        $permissions = Permission::paginate(10);
+        return view('backend.pages.permission.index', compact('permission', 'permissions'))
+            ->with(['title' => 'Modify Permission', 'page' => 'permission']);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required',            
+        $permission = Permission::findOrFail($id);
+        $request->validate([
+            'name' => 'required|string|max:191|unique:permissions,name,' . $permission->id,            
         ]);
-        $comType = Permission::find($id);
-        $comType->name = $request->name;                             
-        $comType->save();
-        session()->flash("success", "Information saved Successfully");
-        return redirect(route('permission.index'));
+
+        try {
+            $permission->update(['name' => strtolower($request->name)]);
+            session()->flash("success", "Permission modified successfully.");
+            return redirect()->route('permission.index');
+        } catch (\Throwable $th) {
+            session()->flash("error", "Failed to modify permission: " . $th->getMessage());
+            return redirect()->back()->withInput();
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        try {
+            $permission = Permission::findOrFail($id);
+            $permission->delete();
+            session()->flash('success', 'Permission removed successfully.');
+            return redirect()->route('permission.index');
+        } catch (\Throwable $th) {
+            session()->flash('error', 'Failed to delete permission: ' . $th->getMessage());
+            return redirect()->route('permission.index');
+        }
     }
 }

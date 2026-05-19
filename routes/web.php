@@ -112,7 +112,7 @@ use App\Http\Controllers\ThanaController;
 use App\Http\Controllers\UnionController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\ChairmanController;
-use App\Http\Controllers\CouncilorController;
+use App\Http\Controllers\CounsilorController;
 use App\Http\Controllers\SuccessionController;
 use App\Http\Controllers\CertificateVerifyController;
 use App\Http\Controllers\PostOfficeController;
@@ -167,6 +167,7 @@ Route::controller(RoleController::class)->group(function () {
     Route::post('role', 'store')->name('role.store');
     Route::get('role/{id}/edit', 'edit')->name('role.edit');
     Route::patch('role/{id}', 'update')->name('role.update');
+    Route::delete('role/{id}', 'destroy')->name('role.destroy');
 });
 
 // Permission route start
@@ -175,6 +176,7 @@ Route::controller(PermissionController::class)->group(function () {
     Route::post('permission', 'store')->name('permission.store');
     Route::get('permission/{id}/edit', 'edit')->name('permission.edit');
     Route::patch('permission/{id}', 'update')->name('permission.update');
+    Route::delete('permission/{id}', 'destroy')->name('permission.destroy');
 });
 
 // Role Permission route start
@@ -456,8 +458,8 @@ Route::group([ 'prefix' => 'dashboard', 'middleware' => [ 'auth' ] ], function (
     });
 
 
-    Route::resource('councilor', CouncilorController::class);
-    Route::controller(CouncilorController::class)->prefix('councilor')->name('councilor.')->group(function () {
+    Route::resource('councilor', CounsilorController::class);
+    Route::controller(CounsilorController::class)->prefix('councilor')->name('councilor.')->group(function () {
         Route::post('/personalstore', 'personalstore')->name('personalstore');
         Route::get('/family/{user_id}', 'family')->name('family');
         Route::post('/familyStore', 'familyStore')->name('familyStore');

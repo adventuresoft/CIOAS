@@ -27,6 +27,16 @@ class Institute extends Model
       return $this->belongsTo(Union::class, 'union_id', 'id');
     }
 
+    public function pourashava()
+    {
+      return $this->belongsTo(Pourashava::class, 'pourashava_id', 'id');
+    }
+
+    public function cityCorporation()
+    {
+      return $this->belongsTo(CityCorporation::class, 'city_corporation_id', 'id');
+    }
+
     public function superUser()
     {
       return $this->hasOne(User::class, 'institute_id', 'id');

@@ -1,3 +1,5 @@
+
+
 <div class="card-body">
     {{-- Hotel/restaurant organization form: basic details, address, and supporting documents --}}
     {{-- Name, Bangla Name --}}
@@ -101,445 +103,81 @@
         </div>
     </div>
 
-    <!-- Present address location selector -->
-    {{-- Registered address location type options: choose which local government unit applies --}}
-    <div class="form-group row pt-3 location_cat">
-        <label class="col-sm-2 col-form-label">Location Type </label>
-        <div class="col-sm-9">
-            <div class="d-flex flex-wrap">
-                <div class="form-check mr-4">
-                    <input class="form-check-input location_type" type="radio" name="location_type"
-                        id="city_corporation" value="city_type"
-                        {{ isset($organization->location_type) && $organization->location_type == 'city_type' ? 'checked' : '' }}>
-                    <label class="form-check-label" for="city_corporation">City
-                        Corporation</label>
-                </div>
-                <div class="form-check mr-4">
-                    <input class="form-check-input location_type" type="radio" name="location_type"
-                        id="pourashava" value="pos_type"
-                        {{ isset($organization->location_type) && $organization->location_type == 'pos_type' ? 'checked' : '' }}>
-                    <label class="form-check-label" for="pourashava">Pourashava</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input location_type" type="radio" name="location_type" id="union"
-                        value="union_type"
-                        {{ isset($organization->location_type) && $organization->location_type == 'union_type' ? 'checked' : '' }}>
-                    <label class="form-check-label" for="union">Union</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- Registered address fields: division, district, thana, and location type --}}
-    <div class="present_address_filed {{ !empty($organization->location_type) ? '' : 'd-none' }}">
-        <div class="form-group row">
-            <div class="col-sm-4">
-                <label for="division_id">Division</label>
-                <select name="division_id" class="form-control select2 select2bs4" id="division_id">
-                    <option value="">Select Division</option>
-                    @if ($divisions)
-                        @foreach ($divisions as $division)
-                            <option value="{{ $division->id }}"
-                                {{ isset($organization->division_id) && $organization->division_id == $division->id ? 'selected' : '' }}>
-                                {{ $division->name }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error division_id_error"></small>
-            </div>
-            <div class="col-sm-4">
-                <label for="district_id">District</label>
-                <select name="district_id" class="form-control select2 select2bs4" id="district_id">
-                    <option value="">Select District</option>
-                    @if (isset($districts))
-                        @foreach ($districts as $district)
-                            <option value="{{ $district->id }}"
-                                {{ isset($organization->district_id) && $organization->district_id == $district->id ? 'selected' : '' }}>
-                                {{ $district->name ?? 'Select District' }}</option>
-                        @endforeach
-                    @endif
-
-                </select>
-
-                <small class="text-danger error district_id_error"></small>
-            </div>
-
-            {{-- City corporation option shown when location type is city corporation --}}
-            <div class="col-sm-4 city_type {{ !empty($organization->city_id) ? '' : 'd-none' }}">
-                <label for="city_corporation_id">City Corporation</label>
-                <select name="city_id" class="form-control select2 select2bs4" id="city_corporation_id">
-                    <option value="">Select City Corporation</option>
-                    @if (isset($city_corporations))
-                        @foreach ($city_corporations as $city_corporation)
-                            <option value="{{ $city_corporation->id }}"
-                                {{ isset($organization->city_id) ? ($organization->city_id == $city_corporation->id ? 'selected' : '') : '' }}>
-                                {{ $city_corporation->bn_name }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error permanent_village_id_error"></small>
-            </div>
-
-            <div class="col-sm-4">
-                <label for="thana_id">Thana</label>
-                <select name="thana_id" class="form-control select2 select2bs4" id="thana_id">
-                    <option value="">Select Thana</option>
-                    @if (isset($thanas))
-                        @foreach ($thanas as $thana)
-                            <option value="{{ $thana->id }}"
-                                {{ isset($organization->thana_id) && $organization->thana_id == $thana->id ? 'selected' : '' }}>
-                                {{ $thana->name ?? 'Select Thana' }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error thana_id_error"></small>
-
-            </div>
-
-            {{-- Pourashava option shown when location type is pourashava --}}
-            <div class="col-sm-4 pos_type {{ !empty($organization->pos_id) ? '' : 'd-none' }}">
-                <label for="pourashova_id">Pourashava</label>
-                <select name="pos_id" class="form-control select2 select2bs4" id="pourashova_id"
-                    data-type="pourashova">
-                    <option value="">Select Pourashova</option>
-                    @if (isset($pourashavas))
-                        @foreach ($pourashavas as $pourashava)
-                            <option value="{{ $pourashava->id }}"
-                                {{ isset($organization->pos_id) ? ($organization->pos_id == $pourashava->id ? 'selected' : '') : '' }}>
-                                {{ $pourashava->name }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error permanent_village_id_error"></small>
-            </div>
-
-
-            {{-- Union option shown when location type is union --}}
-            <div class="col-sm-4 union_type {{ !empty($organization->union_id) ? '' : 'd-none' }}">
-                <label for="union_id">Union</label>
-                <select name="union_id" class="form-control select2 select2bs4" id="union_id" data-type="union">
-                    <option value="">Select Union</option>
-                    @if (isset($unions))
-                        @foreach ($unions as $union)
-                            <option value="{{ $union->id }}"
-                                {{ isset($organization->union_id) && $organization->union_id == $union->id ? 'selected' : '' }}>
-                                {{ $union->name ?? 'Select Union' }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error union_id_error"></small>
-            </div>
-
-            {{-- Registered address postal and location selectors --}}
-            <div class="col-sm-4">
-                <label for="post_office_id">Post Office</label>
-                <select name="post_office_id" class="form-control select2 select2bs4" id="post_office_id">
-                    <option value="">Select Post Office</option>
-                    @if (isset($post_officeses))
-                        @foreach ($post_officeses as $post_officese)
-                            <option value="{{ $post_officese->id }}"
-                                {{ isset($organization->post_office_id) ? ($organization->post_office_id == $post_officese->id ? 'selected' : '') : '' }}>
-                                {{ $post_officese->bn_name }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error permanent_village_id_error"></small>
-            </div>
-
-            <div class="col-sm-4">
-                <label for="village_id">Village</label>
-                <select name="village_id" class="form-control select2 select2bs4" id="village_id">
-                    @if (isset($villages))
-                        @foreach ($villages as $village)
-                            <option value="{{ $village->id ?? '' }}"
-                                {{ isset($organization->village_id) && $organization->village_id == $village->id ? 'selected' : '' }}>
-                                {{ $village->bn_name ?? 'Select Village' }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error village_id_error"></small>
-            </div>
-
-        </div>
-
-        <div class="form-group row">
-            <div class="col-sm-3">
-                <label for="ward_id">Ward</label>
-                <select name="ward_id" class="form-control select2 select2bs4" id="ward_id">
-                    <option value="">Select Ward</option>
-                    @if ($wards)
-                        @foreach ($wards as $ward)
-                            <option value="{{ $ward->id }}"
-                                {{ isset($organization->ward_id) ? ($organization->ward_id == $ward->id ? 'selected' : '') : '' }}>
-                                {{ $ward->en_ward_no }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error ward_id_error"></small>
-
-            </div>
-            <div class="col-sm-3">
-                <label for="road">Road</label>
-                <input type="text" name="road" class="form-control" id="road"
-                    value="{{ $organization->road ?? '' }}" placeholder="Present Road">
-
-                <small class="text-danger error road_error"></small>
-            </div>
-            <div class="col-sm-3">
-                <label for="house">House/Holding No.</label>
-                <input type="text" name="house" class="form-control" id="house"
-                    value="{{ $organization->house ?? '' }}" placeholder="Present House">
-
-                <small class="text-danger error house_error"></small>
-            </div>
-            <div class="col-sm-3">
-                <label for="house">House/Holding No. (Bangla)</label>
-                <input type="text" name="house_bn" class="form-control" id="house"
-                    value="{{ $organization->house_bn ?? '' }}" placeholder="Present House Bangla">
-
-                <small class="text-danger error house_error"></small>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <div class="col-sm-12">
-            <h5 class="text-secondary mb-2">Corporate Office/Factory Address</h5>
-        </div>
-    </div>
-
-    <div class="form-group row pt-3 office_location_cat">
-        <label class="col-sm-2 col-form-label">Location Type</label>
-        <div class="col-sm-9">
-            <div class="d-flex flex-wrap">
-                <div class="form-check mr-4">
-                    <input class="form-check-input office_location_type" type="radio" name="office_location_type"
-                        id="office_city_corporation" value="city_type"
-                        {{ isset($organization->office_location_type) && $organization->office_location_type == 'city_type' ? 'checked' : '' }}>
-                    <label class="form-check-label" for="office_city_corporation">City
-                        Corporation</label>
-                </div>
-                <div class="form-check mr-4">
-                    <input class="form-check-input office_location_type" type="radio" name="office_location_type"
-                        id="office_pourashava" value="pos_type"
-                        {{ isset($organization->office_location_type) && $organization->office_location_type == 'pos_type' ? 'checked' : '' }}>
-                    <label class="form-check-label" for="office_pourashava">Pourashava</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input office_location_type" type="radio" name="office_location_type"
-                        id="office_union" value="union_type"
-                        {{ isset($organization->office_location_type) && $organization->office_location_type == 'union_type' ? 'checked' : '' }}>
-                    <label class="form-check-label" for="office_union">Union</label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- Corporate office address fields: office division, district, thana, location type, and office-specific selectors --}}
-
-    <div class="office_address_field {{ !empty($organization->office_location_type) ? '' : 'd-none' }}">
-        <div class="form-group row">
-            <div class="col-sm-4">
-                <label for="office_division_id">Division</label>
-                <select name="office_division_id" class="form-control select2 select2bs4" id="office_division_id">
-                    <option value="">Select Division</option>
-                    @if (isset($divisions))
-                        @foreach ($divisions as $division)
-                            <option value="{{ $division->id }}"
-                                {{ isset($organization->office_division_id) && $organization->office_division_id == $division->id ? 'selected' : '' }}>
-                                {{ $division->name }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error office_division_id_error"></small>
-            </div>
-            <div class="col-sm-4">
-                <label for="office_district_id">District</label>
-                <select name="office_district_id" class="form-control select2 select2bs4" id="office_district_id">
-                    <option value="">Select District</option>
-                    @if (isset($office_districts))
-                        @foreach ($office_districts as $district)
-                            <option value="{{ $district->id }}"
-                                {{ isset($organization->office_district_id) && $organization->office_district_id == $district->id ? 'selected' : '' }}>
-                                {{ $district->name ?? 'Select District' }}</option>
-                        @endforeach
-                    @endif
-                </select>
-
-                <small class="text-danger error office_district_id_error"></small>
-            </div>
-
-            {{-- Office city corporation option shown when office location type is city corporation --}}
-            <div class="col-sm-4 office_city_type {{ !empty($organization->office_city_id) ? '' : 'd-none' }}">
-                <label for="city_corporation_id">City Corporation</label>
-                <select name="office_city_id" class="form-control select2 select2bs4"
-                    id="office_city_corporation_id">
-                    <option value="">Select City Corporation</option>
-                    @if (isset($office_city_corporations))
-                        @foreach ($office_city_corporations as $city_corporation)
-                            <option value="{{ $city_corporation->id }}"
-                                {{ isset($organization->office_city_id) ? ($organization->office_city_id == $city_corporation->id ? 'selected' : '') : '' }}>
-                                {{ $city_corporation->bn_name }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error office_city_id"></small>
-            </div>
-
-            <div class="col-sm-4">
-                <label for="office_thana_id">Thana</label>
-                <select name="office_thana_id" class="form-control select2 select2bs4" id="office_thana_id">
-                    <option value="">Select Thana</option>
-                    @if (isset($office_thanas))
-                        @foreach ($office_thanas as $thana)
-                            <option value="{{ $thana->id }}"
-                                {{ isset($organization->office_thana_id) && $organization->office_thana_id == $thana->id ? 'selected' : '' }}>
-                                {{ $thana->name ?? 'Select Thana' }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error office_thana_id_error"></small>
-            </div>
-
-            {{-- Office pourashava option shown when office location type is pourashava --}}
-            <div class="col-sm-4 office_pos_type {{ !empty($organization->office_pos_id) ? '' : 'd-none' }}">
-                <label for="pourashova_id">Pourashova</label>
-                <select name="office_pos_id" class="form-control select2 select2bs4" id="office_pourashova_id"
-                    data-type="pourashova">
-                    <option value="">Select City Pourashova</option>
-                    @if (isset($office_pourashavas))
-                        @foreach ($office_pourashavas as $pourashava)
-                            <option value="{{ $pourashava->id }}"
-                                {{ isset($organization->office_pos_id) ? ($organization->office_pos_id == $pourashava->id ? 'selected' : '') : '' }}>
-                                {{ $pourashava->name }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error permanent_village_id_error"></small>
-            </div>
-
-
-            {{-- Office union option shown when office location type is union --}}
-            <div class="col-sm-4 office_union_type {{ !empty($organization->office_union_id) ? '' : 'd-none' }}">
-                <label for="union_id">Union</label>
-                <select name="office_union_id" class="form-control select2 select2bs4" id="office_union_id"
-                    data-type="union">
-                    <option value="">Select Union</option>
-                    @if (isset($office_unions))
-                        @foreach ($office_unions as $union)
-                            <option value="{{ $union->id }}"
-                                {{ isset($organization->office_union_id) && $organization->office_union_id == $union->id ? 'selected' : '' }}>
-                                {{ $union->name ?? 'Select Union' }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error office_union_id_error"></small>
-            </div>
-
-            {{-- Corporate office postal and location selectors --}}
-            <div class="col-sm-4">
-                <label for="office_post_office_id">Post Office</label>
-                <select name="office_post_office_id" class="form-control select2 select2bs4"
-                    id="office_post_office_id">
-                    <option value="">Select Post Office </option>
-                    @if (isset($office_post_officeses))
-                        @foreach ($office_post_officeses as $post_officese)
-                            <option value="{{ $post_officese->id }}"
-                                {{ isset($organization->office_post_office_id) ? ($organization->office_post_office_id == $post_officese->id ? 'selected' : '') : '' }}>
-                                {{ $post_officese->name }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error office_post_office_id_error"></small>
-            </div>
-
-            <div class="col-sm-4">
-                <label for="office_village_id">Village</label>
-                <select name="office_village_id" class="form-control select2 select2bs4" id="office_village_id">
-                    <option value="">Select Village</option>
-                    @if (isset($office_villages))
-                        @foreach ($office_villages as $village)
-                            <option value="{{ $village->id ?? '' }}"
-                                {{ isset($organization->office_village_id) && $organization->office_village_id == $village->id ? 'selected' : '' }}>
-                                {{ $village->bn_name ?? 'Select Village' }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error office_village_id_error"></small>
-            </div>
-        </div>
-
-
-
-
-        <div class="form-group row">
-            <div class="col-sm-3">
-                <label for="office_ward_id">Ward</label>
-                <select name="office_ward_id" class="form-control select2 select2bs4" id="office_ward_id">
-                    <option value="">Select Ward</option>
-                    @if ($wards)
-                        @foreach ($wards as $ward)
-                            <option value="{{ $ward->id }}"
-                                {{ isset($organization->office_ward_id) ? ($organization->office_ward_id == $ward->id ? 'selected' : '') : '' }}>
-                                {{ $ward->en_ward_no }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <small class="text-danger error office_ward_id_error"></small>
-
-            </div>
-            <div class="col-sm-3">
-                <label for="office_road">Road</label>
-                <input type="text" name="office_road" class="form-control" id="office_road"
-                    value="{{ $organization->office_road ?? '' }}" placeholder="Present Road">
-
-                <small class="text-danger error office_road_error"></small>
-            </div>
-            <div class="col-sm-3">
-                <label for="office_house">House/Holding No.</label>
-                <input type="text" name="office_house" class="form-control" id="office_house"
-                    value="{{ $organization->office_house ?? '' }}" placeholder="Present House">
-
-                <small class="text-danger error office_house_error"></small>
-            </div>
-            <div class="col-sm-3">
-                <label for="office_house_bn">House/Holding No. (Bangla)</label>
-                <input type="text" name="office_house_bn" class="form-control" id="office_house_bn"
-                    value="{{ $organization->office_house_bn ?? '' }}" placeholder="Present House Bangla">
-
-                <small class="text-danger error office_house_error"></small>
-            </div>
-        </div>
-
-    </div>
+    <x-location-type-selector
+        title="Registered Address"
+        nameLocationType="location_type"
+        nameDivision="division_id"
+        nameDistrict="district_id"
+        nameThana="thana_id"
+        nameCityCorporation="city_id"
+        namePourashava="pos_id"
+        nameUnion="union_id"
+        namePostOffice="post_office_id"
+        nameVillage="village_id"
+        nameWard="ward_id"
+        nameRoad="road"
+        nameHouse="house"
+        nameHouseBn="house_bn"
+        :selectedLocationType="$organization->location_type ?? null"
+        :selectedDivision="$organization->division_id ?? null"
+        :selectedDistrict="$organization->district_id ?? null"
+        :selectedThana="$organization->thana_id ?? null"
+        :selectedCityCorporation="$organization->city_id ?? null"
+        :selectedPourashava="$organization->pos_id ?? null"
+        :selectedUnion="$organization->union_id ?? null"
+        :selectedPostOffice="$organization->post_office_id ?? null"
+        :selectedVillage="$organization->village_id ?? null"
+        :selectedWard="$organization->ward_id ?? null"
+        :selectedRoad="$organization->road ?? null"
+        :selectedHouse="$organization->house ?? null"
+        :selectedHouseBn="$organization->house_bn ?? null"
+        :divisions="$divisions ?? null"
+        :districts="$districts ?? null"
+        :thanas="$thanas ?? null"
+        :cityCorporations="$city_corporations ?? null"
+        :pourashavas="$pourashavas ?? null"
+        :unions="$unions ?? null"
+        :postOffices="$post_officeses ?? null"
+        :villages="$villages ?? null"
+        :wards="$wards ?? null"
+        containerClass="present_address_filed"
+        cityContainerClass="city_type"
+        pourashavaContainerClass="pos_type"
+        unionContainerClass="union_type"
+        radioClass="location-type-radio"
+        cardClass="location-type-card"
+    />
 
 
     <div class="row align-items-center mb-2">
         <div class="col-sm-5">
-            <input type="text" class="form-control" value="Hotel & Restaurant Logo" readonly>
+            <input type="text" class="form-control form-control-sm" value="Hotel & Restaurant Logo" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
         </div>
         <div class="col-sm-5">
-            <input type="file" name="hotel_logo" class="form-control-file">
-        </div>
-        <div class="col-sm-2 text-right">
-            <button type="button" class="btn btn-primary btn-sm add-doc-row" data-target="rented">+</button>
+            <div class="custom-file">
+                <input type="file" name="hotel_logo" class="custom-file-input form-control-sm">
+                <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+            </div>
         </div>
     </div>
 
-    <div class="form-group row">
-        <div class="col-sm-12">
-            <label class="mb-2">Ownership of the Organization Premises</label>
-            <div class="d-flex flex-wrap">
-                <div class="form-check mr-4">
-                    <input class="form-check-input" type="radio" name="premises_ownership" id="premises_rented"
-                        value="rented">
-                    <label class="form-check-label" for="premises_rented">Rented</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="premises_ownership" id="premises_owned"
-                        value="owned">
-                    <label class="form-check-label" for="premises_owned">Owned</label>
-                </div>
+    <div class="form-group row pt-3 align-items-center">
+        <label class="col-sm-2 col-form-label font-weight-bold" style="font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; color: #475569;"><i class="fas fa-home text-primary mr-1"></i> Premises Ownership</label>
+        <div class="col-sm-10">
+            <div class="d-flex align-items-center flex-wrap" style="gap: 12px;">
+                <label class="location-type-card premises-ownership-card {{ (isset($organization->premises_ownership) && $organization->premises_ownership == 'rented') ? 'active' : '' }}">
+                    <input type="radio" name="premises_ownership" value="rented" class="premises-ownership-radio d-none"
+                        {{ (isset($organization->premises_ownership) && $organization->premises_ownership == 'rented') ? 'checked' : '' }}>
+                    <i class="fas fa-file-contract location-icon" style="font-size: 1rem; color: #64748b;"></i>
+                    <span>Rented</span>
+                </label>
+                
+                <label class="location-type-card premises-ownership-card {{ (isset($organization->premises_ownership) && $organization->premises_ownership == 'owned') ? 'active' : '' }}">
+                    <input type="radio" name="premises_ownership" value="owned" class="premises-ownership-radio d-none"
+                        {{ (isset($organization->premises_ownership) && $organization->premises_ownership == 'owned') ? 'checked' : '' }}>
+                    <i class="fas fa-key location-icon" style="font-size: 1rem; color: #64748b;"></i>
+                    <span>Owned</span>
+                </label>
             </div>
         </div>
     </div>
@@ -547,69 +185,93 @@
     {{-- Owned premises supporting documents: shown when premises_ownership = owned --}}
     <div class="form-group row premises-docs premises-docs-owned d-none">
         <div class="col-sm-12">
-            <h6 class="text-secondary mb-2">Self-Owned Premises Documents</h6>
+            <h6 class="text-secondary mb-3 font-weight-bold" style="font-size: 0.95rem; color: #475569;"><i class="fas fa-file-alt text-primary mr-1"></i> Self-Owned Premises Documents</h6>
         </div>
         <div class="col-sm-12">
             <div class="premises-docs-owned-list">
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="owned_document_name[]" class="form-control"
-                            value="Proof of Land Ownership" readonly>
+                        <input type="text" name="owned_document_name[]" class="form-control form-control-sm"
+                            value="Proof of Land Ownership" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
                     </div>
                     <div class="col-sm-5">
-                        <input type="file" name="owned_document_file[]" class="form-control-file">
+                        <div class="custom-file">
+                            <input type="file" name="owned_document_file[]" class="custom-file-input form-control-sm">
+                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                        </div>
                     </div>
                     <div class="col-sm-2 text-right">
-                        <button type="button" class="btn btn-primary btn-sm add-doc-row"
-                            data-target="owned">+</button>
+                        <button type="button" class="btn btn-primary btn-sm add-doc-row" data-target="owned" style="border-radius: 6px; padding: 4px 12px; font-weight: 600;">
+                            <i class="fas fa-plus mr-1"></i> Add
+                        </button>
                     </div>
                 </div>
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="owned_document_name[]" class="form-control"
-                            value="Building Approval Certificate" readonly>
+                        <input type="text" name="owned_document_name[]" class="form-control form-control-sm"
+                            value="Building Approval Certificate" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
                     </div>
                     <div class="col-sm-5">
-                        <input type="file" name="owned_document_file[]" class="form-control-file">
+                        <div class="custom-file">
+                            <input type="file" name="owned_document_file[]" class="custom-file-input form-control-sm">
+                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                        </div>
                     </div>
                     <div class="col-sm-2 text-right">
-                        <button type="button" class="btn btn-danger btn-sm remove-doc-row">-</button>
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-doc-row" style="border-radius: 6px; padding: 4px 10px;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="owned_document_name[]" class="form-control"
-                            value="Environmental Clearance Certificate" readonly>
+                        <input type="text" name="owned_document_name[]" class="form-control form-control-sm"
+                            value="Environmental Clearance Certificate" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
                     </div>
                     <div class="col-sm-5">
-                        <input type="file" name="owned_document_file[]" class="form-control-file">
+                        <div class="custom-file">
+                            <input type="file" name="owned_document_file[]" class="custom-file-input form-control-sm">
+                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                        </div>
                     </div>
                     <div class="col-sm-2 text-right">
-                        <button type="button" class="btn btn-danger btn-sm remove-doc-row">-</button>
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-doc-row" style="border-radius: 6px; padding: 4px 10px;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="owned_document_name[]" class="form-control"
-                            value="Fire Service Clearance Certificate" readonly>
+                        <input type="text" name="owned_document_name[]" class="form-control form-control-sm"
+                            value="Fire Service Clearance Certificate" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
                     </div>
                     <div class="col-sm-5">
-                        <input type="file" name="owned_document_file[]" class="form-control-file">
+                        <div class="custom-file">
+                            <input type="file" name="owned_document_file[]" class="custom-file-input form-control-sm">
+                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                        </div>
                     </div>
                     <div class="col-sm-2 text-right">
-                        <button type="button" class="btn btn-danger btn-sm remove-doc-row">-</button>
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-doc-row" style="border-radius: 6px; padding: 4px 10px;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="owned_document_name[]" class="form-control"
-                            value="National ID (NID) – Mandatory" readonly>
+                        <input type="text" name="owned_document_name[]" class="form-control form-control-sm"
+                            value="National ID (NID) – Mandatory" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
                     </div>
                     <div class="col-sm-5">
-                        <input type="file" name="owned_document_file[]" class="form-control-file">
+                        <div class="custom-file">
+                            <input type="file" name="owned_document_file[]" class="custom-file-input form-control-sm">
+                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                        </div>
                     </div>
                     <div class="col-sm-2 text-right">
-                        <button type="button" class="btn btn-danger btn-sm remove-doc-row">-</button>
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-doc-row" style="border-radius: 6px; padding: 4px 10px;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -619,57 +281,76 @@
     {{-- Rented premises supporting documents: shown when premises_ownership = rented --}}
     <div class="form-group row premises-docs premises-docs-rented d-none">
         <div class="col-sm-12">
-            <h6 class="text-secondary mb-2">Rented Premises Documents</h6>
+            <h6 class="text-secondary mb-3 font-weight-bold" style="font-size: 0.95rem; color: #475569;"><i class="fas fa-file-alt text-primary mr-1"></i> Rented Premises Documents</h6>
         </div>
         <div class="col-sm-12">
             <div class="premises-docs-rented-list">
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="rented_document_name[]" class="form-control"
-                            value="Rental Agreement Document" readonly>
+                        <input type="text" name="rented_document_name[]" class="form-control form-control-sm"
+                            value="Rental Agreement Document" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
                     </div>
                     <div class="col-sm-5">
-                        <input type="file" name="rented_document_file[]" class="form-control-file">
+                        <div class="custom-file">
+                            <input type="file" name="rented_document_file[]" class="custom-file-input form-control-sm">
+                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                        </div>
                     </div>
                     <div class="col-sm-2 text-right">
-                        <button type="button" class="btn btn-primary btn-sm add-doc-row"
-                            data-target="rented">+</button>
+                        <button type="button" class="btn btn-primary btn-sm add-doc-row" data-target="rented" style="border-radius: 6px; padding: 4px 12px; font-weight: 600;">
+                            <i class="fas fa-plus mr-1"></i> Add
+                        </button>
                     </div>
                 </div>
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="rented_document_name[]" class="form-control"
-                            value="Environmental Clearance Certificate" readonly>
+                        <input type="text" name="rented_document_name[]" class="form-control form-control-sm"
+                            value="Environmental Clearance Certificate" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
                     </div>
                     <div class="col-sm-5">
-                        <input type="file" name="rented_document_file[]" class="form-control-file">
+                        <div class="custom-file">
+                            <input type="file" name="rented_document_file[]" class="custom-file-input form-control-sm">
+                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                        </div>
                     </div>
                     <div class="col-sm-2 text-right">
-                        <button type="button" class="btn btn-danger btn-sm remove-doc-row">-</button>
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-doc-row" style="border-radius: 6px; padding: 4px 10px;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="rented_document_name[]" class="form-control"
-                            value="Fire Service Clearance Certificate" readonly>
+                        <input type="text" name="rented_document_name[]" class="form-control form-control-sm"
+                            value="Fire Service Clearance Certificate" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
                     </div>
                     <div class="col-sm-5">
-                        <input type="file" name="rented_document_file[]" class="form-control-file">
+                        <div class="custom-file">
+                            <input type="file" name="rented_document_file[]" class="custom-file-input form-control-sm">
+                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                        </div>
                     </div>
                     <div class="col-sm-2 text-right">
-                        <button type="button" class="btn btn-danger btn-sm remove-doc-row">-</button>
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-doc-row" style="border-radius: 6px; padding: 4px 10px;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="rented_document_name[]" class="form-control"
-                            value="National ID (NID) – Mandatory" readonly>
+                        <input type="text" name="rented_document_name[]" class="form-control form-control-sm"
+                            value="National ID (NID) – Mandatory" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
                     </div>
                     <div class="col-sm-5">
-                        <input type="file" name="rented_document_file[]" class="form-control-file">
+                        <div class="custom-file">
+                            <input type="file" name="rented_document_file[]" class="custom-file-input form-control-sm">
+                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                        </div>
                     </div>
                     <div class="col-sm-2 text-right">
-                        <button type="button" class="btn btn-danger btn-sm remove-doc-row">-</button>
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-doc-row" style="border-radius: 6px; padding: 4px 10px;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1108,55 +789,76 @@
         })
 
         // Registered address location type: show/hide city, union, or pourashava selectors based on radio selection
-        $('.location_type').on('click', function() {
+        $(document).on('change', '.location-type-radio', function() {
             let val = $(this).val();
+
+            // Toggle active card class
+            let container = $(this).closest('.col-sm-10');
+            container.find('.location-type-card').removeClass('active');
+            if ($(this).is(':checked')) {
+                $(this).closest('.location-type-card').addClass('active');
+            }
 
             $('.present_address_filed').removeClass('d-none');
-
             $('.thana_list').removeClass('d-none');
             $('.po_list').removeClass('d-none');
+
             // Show selected location type and hide others
             if (val == 'city_type') {
-                $('.' + val).removeClass('d-none');
+                $('.city_type').removeClass('d-none');
                 $('.union_type').addClass('d-none');
                 $('.pos_type').addClass('d-none');
             } else if (val == 'union_type') {
-                $('.' + val).removeClass('d-none');
+                $('.union_type').removeClass('d-none');
                 $('.city_type').addClass('d-none');
                 $('.pos_type').addClass('d-none');
             } else if (val == 'pos_type') {
-                $('.' + val).removeClass('d-none');
+                $('.pos_type').removeClass('d-none');
                 $('.city_type').addClass('d-none');
                 $('.union_type').addClass('d-none');
             }
-        })
+        });
 
         // Office address location type: show/hide office city, union, or pourashava selectors based on radio selection
-        $('.office_location_type').on('click', function() {
+        $(document).on('change', '.office-location-type-radio', function() {
             let val = $(this).val();
 
-            $('.office_address_field').removeClass('d-none');
+            // Toggle active card class
+            let container = $(this).closest('.col-sm-10');
+            container.find('.office-location-type-card').removeClass('active');
+            if ($(this).is(':checked')) {
+                $(this).closest('.office-location-type-card').addClass('active');
+            }
 
+            $('.office_address_field').removeClass('d-none');
             $('.office_thana_list').removeClass('d-none');
             $('.office_po_list').removeClass('d-none');
+
             // Show selected office location type and hide others
             if (val == 'city_type') {
-                $('.office_' + val).removeClass('d-none');
+                $('.office_city_type').removeClass('d-none');
                 $('.office_union_type').addClass('d-none');
                 $('.office_pos_type').addClass('d-none');
             } else if (val == 'union_type') {
-                $('.office_' + val).removeClass('d-none');
+                $('.office_union_type').removeClass('d-none');
                 $('.office_city_type').addClass('d-none');
                 $('.office_pos_type').addClass('d-none');
             } else if (val == 'pos_type') {
-                $('.office_' + val).removeClass('d-none');
+                $('.office_pos_type').removeClass('d-none');
                 $('.office_city_type').addClass('d-none');
                 $('.office_union_type').addClass('d-none');
             }
-        })
+        });
 
         // Premises ownership: show owned or rented document sections based on radio selection
         $(document).on('change', 'input[name="premises_ownership"]', function() {
+            // Toggle active card class
+            let container = $(this).closest('.col-sm-10');
+            container.find('.premises-ownership-card').removeClass('active');
+            if ($(this).is(':checked')) {
+                $(this).closest('.premises-ownership-card').addClass('active');
+            }
+
             // When 'owned' is selected, show owned documents section and hide rented section
             if ($(this).val() === 'owned') {
                 $('.premises-docs-owned').removeClass('d-none');
@@ -1166,6 +868,43 @@
                 $('.premises-docs-rented').removeClass('d-none');
                 $('.premises-docs-owned').addClass('d-none');
             }
-        })
+        });
+
+        // Add document row dynamically
+        $(document).on('click', '.add-doc-row', function() {
+            let target = $(this).data('target');
+            let list = $(`.premises-docs-${target}-list`);
+            let newRow = `
+                <div class="row align-items-center mb-2 premises-doc-row">
+                    <div class="col-sm-5">
+                        <input type="text" name="${target}_document_name[]" class="form-control form-control-sm"
+                            placeholder="Enter Document Name" required style="border-color: #cbd5e1; font-weight: 500; color: #475569;">
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="custom-file">
+                            <input type="file" name="${target}_document_file[]" class="custom-file-input form-control-sm" required>
+                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 text-right">
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-doc-row" style="border-radius: 6px; padding: 4px 10px;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            list.append(newRow);
+        });
+
+        // Remove document row
+        $(document).on('click', '.remove-doc-row', function() {
+            $(this).closest('.premises-doc-row').remove();
+        });
+
+        // Update custom file input label with the selected filename
+        $(document).on('change', '.custom-file-input', function(e) {
+            var fileName = e.target.files[0] ? e.target.files[0].name : "Choose file...";
+            $(this).next('.custom-file-label').html(fileName);
+        });
     </script>
 @endpush

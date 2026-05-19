@@ -3,124 +3,153 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\ModelHasRole;
+use Illuminate\Http\Request;
 
 class RoleUserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-     public function __construct() {
-        // $this->middleware('auth:admin');
-    }
-    
-    public function index()
-    {                   
-        $roleUser=ModelHasRole::orderBy('model_id','desc')->paginate(10);        
-        $roles = Role::get();        
-        // $admins = Employee::get();        
-        $admins = User::all();           
-       
-        return view('backend.pages.roleuser.index', compact('roleUser','roles','admins'))->with(['title'=>'User Role','page'=>'roleuser']);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function __construct()
     {
-        //
+        $this->middleware(function ($request, $next) {
+            $this->guardSuperadmin();
+            return $next($request);
+        });
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    protected function guardSuperadmin()
+    {
+        if (!is_superadmin()) {
+            abort(403, 'Unauthorized access.');
+        }
+    }
+
+    public function index()
+    {
+        $roleUser = ModelHasRole::with(['role', 'user'])->orderBy('model_id', 'desc')->paginate(10);
+        $roles = Role::all();
+        $admins = User::all();
+
+        return view('backend.pages.roleuser.index', compact('roleUser', 'roles', 'admins'))
+            ->with(['title' => 'User Security Assignments', 'page' => 'roleuser']);
+    }
+
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'user_id' => 'required',            
-            'role_id' => 'required',            
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'role_id' => 'required|exists:roles,id',
         ]);
 
-        $user=User::find($request->user_id);
-        $role=Role::find($request->role_id);      
-        $user->assignRole($role->name);
+        try {
+            $user = User::findOrFail($request->user_id);
+            $role = Role::findOrFail($request->role_id);
 
-        session()->flash("success", "Information saved Successfully");
-        return redirect(route('roleuser.index'));
+            // Spatie check or direct assignment
+            if ($user->hasRole($role->name)) {
+                session()->flash('warning', 'Role assignment already exists for this User.');
+                return redirect()->back();
+            }
+
+            // Sync user model role_id column as well
+            $user->role_id = $role->id;
+            $user->save();
+
+            // Assign role using Spatie method
+            $user->assignRole($role->name);
+
+            session()->flash('success', 'Role assigned to User successfully.');
+            return redirect()->route('roleuser.index');
+        } catch (\Throwable $th) {
+            session()->flash('error', 'Security Assignment failed: ' . $th->getMessage());
+            return redirect()->back()->withInput();
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit($role_id, $user_id)
     {
-        //
+        $singleRoleUser = ModelHasRole::where('role_id', $role_id)
+            ->where('model_id', $user_id)
+            ->firstOrFail();
+
+        $roleUser = ModelHasRole::with(['role', 'user'])->orderBy('model_id', 'desc')->paginate(10);
+        $roles = Role::all();
+        $admins = User::all();
+
+        return view('backend.pages.roleuser.index', compact('roleUser', 'roles', 'admins', 'singleRoleUser'))
+            ->with(['title' => 'Edit User Security Assignment', 'page' => 'roleuser']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($role_id,$user_id)
-    {        
-        $singleRoleUser=ModelHasRole::where('role_id',$role_id)->where('model_id',$user_id)->first();
-        $roleUser=ModelHasRole::orderBy('model_id','desc')->paginate(10);    
-        $roles = Role::get();        
-        $admins = User::get();        
-        return view('backend.pages.roleuser.index', compact('roleUser','roles','admins','singleRoleUser'))->with(['title'=>'User Role','page'=>'roleuser']);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'user_id' => 'required',            
-            'role_id' => 'required',            
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'role_id' => 'required|exists:roles,id',
+            'old_model_id' => 'required|exists:users,id',
+            'old_role_id' => 'required|exists:roles,id',
         ]);
 
-        $delete=ModelHasRole::where('model_id',$request->old_model_id)->where('role_id',$id)->delete();
+        try {
+            $oldUser = User::findOrFail($request->old_model_id);
+            $oldRole = Role::findOrFail($request->old_role_id);
+            
+            // Safety: Don't remove the last Superadmin
+            if ($oldRole->id == 1 && User::role('Admin')->count() <= 1 && $oldUser->id == auth()->id()) {
+                session()->flash('error', 'Cannot revoke Superadmin role from the last active administrator.');
+                return redirect()->back();
+            }
 
-        $user=User::find($request->user_id);
-        $role=Role::find($request->role_id);      
-        $user->assignRole($role->name);
+            $oldUser->removeRole($oldRole->name);
 
-        session()->flash("success", "Information saved Successfully");
-        return redirect(route('roleuser.index'));
+            $newUser = User::findOrFail($request->user_id);
+            $newRole = Role::findOrFail($request->role_id);
+            
+            // Assign Spatie Role
+            $newUser->assignRole($newRole->name);
+            
+            // Sync user model role_id column as well
+            $newUser->role_id = $newRole->id;
+            $newUser->save();
+
+            session()->flash('success', 'User Security Assignment updated successfully.');
+            return redirect()->route('roleuser.index');
+        } catch (\Throwable $th) {
+            session()->flash('error', 'Security Assignment failed: ' . $th->getMessage());
+            return redirect()->back()->withInput();
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function roleusersoft(Request $request)
     {
-        
-        $delete=ModelHasRole::where('model_id',$request->model_id)->where('role_id',$request->role_id)->delete();
-         session()->flash("success", "Information Delete Successfully");
-        return redirect(route('roleuser.index'));
+        $request->validate([
+            'model_id' => 'required|exists:users,id',
+            'role_id' => 'required|exists:roles,id',
+        ]);
+
+        try {
+            $user = User::findOrFail($request->model_id);
+            $role = Role::findOrFail($request->role_id);
+
+            // Safety: Don't remove the last Superadmin
+            if ($role->id == 1 && User::role('Admin')->count() <= 1 && $user->id == auth()->id()) {
+                session()->flash('error', 'Cannot revoke Superadmin role from the last active administrator.');
+                return redirect()->route('roleuser.index');
+            }
+
+            $user->removeRole($role->name);
+            
+            // Reset user table role_id column to a fallback if it was the active role
+            if ($user->role_id == $role->id) {
+                $user->role_id = 5; // Default fallback to regular 'User'
+                $user->save();
+            }
+
+            session()->flash('success', 'User Security Assignment revoked successfully.');
+            return redirect()->route('roleuser.index');
+        } catch (\Throwable $th) {
+            session()->flash('error', 'Security Assignment failed: ' . $th->getMessage());
+            return redirect()->route('roleuser.index');
+        }
     }
 }

@@ -19,13 +19,24 @@ class UserPermissionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-     public function __construct() {
-        // $this->middleware('auth:admin');
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->guardSuperadmin();
+            return $next($request);
+        });
+    }
+
+    protected function guardSuperadmin()
+    {
+        if (!is_superadmin()) {
+            abort(403, 'Unauthorized access.');
+        }
     }
     
     public function index()
     {
-        $userPermissions=ModelHasPermission::paginate(20);
+        $userPermissions=ModelHasPermission::with(['User', 'Permission'])->paginate(20);
         $admins=User::all();
         $permissions = Permission::all();
         return view('backend.pages.userpermission.index', compact('permissions','admins','userPermissions'))->with(['title'=>'Employee Permission','page'=>'userper']);
@@ -77,7 +88,7 @@ class UserPermissionController extends Controller
     {
 
         $userPermission=ModelHasPermission::where('model_id',$user_id)->where('permission_id',$permission_id)->first();
-       $userPermissions=ModelHasPermission::paginate(20);
+       $userPermissions=ModelHasPermission::with(['User', 'Permission'])->paginate(20);
         $admins=User::all();
         $permissions = Permission::all();
         return view('backend.pages.userpermission.index', compact('permissions','admins','userPermissions','userPermission'))->with(['title'=>'Employee Permission','page'=>'userper']);

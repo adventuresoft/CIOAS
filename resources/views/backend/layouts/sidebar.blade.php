@@ -55,71 +55,48 @@
                     @include('backend.layouts.sidebar-section.basic-setting')
                 @endif
 
+                @if (access_management_permission())
                 <li
                     class="nav-item has-treeview {{ isset($page) && ($page == 'role' || $page == 'permission' || $page == 'rolepermission' || $page == 'userper' || $page == 'roleuser' || $page == 'user') ? 'menu-open' : '' }}">
                     <a href="#"
                         class="nav-link {{ isset($page) && ($page == 'role' || $page == 'permission' || $page == 'rolepermission' || $page == 'userper' || $page == 'roleuser' || $page == 'user') ? 'active' : '' }}">
-                        <!-- <i class="nav-icon fa-solid fa-unlock-keyhole"></i> -->
-                        <i class="nav-icon fas fa-tasks"></i>
+                        <i class="nav-icon fas fa-user-shield"></i>
                         <p>
                             Access Management
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-
-                        <li class="nav-item ">
-                            <a href="{{ route('role.index') }}"
-                                class="nav-link {{ isset($page) && $page == 'role' ? 'active' : '' }}">
-                                <!-- <i class="nav-icon fa-solid fa-scroll-torah"></i> -->
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Roles</p>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a href="{{ route('permission.index') }}"
-                                class="nav-link {{ isset($page) && $page == 'permission' ? 'active' : '' }}">
-                                <!-- <i class="nav-icon fa-solid fa-fingerprint"></i> -->
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Permissions</p>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a href="{{ route('roleuser.index') }}"
-                                class="nav-link {{ isset($page) && $page == 'roleuser' ? 'active' : '' }}">
-                                <!-- <i class="fa fa-person-rays"></i> -->
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>User Roles</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item ">
-                            <a href="{{ route('rolepermission.index') }}"
-                                class="nav-link {{ isset($page) && $page == 'rolepermission' ? 'active' : '' }}">
-                                <!-- <i class="nav-icon fa-solid fa-rectangle-xmark"></i> -->
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Role Permissions</p>
-                            </a>
-                        </li>
+                        @if (is_superadmin() || auth()->user()->can('users.read'))
                         <li class="nav-item ">
                             <a href="{{ route('user.index') }}"
                                 class="nav-link {{ isset($page) && $page == 'user' ? 'active' : '' }}">
-                                <!-- <i class="nav-icon fa-solid fa-users"></i> -->
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>User</p>
+                                <p>Users Directory</p>
                             </a>
                         </li>
+                        @endif
+                        @if (is_superadmin() || auth()->user()->can('roles.read'))
                         <li class="nav-item ">
-                            <a href="{{ route('userper.index') }}"
-                                class="nav-link {{ isset($page) && $page == 'userper' ? 'active' : '' }}">
-                                <!-- <i class="nav-icon fa-solid fa-users-viewfinder"></i> -->
+                            <a href="{{ route('role.index') }}"
+                                class="nav-link {{ isset($page) && $page == 'role' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>User Permission</p>
+                                <p>Role Definitions</p>
                             </a>
                         </li>
-
+                        @endif
+                        @if (is_superadmin() || auth()->user()->can('permissions.read'))
+                        <li class="nav-item ">
+                            <a href="{{ route('permission.index') }}"
+                                class="nav-link {{ isset($page) && $page == 'permission' ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Permission Pool</p>
+                            </a>
+                        </li>
+                        @endif
                     </ul>
                 </li>
+                @endif
 
                 @if (institute_permissions())
                     {{-- Institute Settings --}}

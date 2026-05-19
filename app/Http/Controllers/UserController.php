@@ -4,161 +4,164 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-use Auth;
-use Illuminate\Support\Str;
 use App\Models\User;
-use Hash;
+use App\Models\Role;
+use App\Models\Institute;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function __construct()
     {
-       // $this->middleware('auth:admin');
+        $this->middleware(function ($request, $next) {
+            $this->guardSuperadmin();
+            return $next($request);
+        });
     }
 
-    public function index()
+    protected function guardSuperadmin()
     {
-        $users = User::orderBy('id', 'desc')->paginate(10);
-        return view('backend.pages.user.index', compact('users'))->with(['title' => 'Students', 'page' => 'user']);
+        if (!is_superadmin()) {
+            abort(403, 'Unauthorized access.');
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function index(Request $request)
+    {
+        $search = $request->input('search');
+        
+        $query = User::with(['roles.permissions', 'permissions', 'institute.union', 'institute.pourashava', 'institute.cityCorporation'])
+            ->orderBy('id', 'desc');
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('email', 'LIKE', "%{$search}%")
+                  ->orWhere('mobile', 'LIKE', "%{$search}%")
+                  ->orWhere('system_id', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $users = $query->paginate(10);
+        return view('backend.pages.user.index', compact('users', 'search'))
+            ->with(['title' => 'Operators Directory', 'page' => 'user']);
+    }
+
     public function create()
     {
-        return view('admin.user.create')->with(['title' => 'Student', 'page' => 'user']);
+        $roles = Role::all();
+        $institutes = Institute::with(['union', 'pourashava', 'cityCorporation'])->get();
+        return view('backend.pages.user.create', compact('roles', 'institutes'))
+            ->with(['title' => 'Register Operator', 'page' => 'user']);
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required',
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'mobile' => 'required|string',
             'password' => 'required|min:6|confirmed',
+            'institute_id' => 'required',
+            'role_id' => 'required',
+            'status' => 'required|in:0,1'
         ]);
-        $user = new User;
-        $user->name = $request->name;
-        $user->student_id = $request->student_id;
-        $user->password = Hash::make($request->password);
-        $user->email = $request->email;
-        $user->status = $request->status;
-        $user->save();
-        session()->flash("success", "Information saved Successfully");
-        return redirect(route('user.index'));
+
+        try {
+            $user = new User;
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->mobile = $request->mobile;
+            $user->password = Hash::make($request->password);
+            $user->institute_id = $request->institute_id;
+            $user->role_id = $request->role_id;
+            $user->status = $request->status;
+            $user->save();
+
+            // Sync Spatie role
+            $role = Role::find($request->role_id);
+            if ($role) {
+                $user->syncRoles([$role->name]);
+            }
+
+            session()->flash("success", "Operator registered successfully.");
+            return redirect()->route('user.index');
+        } catch (\Throwable $th) {
+            session()->flash("error", "Failed to register operator: " . $th->getMessage());
+            return redirect()->back()->withInput();
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $user = User::find($id);
-        return view('admin.user.show', compact('user'))->with(['title' => 'Student', 'page' => 'user']);
+        $user = User::with(['roles', 'institute.union', 'institute.pourashava', 'institute.cityCorporation'])->findOrFail($id);
+        return view('backend.pages.user.show', compact('user'))
+            ->with(['title' => 'Operator Details', 'page' => 'user']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        $user = User::find($id);
-        return view('admin.user.edit', compact('user'))->with(['title' => 'Student', 'page' => 'user']);
+        $user = User::findOrFail($id);
+        $roles = Role::all();
+        $institutes = Institute::with(['union', 'pourashava', 'cityCorporation'])->get();
+        return view('backend.pages.user.edit', compact('user', 'roles', 'institutes'))
+            ->with(['title' => 'Modify Operator', 'page' => 'user']);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required',
+        $user = User::findOrFail($id);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'mobile' => 'required|string',
+            'password' => 'nullable|min:6|confirmed',
+            'institute_id' => 'required',
+            'role_id' => 'required',
+            'status' => 'required|in:0,1'
         ]);
-        $user = User::find($id);
 
-        $image =  $user ->image;
-        if ($request->hasFile('image')) {
-            $image = time() . '.' . $request->image->getClientOriginalExtension();
-            $request->image->move(('upload/users/images'), $image);
+        try {
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->mobile = $request->mobile;
+            if ($request->filled('password')) {
+                $user->password = Hash::make($request->password);
+            }
+            $user->institute_id = $request->institute_id;
+            $user->role_id = $request->role_id;
+            $user->status = $request->status;
+            $user->save();
+
+            // Sync Spatie role
+            $role = Role::find($request->role_id);
+            if ($role) {
+                $user->syncRoles([$role->name]);
+            }
+
+            session()->flash("success", "Operator updated successfully.");
+            return redirect()->route('user.index');
+        } catch (\Throwable $th) {
+            session()->flash("error", "Failed to update operator: " . $th->getMessage());
+            return redirect()->back()->withInput();
         }
-        $user->image = $image;
-
-        $user->name = $request->name;
-        $user->student_id = $request->student_id;
-        $user->email = $request->email;
-        $user->status = $request->status;
-        $user->save();
-        session()->flash("success", "Information Update Successfully");
-        return redirect(route('user.index'));
     }
 
-    /**
-     * Show the form for change password the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-
-    public function changePass($id)
-    {
-        $user = User::find($id);
-        return view('admin.user.changePassword', compact('user'))->with(['title' => 'User Change Password', 'page' => 'user']);
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function updatePass(Request $request, $id)
-    {
-        $this->validate($request, [
-            'password' => 'required|min:6|confirmed',
-        ]);
-        $user = User::find($id);
-        $user->password = $request->password;
-        $user->save();
-        session()->flash("success", "Information Update Successfully");
-        return redirect(route('user.index'));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        try {
+            $user = User::findOrFail($id);
+            if ($user->id == Auth::id()) {
+                session()->flash('error', 'You cannot delete your own active session account.');
+                return redirect()->route('user.index');
+            }
+            $user->delete();
+            session()->flash('success', 'Operator account deleted successfully.');
+            return redirect()->route('user.index');
+        } catch (\Throwable $th) {
+            session()->flash('error', 'Failed to delete operator: ' . $th->getMessage());
+            return redirect()->route('user.index');
+        }
     }
 }

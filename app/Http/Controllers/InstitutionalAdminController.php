@@ -76,7 +76,7 @@ class InstitutionalAdminController extends Controller
         }
 
         try {
-           
+
             $user = new User();
             $user->role_id = 6;
             $user->institute_id = Auth::user()->institute_id;

@@ -1,311 +1,344 @@
-@extends('backend.master', ['mainMenu' => 'AccessManagment', 'subMenu' =>'role'])
+@extends('backend.master', ['mainMenu' => 'AccessManagment', 'subMenu' => 'role'])
+
+@section('title', isset($userPermission) ? 'Modify User Direct Capabilities' : 'User Direct Capabilities (User-Permission)')
+
+@push('style')
+<style>
+    /* Premium Styling */
+    .premium-card {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        background: #fff;
+        margin-bottom: 24px;
+        overflow: hidden;
+    }
+    
+    .premium-card .card-header {
+        background: #ffffff;
+        border-bottom: 1px solid #f1f5f9;
+        padding: 18px 24px;
+    }
+    
+    .premium-card .card-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #1e293b;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .form-control-premium {
+        border-radius: 10px;
+        border: 1px solid #cbd5e1;
+        padding: 10px 16px;
+        font-size: 0.95rem;
+        color: #334155;
+        transition: all 0.2s ease;
+        height: auto;
+    }
+
+    .form-control-premium:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+        color: #0f172a;
+    }
+
+    /* Modern Table styling */
+    .premium-table {
+        margin-bottom: 0;
+    }
+
+    .premium-table thead th {
+        font-weight: 600;
+        color: #475569;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border-bottom: 2px solid #e2e8f0;
+        padding: 12px 16px;
+        background: #f8fafc;
+    }
+
+    .premium-table tbody tr {
+        transition: background-color 0.2s ease;
+    }
+
+    .premium-table tbody tr:hover {
+        background-color: #f8fafc !important;
+    }
+
+    .premium-table td {
+        padding: 14px 16px;
+        vertical-align: middle;
+        font-size: 0.9rem;
+        color: #334155;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    /* Avatar Circle */
+    .avatar-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #3b82f6;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 0.95rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Modern Badges */
+    .badge-modern {
+        padding: 5px 10px;
+        border-radius: 9999px;
+        font-weight: 600;
+        font-size: 0.75rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .badge-modern-success { background-color: #dcfce7; color: #15803d; }
+    .badge-modern-primary { background-color: #dbeafe; color: #1d4ed8; }
+    .badge-modern-warning { background-color: #fef9c3; color: #a16207; }
+    .badge-modern-danger { background-color: #fee2e2; color: #b91c1c; }
+</style>
+@endpush
+
 @section('content')
-<div class="" style="min-height: 1203.6px;">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>User Permisisons</h1>
+<div class="container-fluid py-4" style="min-height: 1000px;">
+    <!-- Content Header -->
+    <div class="row mb-4 align-items-center">
+        <div class="col-sm-6">
+            <h1 class="h3 font-weight-bold text-dark mb-0">Direct User Permissions</h1>
+            <p class="text-muted mb-0">Assign or update granular security capabilities directly on specific user accounts.</p>
+        </div>
+        <div class="col-sm-6 text-sm-right mt-3 mt-sm-0">
+            <ol class="breadcrumb bg-transparent p-0 m-0 justify-content-sm-end">
+                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="fas fa-home"></i> Home</a></li>
+                <li class="breadcrumb-item active">User Permissions</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Alert Notifications -->
+    @if(session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade show premium-card p-3 mb-4" role="alert" style="border-left: 5px solid #10b981;">
+            <i class="fas fa-check-circle mr-2"></i> {{ session()->get('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+    @if(session()->has('error'))
+        <div class="alert alert-danger alert-dismissible fade show premium-card p-3 mb-4" role="alert" style="border-left: 5px solid #ef4444;">
+            <i class="fas fa-exclamation-circle mr-2"></i> {{ session()->get('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+
+    <div class="row">
+        <!-- Left Panel: Assignment Form -->
+        <div class="col-md-5">
+            <div class="card premium-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-key text-primary"></i> 
+                        {{ isset($userPermission) ? 'Modify Direct Capability' : 'Map Direct Capability' }}
+                    </h3>
                 </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">User Permisisons</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
-
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="card card-primary">
-                        <div class="card-header">
-                            <h3 class="card-title">{{isset($userPermission)? 'Edit Role Permisisons':'Add Role Permisisons'}}</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        @if(isset($userPermission))
-                        <form role="form" method="POST" action="{{route('userper.update',$userPermission->model_id)}}" >
-
-                            <input type="hidden" name="old_model_id" value="{{$userPermission->model_id}}">
-                            <input type="hidden" name="old_permission_id" value="{{$userPermission->permission_id}}">
-                            {{ csrf_field() }}
-                            {{ method_field('PATCH') }}
-                            <div class="card-body">
-
-                                <div class="form-group">
-                                    <label for="user_id">User</label>
-                                    <select class="form-control" name="user_id" id="user_id">
-                                        @foreach( $admins as $admin)
-                                        <option {{$userPermission->model_id==$admin->id?'selected':''}} value="{{$admin->id}}">{{$admin->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="permission_id">Permission</label>
-                                    <select class="form-control" name="permission_id" id="permission_id">
-                                        @foreach( $permissions as $permission)
-                                        <option {{$userPermission->permission_id==$permission->id?'selected':''}} value="{{$permission->id}}">{{$permission->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                </div>
-                            <!-- /.card-body -->
-
-                            <div class="card-footer text-center">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>  Update</button>
-                                <button type="reset" class="btn btn-warning ml-2"><i class="fa fa-undo-alt"></i> Reset</button>
-                                    <a href="{{route('role.index')}}" class="btn btn-dark ml-2" ><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
-                            </div>
-                        </form>
-                        @else
-                        <form role="form" method="POST" action="{{route('userper.store')}}" >
-                            {{csrf_field()}}
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="user_id">User</label>
-                                    <select class="form-control" name="user_id" id="user_id">
-                                        @foreach( $admins as $admin)
-                                        <option value="{{$admin->id}}">{{$admin->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="permission_id">Permission</label>
-                                    <select class="form-control" name="permission_id" id="permission_id">
-                                        @foreach( $permissions as $permission)
-                                        <option value="{{$permission->id}}">{{$permission->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
-
-                            <div class="card-footer text-center">
-                                <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
-                                <button type="reset" class="btn btn-warning ml-2"><i class="fa fa-undo-alt"></i> Reset</button>
-                            </div>
-                        </form>
-                        @endif
-                    </div>
-                </div>
-                <div class="col-md-7">
-                    <div class="card">
-                        <div class="card-header bg-info">
-                            <h3 class="card-title">User Permission List</h3>
-                        </div>
-                        <!-- /.card-header -->
+                
+                @if(isset($userPermission))
+                    <form role="form" method="POST" action="{{ route('userper.update', $userPermission->model_id) }}">
+                        @csrf
+                        @method('PATCH')
+                        <input type="hidden" name="old_model_id" value="{{ $userPermission->model_id }}">
+                        <input type="hidden" name="old_permission_id" value="{{ $userPermission->permission_id }}">
+                        
                         <div class="card-body">
-                            @if($userPermissions->count()==0)
-                           <div class="text-center bg-purple font-weight-bold pt-3 pb-3 h2">No Data Found</div>
-                            @else
-                            <table class="table table-bordered table-striped">
-                                <thead class="text-center thead-dark">
+                            <div class="form-group mb-4">
+                                <label class="form-label text-dark font-weight-bold" for="user_id">Target User</label>
+                                <select class="form-control form-control-premium" name="user_id" id="user_id" required>
+                                    @foreach($admins as $user)
+                                        <option value="{{ $user->id }}" {{ $user->id == $userPermission->model_id ? 'selected' : '' }}>
+                                            {{ $user->name }} ({{ $user->email }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            
+                            <div class="form-group mb-4">
+                                <label class="form-label text-dark font-weight-bold" for="permission_id">Granted Capability</label>
+                                <select class="form-control form-control-premium" name="permission_id" id="permission_id" required>
+                                    @foreach($permissions as $permission)
+                                        <option value="{{ $permission->id }}" {{ $permission->id == $userPermission->permission_id ? 'selected' : '' }}>
+                                            {{ $permission->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-white border-top-0 d-flex justify-content-end gap-2 pb-4 px-4">
+                            <a href="{{ route('userper.index') }}" class="btn btn-light btn-premium mr-2"><i class="fas fa-times-circle"></i> Cancel</a>
+                            <button type="submit" class="btn btn-primary btn-premium"><i class="fas fa-save"></i> Execute Mapping</button>
+                        </div>
+                    </form>
+                @else
+                    <form role="form" method="POST" action="{{ route('userper.store') }}">
+                        @csrf
+                        
+                        <div class="card-body">
+                            <div class="form-group mb-4">
+                                <label class="form-label text-dark font-weight-bold" for="user_id">Target User</label>
+                                <select class="form-control form-control-premium" name="user_id" id="user_id" required>
+                                    <option value="" disabled selected>Select User Account</option>
+                                    @foreach($admins as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            
+                            <div class="form-group mb-4">
+                                <label class="form-label text-dark font-weight-bold" for="permission_id">Granted Capability</label>
+                                <select class="form-control form-control-premium" name="permission_id" id="permission_id" required>
+                                    <option value="" disabled selected>Select Target Permission</option>
+                                    @foreach($permissions as $permission)
+                                        <option value="{{ $permission->id }}">{{ $permission->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-white border-top-0 d-flex justify-content-end gap-2 pb-4 px-4">
+                            <button type="reset" class="btn btn-light btn-premium mr-2"><i class="fas fa-undo-alt"></i> Reset Form</button>
+                            <button type="submit" class="btn btn-success btn-premium"><i class="fas fa-check-circle"></i> Execute Mapping</button>
+                        </div>
+                    </form>
+                @endif
+            </div>
+        </div>
+
+        <!-- Right Panel: Inventory Table -->
+        <div class="col-md-7">
+            <div class="card premium-card">
+                <div class="card-header bg-info">
+                    <h3 class="card-title text-white">
+                        <i class="fas fa-list-alt text-white"></i> 
+                        Direct User Permissions Inventory
+                    </h3>
+                </div>
+                
+                <div class="card-body">
+                    @if($userPermissions->count() == 0)
+                        <div class="text-center py-5">
+                            <i class="fas fa-folder-open text-muted fa-3x mb-3"></i>
+                            <h5 class="text-secondary">No Direct Permissions Granted</h5>
+                            <p class="text-muted">Map a specific privilege capability directly to a user account.</p>
+                        </div>
+                    @else
+                        <div class="table-responsive">
+                            <table class="table premium-table table-hover table-striped">
+                                <thead>
                                     <tr>
-                                        <th style="width: 10px">#</th>
-                                        <th>User</th>
-                                        <th>Permission</th>
-                                        <th>Action</th>
+                                        <th style="width: 80px">SL</th>
+                                        <th>Target User</th>
+                                        <th>Granted Capability</th>
+                                        <th style="width: 180px" class="text-center">Security Operations</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($userPermissions as $key => $value)
-                                    <tr class="text-center">
-                                        <td>{{$key+1}}</td>
-                                        <td>{{$value->User->name}}</td>
-                                        <td>{{$value->Permission->name}}</td>
-                                        <td>
-
-                                        <a href="{{route('userper.edit',['model_id'=>$value->model_id,'permission_id'=>$value->permission_id])}}" class="badge badge-primary"> <i class="fa fa-edit"></i> Edit</a>
-
-                                            <a href="#" class="badge badge-danger"
-                                            onclick="if (confirm('You are sure to Delete This Permission?')){event.preventDefault();document.getElementById('delete-form{{$key}}').submit();}else{event.stopPropagation(); event.preventDefault();};">
-                                            <i class="fa fa-trash"></i> Delete </a>
-
-                                            <form id="delete-form{{$key}}" action="{{ route('userper.destroy', $value->permission_id) }}" method="POST" style="display: none;">
-                                                <input type="hidden" name="model_id" value="{{$value->model_id}}">
-                                                <input type="hidden" name="permission_id" value="{{$value->permission_id}}">
-                                                {{ method_field('POST') }}
-                                                @csrf
-                                            </form>
-                                        </td>
-                                    </tr>
+                                        @php
+                                            $user = $value->User;
+                                            $permission = $value->Permission;
+                                            $firstLetter = $user ? strtoupper(substr($user->name, 0, 1)) : '?';
+                                        @endphp
+                                        <tr>
+                                            <td>{{ $userPermissions->firstItem() + $key }}</td>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-3">
+                                                    @if($user && !empty($user->image) && file_exists(public_path($user->image)))
+                                                        <img src="{{ asset($user->image) }}" class="rounded-circle" width="40" height="40" style="object-fit: cover; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                                    @else
+                                                        <div class="avatar-circle mr-2">{{ $firstLetter }}</div>
+                                                    @endif
+                                                    <div>
+                                                        <div class="font-weight-bold text-dark">{{ $user->name ?? 'Deleted User' }}</div>
+                                                        <small class="text-muted">{{ $user->email ?? 'N/A' }}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <code class="bg-light px-2 py-1 rounded text-primary">{{ $permission->name ?? 'N/A' }}</code>
+                                            </td>
+                                            <td class="text-center">
+                                                @if($user && $permission)
+                                                    <div class="btn-group btn-group-sm">
+                                                        <a href="{{ route('userper.edit', ['model_id' => $value->model_id, 'permission_id' => $value->permission_id]) }}" class="btn btn-outline-primary" title="Edit Mapping">
+                                                            <i class="fas fa-edit"></i> Edit
+                                                        </a>
+                                                        <form action="{{ route('userper.destroy') }}" method="POST" class="d-inline delete-form-confirm">
+                                                            @csrf
+                                                            <input type="hidden" name="model_id" value="{{ $value->model_id }}">
+                                                            <input type="hidden" name="permission" value="{{ $value->permission_id }}">
+                                                            <button type="submit" class="btn btn-outline-danger ml-1" title="Revoke Privilege">
+                                                                <i class="fas fa-trash-alt"></i> Delete
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                @else
+                                                    <span class="text-muted font-italic">Invalid Entry</span>
+                                                @endif
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>
-                            @endif
                         </div>
-                        <div class="d-flex justify-content-center">
-                        {{$userPermissions->links()}}
+                        
+                        <div class="d-flex justify-content-center mt-4">
+                            {!! $userPermissions->links('pagination::bootstrap-4') !!}
                         </div>
-                    </div>
-                    <!-- /.card -->
+                    @endif
                 </div>
             </div>
-            <!-- /.col -->
         </div>
-        <!-- /.row -->
-</div><!-- /.container-fluid -->
-
-@endsection@extends('backend.master', ['mainMenu' => 'AccessManagment', 'subMenu' =>'role'])
-@section('content')
-<div class="" style="min-height: 1203.6px;">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>User Permisisons</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">User Permisisons</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
-
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="card card-primary">
-                        <div class="card-header">
-                            <h3 class="card-title">{{isset($userPermission)? 'Edit Role Permisisons':'Add Role Permisisons'}}</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        @if(isset($userPermission))
-                        <form role="form" method="POST" action="{{route('userper.update',$userPermission->model_id)}}" >
-
-                            <input type="hidden" name="old_model_id" value="{{$userPermission->model_id}}">
-                            <input type="hidden" name="old_permission_id" value="{{$userPermission->permission_id}}">
-                            {{ csrf_field() }}
-                            {{ method_field('PATCH') }}
-                            <div class="card-body">
-
-                                <div class="form-group">
-                                    <label for="user_id">User</label>
-                                    <select class="form-control" name="user_id" id="user_id">
-                                        @foreach( $admins as $admin)
-                                        <option {{$userPermission->model_id==$admin->id?'selected':''}} value="{{$admin->id}}">{{$admin->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="permission_id">Permission</label>
-                                    <select class="form-control" name="permission_id" id="permission_id">
-                                        @foreach( $permissions as $permission)
-                                        <option {{$userPermission->permission_id==$permission->id?'selected':''}} value="{{$permission->id}}">{{$permission->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                </div>
-                            <!-- /.card-body -->
-
-                            <div class="card-footer text-center">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>  Update</button>
-                                <button type="reset" class="btn btn-warning ml-2"><i class="fa fa-undo-alt"></i> Reset</button>
-                                    <a href="{{route('role.index')}}" class="btn btn-dark ml-2" ><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
-                            </div>
-                        </form>
-                        @else
-                        <form role="form" method="POST" action="{{route('userper.store')}}" >
-                            {{csrf_field()}}
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="user_id">User</label>
-                                    <select class="form-control" name="user_id" id="user_id">
-                                        @foreach( $admins as $admin)
-                                        <option value="{{$admin->id}}">{{$admin->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="permission_id">Permission</label>
-                                    <select class="form-control" name="permission_id" id="permission_id">
-                                        @foreach( $permissions as $permission)
-                                        <option value="{{$permission->id}}">{{$permission->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
-
-                            <div class="card-footer text-center">
-                                <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
-                                <button type="reset" class="btn btn-warning ml-2"><i class="fa fa-undo-alt"></i> Reset</button>
-                            </div>
-                        </form>
-                        @endif
-                    </div>
-                </div>
-                <div class="col-md-7">
-                    <div class="card">
-                        <div class="card-header bg-info">
-                            <h3 class="card-title">User Permission List</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-                            @if($userPermissions->count()==0)
-                           <div class="text-center bg-purple font-weight-bold pt-3 pb-3 h2">No Data Found</div>
-                            @else
-                            <table class="table table-bordered table-striped">
-                                <thead class="text-center thead-dark">
-                                    <tr>
-                                        <th style="width: 10px">#</th>
-                                        <th>User</th>
-                                        <th>Permission</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($userPermissions as $key => $value)
-                                    <tr class="text-center">
-                                        <td>{{$key+1}}</td>
-                                        <td>{{ optional($value->User)->name ?? 'N/A' }}</td>
-                                        <td>{{ optional($value->Permission)->name ?? 'N/A' }}</td>
-                                        <td>
-
-                                        <a href="{{route('userper.edit',['model_id'=>$value->model_id,'permission_id'=>$value->permission_id])}}" class="badge badge-primary"> <i class="fa fa-edit"></i> Edit</a>
-
-                                            <a href="#" class="badge badge-danger"
-                                            onclick="if (confirm('You are sure to Delete This Permission?')){event.preventDefault();document.getElementById('delete-form{{$key}}').submit();}else{event.stopPropagation(); event.preventDefault();};">
-                                            <i class="fa fa-trash"></i> Delete </a>
-
-                                            <form id="delete-form{{$key}}" action="{{ route('userper.destroy', $value->permission_id) }}" method="POST" style="display: none;">
-                                                <input type="hidden" name="model_id" value="{{$value->model_id}}">
-                                                <input type="hidden" name="permission_id" value="{{$value->permission_id}}">
-                                                {{ method_field('POST') }}
-                                                @csrf
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            @endif
-                        </div>
-                        <div class="d-flex justify-content-center">
-                        {{$userPermissions->links()}}
-                        </div>
-                    </div>
-                    <!-- /.card -->
-                </div>
-            </div>
-            <!-- /.col -->
-        </div>
-        <!-- /.row -->
-</div><!-- /.container-fluid -->
-
+    </div>
+</div>
 @endsection
+
+@push('script')
+<script>
+$(document).ready(function () {
+    // Confirm delete assignment action
+    $('.delete-form-confirm').on('submit', function (e) {
+        e.preventDefault();
+        var form = this;
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This operation will completely revoke this specific capability from the user account.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, revoke permission!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+});
+</script>
+<!-- Include SweetAlert2 from CDN if not already included in layouts -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@endpush

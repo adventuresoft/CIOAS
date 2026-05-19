@@ -3,125 +3,133 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
-use Auth;
-use Illuminate\Support\Str;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
-use App\Models\Admin\Admin;
+use App\Models\Role;
+use App\Models\Permission;
 use App\Models\RoleHasPermission;
-use DB;
+use Illuminate\Http\Request;
 
 class RolePermissionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-     public function __construct() {
-        // $this->middleware('auth:admin');
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->guardSuperadmin();
+            return $next($request);
+        });
     }
-    
+
+    protected function guardSuperadmin()
+    {
+        if (!is_superadmin()) {
+            abort(403, 'Unauthorized access.');
+        }
+    }
+
     public function index()
     {
-        $role_permissions=RoleHasPermission::paginate(20);
+        $role_permissions = RoleHasPermission::with(['role', 'permission'])->paginate(15);
+        $roles = Role::all();
         $permissions = Permission::all();
-        $roles = Role::get();              
-        return view('backend.pages.rolepermission.index', compact('permissions','roles','role_permissions'))->with(['title'=>'Permission','page'=>'rolepermission']);
+        return view('backend.pages.rolepermission.index', compact('role_permissions', 'roles', 'permissions'))
+            ->with(['title' => 'Granted Capabilities', 'page' => 'rolepermission']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $role=Role::find($request->role_id);
-        $permission=Permission::find($request->permission_id);
-        $role->givePermissionTo($permission);      
-        session()->flash("success", "Information saved Successfully");
-        return redirect(route('rolepermission.index'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-   
-
-     public function edit($role_id,$permission_id)
-    {        
-        $role_permission=RoleHasPermission::where('role_id',$role_id)->where('permission_id',$permission_id)->first();
-        
-       $role_permissions=RoleHasPermission::paginate(20);
-        $permissions = Permission::all();
-        $roles = Role::get();              
-        return view('backend.pages.rolepermission.index', compact('permissions','roles','role_permissions','role_permission'))->with(['title'=>'Permission','page'=>'rolepermission']);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-         $this->validate($request, [
-            'role_id' => 'required',            
-            'permission_id' => 'required',            
+        $request->validate([
+            'role_id' => 'required|exists:roles,id',
+            'permission_id' => 'required|exists:permissions,id'
         ]);
 
-        $delete=RoleHasPermission::where('permission_id',$request->old_permission_id)->where('role_id',$request->old_role_id)->delete();
+        try {
+            $role = Role::findOrFail($request->role_id);
+            $permission = Permission::findOrFail($request->permission_id);
 
-        $role=Role::find($request->role_id);      
-        $permission=Permission::find($request->permission_id);
-       $role->givePermissionTo($permission); 
+            // Check if already mapped
+            if ($role->hasPermissionTo($permission->name)) {
+                session()->flash('warning', 'Capability mapping already exists.');
+                return redirect()->back();
+            }
 
-        session()->flash("success", "Information Update Successfully");
-        return redirect(route('rolepermission.index'));
+            $role->givePermissionTo($permission);
+            session()->flash('success', 'Granted Capability (Permission) mapped to Target Identity (Role) successfully.');
+            return redirect()->route('rolepermission.index');
+        } catch (\Throwable $th) {
+            session()->flash('error', 'Security Operation failed: ' . $th->getMessage());
+            return redirect()->back()->withInput();
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function edit($role_id, $permission_id)
+    {
+        $role_permission = RoleHasPermission::where('role_id', $role_id)
+            ->where('permission_id', $permission_id)
+            ->firstOrFail();
+
+        $role_permissions = RoleHasPermission::with(['role', 'permission'])->paginate(15);
+        $roles = Role::all();
+        $permissions = Permission::all();
+
+        return view('backend.pages.rolepermission.index', compact('role_permission', 'role_permissions', 'roles', 'permissions'))
+            ->with(['title' => 'Edit Capability Mapping', 'page' => 'rolepermission']);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'role_id' => 'required|exists:roles,id',
+            'permission_id' => 'required|exists:permissions,id',
+            'old_role_id' => 'required|exists:roles,id',
+            'old_permission_id' => 'required|exists:permissions,id'
+        ]);
+
+        try {
+            $oldRole = Role::findOrFail($request->old_role_id);
+            $oldPermission = Permission::findOrFail($request->old_permission_id);
+            
+            // Do not revoke critical permissions of admin/developer
+            if (in_array($oldRole->id, [1, 4]) && in_array($oldPermission->name, ['roles.read', 'permissions.read', 'users.read'])) {
+                session()->flash('error', 'System-critical Capability cannot be revoked from Admin/Developer.');
+                return redirect()->back();
+            }
+
+            $oldRole->revokePermissionTo($oldPermission);
+
+            $newRole = Role::findOrFail($request->role_id);
+            $newPermission = Permission::findOrFail($request->permission_id);
+            $newRole->givePermissionTo($newPermission);
+
+            session()->flash('success', 'Granted Capability (Permission) mapping updated successfully.');
+            return redirect()->route('rolepermission.index');
+        } catch (\Throwable $th) {
+            session()->flash('error', 'Security Operation failed: ' . $th->getMessage());
+            return redirect()->back()->withInput();
+        }
+    }
+
     public function destroy(Request $request)
-    {               
-        $role=Role::find($request->role_id);
-        $permission=Permission::find($request->permission_id);     
-        $role->revokePermissionTo($permission); 
-        session()->flash("success", "Information Successfully Delete");
-        return redirect(route('rolepermission.index'));
+    {
+        $request->validate([
+            'role_id' => 'required|exists:roles,id',
+            'permission_id' => 'required|exists:permissions,id'
+        ]);
+
+        try {
+            $role = Role::findOrFail($request->role_id);
+            $permission = Permission::findOrFail($request->permission_id);
+
+            // Cannot revoke from superadmin/developer
+            if (in_array($role->id, [1, 4]) && in_array($permission->name, ['roles.read', 'permissions.read', 'users.read'])) {
+                session()->flash('error', 'System-critical permission cannot be revoked from Superadmin/Developer.');
+                return redirect()->route('rolepermission.index');
+            }
+
+            $role->revokePermissionTo($permission);
+            session()->flash('success', 'Granted Capability (Permission) mapping revoked successfully.');
+            return redirect()->route('rolepermission.index');
+        } catch (\Throwable $th) {
+            session()->flash('error', 'Security Operation failed: ' . $th->getMessage());
+            return redirect()->route('rolepermission.index');
+        }
     }
 }
