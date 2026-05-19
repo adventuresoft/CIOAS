@@ -38,9 +38,7 @@ class InstituteCategoryController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'        => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-            'status'      => 'required|in:0,1',
+            'name' => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {

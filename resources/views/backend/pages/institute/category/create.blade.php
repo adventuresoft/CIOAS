@@ -1,24 +1,26 @@
-@extends('backend.master', ['mainMenu' => 'Institute', 'subMenu' =>'InstituteCategory'])
+@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'InstituteCategory'])
 @push('style')
 @endpush
-@section('title', 'Institute Category Create')
+@section('title', 'Institute Category')
 @section('content')
-   <!-- Content Header (Page header) -->
-   <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1>Institute Category Create</h1>
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{route('institute-category.index')}}">Institute Category</a></li>
-            <li class="breadcrumb-item active">Create</li>
-          </ol>
-        </div>
-      </div>
-    </div><!-- /.container-fluid -->
-  </section>
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Institute Category</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{ route('institute-category.index') }}">Institute
+                                Category</a></li>
+                        <li class="breadcrumb-item active">Create</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
 
     <!-- Main content -->
     <section class="content">
@@ -30,100 +32,33 @@
                     <!-- Horizontal Form -->
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Institute Create Info</h3>
+                            <h3 class="card-title">Create Institute Category</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form class="form-horizontal" id="Form" method="POST" enccategory="multipart/form-data">
+                        <form class="form-horizontal" id="FormSubmit" method="POST" enctype="multipart/form-data"
+                            data-url="{{ route('institute-category.store') }}"
+                            data-redirect-url="{{ route('institute-category.index') }}">
                             @csrf
                             <div class="card-body">
 
                                 <div class="form-group row">
-                                    <label for="date_of_death" class="col-sm-2 col-form-label">Institute Name</label>
+                                    <label for="en_name" class="col-sm-2 col-form-label">Name <span class="text-danger"
+                                            data-toggle="tooltip" title="Required">*</span></label>
                                     <div class="col-sm-9">
-                                        <input category="text" name="date_of_death" placeholder="Institute Name" class="form-control" id="date_of_death">
+                                        <input type="text" name="name" placeholder="Institute Type"
+                                            class="form-control" id="name">
+                                        <small class="text-danger error name_error"></small>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="date_of_death" class="col-sm-2 col-form-label">Name Bangla</label>
+                                    <label for="description" class="col-sm-2 col-form-label">Description<span
+                                            class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
                                     <div class="col-sm-9">
-                                        <input category="text" name="date_of_death" placeholder="Name Bangla" class="form-control" id="date_of_death">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">Category</label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="user_id" id="">
-                                            <option value="">Select Category (UP/Miuni/City)</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">Category</label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="user_id" id="">
-                                            <option value="">Select Categorye(A/B/C)</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">Division</label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="user_id" id="">
-                                            <option value="">Select Division</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">District</label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="user_id" id="">
-                                            <option value="">Select District</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">Thana</label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="user_id" id="">
-                                            <option value="">Select Thana</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="image" class="col-sm-2 col-form-label">Logo (Left)</label>
-                                    <div class="col-sm-9">
-                                        <input category="file" name="image" class="image" id="image">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="image" class="col-sm-2 col-form-label"></label>
-                                    <div class="col-sm-9">
-                                        <img class="img-fluid img-thumbnail" src="{{asset('public/no-image-found.jpeg')}}" id="preview" alt="Preview" width="3" height="3">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="image" class="col-sm-2 col-form-label">Logo (Right)</label>
-                                    <div class="col-sm-9">
-                                        <input category="file" name="image" class="image" id="image">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="image" class="col-sm-2 col-form-label"></label>
-                                    <div class="col-sm-9">
-                                        <img class="img-fluid img-thumbnail" src="{{asset('public/no-image-found.jpeg')}}" id="preview" alt="Preview" width="3" height="3">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="image" class="col-sm-2 col-form-label">Logo (Top)</label>
-                                    <div class="col-sm-9">
-                                        <input category="file" name="image" class="image" id="image">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="image" class="col-sm-2 col-form-label"></label>
-                                    <div class="col-sm-9">
-                                        <img class="img-fluid img-thumbnail" src="{{asset('public/no-image-found.jpeg')}}" id="preview" alt="Preview" width="3" height="3">
+                                        <input type="text" name="description" placeholder="Description"
+                                            class="form-control" id="description">
+                                        <small class="text-danger error description_error"></small>
+
                                     </div>
                                 </div>
 
@@ -132,10 +67,10 @@
                             <!-- /.card-body -->
                             <div class="card-footer">
                                 <div class="form-group row">
-                                    {{-- {{route('death.index')}} --}}
-                                    <a href="" class="btn btn-default float-right">Cancel</a>
+                                    <a href="{{ route('institute-category.index') }}"
+                                        class="btn btn-default float-right">Cancel</a>
                                     <div class="col-sm-9">
-                                        <button category="submit" class="btn btn-info">Submit</button>
+                                        <button type="submit" class="btn btn-info">Submit</button>
                                     </div>
                                 </div>
                             </div>
@@ -150,45 +85,4 @@
     </section>
     <!-- /.content -->
 
-{{-- {{ route('death.store') }} --}}
 @endsection
-@push('script')
-
-    <script>
-         $(document).ready(function() {
-             $(".select2").select2();
-            $("#deathCertificateForm").on('submit', function(e) {
-                e.preventDefault();
-                let thisForm = $(this);
-                $.ajax({
-                    category: "POST",
-                    url: "",
-                    data: new FormData(this),
-                    dataCategory: "json",
-                    contentCategory:false,
-                    cache:false,
-                    processData:false,
-                    beforeSend: function() {
-                        thisForm.find('button[category="submit"]').prop("disabled",true);
-                    },
-                    success: function (response) {
-                        thisForm.find('button[category="submit"]').prop("disabled",false);
-                        toastr.success(response.message);
-                        setTimeout(function() {
-                            location.href = response.redirect_url;
-                        }, 2000)
-                    },
-                    error: function(xhr, status, error) {
-                        thisForm.find('button[category="submit"]').prop("disabled",false);
-                        var responseText = jQuery.parseJSON(xhr.responseText);
-                        toastr.error(responseText.message);
-                        $.each(responseText.errors, function(key, val) {
-                            thisForm.find("." + key + "-error").text(val[0]);
-                        });
-                    }
-                });
-            })
-        })
-
-    </script>
-@endpush
