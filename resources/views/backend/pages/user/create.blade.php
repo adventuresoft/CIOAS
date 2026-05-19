@@ -139,13 +139,21 @@
                                     <option value="" disabled selected>-- Select Area --</option>
                                     @foreach($institutes as $institute)
                                         @php
-                                            $name = 'Area ID: ' . $institute->id;
-                                            if ($institute->union) {
-                                                $name = 'Union: ' . $institute->union->name;
-                                            } elseif ($institute->pourashava) {
-                                                $name = 'Pourashava: ' . $institute->pourashava->name;
-                                            } elseif ($institute->cityCorporation) {
-                                                $name = 'City Corporation: ' . $institute->cityCorporation->name;
+                                            $name = '';
+                                            if ($institute->institute_type_id == 1) {
+                                                $name = ($institute->union->name ?? '') . ' (' . ($institute->type->name ?? 'Union') . ')';
+                                            } elseif ($institute->institute_type_id == 2) {
+                                                $name = ($institute->pourashava->name ?? '') . ' (' . ($institute->type->name ?? 'Pourashava') . ')';
+                                            } elseif ($institute->institute_type_id == 3) {
+                                                $name = ($institute->cityCorporation->name ?? '') . ' (' . ($institute->type->name ?? 'City Corp') . ')';
+                                            } elseif ($institute->institute_type_id == 4) {
+                                                $name = ($institute->district->name ?? '') . ' (' . ($institute->type->name ?? 'District') . ')';
+                                            } else {
+                                                $name = 'Area ID: ' . $institute->id;
+                                            }
+
+                                            if (!empty($institute->district->name)) {
+                                                $name .= ' - District: ' . $institute->district->name;
                                             }
                                         @endphp
                                         <option value="{{ $institute->id }}" {{ old('institute_id') == $institute->id ? 'selected' : '' }}>

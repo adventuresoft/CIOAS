@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ApplicationSuccessMail;
 use App\Models\CityCorporation;
+use App\Models\District;
 use App\Models\Division;
 use App\Models\Institute;
 use App\Models\InstituteCategory;
@@ -60,7 +61,7 @@ class InstituteController extends Controller
     }
 
 
-    public function getInstituteName($institute_type, $union_id = 0, $pourashava_id = 0, $city_corporation_id = 0)
+    public function getInstituteName($institute_type, $union_id = 0, $pourashava_id = 0, $city_corporation_id = 0, $district_id = 0)
     {
         if ($institute_type == 1) {
             $institute = Union::find($union_id);
@@ -70,6 +71,9 @@ class InstituteController extends Controller
             return $institute;
         } else if ($institute_type == 3) {
             $institute = CityCorporation::find($city_corporation_id);
+            return $institute;
+        } else if ($institute_type == 4) {
+            $institute = District::find($district_id);
             return $institute;
         }
     }
@@ -89,6 +93,8 @@ class InstituteController extends Controller
                     $institute->pourashava = Pourashava::find($institute->pourashava_id);
                 } else if ($institute->institute_type_id == 3) {
                     $institute->cityCorporation = CityCorporation::find($institute->city_corporation_id);
+                } else if ($institute->institute_type_id == 4) {
+                    $institute->district = District::find($institute->district_id);
                 }
             }
         }
@@ -138,10 +144,10 @@ class InstituteController extends Controller
 
         $institute = Institute::where('institute_type_id', $request->institute_type)
             ->where('institute_category_id', $request->institute_category)
-            ->where('institute_category_id', $request->institute_category)
             ->where('union_id', $request->union)
             ->where('pourashava_id', $request->pourashava)
             ->where('city_corporation_id', $request->city_corporation)
+            ->where('district_id', $request->district)
             ->first();
 
         if (!$institute) {
@@ -153,6 +159,7 @@ class InstituteController extends Controller
             $institute->union_id            = $request->union ?? null;
             $institute->pourashava_id       = $request->pourashava ?? null;
             $institute->city_corporation_id = $request->city_corporation ?? null;
+            $institute->district_id         = $request->district ?? null;
             $institute->activation_time     = $request->activation_time;
 
             try {
@@ -377,9 +384,9 @@ class InstituteController extends Controller
     public function imagesStore(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'left_image'  => 'required|mimes:jpeg,jpg,png,gif|max:10000',
-            'top_image'   => 'required|mimes:jpeg,jpg,png,gif|max:10000',
-            'right_image' => 'required|mimes:jpeg,jpg,png,gif|max:10000',
+            'left_image'  => 'nullable|mimes:jpeg,jpg,png,gif|max:10000',
+            'top_image'   => 'nullable|mimes:jpeg,jpg,png,gif|max:10000',
+            'right_image' => 'nullable|mimes:jpeg,jpg,png,gif|max:10000',
         ]);
 
         if ($validate->fails()) {
@@ -418,7 +425,7 @@ class InstituteController extends Controller
                 }
             }
 
-            $instituteInfo  = $this->getInstituteName($institute->institute_type_id, $institute->union_id, $institute->pourashava_id, $institute->city_corporation_id);
+            $instituteInfo  = $this->getInstituteName($institute->institute_type_id, $institute->union_id, $institute->pourashava_id, $institute->city_corporation_id, $institute->district_id);
             $left_image     = $request->file('left_image');
             $left_image_url = '';
             if ($left_image) {

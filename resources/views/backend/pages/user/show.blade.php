@@ -159,12 +159,20 @@
                             @php
                                 $areaName = 'No Area Mapped';
                                 if ($user->institute) {
-                                    if ($user->institute->union) {
-                                        $areaName = 'Union: ' . $user->institute->union->name;
-                                    } elseif ($user->institute->pourashava) {
-                                        $areaName = 'Pourashava: ' . $user->institute->pourashava->name;
-                                    } elseif ($user->institute->cityCorporation) {
-                                        $areaName = 'City Corporation: ' . $user->institute->cityCorporation->name;
+                                    if ($user->institute->institute_type_id == 1) {
+                                        $areaName = ($user->institute->union->name ?? '') . ' (' . ($user->institute->type->name ?? 'Union') . ')';
+                                    } elseif ($user->institute->institute_type_id == 2) {
+                                        $areaName = ($user->institute->pourashava->name ?? '') . ' (' . ($user->institute->type->name ?? 'Pourashava') . ')';
+                                    } elseif ($user->institute->institute_type_id == 3) {
+                                        $areaName = ($user->institute->cityCorporation->name ?? '') . ' (' . ($user->institute->type->name ?? 'City Corp') . ')';
+                                    } elseif ($user->institute->institute_type_id == 4) {
+                                        $areaName = ($user->institute->district->name ?? '') . ' (' . ($user->institute->type->name ?? 'District') . ')';
+                                    } else {
+                                        $areaName = 'Area ID: ' . $user->institute->id;
+                                    }
+
+                                    if (!empty($user->institute->district->name)) {
+                                        $areaName .= ' - District: ' . $user->institute->district->name;
                                     }
                                 }
                             @endphp

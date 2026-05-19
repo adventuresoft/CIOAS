@@ -31,7 +31,7 @@ class UserController extends Controller
     {
         $search = $request->input('search');
         
-        $query = User::with(['roles.permissions', 'permissions', 'institute.union', 'institute.pourashava', 'institute.cityCorporation'])
+        $query = User::with(['roles.permissions', 'permissions', 'institute.union', 'institute.pourashava', 'institute.cityCorporation', 'institute.district', 'institute.type'])
             ->orderBy('id', 'desc');
 
         if ($search) {
@@ -51,7 +51,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        $institutes = Institute::with(['union', 'pourashava', 'cityCorporation'])->get();
+        $institutes = Institute::with(['union', 'pourashava', 'cityCorporation', 'district', 'type'])->get();
         return view('backend.pages.user.create', compact('roles', 'institutes'))
             ->with(['title' => 'Register Operator', 'page' => 'user']);
     }
@@ -95,7 +95,7 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = User::with(['roles', 'institute.union', 'institute.pourashava', 'institute.cityCorporation'])->findOrFail($id);
+        $user = User::with(['roles', 'institute.union', 'institute.pourashava', 'institute.cityCorporation', 'institute.district', 'institute.type'])->findOrFail($id);
         return view('backend.pages.user.show', compact('user'))
             ->with(['title' => 'Operator Details', 'page' => 'user']);
     }
@@ -104,7 +104,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $roles = Role::all();
-        $institutes = Institute::with(['union', 'pourashava', 'cityCorporation'])->get();
+        $institutes = Institute::with(['union', 'pourashava', 'cityCorporation', 'district', 'type'])->get();
         return view('backend.pages.user.edit', compact('user', 'roles', 'institutes'))
             ->with(['title' => 'Modify Operator', 'page' => 'user']);
     }

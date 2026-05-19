@@ -258,12 +258,20 @@
                                     // Format Area Name
                                     $areaName = 'No Area';
                                     if ($item->institute) {
-                                        if ($item->institute->union) {
-                                            $areaName = 'Union: ' . $item->institute->union->name;
-                                        } elseif ($item->institute->pourashava) {
-                                            $areaName = 'Pourashava: ' . $item->institute->pourashava->name;
-                                        } elseif ($item->institute->cityCorporation) {
-                                            $areaName = 'City Corp: ' . $item->institute->cityCorporation->name;
+                                        if ($item->institute->institute_type_id == 1) {
+                                            $areaName = ($item->institute->union->name ?? '') . ' (' . ($item->institute->type->name ?? 'Union') . ')';
+                                        } elseif ($item->institute->institute_type_id == 2) {
+                                            $areaName = ($item->institute->pourashava->name ?? '') . ' (' . ($item->institute->type->name ?? 'Pourashava') . ')';
+                                        } elseif ($item->institute->institute_type_id == 3) {
+                                            $areaName = ($item->institute->cityCorporation->name ?? '') . ' (' . ($item->institute->type->name ?? 'City Corp') . ')';
+                                        } elseif ($item->institute->institute_type_id == 4) {
+                                            $areaName = ($item->institute->district->name ?? '') . ' (' . ($item->institute->type->name ?? 'District') . ')';
+                                        } else {
+                                            $areaName = 'Area ID: ' . $item->institute->id;
+                                        }
+
+                                        if (!empty($item->institute->district->name)) {
+                                            $areaName .= ' - District: ' . $item->institute->district->name;
                                         }
                                     }
                                 @endphp

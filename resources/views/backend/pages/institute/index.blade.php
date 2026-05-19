@@ -62,16 +62,18 @@
                                           <td>{{++$key}}</td>
                                           <td>
                                             @if ($institute->institute_type_id == 1)
-                                              {{$institute->union->name}}
+                                              {{$institute->union->name ?? ''}}
                                             @elseif($institute->institute_type_id == 2)
-                                              {{$institute->pourashava->name}}
+                                              {{$institute->pourashava->name ?? ''}}
                                             @elseif($institute->institute_type_id == 3)
-                                              {{$institute->cityCorporation->name}}
+                                              {{$institute->cityCorporation->name ?? ''}}
+                                            @elseif($institute->institute_type_id == 4)
+                                              {{$institute->district->name ?? ''}}
                                             @endif
                                           </td>
-                                          <td>{{$institute->type->name}}</td>
-                                          <td>{{$institute->category->name}}</td>
-                                          <td>{{date("d M, Y", strtotime($institute->activation_time))}}</td>
+                                          <td>{{$institute->type->name ?? ''}}</td>
+                                          <td>{{$institute->category->name ?? ''}}</td>
+                                          <td>{{$institute->activation_time ? date("d M, Y", strtotime($institute->activation_time)) : ''}}</td>
                                           <td style="width: 10%">
                                             <div class="table-action">
                                                 <a class="btn btn-sm btn-primary" title="Edit" data-toggle="tooltip" href="{{route('institute.edit', $institute->id)}}"><i class="fa fa-edit"></i></a>

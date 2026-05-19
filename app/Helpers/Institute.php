@@ -26,6 +26,10 @@ if (!function_exists('user_institute_information')) {
                     $data['institute_type'] = "City Corporation";
                     $data['institute'] = CityCorporation::find($institute->city_corporation_id);
                     break;
+                case 4:
+                    $data['institute_type'] = "District";
+                    $data['institute'] = \App\Models\District::find($institute->district_id);
+                    break;
                 default:
                     $data['institute_type'] = "";
                     $data['institute'] = "";
@@ -44,13 +48,20 @@ if (!function_exists('user_institute_name')) {
             $institute_name = "";
             switch ($institute->institute_type_id) {
                 case 1:
-                    $institute_name = Union::find($institute->union_id)->name;
+                    $u = Union::find($institute->union_id);
+                    $institute_name = $u ? $u->name : "";
                     break;
                 case 2:
-                    $institute_name = Pourashava::find($institute->pourashava_id)->name;
+                    $p = Pourashava::find($institute->pourashava_id);
+                    $institute_name = $p ? $p->name : "";
                     break;
                 case 3:
-                    $institute_name = CityCorporation::find($institute->city_corporation_id)->name;
+                    $c = CityCorporation::find($institute->city_corporation_id);
+                    $institute_name = $c ? $c->name : "";
+                    break;
+                case 4:
+                    $d = \App\Models\District::find($institute->district_id);
+                    $institute_name = $d ? $d->name : "";
                     break;
                 default:
                     $institute_name = "";
