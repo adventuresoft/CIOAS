@@ -65,6 +65,29 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <label for="department_id" class="col-sm-2 col-form-label">Department</label>
+                                    <div class="col-sm-9">
+                                        <select name="department_id" id="department_id" class="form-control">
+                                            <option value="">-- Select Department --</option>
+                                            @foreach($departments as $department)
+                                                <option value="{{ $department->id }}">{{ $department->name }} ({{ $department->bn_name }})</option>
+                                            @endforeach
+                                        </select>
+                                        <small class="error department_id-error text-danger"></small>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="section_id" class="col-sm-2 col-form-label">Section</label>
+                                    <div class="col-sm-9">
+                                        <select name="section_id" id="section_id" class="form-control">
+                                            <option value="">-- Select Section --</option>
+                                        </select>
+                                        <small class="error section_id-error text-danger"></small>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label for="password" class="col-sm-2 col-form-label">Password <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
                                     <div class="col-sm-9">
                                         <input type="password" id="password" placeholder="******" name="password" class="form-control" required>
@@ -101,6 +124,29 @@
 
 <script>
     $(document).ready(function() {
+        $('#department_id').on('change', function() {
+            var departmentId = $(this).val();
+            var sectionSelect = $('#section_id');
+            
+            sectionSelect.html('<option value="">-- Select Section --</option>');
+            
+            if (departmentId) {
+                $.ajax({
+                    url: "{{ route('basic-settings.get-sections-by-department', '') }}/" + departmentId,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $.each(data, function(key, section) {
+                            sectionSelect.append('<option value="' + section.id + '">' + section.name + ' (' + (section.bn_name ? section.bn_name : '') + ')</option>');
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Failed to load sections: " + error);
+                    }
+                });
+            }
+        });
+
         $("#institionalForm").on('submit', function(e) {
             e.preventDefault();
             let thisForm = $(this);

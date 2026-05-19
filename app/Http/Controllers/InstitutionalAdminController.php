@@ -49,8 +49,8 @@ class InstitutionalAdminController extends Controller
      */
     public function create()
     {
-        return view('backend.pages.institutional_admin.create');
-
+        $data['departments'] = \App\Models\Department\Department::all();
+        return view('backend.pages.institutional_admin.create', $data);
     }
 
     /**
@@ -66,6 +66,8 @@ class InstitutionalAdminController extends Controller
             'email' => 'required|max:190|email',
             'mobile' => 'nullable|max:190',
             'password' => 'required|min:6',
+            'department_id' => 'nullable|integer',
+            'section_id' => 'nullable|integer',
         ]);
 
         if ($validate->fails()) {
@@ -80,6 +82,8 @@ class InstitutionalAdminController extends Controller
             $user = new User();
             $user->role_id = 6;
             $user->institute_id = Auth::user()->institute_id;
+            $user->department_id = $request->department_id;
+            $user->section_id = $request->section_id;
             $user->email = $request->email;
             $user->mobile = $request->mobile;
             $user->password = Hash::make($request->password);
@@ -119,7 +123,10 @@ class InstitutionalAdminController extends Controller
      */
     public function edit($id)
     {
-        $data['admin'] = User::find($id);
+        $admin = User::findOrFail($id);
+        $data['admin'] = $admin;
+        $data['departments'] = \App\Models\Department\Department::all();
+        $data['sections'] = $admin->department_id ? \App\Models\Department\Section::where('department_id', $admin->department_id)->get() : collect([]);
         return view('backend.pages.institutional_admin.edit', $data);
     }
 
@@ -136,6 +143,8 @@ class InstitutionalAdminController extends Controller
             'name' => 'required|max:190',
             'email' => 'required|max:190|email',
             'mobile' => 'nullable|max:190',
+            'department_id' => 'nullable|integer',
+            'section_id' => 'nullable|integer',
         ]);
 
         if ($validate->fails()) {
@@ -146,10 +155,12 @@ class InstitutionalAdminController extends Controller
         }
 
         try {
-            $user =  User::find($id);
+            $user =  User::findOrFail($id);
             $user->email = $request->email;
             $user->mobile = $request->mobile;
             $user->name = $request->name;
+            $user->department_id = $request->department_id;
+            $user->section_id = $request->section_id;
             $user->updated_by = Auth::id();
 
 

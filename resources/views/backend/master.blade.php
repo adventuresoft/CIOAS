@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="{{ asset('plugins') }}/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('backend') }}/css/adminlte.min.css">
+    <!-- Bootstrap 5.3 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
     <!-- overlayScrollbars -->
@@ -53,6 +55,68 @@
         .table-action {
             display: flex;
             gap: 8px;
+        }
+
+        /* Bootstrap 4 to 5 Spacing and Utility Compatibility Bridge */
+        .mr-1 { margin-right: 0.25rem !important; }
+        .mr-2 { margin-right: 0.5rem !important; }
+        .mr-3 { margin-right: 1rem !important; }
+        .mr-4 { margin-right: 1.5rem !important; }
+        .mr-5 { margin-right: 3rem !important; }
+        .mr-auto { margin-right: auto !important; }
+
+        .ml-1 { margin-left: 0.25rem !important; }
+        .ml-2 { margin-left: 0.5rem !important; }
+        .ml-3 { margin-left: 1rem !important; }
+        .ml-4 { margin-left: 1.5rem !important; }
+        .ml-5 { margin-left: 3rem !important; }
+        .ml-auto { margin-left: auto !important; }
+
+        .pr-1 { padding-right: 0.25rem !important; }
+        .pr-2 { padding-right: 0.5rem !important; }
+        .pr-3 { padding-right: 1rem !important; }
+        .pr-4 { padding-right: 1.5rem !important; }
+        .pr-5 { padding-right: 3rem !important; }
+
+        .pl-1 { padding-left: 0.25rem !important; }
+        .pl-2 { padding-left: 0.5rem !important; }
+        .pl-3 { padding-left: 1rem !important; }
+        .pl-4 { padding-left: 1.5rem !important; }
+        .pl-5 { padding-left: 3rem !important; }
+
+        .float-left { float: left !important; }
+        .float-right { float: right !important; }
+        .text-right { text-align: right !important; }
+        .text-left { text-align: left !important; }
+        .custom-select {
+            display: inline-block;
+            width: 100%;
+            height: calc(2.25rem + 2px);
+            padding: .375rem 1.75rem .375rem .75rem;
+            line-height: 1.5;
+            color: #495057;
+            vertical-align: middle;
+            background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
+            background-color: #fff;
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+            appearance: none;
+        }
+
+        .nav-sidebar .nav-item > .nav-link {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-sidebar .nav-link p {
+            margin-bottom: 0 !important;
+        }
+
+        .form-inline .form-group {
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
+            margin-bottom: 0;
         }
     </style>
     @stack('style')
@@ -104,8 +168,8 @@
     <script>
         $.widget.bridge('uibutton', $.ui.button)
     </script>
-    <!-- Bootstrap 4 -->
-    <script src="{{ asset('plugins') }}/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap 5.3 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- ChartJS -->
     <script src="{{ asset('plugins') }}/chart.js/Chart.min.js"></script>
     <!-- Sparkline -->
@@ -253,6 +317,28 @@
                         }
                     });
             })
+
+            // Map Bootstrap 4 data attributes to Bootstrap 5
+            function mapBS4toBS5(context) {
+                let selectors = ['toggle', 'target', 'dismiss', 'slide', 'slide-to', 'parent', 'reference', 'offset', 'spy', 'ride', 'content', 'trigger', 'placement'];
+                selectors.forEach(function (attr) {
+                    $(context).find('[data-' + attr + ']').each(function () {
+                        let $el = $(this);
+                        let val = $el.attr('data-' + attr);
+                        if (!$el.attr('data-bs-' + attr)) {
+                            $el.attr('data-bs-' + attr, val);
+                        }
+                    });
+                });
+            }
+
+            // Map on initial load
+            mapBS4toBS5(document);
+
+            // Handle dynamically added content (e.g. AJAX or modals)
+            $(document).on('DOMNodeInserted', function (e) {
+                mapBS4toBS5(e.target);
+            });
         })
     </script>
 

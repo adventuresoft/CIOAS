@@ -1,4 +1,167 @@
+@push('style')
+<style>
+    /* Premium Smart Form Design System */
+    .card-body label:not(.form-check-label) {
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #475569;
+        margin-bottom: 8px;
+        display: block;
+    }
 
+    .card-body .form-control:not(.custom-file-input) {
+        border-radius: 8px !important;
+        border: 1px solid #cbd5e1 !important;
+        height: 40px !important;
+        font-size: 0.9rem !important;
+        color: #1e293b !important;
+        background-color: #ffffff;
+        box-shadow: none !important;
+        transition: all 0.2s ease-in-out;
+    }
+
+    /* Increased vertical gap between form rows */
+    .card-body .form-group.row {
+        margin-bottom: 28px !important;
+    }
+
+    .card-body .form-control:focus:not(.custom-file-input) {
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+        background-color: #ffffff !important;
+    }
+
+    .card-body .form-control[readonly] {
+        background-color: #f8fafc !important;
+        border-color: #cbd5e1 !important;
+        font-weight: 500 !important;
+        color: #475569 !important;
+    }
+
+    /* Select2 Styling overrides */
+    .card-body .select2-container--default .select2-selection--single {
+        border-radius: 8px !important;
+        border: 1px solid #cbd5e1 !important;
+        height: 40px !important;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .card-body .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 38px !important;
+        padding-left: 12px !important;
+        color: #1e293b !important;
+    }
+
+    .card-body .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 38px !important;
+        right: 8px !important;
+    }
+
+    .card-body .select2-container--default.select2-container--focus .select2-selection--single {
+        border-color: #3b82f6 !important;
+    }
+
+    /* Custom Radio/Checkbox Cards */
+    .location-type-card {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 24px;
+        background: #ffffff;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #475569;
+        transition: all 0.2s ease-in-out;
+        margin-bottom: 0;
+        user-select: none;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .location-type-card:hover {
+        border-color: #94a3b8;
+        background: #f8fafc;
+        color: #1e293b;
+    }
+
+    .location-type-card.active {
+        border-color: #2563eb !important;
+        background: #eff6ff !important;
+        color: #2563eb !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .location-type-card .location-icon {
+        font-size: 1.05rem;
+        color: #64748b;
+        transition: color 0.2s ease-in-out;
+    }
+
+    .location-type-card.active .location-icon {
+        color: #2563eb !important;
+    }
+
+    /* Custom File Input Styling */
+    .custom-file {
+        height: 40px !important;
+    }
+
+    .custom-file-label {
+        border-radius: 8px !important;
+        border: 1.5px solid #cbd5e1 !important;
+        height: 40px !important;
+        line-height: 28px !important;
+        padding-left: 12px !important;
+        font-size: 0.9rem !important;
+        color: #64748b !important;
+        background: #ffffff !important;
+        display: flex;
+        align-items: center;
+        box-shadow: none !important;
+    }
+
+    .custom-file-label::after {
+        height: 37px !important;
+        line-height: 26px !important;
+        border-radius: 0 7px 7px 0 !important;
+        background-color: #f1f5f9 !important;
+        border-left: 1.5px solid #cbd5e1 !important;
+        color: #475569 !important;
+        font-weight: 600 !important;
+        padding: 4px 18px !important;
+        display: flex;
+        align-items: center;
+        content: "Browse" !important;
+    }
+
+    .custom-file-input:focus ~ .custom-file-label {
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+    }
+
+    /* Section Headings */
+    .section-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #1e293b;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 8px;
+        margin-top: 24px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .section-title i {
+        color: #2563eb;
+    }
+</style>
+@endpush
 
 <div class="card-body">
     {{-- Hotel/restaurant organization form: basic details, address, and supporting documents --}}
@@ -24,9 +187,9 @@
                 <option value=""> Category</option>
                 @if (count($categories))
                     @foreach ($categories as $category)
-                        <option value="{{ $category->id }}"
-                            {{ isset($organization->hotel_category_id) ? ($organization->hotel_category_id == $category->id ? 'selected' : '') : '' }}>
-                            {{ $category->en_name }}</option>
+                        <option value="{{ $category->id }}" {{ isset($organization->hotel_category_id) ? ($organization->hotel_category_id == $category->id ? 'selected' : '') : '' }}>
+                            {{ $category->en_name }}
+                        </option>
                     @endforeach
                 @endif
             </select>
@@ -36,7 +199,8 @@
             <select class="form-control select2" name="organization_subcategory_id" id="organization_subcategory_id">
                 @if (isset($organization->hotel_subcategory_id))
                     <option value="{{ $organization->hotel_subcategory_id }}">
-                        {{ $organization->subcategory->en_name }}</option>
+                        {{ $organization->subcategory->en_name }}
+                    </option>
                 @endif
             </select>
         </div>
@@ -46,9 +210,9 @@
                 <option value="">Select Type </option>
                 @if (isset($types))
                     @foreach ($types as $type)
-                        <option value="{{ $type->id }}"
-                            {{ isset($organization->hotel_type_id) ? ($organization->hotel_type_id == $type->id ? 'selected' : '') : '' }}>
-                            {{ $type->en_name }}</option>
+                        <option value="{{ $type->id }}" {{ isset($organization->hotel_type_id) ? ($organization->hotel_type_id == $type->id ? 'selected' : '') : '' }}>
+                            {{ $type->en_name }}
+                        </option>
                     @endforeach
                 @endif
             </select>
@@ -86,83 +250,451 @@
         <div class="col-sm-2">
             <label for="application_type">Application Type</label>
             <select class="form-control select2" name="application_type" id="application_type">
-                <option value="new"
-                    {{ isset($organization->application_type) ? ($organization->application_type == 'new' ? 'selected' : '') : '' }}>
+                <option value="new" {{ isset($organization->application_type) ? ($organization->application_type == 'new' ? 'selected' : '') : '' }}>
                     NEW</option>
-                <option value="old"
-                    {{ isset($organization->application_type) ? ($organization->application_type == 'old' ? 'selected' : '') : '' }}>
+                <option value="old" {{ isset($organization->application_type) ? ($organization->application_type == 'old' ? 'selected' : '') : '' }}>
                     OLD</option>
             </select>
         </div>
     </div>
 
 
-    <div class="form-group row">
+    <div class="row">
         <div class="col-sm-12">
-            <h5 class="text-secondary mb-2">Registered Address</h5>
+            <h5 class="section-title"><i class="fas fa-map-marked-alt"></i> Registered Address</h5>
         </div>
     </div>
 
-    <x-location-type-selector
-        title="Registered Address"
-        nameLocationType="location_type"
-        nameDivision="division_id"
-        nameDistrict="district_id"
-        nameThana="thana_id"
-        nameCityCorporation="city_id"
-        namePourashava="pos_id"
-        nameUnion="union_id"
-        namePostOffice="post_office_id"
-        nameVillage="village_id"
-        nameWard="ward_id"
-        nameRoad="road"
-        nameHouse="house"
-        nameHouseBn="house_bn"
-        :selectedLocationType="$organization->location_type ?? null"
-        :selectedDivision="$organization->division_id ?? null"
-        :selectedDistrict="$organization->district_id ?? null"
-        :selectedThana="$organization->thana_id ?? null"
-        :selectedCityCorporation="$organization->city_id ?? null"
-        :selectedPourashava="$organization->pos_id ?? null"
-        :selectedUnion="$organization->union_id ?? null"
-        :selectedPostOffice="$organization->post_office_id ?? null"
-        :selectedVillage="$organization->village_id ?? null"
-        :selectedWard="$organization->ward_id ?? null"
-        :selectedRoad="$organization->road ?? null"
-        :selectedHouse="$organization->house ?? null"
-        :selectedHouseBn="$organization->house_bn ?? null"
-        :divisions="$divisions ?? null"
-        :districts="$districts ?? null"
-        :thanas="$thanas ?? null"
-        :cityCorporations="$city_corporations ?? null"
-        :pourashavas="$pourashavas ?? null"
-        :unions="$unions ?? null"
-        :postOffices="$post_officeses ?? null"
-        :villages="$villages ?? null"
-        :wards="$wards ?? null"
-        containerClass="present_address_filed"
-        cityContainerClass="city_type"
-        pourashavaContainerClass="pos_type"
-        unionContainerClass="union_type"
-        radioClass="location-type-radio"
-        cardClass="location-type-card"
-    />
-
-
-    <div class="row align-items-center mb-2">
-        <div class="col-sm-5">
-            <input type="text" class="form-control form-control-sm" value="Hotel & Restaurant Logo" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
+    <!-- Present address location selector -->
+    {{-- Registered address location type options: choose which local government unit applies --}}
+    <div class="form-group row align-items-center pt-3 location_cat">
+        <label class="col-sm-2 col-form-label font-weight-bold" style="font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; color: #475569;">
+            <i class="fas fa-map-marker-alt text-primary mr-1"></i> Location Type
+        </label>
+        <div class="col-sm-10">
+            <div class="d-flex align-items-center flex-wrap" style="gap: 12px;">
+                <label class="location-type-card {{ (isset($organization->location_type) && $organization->location_type == 'city_type') ? 'active' : '' }}">
+                    <input type="radio" name="location_type" value="city_type" class="location-type-radio d-none"
+                        {{ (isset($organization->location_type) && $organization->location_type == 'city_type' ? 'checked' : '') }}>
+                    <i class="fas fa-city location-icon"></i>
+                    <span>City Corporation</span>
+                </label>
+                <label class="location-type-card {{ (isset($organization->location_type) && $organization->location_type == 'pos_type') ? 'active' : '' }}">
+                    <input type="radio" name="location_type" value="pos_type" class="location-type-radio d-none"
+                        {{ (isset($organization->location_type) && $organization->location_type == 'pos_type' ? 'checked' : '') }}>
+                    <i class="fas fa-building location-icon"></i>
+                    <span>Pourashava</span>
+                </label>
+                <label class="location-type-card {{ (isset($organization->location_type) && $organization->location_type == 'union_type') ? 'active' : '' }}">
+                    <input type="radio" name="location_type" value="union_type" class="location-type-radio d-none"
+                        {{ (isset($organization->location_type) && $organization->location_type == 'union_type' ? 'checked' : '') }}>
+                    <i class="fas fa-warehouse location-icon"></i>
+                    <span>Union</span>
+                </label>
+            </div>
         </div>
+    </div>
+
+    {{-- Registered address fields: division, district, thana, and location type --}}
+    <div class="present_address_filed {{ !empty($organization->location_type) ? '' : 'd-none' }}">
+        <div class="form-group row g-4">
+            <div class="col-sm-4">
+                <label for="division_id">Division</label>
+                <select name="division_id" class="form-control select2 select2bs4" id="division_id">
+                    <option value="">Select Division</option>
+                    @if ($divisions)
+                        @foreach ($divisions as $division)
+                            <option value="{{ $division->id }}" {{ isset($organization->division_id) && $organization->division_id == $division->id ? 'selected' : '' }}>
+                                {{ $division->name }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error division_id_error"></small>
+            </div>
+            <div class="col-sm-4">
+                <label for="district_id">District</label>
+                <select name="district_id" class="form-control select2 select2bs4" id="district_id">
+                    <option value="">Select District</option>
+                    @if (isset($districts))
+                        @foreach ($districts as $district)
+                            <option value="{{ $district->id }}" {{ isset($organization->district_id) && $organization->district_id == $district->id ? 'selected' : '' }}>
+                                {{ $district->name ?? 'Select District' }}
+                            </option>
+                        @endforeach
+                    @endif
+
+                </select>
+
+                <small class="text-danger error district_id_error"></small>
+            </div>
+
+            {{-- City corporation option shown when location type is city corporation --}}
+            <div class="col-sm-4 city_type {{ !empty($organization->city_id) ? '' : 'd-none' }}">
+                <label for="city_corporation_id">City Corporation</label>
+                <select name="city_id" class="form-control select2 select2bs4" id="city_corporation_id" data-type="City">
+                    <option value="">Select City Corporation</option>
+                    @if (isset($city_corporations))
+                        @foreach ($city_corporations as $city_corporation)
+                            <option value="{{ $city_corporation->id }}" {{ isset($organization->city_id) ? ($organization->city_id == $city_corporation->id ? 'selected' : '') : '' }}>
+                                {{ $city_corporation->bn_name }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error permanent_village_id_error"></small>
+            </div>
+
+            <div class="col-sm-4">
+                <label for="thana_id">Thana</label>
+                <select name="thana_id" class="form-control select2 select2bs4" id="thana_id">
+                    <option value="">Select Thana</option>
+                    @if (isset($thanas))
+                        @foreach ($thanas as $thana)
+                            <option value="{{ $thana->id }}" {{ isset($organization->thana_id) && $organization->thana_id == $thana->id ? 'selected' : '' }}>
+                                {{ $thana->name ?? 'Select Thana' }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error thana_id_error"></small>
+
+            </div>
+
+            {{-- Pourashava option shown when location type is pourashava --}}
+            <div class="col-sm-4 pos_type {{ !empty($organization->pos_id) ? '' : 'd-none' }}">
+                <label for="pourashova_id">Pourashava</label>
+                <select name="pos_id" class="form-control select2 select2bs4" id="pourashova_id" data-type="pourashova">
+                    <option value="">Select Pourashova</option>
+                    @if (isset($pourashavas))
+                        @foreach ($pourashavas as $pourashava)
+                            <option value="{{ $pourashava->id }}" {{ isset($organization->pos_id) ? ($organization->pos_id == $pourashava->id ? 'selected' : '') : '' }}>
+                                {{ $pourashava->name }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error permanent_village_id_error"></small>
+            </div>
+
+
+            {{-- Union option shown when location type is union --}}
+            <div class="col-sm-4 union_type {{ !empty($organization->union_id) ? '' : 'd-none' }}">
+                <label for="union_id">Union</label>
+                <select name="union_id" class="form-control select2 select2bs4" id="union_id" data-type="union">
+                    <option value="">Select Union</option>
+                    @if (isset($unions))
+                        @foreach ($unions as $union)
+                            <option value="{{ $union->id }}" {{ isset($organization->union_id) && $organization->union_id == $union->id ? 'selected' : '' }}>
+                                {{ $union->name ?? 'Select Union' }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error union_id_error"></small>
+            </div>
+
+            {{-- Registered address postal and location selectors --}}
+            <div class="col-sm-4">
+                <label for="post_office_id">Post Office</label>
+                <select name="post_office_id" class="form-control select2 select2bs4" id="post_office_id">
+                    <option value="">Select Post Office</option>
+                    @if (isset($post_officeses))
+                        @foreach ($post_officeses as $post_officese)
+                            <option value="{{ $post_officese->id }}" {{ isset($organization->post_office_id) ? ($organization->post_office_id == $post_officese->id ? 'selected' : '') : '' }}>
+                                {{ $post_officese->bn_name }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error permanent_village_id_error"></small>
+            </div>
+
+            <div class="col-sm-4">
+                <label for="village_id">Village</label>
+                <select name="village_id" class="form-control select2 select2bs4" id="village_id">
+                    <option value="">Select Village</option>
+                    @if (isset($organization) && isset($villages))
+                        @foreach ($villages as $village)
+                            <option value="{{ $village->id ?? '' }}" {{ isset($organization->village_id) && $organization->village_id == $village->id ? 'selected' : '' }}>
+                                {{ $village->bn_name ?? 'Select Village' }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error village_id_error"></small>
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-3">
+                <label for="ward_id">Ward</label>
+                <select name="ward_id" class="form-control select2 select2bs4" id="ward_id">
+                    <option value="">Select Ward</option>
+                    @if ($wards)
+                        @foreach ($wards as $ward)
+                            <option value="{{ $ward->id }}" {{ isset($organization->ward_id) ? ($organization->ward_id == $ward->id ? 'selected' : '') : '' }}>
+                                {{ $ward->en_ward_no }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error ward_id_error"></small>
+
+            </div>
+            <div class="col-sm-3">
+                <label for="road">Road</label>
+                <input type="text" name="road" class="form-control" id="road" value="{{ $organization->road ?? '' }}"
+                    placeholder="Present Road">
+
+                <small class="text-danger error road_error"></small>
+            </div>
+            <div class="col-sm-3">
+                <label for="house">House/Holding No.</label>
+                <input type="text" name="house" class="form-control" id="house" value="{{ $organization->house ?? '' }}"
+                    placeholder="Present House">
+
+                <small class="text-danger error house_error"></small>
+            </div>
+            <div class="col-sm-3">
+                <label for="house">House/Holding No. (Bangla)</label>
+                <input type="text" name="house_bn" class="form-control" id="house"
+                    value="{{ $organization->house_bn ?? '' }}" placeholder="Present House Bangla">
+
+                <small class="text-danger error house_error"></small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h5 class="section-title"><i class="fas fa-building"></i> Corporate Office/Factory Address</h5>
+        </div>
+    </div>
+
+    <div class="form-group row align-items-center pt-3 office_location_cat">
+        <label class="col-sm-2 col-form-label font-weight-bold" style="font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; color: #475569;">
+            <i class="fas fa-map-marker-alt text-primary mr-1"></i> Location Type
+        </label>
+        <div class="col-sm-10">
+            <div class="d-flex align-items-center flex-wrap" style="gap: 12px;">
+                <label class="location-type-card office-location-type-card {{ (isset($organization->office_location_type) && $organization->office_location_type == 'city_type') ? 'active' : '' }}">
+                    <input type="radio" name="office_location_type" value="city_type" class="office-location-type-radio d-none"
+                        {{ (isset($organization->office_location_type) && $organization->office_location_type == 'city_type' ? 'checked' : '') }}>
+                    <i class="fas fa-city location-icon"></i>
+                    <span>City Corporation</span>
+                </label>
+                <label class="location-type-card office-location-type-card {{ (isset($organization->office_location_type) && $organization->office_location_type == 'pos_type') ? 'active' : '' }}">
+                    <input type="radio" name="office_location_type" value="pos_type" class="office-location-type-radio d-none"
+                        {{ (isset($organization->office_location_type) && $organization->office_location_type == 'pos_type' ? 'checked' : '') }}>
+                    <i class="fas fa-building location-icon"></i>
+                    <span>Pourashava</span>
+                </label>
+                <label class="location-type-card office-location-type-card {{ (isset($organization->office_location_type) && $organization->office_location_type == 'union_type') ? 'active' : '' }}">
+                    <input type="radio" name="office_location_type" value="union_type" class="office-location-type-radio d-none"
+                        {{ (isset($organization->office_location_type) && $organization->office_location_type == 'union_type' ? 'checked' : '') }}>
+                    <i class="fas fa-warehouse location-icon"></i>
+                    <span>Union</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    {{-- Corporate office address fields: office division, district, thana, location type, and office-specific selectors
+    --}}
+
+    <div class="office_address_field {{ !empty($organization->office_location_type) ? '' : 'd-none' }}">
+        <div class="form-group row g-4">
+            <div class="col-sm-4">
+                <label for="office_division_id">Division</label>
+                <select name="office_division_id" class="form-control select2 select2bs4" id="office_division_id">
+                    <option value="">Select Division</option>
+                    @if (isset($divisions))
+                        @foreach ($divisions as $division)
+                            <option value="{{ $division->id }}" {{ isset($organization->office_division_id) && $organization->office_division_id == $division->id ? 'selected' : '' }}>
+                                {{ $division->name }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error office_division_id_error"></small>
+            </div>
+            <div class="col-sm-4">
+                <label for="office_district_id">District</label>
+                <select name="office_district_id" class="form-control select2 select2bs4" id="office_district_id">
+                    <option value="">Select District</option>
+                    @if (isset($office_districts))
+                        @foreach ($office_districts as $district)
+                            <option value="{{ $district->id }}" {{ isset($organization->office_district_id) && $organization->office_district_id == $district->id ? 'selected' : '' }}>
+                                {{ $district->name ?? 'Select District' }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+
+                <small class="text-danger error office_district_id_error"></small>
+            </div>
+
+            {{-- Office city corporation option shown when office location type is city corporation --}}
+            <div class="col-sm-4 office_city_type {{ !empty($organization->office_city_id) ? '' : 'd-none' }}">
+                <label for="city_corporation_id">City Corporation</label>
+                <select name="office_city_id" class="form-control select2 select2bs4" id="office_city_corporation_id" data-type="City">
+                    <option value="">Select City Corporation</option>
+                    @if (isset($office_city_corporations))
+                        @foreach ($office_city_corporations as $city_corporation)
+                            <option value="{{ $city_corporation->id }}" {{ isset($organization->office_city_id) ? ($organization->office_city_id == $city_corporation->id ? 'selected' : '') : '' }}>
+                                {{ $city_corporation->bn_name }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error office_city_id"></small>
+            </div>
+
+            <div class="col-sm-4">
+                <label for="office_thana_id">Thana</label>
+                <select name="office_thana_id" class="form-control select2 select2bs4" id="office_thana_id">
+                    <option value="">Select Thana</option>
+                    @if (isset($office_thanas))
+                        @foreach ($office_thanas as $thana)
+                            <option value="{{ $thana->id }}" {{ isset($organization->office_thana_id) && $organization->office_thana_id == $thana->id ? 'selected' : '' }}>
+                                {{ $thana->name ?? 'Select Thana' }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error office_thana_id_error"></small>
+            </div>
+
+            {{-- Office pourashava option shown when office location type is pourashava --}}
+            <div class="col-sm-4 office_pos_type {{ !empty($organization->office_pos_id) ? '' : 'd-none' }}">
+                <label for="pourashova_id">Pourashova</label>
+                <select name="office_pos_id" class="form-control select2 select2bs4" id="office_pourashova_id"
+                    data-type="pourashova">
+                    <option value="">Select City Pourashova</option>
+                    @if (isset($office_pourashavas))
+                        @foreach ($office_pourashavas as $pourashava)
+                            <option value="{{ $pourashava->id }}" {{ isset($organization->office_pos_id) ? ($organization->office_pos_id == $pourashava->id ? 'selected' : '') : '' }}>
+                                {{ $pourashava->name }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error permanent_village_id_error"></small>
+            </div>
+
+
+            {{-- Office union option shown when office location type is union --}}
+            <div class="col-sm-4 office_union_type {{ !empty($organization->office_union_id) ? '' : 'd-none' }}">
+                <label for="union_id">Union</label>
+                <select name="office_union_id" class="form-control select2 select2bs4" id="office_union_id"
+                    data-type="union">
+                    <option value="">Select Union</option>
+                    @if (isset($office_unions))
+                        @foreach ($office_unions as $union)
+                            <option value="{{ $union->id }}" {{ isset($organization->office_union_id) && $organization->office_union_id == $union->id ? 'selected' : '' }}>
+                                {{ $union->name ?? 'Select Union' }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error office_union_id_error"></small>
+            </div>
+
+            {{-- Corporate office postal and location selectors --}}
+            <div class="col-sm-4">
+                <label for="office_post_office_id">Post Office</label>
+                <select name="office_post_office_id" class="form-control select2 select2bs4" id="office_post_office_id">
+                    <option value="">Select Post Office </option>
+                    @if (isset($office_post_officeses))
+                        @foreach ($office_post_officeses as $post_officese)
+                            <option value="{{ $post_officese->id }}" {{ isset($organization->office_post_office_id) ? ($organization->office_post_office_id == $post_officese->id ? 'selected' : '') : '' }}>
+                                {{ $post_officese->name }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error office_post_office_id_error"></small>
+            </div>
+
+            <div class="col-sm-4">
+                <label for="office_village_id">Village</label>
+                <select name="office_village_id" class="form-control select2 select2bs4" id="office_village_id">
+                    <option value="">Select Village</option>
+                    @if (isset($organization) && isset($office_villages))
+                        @foreach ($office_villages as $village)
+                            <option value="{{ $village->id ?? '' }}" {{ isset($organization->office_village_id) && $organization->office_village_id == $village->id ? 'selected' : '' }}>
+                                {{ $village->bn_name ?? 'Select Village' }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error office_village_id_error"></small>
+            </div>
+        </div>
+
+
+
+
+        <div class="form-group row">
+            <div class="col-sm-3">
+                <label for="office_ward_id">Ward</label>
+                <select name="office_ward_id" class="form-control select2 select2bs4" id="office_ward_id">
+                    <option value="">Select Ward</option>
+                    @if ($wards)
+                        @foreach ($wards as $ward)
+                            <option value="{{ $ward->id }}" {{ isset($organization->office_ward_id) ? ($organization->office_ward_id == $ward->id ? 'selected' : '') : '' }}>
+                                {{ $ward->en_ward_no }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                <small class="text-danger error office_ward_id_error"></small>
+
+            </div>
+            <div class="col-sm-3">
+                <label for="office_road">Road</label>
+                <input type="text" name="office_road" class="form-control" id="office_road"
+                    value="{{ $organization->office_road ?? '' }}" placeholder="Present Road">
+
+                <small class="text-danger error office_road_error"></small>
+            </div>
+            <div class="col-sm-3">
+                <label for="office_house">House/Holding No.</label>
+                <input type="text" name="office_house" class="form-control" id="office_house"
+                    value="{{ $organization->office_house ?? '' }}" placeholder="Present House">
+
+                <small class="text-danger error office_house_error"></small>
+            </div>
+            <div class="col-sm-3">
+                <label for="office_house_bn">House/Holding No. (Bangla)</label>
+                <input type="text" name="office_house_bn" class="form-control" id="office_house_bn"
+                    value="{{ $organization->office_house_bn ?? '' }}" placeholder="Present House Bangla">
+
+                <small class="text-danger error office_house_error"></small>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="row align-items-center mb-4">
         <div class="col-sm-5">
+            <input type="text" class="form-control" value="Hotel & Restaurant Logo" readonly>
+        </div>
+        <div class="col-sm-7">
             <div class="custom-file">
-                <input type="file" name="hotel_logo" class="custom-file-input form-control-sm">
-                <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                <input type="file" name="hotel_logo" class="custom-file-input">
+                <label class="custom-file-label">Choose file...</label>
             </div>
         </div>
     </div>
 
     <div class="form-group row pt-3 align-items-center">
-        <label class="col-sm-2 col-form-label font-weight-bold" style="font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; color: #475569;"><i class="fas fa-home text-primary mr-1"></i> Premises Ownership</label>
+        <label class="col-sm-2 col-form-label font-weight-bold" style="font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; color: #475569;">
+            <i class="fas fa-home text-primary mr-1"></i> Premises Ownership
+        </label>
         <div class="col-sm-10">
             <div class="d-flex align-items-center flex-wrap" style="gap: 12px;">
                 <label class="location-type-card premises-ownership-card {{ (isset($organization->premises_ownership) && $organization->premises_ownership == 'rented') ? 'active' : '' }}">
@@ -185,36 +717,38 @@
     {{-- Owned premises supporting documents: shown when premises_ownership = owned --}}
     <div class="form-group row premises-docs premises-docs-owned d-none">
         <div class="col-sm-12">
-            <h6 class="text-secondary mb-3 font-weight-bold" style="font-size: 0.95rem; color: #475569;"><i class="fas fa-file-alt text-primary mr-1"></i> Self-Owned Premises Documents</h6>
+            <h6 class="font-weight-bold text-dark mb-3 mt-2" style="font-size: 0.95rem;">
+                <i class="fas fa-file-alt text-primary mr-1"></i> Self-Owned Premises Documents
+            </h6>
         </div>
         <div class="col-sm-12">
             <div class="premises-docs-owned-list">
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="owned_document_name[]" class="form-control form-control-sm"
-                            value="Proof of Land Ownership" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
+                        <input type="text" name="owned_document_name[]" class="form-control"
+                            value="Proof of Land Ownership" readonly>
                     </div>
                     <div class="col-sm-5">
                         <div class="custom-file">
-                            <input type="file" name="owned_document_file[]" class="custom-file-input form-control-sm">
-                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                            <input type="file" name="owned_document_file[]" class="custom-file-input">
+                            <label class="custom-file-label">Choose file...</label>
                         </div>
                     </div>
                     <div class="col-sm-2 text-right">
-                        <button type="button" class="btn btn-primary btn-sm add-doc-row" data-target="owned" style="border-radius: 6px; padding: 4px 12px; font-weight: 600;">
+                        <button type="button" class="btn btn-primary btn-sm add-doc-row" data-target="owned" style="border-radius: 6px; padding: 4px 14px; font-weight: 600;">
                             <i class="fas fa-plus mr-1"></i> Add
                         </button>
                     </div>
                 </div>
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="owned_document_name[]" class="form-control form-control-sm"
-                            value="Building Approval Certificate" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
+                        <input type="text" name="owned_document_name[]" class="form-control"
+                            value="Building Approval Certificate" readonly>
                     </div>
                     <div class="col-sm-5">
                         <div class="custom-file">
-                            <input type="file" name="owned_document_file[]" class="custom-file-input form-control-sm">
-                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                            <input type="file" name="owned_document_file[]" class="custom-file-input">
+                            <label class="custom-file-label">Choose file...</label>
                         </div>
                     </div>
                     <div class="col-sm-2 text-right">
@@ -225,13 +759,13 @@
                 </div>
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="owned_document_name[]" class="form-control form-control-sm"
-                            value="Environmental Clearance Certificate" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
+                        <input type="text" name="owned_document_name[]" class="form-control"
+                            value="Environmental Clearance Certificate" readonly>
                     </div>
                     <div class="col-sm-5">
                         <div class="custom-file">
-                            <input type="file" name="owned_document_file[]" class="custom-file-input form-control-sm">
-                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                            <input type="file" name="owned_document_file[]" class="custom-file-input">
+                            <label class="custom-file-label">Choose file...</label>
                         </div>
                     </div>
                     <div class="col-sm-2 text-right">
@@ -242,13 +776,13 @@
                 </div>
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="owned_document_name[]" class="form-control form-control-sm"
-                            value="Fire Service Clearance Certificate" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
+                        <input type="text" name="owned_document_name[]" class="form-control"
+                            value="Fire Service Clearance Certificate" readonly>
                     </div>
                     <div class="col-sm-5">
                         <div class="custom-file">
-                            <input type="file" name="owned_document_file[]" class="custom-file-input form-control-sm">
-                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                            <input type="file" name="owned_document_file[]" class="custom-file-input">
+                            <label class="custom-file-label">Choose file...</label>
                         </div>
                     </div>
                     <div class="col-sm-2 text-right">
@@ -259,13 +793,13 @@
                 </div>
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="owned_document_name[]" class="form-control form-control-sm"
-                            value="National ID (NID) – Mandatory" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
+                        <input type="text" name="owned_document_name[]" class="form-control"
+                            value="National ID (NID) – Mandatory" readonly>
                     </div>
                     <div class="col-sm-5">
                         <div class="custom-file">
-                            <input type="file" name="owned_document_file[]" class="custom-file-input form-control-sm">
-                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                            <input type="file" name="owned_document_file[]" class="custom-file-input">
+                            <label class="custom-file-label">Choose file...</label>
                         </div>
                     </div>
                     <div class="col-sm-2 text-right">
@@ -281,36 +815,38 @@
     {{-- Rented premises supporting documents: shown when premises_ownership = rented --}}
     <div class="form-group row premises-docs premises-docs-rented d-none">
         <div class="col-sm-12">
-            <h6 class="text-secondary mb-3 font-weight-bold" style="font-size: 0.95rem; color: #475569;"><i class="fas fa-file-alt text-primary mr-1"></i> Rented Premises Documents</h6>
+            <h6 class="font-weight-bold text-dark mb-3 mt-2" style="font-size: 0.95rem;">
+                <i class="fas fa-file-contract text-primary mr-1"></i> Rented Premises Documents
+            </h6>
         </div>
         <div class="col-sm-12">
             <div class="premises-docs-rented-list">
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="rented_document_name[]" class="form-control form-control-sm"
-                            value="Rental Agreement Document" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
+                        <input type="text" name="rented_document_name[]" class="form-control"
+                            value="Rental Agreement Document" readonly>
                     </div>
                     <div class="col-sm-5">
                         <div class="custom-file">
-                            <input type="file" name="rented_document_file[]" class="custom-file-input form-control-sm">
-                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                            <input type="file" name="rented_document_file[]" class="custom-file-input">
+                            <label class="custom-file-label">Choose file...</label>
                         </div>
                     </div>
                     <div class="col-sm-2 text-right">
-                        <button type="button" class="btn btn-primary btn-sm add-doc-row" data-target="rented" style="border-radius: 6px; padding: 4px 12px; font-weight: 600;">
+                        <button type="button" class="btn btn-primary btn-sm add-doc-row" data-target="rented" style="border-radius: 6px; padding: 4px 14px; font-weight: 600;">
                             <i class="fas fa-plus mr-1"></i> Add
                         </button>
                     </div>
                 </div>
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="rented_document_name[]" class="form-control form-control-sm"
-                            value="Environmental Clearance Certificate" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
+                        <input type="text" name="rented_document_name[]" class="form-control"
+                            value="Environmental Clearance Certificate" readonly>
                     </div>
                     <div class="col-sm-5">
                         <div class="custom-file">
-                            <input type="file" name="rented_document_file[]" class="custom-file-input form-control-sm">
-                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                            <input type="file" name="rented_document_file[]" class="custom-file-input">
+                            <label class="custom-file-label">Choose file...</label>
                         </div>
                     </div>
                     <div class="col-sm-2 text-right">
@@ -321,13 +857,13 @@
                 </div>
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="rented_document_name[]" class="form-control form-control-sm"
-                            value="Fire Service Clearance Certificate" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
+                        <input type="text" name="rented_document_name[]" class="form-control"
+                            value="Fire Service Clearance Certificate" readonly>
                     </div>
                     <div class="col-sm-5">
                         <div class="custom-file">
-                            <input type="file" name="rented_document_file[]" class="custom-file-input form-control-sm">
-                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                            <input type="file" name="rented_document_file[]" class="custom-file-input">
+                            <label class="custom-file-label">Choose file...</label>
                         </div>
                     </div>
                     <div class="col-sm-2 text-right">
@@ -338,13 +874,13 @@
                 </div>
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="rented_document_name[]" class="form-control form-control-sm"
-                            value="National ID (NID) – Mandatory" readonly style="background-color: #f8fafc; border-color: #cbd5e1; font-weight: 500; color: #475569;">
+                        <input type="text" name="rented_document_name[]" class="form-control"
+                            value="National ID (NID) – Mandatory" readonly>
                     </div>
                     <div class="col-sm-5">
                         <div class="custom-file">
-                            <input type="file" name="rented_document_file[]" class="custom-file-input form-control-sm">
-                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                            <input type="file" name="rented_document_file[]" class="custom-file-input">
+                            <label class="custom-file-label">Choose file...</label>
                         </div>
                     </div>
                     <div class="col-sm-2 text-right">
@@ -363,22 +899,22 @@
 @push('script')
     {{-- Form scripts: dependent dropdowns, address location selectors, and premises ownership controls --}}
     <script>
-        $(document).on('change', '#organization_category_id', function(e) {
+        $(document).on('change', '#organization_category_id', function (e) {
             e.preventDefault();
             let _this_value = $(this).val();
             if (_this_value) {
                 $.ajax({
                     type: "GET",
                     url: "{{ url('hotel-subcategory-options') }}/" + _this_value,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('#organization_subcategory_id').prop("disabled", true);
                         console.log("Searcing organization category");
                     },
-                    success: function(response) {
+                    success: function (response) {
                         $('#organization_subcategory_id').html(response)
                         $('#organization_subcategory_id').prop("disabled", false);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
                     }
@@ -388,7 +924,7 @@
         })
 
         // organization_type_id change: show/hide RJSC, owner, and director fields
-        $(document).on('change', '#organization_type_id', function(e) {
+        $(document).on('change', '#organization_type_id', function (e) {
             let or_type_id = $(this).val();
             if (or_type_id == 2) {
                 $('#rjsc_reg_no_div').addClass('d-none');
@@ -406,22 +942,22 @@
 
         });
 
-        $(document).on('change', '#organization_subcategory_id', function(e) {
+        $(document).on('change', '#organization_subcategory_id', function (e) {
             e.preventDefault();
             let _this_value = $(this).val();
             if (_this_value) {
                 $.ajax({
                     type: "GET",
                     url: "{{ url('organization-work-area-options') }}/" + _this_value,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('#organization_work_area_id').prop("disabled", true);
                         console.log("Searcing Work Area");
                     },
-                    success: function(response) {
+                    success: function (response) {
                         $('#organization_work_area_id').html(response)
                         $('#organization_work_area_id').prop("disabled", false);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
                     }
@@ -432,7 +968,7 @@
 
         // Present address district selector: load districts for selected division
         // Registered address: load district options when division changes
-        $(document).on('change', '#division_id', function(e) {
+        $(document).on('change', '#division_id', function (e) {
             e.preventDefault();
             let district_id = $('#district_id')
             let division_id = $(this).val();
@@ -440,15 +976,15 @@
                 $.ajax({
                     type: "GET",
                     url: "{{ url('/get-districts-by-division') }}/" + division_id,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         district_id.prop("disabled", true);
                         console.log("Searcing Districts");
                     },
-                    success: function(response) {
+                    success: function (response) {
                         district_id.html(response)
                         district_id.prop("disabled", false);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         district_id.prop("disabled", true);
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
@@ -461,7 +997,7 @@
         })
 
         // Registered address: after district selection, load thana, city corporation, and pourashava options
-        $(document).on('change', '#district_id', function(e) {
+        $(document).on('change', '#district_id', function (e) {
             e.preventDefault();
             let district_id = $(this).val();
             let thana_id = $("#thana_id");
@@ -473,15 +1009,15 @@
                 $.ajax({
                     type: "GET",
                     url: "{{ url('/get-thanas-by-district') }}/" + district_id,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         thana_id.prop("disabled", true);
                         console.log("Searcing Thana");
                     },
-                    success: function(response) {
+                    success: function (response) {
                         thana_id.html(response)
                         thana_id.prop("disabled", false);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         thana_id.prop("disabled", true);
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
@@ -491,15 +1027,15 @@
                 $.ajax({
                     type: "GET",
                     url: "{{ url('/get-city-corporation-by-district') }}/" + district_id,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         city_corporation_id.prop("disabled", true);
                         console.log("Searcing City Corporation");
                     },
-                    success: function(response) {
+                    success: function (response) {
                         city_corporation_id.html(response)
                         city_corporation_id.prop("disabled", false);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         city_corporation_id.prop("disabled", true);
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
@@ -509,15 +1045,15 @@
                 $.ajax({
                     type: "GET",
                     url: "{{ url('/get-pourashava-by-district') }}/" + district_id,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         pourashova_id.prop("disabled", true);
                         console.log("Searcing Pourashava");
                     },
-                    success: function(response) {
+                    success: function (response) {
                         pourashova_id.html(response)
                         pourashova_id.prop("disabled", false);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         pourashova_id.prop("disabled", true);
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
@@ -531,7 +1067,7 @@
 
         })
 
-        $(document).on('change', '#thana_id', function(e) {
+        $(document).on('change', '#thana_id', function (e) {
             e.preventDefault();
             let thana_id = $(this).val();
             let postOffice_id = $('#post_office_id');
@@ -541,15 +1077,15 @@
                 $.ajax({
                     type: "GET",
                     url: "{{ url('/get-postOffice-by-thana') }}/" + thana_id,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         postOffice_id.prop("disabled", true);
                         console.log("Searcing Post Offices");
                     },
-                    success: function(response) {
+                    success: function (response) {
                         postOffice_id.html(response)
                         postOffice_id.prop("disabled", false);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         postOffice_id.prop("disabled", true);
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
@@ -559,15 +1095,15 @@
                 $.ajax({
                     type: "GET",
                     url: "{{ url('/get-unions-by-thana') }}/" + thana_id,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         union_id.prop("disabled", true);
                         console.log("Searcing Unions");
                     },
-                    success: function(response) {
+                    success: function (response) {
                         union_id.html(response)
                         union_id.prop("disabled", false);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         union_id.prop("disabled", true);
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
@@ -578,7 +1114,7 @@
             }
         })
 
-        $('#pourashova_id, #union_id').change(function(e) {
+        $('#pourashova_id, #union_id, #city_corporation_id').change(function (e) {
             e.preventDefault();
             let village_id = $('#village_id')
             let _this_value = $(this).val();
@@ -588,15 +1124,15 @@
                 $.ajax({
                     type: "GET",
                     url: "{{ url('/get-villages-by-type') }}/" + _this_value + '/' + _this_type,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         village_id.prop("disabled", true);
                         console.log("Searcing Districts");
                     },
-                    success: function(response) {
+                    success: function (response) {
                         village_id.html(response)
                         village_id.prop("disabled", false);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         village_id.prop("disabled", true);
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
@@ -612,7 +1148,7 @@
         // Office address dropdown list
 
         // Office address: load districts when an office division is selected
-        $(document).on('change', '#office_division_id', function(e) {
+        $(document).on('change', '#office_division_id', function (e) {
             e.preventDefault();
             let district_id = $('#office_district_id')
             let division_id = $(this).val();
@@ -620,15 +1156,15 @@
                 $.ajax({
                     type: "GET",
                     url: "{{ url('/get-districts-by-division') }}/" + division_id,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         district_id.prop("disabled", true);
                         console.log("Searcing Districts");
                     },
-                    success: function(response) {
+                    success: function (response) {
                         district_id.html(response)
                         district_id.prop("disabled", false);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         district_id.prop("disabled", true);
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
@@ -642,7 +1178,7 @@
 
 
         // Office address: after office district selection, load office thana, city corporation, and pourashava options
-        $(document).on('change', '#office_district_id', function(e) {
+        $(document).on('change', '#office_district_id', function (e) {
             e.preventDefault();
             let district_id = $(this).val();
             let thana_id = $("#office_thana_id");
@@ -653,15 +1189,15 @@
                 $.ajax({
                     type: "GET",
                     url: "{{ url('/get-thanas-by-district') }}/" + district_id,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         thana_id.prop("disabled", true);
                         console.log("Searcing Thana");
                     },
-                    success: function(response) {
+                    success: function (response) {
                         thana_id.html(response)
                         thana_id.prop("disabled", false);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         thana_id.prop("disabled", true);
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
@@ -671,15 +1207,15 @@
                 $.ajax({
                     type: "GET",
                     url: "{{ url('/get-city-corporation-by-district') }}/" + district_id,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         city_corporation_id.prop("disabled", true);
                         console.log("Searcing City Corporation");
                     },
-                    success: function(response) {
+                    success: function (response) {
                         city_corporation_id.html(response)
                         city_corporation_id.prop("disabled", false);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         city_corporation_id.prop("disabled", true);
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
@@ -690,15 +1226,15 @@
                 $.ajax({
                     type: "GET",
                     url: "{{ url('/get-pourashava-by-district') }}/" + district_id,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         pourashova_id.prop("disabled", true);
                         console.log("Searcing Pourashava");
                     },
-                    success: function(response) {
+                    success: function (response) {
                         pourashova_id.html(response)
                         pourashova_id.prop("disabled", false);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         pourashova_id.prop("disabled", true);
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
@@ -712,7 +1248,7 @@
 
         })
 
-        $(document).on('change', '#office_thana_id', function(e) {
+        $(document).on('change', '#office_thana_id', function (e) {
             e.preventDefault();
             let thana_id = $(this).val();
             let postOffice_id = $('#office_post_office_id');
@@ -722,15 +1258,15 @@
                 $.ajax({
                     type: "GET",
                     url: "{{ url('/get-postOffice-by-thana') }}/" + thana_id,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         postOffice_id.prop("disabled", true);
                         console.log("Searcing Post Offices");
                     },
-                    success: function(response) {
+                    success: function (response) {
                         postOffice_id.html(response)
                         postOffice_id.prop("disabled", false);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         postOffice_id.prop("disabled", true);
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
@@ -740,15 +1276,15 @@
                 $.ajax({
                     type: "GET",
                     url: "{{ url('/get-unions-by-thana') }}/" + thana_id,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         union_id.prop("disabled", true);
                         console.log("Searcing Unions");
                     },
-                    success: function(response) {
+                    success: function (response) {
                         union_id.html(response)
                         union_id.prop("disabled", false);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         union_id.prop("disabled", true);
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
@@ -759,7 +1295,7 @@
             }
         })
 
-        $('#office_pourashova_id, #office_union_id').change(function(e) {
+        $('#office_pourashova_id, #office_union_id, #office_city_corporation_id').change(function (e) {
             e.preventDefault();
             let village_id = $('#office_village_id')
             let _this_value = $(this).val();
@@ -768,15 +1304,15 @@
                 $.ajax({
                     type: "GET",
                     url: "{{ url('/get-villages-by-type') }}/" + _this_value + '/' + _this_type,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         village_id.prop("disabled", true);
                         console.log("Searcing Districts");
                     },
-                    success: function(response) {
+                    success: function (response) {
                         village_id.html(response)
                         village_id.prop("disabled", false);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         village_id.prop("disabled", true);
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
@@ -789,21 +1325,34 @@
         })
 
         // Registered address location type: show/hide city, union, or pourashava selectors based on radio selection
-        $(document).on('change', '.location-type-radio', function() {
-            let val = $(this).val();
-
-            // Toggle active card class
-            let container = $(this).closest('.col-sm-10');
-            container.find('.location-type-card').removeClass('active');
-            if ($(this).is(':checked')) {
-                $(this).closest('.location-type-card').addClass('active');
+        // Handle click on location card label to set checked state of the nested radio button
+        $(document).on('click', '.location-type-card', function() {
+            let radio = $(this).find('input[type="radio"]');
+            if (radio.length) {
+                radio.prop('checked', true).trigger('change');
+                
+                // Toggle active classes
+                if ($(this).hasClass('office-location-type-card')) {
+                    $('.office-location-type-card').removeClass('active');
+                } else if ($(this).hasClass('premises-ownership-card')) {
+                    $('.premises-ownership-card').removeClass('active');
+                } else {
+                    $('.location-type-card:not(.office-location-type-card):not(.premises-ownership-card)').removeClass('active');
+                }
+                $(this).addClass('active');
             }
+        });
 
+        // Registered address location type change handler
+        $(document).on('change', 'input[name="location_type"]', function() {
+            let val = $(this).val();
             $('.present_address_filed').removeClass('d-none');
             $('.thana_list').removeClass('d-none');
             $('.po_list').removeClass('d-none');
-
-            // Show selected location type and hide others
+            
+            // Clear village selection on type change
+            $('#village_id').html('<option value="">Select Village</option>').trigger('change');
+            
             if (val == 'city_type') {
                 $('.city_type').removeClass('d-none');
                 $('.union_type').addClass('d-none');
@@ -819,22 +1368,16 @@
             }
         });
 
-        // Office address location type: show/hide office city, union, or pourashava selectors based on radio selection
-        $(document).on('change', '.office-location-type-radio', function() {
+        // Office address location type change handler
+        $(document).on('change', 'input[name="office_location_type"]', function() {
             let val = $(this).val();
-
-            // Toggle active card class
-            let container = $(this).closest('.col-sm-10');
-            container.find('.office-location-type-card').removeClass('active');
-            if ($(this).is(':checked')) {
-                $(this).closest('.office-location-type-card').addClass('active');
-            }
-
             $('.office_address_field').removeClass('d-none');
             $('.office_thana_list').removeClass('d-none');
             $('.office_po_list').removeClass('d-none');
-
-            // Show selected office location type and hide others
+            
+            // Clear village selection on type change
+            $('#office_village_id').html('<option value="">Select Village</option>').trigger('change');
+            
             if (val == 'city_type') {
                 $('.office_city_type').removeClass('d-none');
                 $('.office_union_type').addClass('d-none');
@@ -850,21 +1393,13 @@
             }
         });
 
-        // Premises ownership: show owned or rented document sections based on radio selection
+        // Premises ownership change handler
         $(document).on('change', 'input[name="premises_ownership"]', function() {
-            // Toggle active card class
-            let container = $(this).closest('.col-sm-10');
-            container.find('.premises-ownership-card').removeClass('active');
-            if ($(this).is(':checked')) {
-                $(this).closest('.premises-ownership-card').addClass('active');
-            }
-
-            // When 'owned' is selected, show owned documents section and hide rented section
-            if ($(this).val() === 'owned') {
+            let val = $(this).val();
+            if (val === 'owned') {
                 $('.premises-docs-owned').removeClass('d-none');
                 $('.premises-docs-rented').addClass('d-none');
-            } else if ($(this).val() === 'rented') {
-                // When 'rented' is selected, show rented documents section and hide owned section
+            } else if (val === 'rented') {
                 $('.premises-docs-rented').removeClass('d-none');
                 $('.premises-docs-owned').addClass('d-none');
             }
@@ -877,13 +1412,13 @@
             let newRow = `
                 <div class="row align-items-center mb-2 premises-doc-row">
                     <div class="col-sm-5">
-                        <input type="text" name="${target}_document_name[]" class="form-control form-control-sm"
-                            placeholder="Enter Document Name" required style="border-color: #cbd5e1; font-weight: 500; color: #475569;">
+                        <input type="text" name="${target}_document_name[]" class="form-control"
+                            placeholder="Enter Document Name" required>
                     </div>
                     <div class="col-sm-5">
                         <div class="custom-file">
-                            <input type="file" name="${target}_document_file[]" class="custom-file-input form-control-sm" required>
-                            <label class="custom-file-label col-form-label-sm" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Choose file...</label>
+                            <input type="file" name="${target}_document_file[]" class="custom-file-input" required>
+                            <label class="custom-file-label">Choose file...</label>
                         </div>
                     </div>
                     <div class="col-sm-2 text-right">

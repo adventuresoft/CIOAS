@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Models\BasicSettings\Village;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\BelongsToInstitute;
 
 class House extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToInstitute;
 
     public static $snakeAttributes = false;
     protected $table = "houses";

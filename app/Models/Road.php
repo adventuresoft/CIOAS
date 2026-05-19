@@ -6,10 +6,11 @@ use App\Models\BasicSettings\RoadCategory;
 use App\Models\BasicSettings\RoadType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\BelongsToInstitute;
 
 class Road extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToInstitute;
 
     public static $snakeAttributes = false;
     public $table = 'roads';

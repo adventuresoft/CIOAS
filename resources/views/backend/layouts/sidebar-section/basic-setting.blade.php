@@ -49,6 +49,7 @@
     </a>
     <ul class="nav nav-treeview">
 
+        @if (has_module_access('city-corporation'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.city-corporation.index') }}"
                 class="nav-link {{ $subMenu == 'CityCorporation' ? 'active' : '' }}">
@@ -56,7 +57,9 @@
                 <p>City Corporation</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('city-corporation-ward'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.city-corporation-ward.index') }}"
                 class="nav-link {{ $subMenu == 'CityCorporationWard' ? 'active' : '' }}">
@@ -64,6 +67,9 @@
                 <p>City Corporation Ward</p>
             </a>
         </li>
+        @endif
+
+        @if (has_module_access('family-category'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.family-category.index') }}"
                 class="nav-link {{ $subMenu == 'FamilyCategory' ? 'active' : '' }}">
@@ -71,6 +77,9 @@
                 <p>Family Category</p>
             </a>
         </li>
+        @endif
+
+        @if (has_module_access('family-subcategory'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.family-subcategory.index') }}"
                 class="nav-link {{ $subMenu == 'FamilySubcategory' ? 'active' : '' }}">
@@ -78,8 +87,9 @@
                 <p>Family Subcategory</p>
             </a>
         </li>
-        {{-- departments --}}
+        @endif
 
+        @if (has_module_access('department'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.department.index') }}"
                 class="nav-link {{ $subMenu == 'Department' ? 'active' : '' }}">
@@ -87,9 +97,9 @@
                 <p>Departments</p>
             </a>
         </li>
-        {{-- departments end --}}
+        @endif
 
-        {{-- hotel-restaurant --}}
+        @if (has_module_access('hotel-category'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.hotel-category.index') }}"
                 class="nav-link {{ $subMenu == 'HotelCategory' ? 'active' : '' }}">
@@ -97,6 +107,9 @@
                 <p>Hotel Category</p>
             </a>
         </li>
+        @endif
+
+        @if (has_module_access('hotel-subcategory'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.hotel-subcategory.index') }}"
                 class="nav-link {{ $subMenu == 'HotelSubcategory' ? 'active' : '' }}">
@@ -104,7 +117,9 @@
                 <p>Hotel Subcategory</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('family-type'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.family-type.index') }}"
                 class="nav-link {{ $subMenu == 'FamilyType' ? 'active' : '' }}">
@@ -112,13 +127,18 @@
                 <p>Family Type</p>
             </a>
         </li>
+        @endif
+
+        @if (has_module_access('financial-year') || has_module_access('financialyear'))
         <li class="nav-item">
             <a href="#" class="nav-link {{ $subMenu == 'FinancialYear' ? 'active' : '' }} ">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Financial Year</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('house-ownership-type'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.house-ownership-type.index') }}"
                 class="nav-link {{ $subMenu == 'HouseOwnershipType' ? 'active' : '' }} ">
@@ -126,7 +146,9 @@
                 <p>House Ownership Type</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('house-type'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.house-type.index') }}"
                 class="nav-link {{ $subMenu == 'HouseType' ? 'active' : '' }}">
@@ -134,7 +156,9 @@
                 <p>House Type</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('house-category'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.house-category.index') }}"
                 class="nav-link {{ $subMenu == 'HouseType' ? 'active' : '' }} @if ($subMenu == 'HouseCategory') active @endif">
@@ -142,7 +166,9 @@
                 <p>House Category</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('land-type'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.land-type.index') }}"
                 class="nav-link  {{ $subMenu == 'HouseType' ? 'active' : '' }} @if ($subMenu == 'LandType') active @endif">
@@ -150,6 +176,9 @@
                 <p>Land Type</p>
             </a>
         </li>
+        @endif
+
+        @if (has_module_access('land-class'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.land-class.index') }}"
                 class="nav-link {{ $subMenu == 'HouseType' ? 'active' : '' }} @if ($subMenu == 'LandClass') active @endif">
@@ -157,6 +186,9 @@
                 <p>Land Class</p>
             </a>
         </li>
+        @endif
+
+        @if (has_module_access('land-ownership-type'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.land-ownership-type.index') }}"
                 class="nav-link {{ $subMenu == 'HouseType' ? 'active' : '' }} @if ($subMenu == 'LandOwnershipType') active @endif">
@@ -164,25 +196,9 @@
                 <p>Land Ownership Type</p>
             </a>
         </li>
-        {{-- <li class="nav-item">
-          <a href="{{route('basic-settings.market-category.index')}}" class="nav-link {{$subMenu == 'HouseType'?'active':''}} @if ($subMenu == 'MarketCategory') active @endif">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Market Category</p>
-          </a>
-        </li> --}}
-        {{-- <li class="nav-item">
-          <a href="{{route('basic-settings.market-type.index')}}" class="nav-link {{$subMenu == 'HouseType'?'active':''}} @if ($subMenu == 'MarketType') active @endif">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Market Type</p>
-          </a>
-        </li> --}}
-        {{-- <li class="nav-item">
-          <a href="{{route('basic-settings.market-ownership-type.index')}}" class="nav-link {{$subMenu == 'HouseType'?'active':''}} @if ($subMenu == 'MarketOwnershipType') active @endif">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Market Ownership Type</p>
-          </a>
-        </li> --}}
+        @endif
 
+        @if (has_module_access('organization-category'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.organization-category.index') }}"
                 class="nav-link {{ $subMenu == 'HouseType' ? 'active' : '' }} @if ($subMenu == 'OrganizationCategory') active @endif">
@@ -190,7 +206,9 @@
                 <p>Organization Category</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('organization-subcategory'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.organization-subcategory.index') }}"
                 class="nav-link {{ $subMenu == 'HouseType' ? 'active' : '' }} @if ($subMenu == 'OrganizationSubcategory') active @endif">
@@ -198,7 +216,9 @@
                 <p>Org. Subcategory</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('organization-work-area'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.organization-work-area.index') }}"
                 class="nav-link {{ $subMenu == 'HouseType' ? 'active' : '' }}  @if ($subMenu == 'OrganizationWorkArea') active @endif">
@@ -206,9 +226,9 @@
                 <p>Org. Work Area</p>
             </a>
         </li>
+        @endif
 
-
-
+        @if (has_module_access('organization-type'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.organization-type.index') }}"
                 class="nav-link {{ $subMenu == 'CityCorporationWard' ? 'active' : '' }} @if ($subMenu == 'OrganizationType') active @endif">
@@ -216,9 +236,9 @@
                 <p>Organization Type</p>
             </a>
         </li>
+        @endif
 
-
-
+        @if (has_module_access('organization-ownership') || has_module_access('organization_ownership'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.organization-ownership-type.index') }}"
                 class="nav-link {{ $subMenu == 'CityCorporationWard' ? 'active' : '' }} @if ($subMenu == 'OrganizationOwnershipType') active @endif">
@@ -226,7 +246,9 @@
                 <p>Org. Ownership Type</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('profession') || has_module_access('professions'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.profession.index') }}"
                 class="nav-link {{ $subMenu == 'CityCorporationWard' ? 'active' : '' }} @if ($subMenu == 'Profession') active @endif">
@@ -234,7 +256,9 @@
                 <p>Profession</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('profession-type'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.profession-type.index') }}"
                 class="nav-link {{ $subMenu == 'ProfessionType' ? 'active' : '' }} ">
@@ -242,7 +266,9 @@
                 <p>Profession Type</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('profession-category'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.profession-category.index') }}"
                 class="nav-link {{ $subMenu == 'ProfessionCategory' ? 'active' : '' }}">
@@ -250,7 +276,9 @@
                 <p>Profession Category</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('profession-subcategory'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.profession-subcategory.index') }}"
                 class="nav-link {{ $subMenu == 'ProfessionSubcategory' ? 'active' : '' }} @">
@@ -258,7 +286,9 @@
                 <p>Profession Subcategory</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('road-category'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.road-category.index') }}"
                 class="nav-link {{ $subMenu == 'RoadCategory' ? 'active' : '' }} ">
@@ -266,7 +296,9 @@
                 <p>Road Category</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('road-type'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.road-type.index') }}"
                 class="nav-link {{ $subMenu == 'RoadType' ? 'active' : '' }}">
@@ -274,7 +306,9 @@
                 <p>Road Type</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('road-owner'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.road-owner.index') }}"
                 class="nav-link {{ $subMenu == 'RoadOwner' ? 'active' : '' }}">
@@ -282,7 +316,9 @@
                 <p>Road Owner</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('reserve-ward'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.reserve-ward.index') }}"
                 class="nav-link {{ $subMenu == 'ReserveWard' ? 'active' : '' }}">
@@ -290,7 +326,9 @@
                 <p>Reserve Ward</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('union') || has_module_access('unions'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.union.index') }}"
                 class="nav-link {{ $subMenu == 'CityCorporationWard' ? 'active' : '' }} {{ $subMenu == 'Union' ? 'active' : '' }} ">
@@ -298,8 +336,9 @@
                 <p>Union</p>
             </a>
         </li>
+        @endif
 
-
+        @if (has_module_access('union-ward'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.union-ward.index') }}"
                 class="nav-link {{ $subMenu == 'UnionWard' ? 'active' : '' }} ">
@@ -307,8 +346,9 @@
                 <p>Union Ward</p>
             </a>
         </li>
+        @endif
 
-
+        @if (has_module_access('vehicle-category'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.vehicle-category.index') }}"
                 class="nav-link {{ $subMenu == 'VehicleCategory' ? 'active' : '' }}">
@@ -316,7 +356,9 @@
                 <p>Vehicle Category</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('vehicle-type'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.vehicle-type.index') }}"
                 class="nav-link {{ $subMenu == 'VehicleType' ? 'active' : '' }}  ">
@@ -324,7 +366,9 @@
                 <p>Vehicle Type</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('village') || has_module_access('villages'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.village.index') }}"
                 class="nav-link {{ $subMenu == 'Village' ? 'active' : '' }}">
@@ -332,7 +376,9 @@
                 <p>Village</p>
             </a>
         </li>
+        @endif
 
+        @if (has_module_access('village-area'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.village-area.index') }}"
                 class="nav-link {{ $subMenu == 'VillageArea' ? 'active' : '' }} ">
@@ -340,8 +386,7 @@
                 <p>Village Area</p>
             </a>
         </li>
-
-
+        @endif
 
     </ul>
 </li>

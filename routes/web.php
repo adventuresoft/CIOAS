@@ -405,6 +405,7 @@ Route::group([ 'prefix' => 'dashboard', 'middleware' => [ 'auth' ] ], function (
         Route::post('department-section/store', [ DepartmentSectionController::class, 'store' ])->name('department-section.store');
         Route::post('department-section/show/{id}', [ DepartmentSectionController::class, 'show' ])->name('department-section.show');
         Route::delete('department-section/delete/{id}', [ DepartmentSectionController::class, 'destroy' ])->name('department-section.destroy');
+        Route::get('get-sections-by-department/{department_id}', [ DepartmentSectionController::class, 'getSectionsByDepartment' ])->name('get-sections-by-department');
 
 
     });
@@ -422,6 +423,9 @@ Route::group([ 'prefix' => 'dashboard', 'middleware' => [ 'auth' ] ], function (
 
     // ApplicationFormController
 
+    Route::post('application-form/{id}/assign', [ ApplicationFormController::class, 'assignDepartmentSection' ])->name('application-form.assign');
+    Route::post('application-form/{id}/receive', [ ApplicationFormController::class, 'receive' ])->name('application-form.receive');
+    Route::post('application-form/{id}/approve', [ ApplicationFormController::class, 'approve' ])->name('application-form.approve');
     Route::resource('application-form', ApplicationFormController::class);
 
     Route::resource('chairman', ChairmanController::class);

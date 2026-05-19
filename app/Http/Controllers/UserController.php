@@ -52,7 +52,8 @@ class UserController extends Controller
     {
         $roles = Role::all();
         $institutes = Institute::with(['union', 'pourashava', 'cityCorporation', 'district', 'type'])->get();
-        return view('backend.pages.user.create', compact('roles', 'institutes'))
+        $departments = \App\Models\Department\Department::all();
+        return view('backend.pages.user.create', compact('roles', 'institutes', 'departments'))
             ->with(['title' => 'Register Operator', 'page' => 'user']);
     }
 
@@ -65,6 +66,8 @@ class UserController extends Controller
             'password' => 'required|min:6|confirmed',
             'institute_id' => 'required',
             'role_id' => 'required',
+            'department_id' => 'nullable|integer',
+            'section_id' => 'nullable|integer',
             'status' => 'required|in:0,1'
         ]);
 
@@ -76,6 +79,8 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
             $user->institute_id = $request->institute_id;
             $user->role_id = $request->role_id;
+            $user->department_id = $request->department_id;
+            $user->section_id = $request->section_id;
             $user->status = $request->status;
             $user->save();
 
@@ -105,7 +110,9 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $roles = Role::all();
         $institutes = Institute::with(['union', 'pourashava', 'cityCorporation', 'district', 'type'])->get();
-        return view('backend.pages.user.edit', compact('user', 'roles', 'institutes'))
+        $departments = \App\Models\Department\Department::all();
+        $sections = $user->department_id ? \App\Models\Department\Section::where('department_id', $user->department_id)->get() : collect([]);
+        return view('backend.pages.user.edit', compact('user', 'roles', 'institutes', 'departments', 'sections'))
             ->with(['title' => 'Modify Operator', 'page' => 'user']);
     }
 
@@ -119,6 +126,8 @@ class UserController extends Controller
             'password' => 'nullable|min:6|confirmed',
             'institute_id' => 'required',
             'role_id' => 'required',
+            'department_id' => 'nullable|integer',
+            'section_id' => 'nullable|integer',
             'status' => 'required|in:0,1'
         ]);
 
@@ -131,6 +140,8 @@ class UserController extends Controller
             }
             $user->institute_id = $request->institute_id;
             $user->role_id = $request->role_id;
+            $user->department_id = $request->department_id;
+            $user->section_id = $request->section_id;
             $user->status = $request->status;
             $user->save();
 

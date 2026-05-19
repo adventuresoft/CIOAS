@@ -169,6 +169,35 @@
 
                         <div class="row">
                             <div class="col-md-6 form-group mb-4">
+                                <label class="form-label-premium" for="department_id">Department</label>
+                                <select name="department_id" id="department_id" 
+                                        class="form-control form-control-premium @error('department_id') is-invalid @enderror">
+                                    <option value="" selected>-- Select Department --</option>
+                                    @foreach($departments as $department)
+                                        <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>
+                                            {{ $department->name }} ({{ $department->bn_name }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('department_id')
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 form-group mb-4">
+                                <label class="form-label-premium" for="section_id">Section</label>
+                                <select name="section_id" id="section_id" 
+                                        class="form-control form-control-premium @error('section_id') is-invalid @enderror">
+                                    <option value="" selected>-- Select Section --</option>
+                                </select>
+                                @error('section_id')
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 form-group mb-4">
                                 <label class="form-label-premium" for="password">Access Password</label>
                                 <input type="password" name="password" id="password" 
                                        class="form-control form-control-premium @error('password') is-invalid @enderror" 
@@ -248,3 +277,32 @@
     </div>
 </div>
 @endsection
+
+@push('script')
+<script>
+    $(document).ready(function() {
+        $('#department_id').on('change', function() {
+            var departmentId = $(this).val();
+            var sectionSelect = $('#section_id');
+            
+            sectionSelect.html('<option value="">-- Select Section --</option>');
+            
+            if (departmentId) {
+                $.ajax({
+                    url: "{{ route('basic-settings.get-sections-by-department', '') }}/" + departmentId,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $.each(data, function(key, section) {
+                            sectionSelect.append('<option value="' + section.id + '">' + section.name + ' (' + (section.bn_name ? section.bn_name : '') + ')</option>');
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Failed to load sections: " + error);
+                    }
+                });
+            }
+        });
+    });
+</script>
+@endpush

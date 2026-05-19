@@ -2,9 +2,11 @@
 
 namespace App\Models\ApplicationForm;
 
+use App\Models\Department\Department;
+use App\Models\Department\Section;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Override;
 
 class ApplicationFrom extends Model
 {
@@ -26,11 +28,19 @@ class ApplicationFrom extends Model
         'created_by',
         'updated_by',
         'current_department_id',
+        'current_section_id',
         'current_officer_id',
         'receive_id',
         'status',
         'note',
+        'approval_note',
+        'approved_by',
+        'approved_at',
         'application_number',
+    ];
+
+    protected $casts = [
+        'approved_at' => 'datetime',
     ];
 
     protected static function boot()
@@ -47,7 +57,32 @@ class ApplicationFrom extends Model
 
     public function assignments()
     {
-        return $this->hasMany(ApplicationFrom::class);
+        return $this->hasMany(ApplicationAssign::class, 'application_from_id')->latest('id');
+    }
+
+    public function currentDepartment()
+    {
+        return $this->belongsTo(Department::class, 'current_department_id');
+    }
+
+    public function currentSection()
+    {
+        return $this->belongsTo(Section::class, 'current_section_id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function receiver()
+    {
+        return $this->belongsTo(User::class, 'receive_id');
+    }
+
+    public function approver()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
     }
 
 }

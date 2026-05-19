@@ -72,6 +72,17 @@ if (!function_exists('is_superadmin')) {
     }
 }
 
+if (!function_exists('is_developer')) {
+    function is_developer()
+    {
+        if (!Auth::check()) {
+            return false;
+        }
+        $user = Auth::user();
+        return $user->role_id == 4 || $user->hasRole('Developer');
+    }
+}
+
 if (!function_exists('is_institutional_admin')) {
     function is_institutional_admin()
     {
@@ -86,7 +97,7 @@ if (!function_exists('is_institutional_admin')) {
 if (!function_exists('create_permission')) {
     function create_permission($module = null)
     {
-        if (is_superadmin()) {
+        if (is_developer()) {
             return true;
         }
         if (!Auth::check()) {
@@ -100,7 +111,7 @@ if (!function_exists('create_permission')) {
 if (!function_exists('edit_permission')) {
     function edit_permission($module = null)
     {
-        if (is_superadmin()) {
+        if (is_developer()) {
             return true;
         }
         if (!Auth::check()) {
@@ -114,7 +125,7 @@ if (!function_exists('edit_permission')) {
 if (!function_exists('view_permission')) {
     function view_permission($module = null)
     {
-        if (is_superadmin()) {
+        if (is_developer()) {
             return true;
         }
         if (!Auth::check()) {
@@ -128,7 +139,7 @@ if (!function_exists('view_permission')) {
 if (!function_exists('delete_permission')) {
     function delete_permission($module = null)
     {
-        if (is_superadmin()) {
+        if (is_developer()) {
             return true;
         }
         if (!Auth::check()) {
@@ -142,14 +153,14 @@ if (!function_exists('delete_permission')) {
 if (!function_exists('basic_settings_permissions')) {
     function basic_settings_permissions()
     {
-        return is_superadmin() || (Auth::check() && Auth::user()->can('basic_settings.read'));
+        return is_developer() || (Auth::check() && Auth::user()->can('basic_settings.read'));
     }
 }
 
 if (!function_exists('institute_permissions')) {
     function institute_permissions()
     {
-        return is_superadmin() || (Auth::check() && Auth::user()->can('institutions.read'));
+        return is_developer() || (Auth::check() && Auth::user()->can('institutions.read'));
     }
 }
 
@@ -163,3 +174,43 @@ if (!function_exists('access_management_permission')) {
         ));
     }
 }
+
+if (!function_exists('has_module_access')) {
+    function has_module_access($module)
+    {
+        if (is_developer()) {
+            return true;
+        }
+        if (!Auth::check()) {
+            return false;
+        }
+        $moduleSnake = str_replace('-', '_', $module);
+        $moduleKebab = str_replace('_', '-', $module);
+        
+        return Auth::user()->can("$module.read") || 
+               Auth::user()->can("$moduleSnake.read") || 
+               Auth::user()->can("$moduleKebab.read") || 
+               Auth::user()->can("$module.create") || 
+               Auth::user()->can("$moduleSnake.create") || 
+               Auth::user()->can("$moduleKebab.create");
+    }
+}
+
+if (!function_exists('has_sub_module_access')) {
+    function has_sub_module_access($module, $action = 'read')
+    {
+        if (is_developer()) {
+            return true;
+        }
+        if (!Auth::check()) {
+            return false;
+        }
+        $moduleSnake = str_replace('-', '_', $module);
+        $moduleKebab = str_replace('_', '-', $module);
+        
+        return Auth::user()->can("$module.$action") || 
+               Auth::user()->can("$moduleSnake.$action") || 
+               Auth::user()->can("$moduleKebab.$action");
+    }
+}
+

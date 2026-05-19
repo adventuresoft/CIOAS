@@ -28,7 +28,9 @@
                                     <h3 class="card-title">Application Form List</h3>
                                 </div>
                                 <div class="col-md-6 text-right">
-                                    <a href="{{ route('application-form.create') }}" class="btn btn-primary">Create</a>
+                                    @if ($canCreateApplication ?? true)
+                                        <a href="{{ route('application-form.create') }}" class="btn btn-primary">Create</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -39,7 +41,12 @@
                                     <thead>
                                         <tr>
                                             <th>Sl.</th>
+                                            <th>Application No</th>
                                             <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Current Department</th>
+                                            <th>Current Section</th>
+                                            <th>Received By</th>
                                             <th>Recipient</th>
                                             <th>Subject</th>
                                             <th>Sender</th>
@@ -52,7 +59,26 @@
                                         @foreach ($applicationForms as $key => $item)
                                             <tr>
                                                 <td>{{ ++$key }}</td>
+                                                <td>{{ $item->application_number ?? '-' }}</td>
                                                 <td>{{ $item->date ? date('d M, Y', strtotime($item->date)) : '-' }}</td>
+                                                <td>
+                                                    @php
+                                                        $statusBadge = match ($item->status) {
+                                                            'pending' => 'secondary',
+                                                            'assigned' => 'info',
+                                                            'received' => 'primary',
+                                                            'approved' => 'success',
+                                                            'rejected' => 'danger',
+                                                            default => 'secondary',
+                                                        };
+                                                    @endphp
+                                                    <span class="badge badge-{{ $statusBadge }}">
+                                                        {{ ucfirst($item->status ?? 'pending') }}
+                                                    </span>
+                                                </td>
+                                                <td>{{ $item->currentDepartment->name ?? '-' }}</td>
+                                                <td>{{ $item->currentSection->name ?? '-' }}</td>
+                                                <td>{{ $item->receiver->name ?? '-' }}</td>
                                                 <td>{{ $item->recipient }}</td>
                                                 <td>{{ $item->subject }}</td>
                                                 <td>{{ $item->sender }}</td>
@@ -64,15 +90,17 @@
                                                             href="{{ route('application-form.show', $item->id) }}"><i
                                                                 class="fa fa-eye"></i></a>
 
-                                                        <form class="deleteApplicationForm" method="post">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <input type="hidden" class="deleteUrl"
-                                                                value="{{ route('application-form.destroy', $item->id) }}">
-                                                            <button type="submit" title="Delete" data-toggle="tooltip"
-                                                                class="btn btn-sm btn-danger"><i
-                                                                    class="fa fa-trash"></i></button>
-                                                        </form>
+                                                        @if ($canManageAllApplications ?? false)
+                                                            <form class="deleteApplicationForm" method="post">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <input type="hidden" class="deleteUrl"
+                                                                    value="{{ route('application-form.destroy', $item->id) }}">
+                                                                <button type="submit" title="Delete" data-toggle="tooltip"
+                                                                    class="btn btn-sm btn-danger"><i
+                                                                        class="fa fa-trash"></i></button>
+                                                            </form>
+                                                        @endif
                                                     </div>
                                                 </td>
                                             </tr>

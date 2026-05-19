@@ -10,11 +10,12 @@ use App\Models\VillageArea;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use App\Traits\BelongsToInstitute;
 
 
 class Tax extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToInstitute;
 
     public function user()
     {

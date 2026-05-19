@@ -294,18 +294,27 @@ class InstituteController extends Controller
 
     public function admin($id)
     {
+        $institute = Institute::with('superUser')->find($id);
+        $data['institute'] = $institute;
+        $data['departments'] = \App\Models\Department\Department::all();
+        
+        $superUser = $institute->superUser ?? null;
+        $data['sections'] = ($superUser && $superUser->department_id)
+            ? \App\Models\Department\Section::where('department_id', $superUser->department_id)->get()
+            : collect([]);
 
-        $data['institute'] = Institute::with('superUser')->find($id);
         return view('backend.pages.institute.admin', $data);
     }
 
     public function adminStore(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'name'     => 'required|max:190',
-            'email'    => 'required|max:190|email',
-            'mobile'   => 'nullable|max:190',
-            'password' => 'required|min:6',
+            'name'          => 'required|max:190',
+            'email'         => 'required|max:190|email',
+            'mobile'        => 'nullable|max:190',
+            'password'      => 'required|min:6',
+            'department_id' => 'nullable|integer',
+            'section_id'    => 'nullable|integer',
         ]);
 
         if ($validate->fails()) {
@@ -320,7 +329,9 @@ class InstituteController extends Controller
             $user = new User();
         }
 
-        $user->institute_id = $request->institute_id;
+        $user->institute_id  = $request->institute_id;
+        $user->department_id = $request->department_id;
+        $user->section_id    = $request->section_id;
         $user->role_id      = 6;
         $user->email        = $request->email;
         $user->status       = true;

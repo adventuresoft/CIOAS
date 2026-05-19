@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\ApplicationForm;
 
-use App\Models\ApplicationForm\ApplicationFrom;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use App\Models\ApplicationForm\ApplicationAssign;
-use Illuminate\Support\Facades\Log;
+use App\Models\ApplicationForm\ApplicationFrom;
+use App\Models\Department\Department;
+use App\Models\Department\Section;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Traits\FileUploadTrait;
 
 class ApplicationFormController extends Controller
@@ -21,8 +23,24 @@ class ApplicationFormController extends Controller
      */
     public function index()
     {
-        $applicationForms = ApplicationFrom::latest()->get();
-        return view('backend.pages.application-form.index', compact('applicationForms'));
+        $user = auth()->user();
+        $query = ApplicationFrom::query()
+            ->with([ 'currentDepartment', 'currentSection', 'receiver' ])
+            ->latest();
+
+        if (!$this->canViewAllApplications($user)) {
+            $this->applyDepartmentScope($query, $user);
+        }
+
+        $applicationForms = $query->get();
+        $canCreateApplication = $this->canCreateApplication($user);
+        $canManageAllApplications = $this->canViewAllApplications($user);
+
+        return view('backend.pages.application-form.index', compact(
+            'applicationForms',
+            'canCreateApplication',
+            'canManageAllApplications'
+        ));
     }
 
     /**
@@ -32,6 +50,10 @@ class ApplicationFormController extends Controller
      */
     public function create()
     {
+        if (!$this->canCreateApplication(auth()->user())) {
+            abort(403, 'Only frontdesk users can create application forms.');
+        }
+
         return view('backend.pages.application-form.create');
     }
 
@@ -43,9 +65,14 @@ class ApplicationFormController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate($this->rules());
+        if (!$this->canCreateApplication(auth()->user())) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Only frontdesk users can create application forms.',
+            ], 403);
+        }
 
-        // dd($request->all());
+        $request->validate($this->rules());
 
         $applicationForm = new ApplicationFrom();
         $applicationForm->fill($request->only($this->formFields()));
@@ -74,8 +101,46 @@ class ApplicationFormController extends Controller
      */
     public function show($id)
     {
-        $applicationForm = ApplicationFrom::findOrFail($id);
-        return view('backend.pages.application-form.view', compact('applicationForm'));
+        $applicationForm = ApplicationFrom::with([
+            'currentDepartment',
+            'currentSection',
+            'creator',
+            'receiver',
+            'approver',
+            'assignments.fromDepartment',
+            'assignments.fromSection',
+            'assignments.toDepartment',
+            'assignments.toSection',
+            'assignments.fromUser',
+            'assignments.assignedByUser',
+            'assignments.receivedByUser',
+        ])->findOrFail($id);
+
+        if (!$this->canAccessApplication(auth()->user(), $applicationForm)) {
+            abort(403, 'You do not have permission to view this application.');
+        }
+
+        $departments = Department::orderBy('name')->get();
+        $sections = $applicationForm->current_department_id
+            ? Section::where('department_id', $applicationForm->current_department_id)->orderBy('name')->get()
+            : collect();
+
+        $canManageAllApplications = $this->canViewAllApplications(auth()->user());
+        $canAssign = $this->canAssignApplication(auth()->user(), $applicationForm);
+        $canReceive = $this->canReceiveApplication(auth()->user(), $applicationForm);
+        $canApprove = $this->canApproveApplication(auth()->user(), $applicationForm);
+        $showApproveForm = $this->canAccessApplication(auth()->user(), $applicationForm) || $canManageAllApplications;
+
+        return view('backend.pages.application-form.view', compact(
+            'applicationForm',
+            'departments',
+            'sections',
+            'canManageAllApplications',
+            'canAssign',
+            'canReceive',
+            'canApprove',
+            'showApproveForm'
+        ));
     }
 
     /**
@@ -86,6 +151,10 @@ class ApplicationFormController extends Controller
      */
     public function edit($id)
     {
+        if (!$this->canViewAllApplications(auth()->user())) {
+            abort(403, 'You do not have permission to edit this application.');
+        }
+
         $applicationForm = ApplicationFrom::findOrFail($id);
         return view('backend.pages.application-form.edit', compact('applicationForm'));
     }
@@ -99,6 +168,13 @@ class ApplicationFormController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!$this->canViewAllApplications(auth()->user())) {
+            return response()->json([
+                'status' => false,
+                'message' => 'You do not have permission to update this application.',
+            ], 403);
+        }
+
         $request->validate($this->rules());
 
         $applicationForm = ApplicationFrom::findOrFail($id);
@@ -106,8 +182,8 @@ class ApplicationFormController extends Controller
         $applicationForm->updated_by = optional(auth()->user())->id;
 
         if ($request->hasFile('attachment')) {
-            $this->deleteAttachment($applicationForm->attachment);
-            $applicationForm->attachment = $this->uploadAttachment($request->file('attachment'));
+            $this->deleteFile($applicationForm->attachment);
+            $applicationForm->attachment = $this->uploadFile($request->attachment, 'uploads/application-form/', 'app_doc_');
         }
 
         $applicationForm->save();
@@ -126,6 +202,13 @@ class ApplicationFormController extends Controller
      */
     public function destroy($id)
     {
+        if (!$this->canViewAllApplications(auth()->user())) {
+            return response()->json([
+                'status' => false,
+                'message' => 'You do not have permission to delete this application.',
+            ], 403);
+        }
+
         $applicationForm = ApplicationFrom::findOrFail($id);
         $this->deleteFile($applicationForm->attachment);
         $applicationForm->delete();
@@ -133,6 +216,154 @@ class ApplicationFormController extends Controller
         return response()->json([
             'status'  => true,
             'message' => 'Application Form Deleted Successfully!',
+        ], 200);
+    }
+
+    public function assignDepartmentSection(Request $request, $id): JsonResponse
+    {
+        $request->validate([
+            'department_id' => 'required|exists:departments,id',
+            'section_id' => 'required|exists:sections,id',
+            'note' => 'nullable|string|max:1000',
+        ]);
+
+        $applicationForm = ApplicationFrom::findOrFail($id);
+        $user = auth()->user();
+
+        if (!$this->canAssignApplication($user, $applicationForm)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'You do not have permission to assign this application.',
+            ], 403);
+        }
+
+        $section = Section::where('id', $request->section_id)
+            ->where('department_id', $request->department_id)
+            ->first();
+
+        if (!$section) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Selected section does not belong to the selected department.',
+            ], 422);
+        }
+
+        DB::transaction(function () use ($applicationForm, $request, $user) {
+            $fromDepartmentId = $applicationForm->current_department_id;
+            $fromSectionId = $applicationForm->current_section_id;
+            $fromUserId = $applicationForm->receive_id;
+
+            $applicationForm->current_department_id = $request->department_id;
+            $applicationForm->current_section_id = $request->section_id;
+            $applicationForm->current_officer_id = null;
+            $applicationForm->receive_id = null;
+            $applicationForm->status = 'assigned';
+            $applicationForm->note = $request->note;
+            $applicationForm->approval_note = null;
+            $applicationForm->approved_by = null;
+            $applicationForm->approved_at = null;
+            $applicationForm->updated_by = optional($user)->id;
+            $applicationForm->save();
+
+            ApplicationAssign::create([
+                'application_from_id' => $applicationForm->id,
+                'from_department_id' => $fromDepartmentId,
+                'from_section_id' => $fromSectionId,
+                'to_department_id' => $request->department_id,
+                'to_section_id' => $request->section_id,
+                'from_user_id' => $fromUserId,
+                'assigned_by' => optional($user)->id,
+                'note' => $request->note,
+                'is_received' => false,
+            ]);
+        });
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Application assigned successfully. Status set to assigned.',
+        ], 200);
+    }
+
+    public function receive($id): JsonResponse
+    {
+        $applicationForm = ApplicationFrom::findOrFail($id);
+        $user = auth()->user();
+
+        if (!$this->canReceiveApplication($user, $applicationForm)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'You do not have permission to receive this application.',
+            ], 403);
+        }
+
+        DB::transaction(function () use ($applicationForm, $user) {
+            $applicationForm->status = 'received';
+            $applicationForm->receive_id = $user->id;
+            $applicationForm->current_officer_id = $user->id;
+            $applicationForm->updated_by = $user->id;
+            $applicationForm->save();
+
+            $assignQuery = ApplicationAssign::where('application_from_id', $applicationForm->id)
+                ->where('to_department_id', $user->department_id)
+                ->whereNull('received_at');
+
+            if (!empty($user->section_id)) {
+                $assignQuery->where('to_section_id', $user->section_id);
+            } else {
+                $assignQuery->whereNull('to_section_id');
+            }
+
+            $latestAssign = $assignQuery->latest('id')->first();
+
+            if ($latestAssign) {
+                $latestAssign->is_received = true;
+                $latestAssign->received_by = $user->id;
+                $latestAssign->received_at = now();
+                $latestAssign->save();
+            }
+        });
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Application received successfully. Status set to received.',
+        ], 200);
+    }
+
+    public function approve(Request $request, $id): JsonResponse
+    {
+        $request->validate([
+            'approval_note' => 'required|string|max:1000',
+        ]);
+
+        $applicationForm = ApplicationFrom::findOrFail($id);
+        $user = auth()->user();
+
+        if (!$this->canApproveApplication($user, $applicationForm)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'You do not have permission to approve this application.',
+            ], 403);
+        }
+
+        if ($applicationForm->status !== 'received') {
+            return response()->json([
+                'status' => false,
+                'message' => 'Application must be received before approval.',
+            ], 422);
+        }
+
+        DB::transaction(function () use ($applicationForm, $request, $user) {
+            $applicationForm->status = 'approved';
+            $applicationForm->approval_note = $request->approval_note;
+            $applicationForm->approved_by = $user->id;
+            $applicationForm->approved_at = now();
+            $applicationForm->updated_by = $user->id;
+            $applicationForm->save();
+        });
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Application approved successfully.',
         ], 200);
     }
 
@@ -145,10 +376,10 @@ class ApplicationFormController extends Controller
             'sender'      => 'required|string|max:255',
             'nid_no'      => 'nullable|string|max:30',
             'mobile'      => 'nullable|string|max:20',
-            'address'     => 'nullable|string|max:20',
-            'father_name' => 'nullable|string|max:20',
-            'email'       => 'nullable|string|max:20',
-            'form-type'   => 'nullable|string|max:20',
+            'address'     => 'nullable|string|max:500',
+            'father_name' => 'nullable|string|max:255',
+            'email'       => 'nullable|email|max:255',
+            'form_type'   => 'nullable|string|max:100',
             'message'     => 'nullable|string',
             'attachment'  => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
         ];
@@ -169,6 +400,128 @@ class ApplicationFormController extends Controller
             'form_type',
             'message',
         ];
+    }
+
+    private function canViewAllApplications($user): bool
+    {
+        if (!$user) {
+            return false;
+        }
+
+        if (function_exists('is_developer') && is_developer()) {
+            return true;
+        }
+
+        if (function_exists('is_superadmin') && is_superadmin()) {
+            return true;
+        }
+
+        return $user->hasAnyRole([
+            'Frontdesk',
+            'Front Desk',
+            'Front Desk Officer',
+            'Frontdesk Officer',
+            'Admin',
+            'Developer',
+        ]);
+    }
+
+    private function canCreateApplication($user): bool
+    {
+        if (!$user) {
+            return false;
+        }
+
+        if ($this->canViewAllApplications($user)) {
+            return true;
+        }
+
+        return $user->hasAnyRole([
+            'Frontdesk',
+            'Front Desk',
+            'Front Desk Officer',
+            'Frontdesk Officer',
+        ]);
+    }
+
+    private function applyDepartmentScope($query, $user): void
+    {
+        if (empty($user?->department_id)) {
+            $query->whereRaw('1 = 0');
+            return;
+        }
+
+        $query->where('current_department_id', $user->department_id);
+
+        if (!empty($user->section_id)) {
+            $query->where(function ($sectionQuery) use ($user) {
+                $sectionQuery->whereNull('current_section_id')
+                    ->orWhere('current_section_id', $user->section_id);
+            });
+            return;
+        }
+
+        $query->whereNull('current_section_id');
+    }
+
+    private function canAccessApplication($user, ApplicationFrom $applicationForm): bool
+    {
+        if (!$user) {
+            return false;
+        }
+
+        if ($this->canViewAllApplications($user)) {
+            return true;
+        }
+
+        if (empty($user->department_id) || empty($applicationForm->current_department_id)) {
+            return false;
+        }
+
+        if ((int) $user->department_id !== (int) $applicationForm->current_department_id) {
+            return false;
+        }
+
+        if (!empty($applicationForm->current_section_id)) {
+            return !empty($user->section_id) && (int) $user->section_id === (int) $applicationForm->current_section_id;
+        }
+
+        return true;
+    }
+
+    private function canAssignApplication($user, ApplicationFrom $applicationForm): bool
+    {
+        return $this->canViewAllApplications($user) || $this->canAccessApplication($user, $applicationForm);
+    }
+
+    private function canReceiveApplication($user, ApplicationFrom $applicationForm): bool
+    {
+        if (!in_array($applicationForm->status, [ 'assigned', 'pending' ], true)) {
+            return false;
+        }
+
+        if ($this->canViewAllApplications($user)) {
+            return true;
+        }
+
+        return $this->canAccessApplication($user, $applicationForm);
+    }
+
+    private function canApproveApplication($user, ApplicationFrom $applicationForm): bool
+    {
+        if ($applicationForm->status !== 'received') {
+            return false;
+        }
+
+        if (!$user) {
+            return false;
+        }
+
+        if ($this->canViewAllApplications($user)) {
+            return true;
+        }
+
+        return $this->canAccessApplication($user, $applicationForm);
     }
 
 }

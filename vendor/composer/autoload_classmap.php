@@ -295,6 +295,7 @@ return array(
     'App\\Providers\\BroadcastServiceProvider' => $baseDir . '/app/Providers/BroadcastServiceProvider.php',
     'App\\Providers\\EventServiceProvider' => $baseDir . '/app/Providers/EventServiceProvider.php',
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
+    'App\\Traits\\BelongsToInstitute' => $baseDir . '/app/Traits/BelongsToInstitute.php',
     'App\\Traits\\FileUploadTrait' => $baseDir . '/app/Traits/FileUploadTrait.php',
     'App\\Traits\\SystemIdGenerator' => $baseDir . '/app/Traits/SystemIdGenerator.php',
     'App\\View\\Components\\AddressSelect' => $baseDir . '/app/View/Components/AddressSelect.php',

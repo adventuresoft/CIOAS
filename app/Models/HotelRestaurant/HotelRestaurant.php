@@ -25,12 +25,12 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 use App\Models\Organization\OrganizationOwnership;
 use App\Models\Organization\OrganizationType;
 use App\Models\HotelRestaurant\HotelRestaurantOwnership;
-
+use App\Traits\BelongsToInstitute;
 
 
 class HotelRestaurant extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToInstitute;
 
     public static $snakeAttributes = false;
     protected     $table           = "hotel_restaurants";

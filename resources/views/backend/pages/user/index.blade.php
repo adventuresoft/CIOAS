@@ -245,7 +245,6 @@
                                 <th>Operator Profile</th>
                                 <th>Contact & Area</th>
                                 <th>Roles</th>
-                                <th>Permissions</th>
                                 <th>Status</th>
                                 <th style="width: 160px" class="text-center">Actions</th>
                             </tr>
@@ -306,29 +305,6 @@
                                             @endforeach
                                         @else
                                             <span class="text-muted font-italic" style="font-size: 0.85rem;">No role</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @php
-                                            $allPermissions = $item->getAllPermissions();
-                                            $groupedPerms = [];
-                                            foreach ($allPermissions as $perm) {
-                                                $parts = explode('.', $perm->name);
-                                                $module = $parts[0] ?? 'general';
-                                                $groupedPerms[$module] = ($groupedPerms[$module] ?? 0) + 1;
-                                            }
-                                        @endphp
-                                        @if(count($groupedPerms) > 0)
-                                            <div class="d-flex flex-wrap" style="gap: 6px; max-width: 280px;">
-                                                @foreach($groupedPerms as $module => $count)
-                                                    <span class="d-inline-flex align-items-center bg-light border px-2 py-1 text-dark" style="border-radius: 6px; font-size: 0.82rem; font-weight: 600; border-color: #cbd5e1 !important;">
-                                                        {{ ucfirst(str_replace('_', ' ', $module)) }}
-                                                        <span class="badge badge-secondary ml-1" style="background-color: #64748b; color: #fff; font-size: 0.72rem; padding: 2px 5px; border-radius: 4px;">{{ $count }}</span>
-                                                    </span>
-                                                @endforeach
-                                            </div>
-                                        @else
-                                            <span class="text-muted font-italic" style="font-size: 0.85rem;">No permissions</span>
                                         @endif
                                     </td>
                                     <td>

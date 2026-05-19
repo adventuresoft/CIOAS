@@ -90,7 +90,7 @@
                                                 <option value="regular">নিয়মিত ভিত্তিতে (Regular)</option>
                                                 <option value="urgent">জরুরি ভিত্তিতে (Urgent)</option>
                                             </select>
-                                            <small class="text-danger error form-type_error"></small>
+                                            <small class="text-danger error form_type_error"></small>
                                         </div>
                                     </div>
                                 </div>

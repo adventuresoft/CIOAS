@@ -68,4 +68,10 @@ class DepartmentSectionController extends Controller
         ], 200);
 
     }
+
+    public function getSectionsByDepartment($department_id)
+    {
+        $sections = Section::where('department_id', $department_id)->get();
+        return response()->json($sections);
+    }
 }

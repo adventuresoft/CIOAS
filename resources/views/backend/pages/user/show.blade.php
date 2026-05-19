@@ -215,6 +215,33 @@
                             </div>
                         </div>
                     </div>
+
+                    <hr class="my-4">
+
+                    <h5 class="font-weight-bold text-dark mb-3">
+                        <i class="fas fa-shield-alt text-primary mr-1"></i> Active System Permissions
+                    </h5>
+                    @php
+                        $allPermissions = $user->getAllPermissions();
+                        $groupedPerms = [];
+                        foreach ($allPermissions as $perm) {
+                            $parts = explode('.', $perm->name);
+                            $module = $parts[0] ?? 'general';
+                            $groupedPerms[$module] = ($groupedPerms[$module] ?? 0) + 1;
+                        }
+                    @endphp
+                    @if(count($groupedPerms) > 0)
+                        <div class="d-flex flex-wrap" style="gap: 8px;">
+                            @foreach($groupedPerms as $module => $count)
+                                <span class="d-inline-flex align-items-center bg-light border px-3 py-2 text-dark" style="border-radius: 8px; font-size: 0.88rem; font-weight: 600; border-color: #cbd5e1 !important;">
+                                    {{ ucfirst(str_replace('_', ' ', $module)) }}
+                                    <span class="badge badge-secondary ml-2" style="background-color: #64748b; color: #fff; font-size: 0.75rem; padding: 3px 6px; border-radius: 4px;">{{ $count }}</span>
+                                </span>
+                            @endforeach
+                        </div>
+                    @else
+                        <span class="text-muted font-italic">No Permissions Mapped</span>
+                    @endif
                 </div>
             </div>
         </div>

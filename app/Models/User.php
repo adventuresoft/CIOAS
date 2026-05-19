@@ -21,10 +21,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Spatie\Permission\Traits\HasRoles;
+use App\Traits\BelongsToInstitute;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable,HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, BelongsToInstitute;
 
     /**
      * The attributes that are mass assignable.
@@ -36,6 +37,8 @@ class User extends Authenticatable
     protected $fillable = [
         'system_id',
         'institute_id',
+        'department_id',
+        'section_id',
         'role_id',
         'name',
         'email',
@@ -77,6 +80,16 @@ class User extends Authenticatable
     public function institute()
     {
         return $this->belongsTo(Institute::class, 'institute_id', 'id');
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(\App\Models\Department\Department::class, 'department_id', 'id');
+    }
+
+    public function section()
+    {
+        return $this->belongsTo(\App\Models\Department\Section::class, 'section_id', 'id');
     }
 
     public function people()

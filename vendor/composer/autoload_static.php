@@ -842,6 +842,7 @@ class ComposerStaticInit0c443acd1b8f8dabad321b32ed04772e
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
+        'App\\Traits\\BelongsToInstitute' => __DIR__ . '/../..' . '/app/Traits/BelongsToInstitute.php',
         'App\\Traits\\FileUploadTrait' => __DIR__ . '/../..' . '/app/Traits/FileUploadTrait.php',
         'App\\Traits\\SystemIdGenerator' => __DIR__ . '/../..' . '/app/Traits/SystemIdGenerator.php',
         'App\\View\\Components\\AddressSelect' => __DIR__ . '/../..' . '/app/View/Components/AddressSelect.php',

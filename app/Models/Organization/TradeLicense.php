@@ -6,11 +6,12 @@ use App\Models\Tax\TaxYear;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use App\Traits\BelongsToInstitute;
 
 
 class TradeLicense extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToInstitute;
 
 
     public function taxYear()

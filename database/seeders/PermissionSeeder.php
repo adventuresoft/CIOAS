@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
 
 class PermissionSeeder extends Seeder
 {
@@ -15,74 +16,143 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        // Reset cached roles and permissions
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        // Standard actions for every module
+        $actions = [ 'read', 'create', 'update', 'delete' ];
 
-        // Define modules
+        // Comprehensive module list from sidebar/web.php
         $modules = [
-            'people',
-            'certificates',
-            'institutions',
-            'trades',
-            'taxes',
-            'houses',
-            'lands',
-            'vehicles',
-            'roads',
-            'marriages',
-            'divorces',
-            'roles',
-            'permissions',
-            'users',
             'basic_settings',
+            'institutional_admin',
+            'certificate',
+            'certificates',
+            'bridge',
+            'bridges',
+            'market',
+            'markets',
+            'people',
+            'dashboard',
+            'city_corporation',
+            'city_corporation_ward',
+            'family_category',
+            'family_subcategory',
+            'family_type',
+            'house_ownership_type',
+            'house_type',
+            'house_category',
+            'land_type',
+            'land_class',
+            'land_ownership_type',
+            'organization_category',
+            'organization_subcategory',
+            'organization_work_area',
+            'organization_type',
+            'profession',
+            'professions',
+            'profession_category',
+            'profession_subcategory',
+            'profession_type',
+            'road_category',
+            'road_type',
+            'road_owner',
+            'vehicle_category',
+            'vehicle_subcategory',
+            'vehicle_type',
+            'union_ward',
+            'village',
+            'villages',
+            'village_area',
+            'union',
+            'unions',
+            'institute',
+            'institutions',
+            'institute_category',
+            'institute_type',
+            'age_certificate',
+            'character_certificate',
+            'childless_certificate',
+            'citizen_certificate',
+            'disability_certificate',
+            'financial_instability_certificate',
+            'guardian_certificate',
+            'landless_certificate',
+            'married_certificate',
+            'name_certificate',
+            'nid_correction_certificate',
+            'orphan_certificate',
+            'permanent_citizen_certificate',
+            'remarried_certificate',
+            'residential_certificate',
+            'unmarried_certificate',
+            'voter_area_certificate',
+            'voter_list_certificate',
+            'yearly_income_certificate',
+            'organization',
+            'organizations',
+            'trade_license',
+            'trades',
+            'tax',
+            'taxes',
+            'house',
+            'houses',
+            'land',
+            'lands',
+            'vehicle',
+            'vehicles',
+            'road',
+            'roads',
+            'marriage',
+            'marriages',
+            'divorce',
+            'divorces',
+            'chairman',
+            'councilor',
+            'role',
+            'roles',
+            'permission',
+            'permissions',
+            'user',
+            'users',
+            'hotel_category',
+            'hotel_subcategory',
+            'hotel_restaurant',
+            'hotel_restaurant_ownership',
+            'department',
             'departments',
-            'sections'
+            'department_section',
+            'sections',
+            'application_form',
+            'organization_ownership',
+            'house_ownership',
+            'registration_fees',
+            'renew_fees',
+            'reserve_ward',
+            'market_type',
+            'market_category',
+            'market_ownership_type'
         ];
-
-        $actions = ['read', 'create', 'update', 'delete'];
-        $permissions = [];
 
         foreach ($modules as $module) {
             foreach ($actions as $action) {
-                $permissionName = "{$module}.{$action}";
-                
-                // Find or create permission
-                $permissions[] = Permission::firstOrCreate([
-                    'name' => $permissionName,
+                $permissionName = $module . '.' . $action;
+                Permission::firstOrCreate([
+                    'name'       => $permissionName,
                     'guard_name' => 'web'
                 ]);
             }
         }
 
-        // Get Superadmin (Admin) and Developer roles
-        $superAdminRole = Role::where('id', 1)->orWhere('name', 'Admin')->first();
-        if (!$superAdminRole) {
-            $superAdminRole = Role::firstOrCreate(['name' => 'Admin', 'guard_name' => 'web', 'slug' => 'admin', 'created_by' => 1]);
-        }
+        // Assign all permissions to Superadmin (Role 1) and Developer (Role 4)
+        $superAdminRole = Role::find(1);
+        $developerRole  = Role::find(4);
 
-        $developerRole = Role::where('id', 4)->orWhere('name', 'Developer')->first();
-        if (!$developerRole) {
-            $developerRole = Role::firstOrCreate(['name' => 'Developer', 'guard_name' => 'web', 'slug' => 'developer', 'created_by' => 1]);
-        }
-
-        // Sync all permissions to Superadmin and Developer
         if ($superAdminRole) {
-            $superAdminRole->syncPermissions($permissions);
+            $allPermissions = Permission::all();
+            $superAdminRole->syncPermissions($allPermissions);
         }
+
         if ($developerRole) {
-            $developerRole->syncPermissions($permissions);
-        }
-
-        // Also make sure user ID 1 and user ID 4 (or whatever users have these roles) are assigned to these roles in model_has_roles
-        // We will assign the roles to the default admin/developer users in the system if they exist.
-        $adminUsers = \App\Models\User::where('role_id', 1)->get();
-        foreach ($adminUsers as $u) {
-            $u->assignRole($superAdminRole);
-        }
-
-        $devUsers = \App\Models\User::where('role_id', 4)->get();
-        foreach ($devUsers as $u) {
-            $u->assignRole($developerRole);
+            $allPermissions = Permission::all();
+            $developerRole->syncPermissions($allPermissions);
         }
     }
 }
