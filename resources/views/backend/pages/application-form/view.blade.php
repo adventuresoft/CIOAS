@@ -7,13 +7,17 @@
             min-height: auto;
             box-shadow: none;
             border: 1px solid #e9ecef;
+            display: flex;
+    font-weight: 500;
+    gap: 5px;
+    flex-direction: column;
         }
 
         .application-view .info-label {
             color: #6c757d;
             font-size: 13px;
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 0x;
             text-transform: uppercase;
         }
 
@@ -213,20 +217,44 @@
 
                             <div class="row mt-2">
                                 <div class="col-md-6">
-                                    <div class="info-box p-3">
-                                        <div>
-                                            <div class="info-label">Approved By</div>
-                                            <p class="info-value">{{ $applicationForm->approver->name ?? '-' }}</p>
+                                    <div class="card card-outline card-info p-3 mb-0 h-100">
+                                        <h5 class="text-info font-weight-bold mb-3" style="font-size: 15px;">Initial Approval (প্রথম অনুমোদন)</h5>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-2">
+                                                <div class="info-label text-xs">Approved By</div>
+                                                <p class="info-value font-weight-bold">{{ $applicationForm->initialApprover->name ?? ($applicationForm->approver->name ?? '-') }}</p>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <div class="info-label text-xs">Approved At</div>
+                                                <p class="info-value">
+                                                    {{ $applicationForm->initial_approved_at ? $applicationForm->initial_approved_at->format('d M, Y h:i A') : ($applicationForm->approved_at ? $applicationForm->approved_at->format('d M, Y h:i A') : '-') }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="info-label text-xs">Initial Approval Note</div>
+                                                <p class="info-value text-muted" style="white-space: pre-line;">{{ $applicationForm->initial_approval_note ?? ($applicationForm->approval_note ?? '-') }}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="info-box p-3">
-                                        <div>
-                                            <div class="info-label">Approved At</div>
-                                            <p class="info-value">
-                                                {{ $applicationForm->approved_at ? $applicationForm->approved_at->format('d M, Y h:i A') : '-' }}
-                                            </p>
+                                    <div class="card card-outline card-success p-3 mb-0 h-100">
+                                        <h5 class="text-success font-weight-bold mb-3" style="font-size: 15px;">Final Approval (ফাইনাল অনুমোদন)</h5>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-2">
+                                                <div class="info-label text-xs">Approved By</div>
+                                                <p class="info-value font-weight-bold">{{ $applicationForm->finalApprover->name ?? '-' }}</p>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <div class="info-label text-xs">Approved At</div>
+                                                <p class="info-value">
+                                                    {{ $applicationForm->final_approved_at ? $applicationForm->final_approved_at->format('d M, Y h:i A') : '-' }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="info-label text-xs">Final Approval Note</div>
+                                                <p class="info-value text-muted" style="white-space: pre-line;">{{ $applicationForm->final_approval_note ?? '-' }}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -246,18 +274,26 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-3">
-                                <div class="col-md-12">
-                                    <div class="info-box p-3">
-                                        <div class="info-label">Last Assignment Note</div>
-                                        <p class="info-value">{{ $applicationForm->note ?? '-' }}</p>
+                            @if($applicationForm->revision_note)
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <div class="info-box p-3 bg-light-warning" style="border-left: 4px solid #ffc107;">
+                                            <div class="info-label text-warning font-weight-bold">Revision Note (সংশোধন নোট)</div>
+                                            <p class="info-value text-dark" style="white-space: pre-line;">{{ $applicationForm->revision_note }}</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
 
                             <div class="row mt-3">
-                                <div class="col-md-12">
-                                    <div class="info-box p-3">
+                                <div class="col-md-6">
+                                    <div class="info-box p-3 h-100">
+                                        <div class="info-label">Last Assignment Note</div>
+                                        <p class="info-value">{{ $applicationForm->note ?? ($applicationForm->assignments->first()->note ?? '-') }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-box p-3 h-100">
                                         <div class="info-label">Approval Note</div>
                                         <p class="info-value">{{ $applicationForm->approval_note ?? '-' }}</p>
                                     </div>
@@ -402,10 +438,13 @@
                                                     @if ($applicationForm->status !== 'approved' && $applicationForm->status !== 'rejected')
                                                         @if ($canApprove)
                                                             <div class="card-footer text-right">
-                                                                @if ($applicationForm->status === 'processing')
-                                                                    <button type="button" class="btn btn-danger mr-2" id="rejectBtn">
-                                                                        Reject
-                                                                    </button>
+                                                                 @if ($applicationForm->status === 'processing')
+                                                                     <button type="button" class="btn btn-warning text-white mr-2" id="revisionBtn">
+                                                                         Revision
+                                                                     </button>
+                                                                     <button type="button" class="btn btn-danger mr-2" id="rejectBtn">
+                                                                         Reject
+                                                                     </button>
                                                                     <button type="submit" class="btn btn-success" id="approveBtn">
                                                                         Final Approve
                                                                     </button>
@@ -612,6 +651,18 @@
                 $('#status_action').val('approve');
             });
 
+            $('#revisionBtn').on('click', function() {
+                $('#status_action').val('revision');
+                // Ensure approval note is provided when sending for revision
+                const approvalNote = $('#approval_note').val().trim();
+                if (!approvalNote) {
+                    toastr.error('Revision করার জন্য নোট লেখা আবশ্যিক।');
+                    $('#approval_note').focus();
+                    return;
+                }
+                $('#approveForm').submit();
+            });
+
             $('#rejectBtn').on('click', function() {
                 $('#status_action').val('reject');
                 // Ensure approval note is provided when rejecting
@@ -629,6 +680,7 @@
                 const thisForm = $(this);
                 const submitBtn = $('#approveBtn');
                 const rejectBtn = $('#rejectBtn');
+                const revisionBtn = $('#revisionBtn');
 
                 $.ajax({
                     type: 'POST',
@@ -637,11 +689,13 @@
                     beforeSend: function() {
                         submitBtn.prop('disabled', true);
                         rejectBtn.prop('disabled', true);
+                        revisionBtn.prop('disabled', true);
                         thisForm.find('.error').text('');
                     },
                     success: function(response) {
                         submitBtn.prop('disabled', false);
                         rejectBtn.prop('disabled', false);
+                        revisionBtn.prop('disabled', false);
                         toastr.success(response.message);
                         setTimeout(function() {
                             location.reload();
@@ -650,6 +704,7 @@
                     error: function(xhr) {
                         submitBtn.prop('disabled', false);
                         rejectBtn.prop('disabled', false);
+                        revisionBtn.prop('disabled', false);
 
                         if (xhr.status === 422) {
                             const response = xhr.responseJSON || {};
