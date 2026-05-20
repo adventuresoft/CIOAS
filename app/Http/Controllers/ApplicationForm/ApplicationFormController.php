@@ -303,17 +303,10 @@ class ApplicationFormController extends Controller
             $applicationForm->updated_by = $user->id;
             $applicationForm->save();
 
-            $assignQuery = ApplicationAssign::where('application_from_id', $applicationForm->id)
-                ->where('to_department_id', $user->department_id)
-                ->whereNull('received_at');
-
-            if (!empty($user->section_id)) {
-                $assignQuery->where('to_section_id', $user->section_id);
-            } else {
-                $assignQuery->whereNull('to_section_id');
-            }
-
-            $latestAssign = $assignQuery->latest('id')->first();
+            $latestAssign = ApplicationAssign::where('application_from_id', $applicationForm->id)
+                ->where('is_received', false)
+                ->latest('id')
+                ->first();
 
             if ($latestAssign) {
                 $latestAssign->is_received = true;
@@ -338,32 +331,49 @@ class ApplicationFormController extends Controller
         $applicationForm = ApplicationFrom::findOrFail($id);
         $user = auth()->user();
 
-        if (!$this->canApproveApplication($user, $applicationForm)) {
+        if ($applicationForm->status === 'received') {
+            if (!$this->canApproveApplication($user, $applicationForm)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'You do not have permission to approve this application.',
+                ], 403);
+            }
+        } elseif ($applicationForm->status === 'processing') {
+            if (!$user->can('application_form.update')) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Only users with application update access can finally approve or reject this application.',
+                ], 403);
+            }
+        } else {
             return response()->json([
                 'status' => false,
-                'message' => 'You do not have permission to approve this application.',
-            ], 403);
-        }
-
-        if ($applicationForm->status !== 'received') {
-            return response()->json([
-                'status' => false,
-                'message' => 'Application must be received before approval.',
+                'message' => 'Application must be received or processing before approval.',
             ], 422);
         }
 
         DB::transaction(function () use ($applicationForm, $request, $user) {
-            $applicationForm->status = 'approved';
-            $applicationForm->approval_note = $request->approval_note;
-            $applicationForm->approved_by = $user->id;
-            $applicationForm->approved_at = now();
-            $applicationForm->updated_by = $user->id;
+            if ($applicationForm->status === 'received') {
+                $applicationForm->status = 'processing';
+                $applicationForm->approval_note = $request->approval_note;
+                $applicationForm->updated_by = $user->id;
+            } elseif ($applicationForm->status === 'processing') {
+                $applicationForm->status = 'approved';
+                $applicationForm->approval_note = $request->approval_note;
+                $applicationForm->approved_by = $user->id;
+                $applicationForm->approved_at = now();
+                $applicationForm->updated_by = $user->id;
+            }
             $applicationForm->save();
         });
 
+        $message = $applicationForm->status === 'processing' 
+            ? 'Application status updated to processing.' 
+            : 'Application approved successfully.';
+
         return response()->json([
             'status' => true,
-            'message' => 'Application approved successfully.',
+            'message' => $message,
         ], 200);
     }
 
@@ -509,12 +519,16 @@ class ApplicationFormController extends Controller
 
     private function canApproveApplication($user, ApplicationFrom $applicationForm): bool
     {
-        if ($applicationForm->status !== 'received') {
+        if (!in_array($applicationForm->status, ['received', 'processing'], true)) {
             return false;
         }
 
         if (!$user) {
             return false;
+        }
+
+        if ($applicationForm->status === 'processing') {
+            return $user->can('application_form.update');
         }
 
         if ($this->canViewAllApplications($user)) {

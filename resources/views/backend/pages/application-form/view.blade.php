@@ -101,6 +101,7 @@
                                                     'pending' => 'secondary',
                                                     'assigned' => 'info',
                                                     'received' => 'primary',
+                                                    'processing' => 'warning',
                                                     'approved' => 'success',
                                                     'rejected' => 'danger',
                                                     default => 'secondary',
@@ -370,26 +371,52 @@
                                         @if ($showApproveForm ?? false)
                                             <form id="approveForm" method="POST" class="{{ $canReceive ? 'mt-3' : '' }}">
                                                 @csrf
+                                                <input type="hidden" name="status_action" id="status_action" value="approve">
                                                 <div class="card card-outline card-success">
                                                     <div class="card-header">
-                                                        <h3 class="card-title">Approve Application</h3>
+                                                        <h3 class="card-title">
+                                                            @if ($applicationForm->status === 'processing')
+                                                                Final Approve Application
+                                                            @else
+                                                                Approve Application
+                                                            @endif
+                                                        </h3>
                                                     </div>
                                                     <div class="card-body">
                                                         <div class="form-group mb-0">
                                                             <label for="approval_note">Approval Note</label>
                                                             <textarea name="approval_note" id="approval_note" rows="3" class="form-control"
-                                                                placeholder="Approve করার নোট লিখুন" {{ $canApprove ? 'required' : 'disabled' }}></textarea>
+                                                                placeholder="Approve করার নোট লিখুন" {{ $canApprove ? 'required' : 'disabled' }}>{{ $applicationForm->approval_note }}</textarea>
                                                             <small class="text-danger error approval_note_error"></small>
-                                                            @if (!$canApprove)
+                                                            @if ($applicationForm->status === 'approved')
+                                                                <small class="text-success d-block mt-1">আবেদনটি ইতিপূর্বে অনুমোদিত হয়েছে। (Application has been approved)</small>
+                                                            @elseif ($applicationForm->status === 'rejected')
+                                                                <small class="text-danger d-block mt-1">আবেদনটি প্রত্যাখ্যান করা হয়েছে। (Application has been rejected)</small>
+                                                            @elseif ($applicationForm->status === 'processing' && !$canApprove)
+                                                                <small class="text-warning d-block mt-1">আবেদনটি বর্তমানে Processing অবস্থায় আছে। ফাইনাল অ্যাপ্রুভ করার অনুমতি আপনার নেই।</small>
+                                                            @elseif (!$canApprove)
                                                                 <small class="text-muted d-block mt-1">Receive করার পরে Approve করা যাবে।</small>
                                                             @endif
                                                         </div>
                                                     </div>
-                                                    <div class="card-footer text-right">
-                                                        <button type="submit" class="btn btn-success" id="approveBtn" {{ $canApprove ? '' : 'disabled' }}>
-                                                            Approve
-                                                        </button>
-                                                    </div>
+                                                    @if ($applicationForm->status !== 'approved' && $applicationForm->status !== 'rejected')
+                                                        @if ($canApprove)
+                                                            <div class="card-footer text-right">
+                                                                @if ($applicationForm->status === 'processing')
+                                                                    <button type="button" class="btn btn-danger mr-2" id="rejectBtn">
+                                                                        Reject
+                                                                    </button>
+                                                                    <button type="submit" class="btn btn-success" id="approveBtn">
+                                                                        Final Approve
+                                                                    </button>
+                                                                @else
+                                                                    <button type="submit" class="btn btn-success" id="approveBtn">
+                                                                        Approve
+                                                                    </button>
+                                                                @endif
+                                                            </div>
+                                                        @endif
+                                                    @endif
                                                 </div>
                                             </form>
                                         @endif
@@ -437,10 +464,25 @@
                                                         <td>{{ $assign->received_at ? $assign->received_at->format('d M, Y h:i A') : '-' }}</td>
                                                         <td>{{ $assign->note ?? '-' }}</td>
                                                         <td>
-                                                            @if ($assign->is_received)
-                                                                <span class="badge badge-success">Received</span>
+                                                            @if ($key === 0)
+                                                                @php
+                                                                    $badge = match ($applicationForm->status) {
+                                                                        'pending' => 'secondary',
+                                                                        'assigned' => 'info',
+                                                                        'received' => 'primary',
+                                                                        'processing' => 'warning',
+                                                                        'approved' => 'success',
+                                                                        'rejected' => 'danger',
+                                                                        default => 'secondary',
+                                                                    };
+                                                                @endphp
+                                                                <span class="badge badge-{{ $badge }}">{{ ucfirst($applicationForm->status ?? 'pending') }}</span>
                                                             @else
-                                                                <span class="badge badge-info">Assigned</span>
+                                                                @if ($assign->is_received)
+                                                                    <span class="badge badge-success">Received</span>
+                                                                @else
+                                                                    <span class="badge badge-info">Assigned</span>
+                                                                @endif
                                                             @endif
                                                         </td>
                                                     </tr>
@@ -566,10 +608,27 @@
                 });
             });
 
+            $('#approveBtn').on('click', function() {
+                $('#status_action').val('approve');
+            });
+
+            $('#rejectBtn').on('click', function() {
+                $('#status_action').val('reject');
+                // Ensure approval note is provided when rejecting
+                const approvalNote = $('#approval_note').val().trim();
+                if (!approvalNote) {
+                    toastr.error('প্রত্যাখ্যান (Reject) করার জন্য নোট লেখা আবশ্যিক।');
+                    $('#approval_note').focus();
+                    return;
+                }
+                $('#approveForm').submit();
+            });
+
             $('#approveForm').on('submit', function(e) {
                 e.preventDefault();
                 const thisForm = $(this);
                 const submitBtn = $('#approveBtn');
+                const rejectBtn = $('#rejectBtn');
 
                 $.ajax({
                     type: 'POST',
@@ -577,10 +636,12 @@
                     data: thisForm.serialize(),
                     beforeSend: function() {
                         submitBtn.prop('disabled', true);
+                        rejectBtn.prop('disabled', true);
                         thisForm.find('.error').text('');
                     },
                     success: function(response) {
                         submitBtn.prop('disabled', false);
+                        rejectBtn.prop('disabled', false);
                         toastr.success(response.message);
                         setTimeout(function() {
                             location.reload();
@@ -588,6 +649,7 @@
                     },
                     error: function(xhr) {
                         submitBtn.prop('disabled', false);
+                        rejectBtn.prop('disabled', false);
 
                         if (xhr.status === 422) {
                             const response = xhr.responseJSON || {};
