@@ -55,7 +55,9 @@ class StaffProfessionalInfoController extends Controller
                 $user_id = $request->user_id;
 
                 $recruitment_notice_no = $request->recruitment_notice_no;
+                $recruitment_notice_date = $request->recruitment_notice_date;
                 $appointment_letter_no = $request->appointment_letter_no;
+                $appointment_letter_date = $request->appointment_letter_date;
                 $designation_joining = $request->designation_joining;
                 $date_of_joining = $request->date_of_joining;
                 $department = $request->department;
@@ -65,7 +67,9 @@ class StaffProfessionalInfoController extends Controller
                 $date_joining_current_workplace = $request->date_joining_current_workplace;
 
                 $recruitment_notice_noU = $request->recruitment_notice_noU;
+                $recruitment_notice_dateU = $request->recruitment_notice_dateU;
                 $appointment_letter_noU = $request->appointment_letter_noU;
+                $appointment_letter_dateU = $request->appointment_letter_dateU;
                 $designation_joiningU = $request->designation_joiningU;
                 $date_of_joiningU = $request->date_of_joiningU;
                 $departmentU = $request->departmentU;
@@ -81,7 +85,9 @@ class StaffProfessionalInfoController extends Controller
                             $prof = new ProfessionalInfo();
                             $prof->profession_subcategory_id = '0'; // default since not used for staff
                             $prof->recruitment_notice_no = $recruitment_notice_no[$key] ?? null;
+                            $prof->recruitment_notice_date = $recruitment_notice_date[$key] ?? null;
                             $prof->appointment_letter_no = $appointment_letter_no[$key] ?? null;
+                            $prof->appointment_letter_date = $appointment_letter_date[$key] ?? null;
                             $prof->designation_joining = $designation_joining[$key] ?? null;
                             $prof->date_of_joining = $date_of_joining[$key] ?? null;
                             $prof->department = $department[$key] ?? null;
@@ -99,7 +105,9 @@ class StaffProfessionalInfoController extends Controller
                             $profs = ProfessionalInfo::find($key);
                             if ($profs) {
                                 $profs->recruitment_notice_no = $recruitment_notice_noU[$key] ?? null;
+                                $profs->recruitment_notice_date = $recruitment_notice_dateU[$key] ?? null;
                                 $profs->appointment_letter_no = $appointment_letter_noU[$key] ?? null;
+                                $profs->appointment_letter_date = $appointment_letter_dateU[$key] ?? null;
                                 $profs->designation_joining = $designation_joiningU[$key] ?? null;
                                 $profs->date_of_joining = $date_of_joiningU[$key] ?? null;
                                 $profs->department = $departmentU[$key] ?? null;

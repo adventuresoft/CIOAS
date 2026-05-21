@@ -36,35 +36,7 @@
                             <input type="hidden" name="user_id" value="{{$user->id}}">
 
                             <div class="card-body">
-                                <!-- Row 1: Family Member Type & Family Category -->
-                                <div class="form-group row">
-                                    <div class="col-sm-6">
-                                        <label for="family_type_id">Family Member Type <span class="text-danger">*</span></label>
-                                        <select name="family_type_id" required class="form-control" id="family_type_id">
-                                            <option value="">Select Member Type</option>
-                                            @if (count($familyTypes))
-                                                @foreach ($familyTypes as $familyType)
-                                                    <option value="{{$familyType->id}}" {{$user->familyInfo ? ($user->familyInfo->family_type_id == $familyType->id ? 'selected' : '') : ''}}>{{$familyType->en_name}}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        <small class="text-danger error family_type_id_error"></small>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="family_category_id">Family Category <span class="text-danger">*</span></label>
-                                        <select required name="family_category_id" class="form-control" id="family_category_id">
-                                            <option value="">Select Family Category</option>
-                                            @if (count($familyCategories))
-                                                @foreach ($familyCategories as $familyCategory)
-                                                    <option value="{{$familyCategory->id}}" {{$user->familyInfo ? ($user->familyInfo->family_category_id == $familyCategory->id ? 'selected' : '') : ''}}>{{$familyCategory->en_name}}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        <small class="text-danger error family_category_id_error"></small>
-                                    </div>
-                                </div>
-
-                                <!-- Row 2: Father's Name, Father's Name Bangla, Father's Live Status -->
+                                <!-- Row 1: Father's Name, Father's Name Bangla, Father's Live Status -->
                                 <div class="form-group row">
                                     <div class="col-sm-4">
                                         <label for="fatherName">Father's Name</label>

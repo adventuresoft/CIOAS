@@ -60,6 +60,7 @@ class StaffAddressInfoController extends Controller
         $data['permanentVillageAreas'] = [];
         $data['presentVillageAreas'] = [];
         $data['present_villages'] = [];
+        $data['permanent_villages'] = [];
         $data['wards'] = [];
         $data['permanent_houses'] = [];
         $data['roads'] = [];
@@ -80,6 +81,9 @@ class StaffAddressInfoController extends Controller
 
         if (! empty($user->addressInfo->present_union_id)) {
             $data['present_villages'] = Village::where('union_id', $user->addressInfo->present_union_id)->get();
+        }
+        if (! empty($user->addressInfo->permanent_union_id)) {
+            $data['permanent_villages'] = Village::where('union_id', $user->addressInfo->permanent_union_id)->get();
         }
         
         if($user->addressInfo){

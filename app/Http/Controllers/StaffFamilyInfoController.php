@@ -47,7 +47,7 @@ class StaffFamilyInfoController extends Controller
     public function store(Request $request)
     {
             $validate = Validator::make($request->all(), [
-                'family_type_id' => 'required',
+                'family_type_id' => 'nullable',
                 'father_name' => 'nullable|max:190',
                 'father_live_status' => 'nullable|max:190',
                 'father_nid' => 'nullable|max:190',
@@ -75,8 +75,8 @@ class StaffFamilyInfoController extends Controller
                 $peopleFamily = FamilyInfo::updateOrCreate([
                     'user_id' => $request->user_id
                 ], [
-                    'family_type_id' => $request->family_type_id,
-                    'family_category_id' => $request->family_category_id,
+                    'family_type_id' => $request->family_type_id ?? 0,
+                    'family_category_id' => $request->family_category_id ?? null,
                     'father_name' => $request->father_name,
 
                     'father_name_bn' => $request->father_name_bn,

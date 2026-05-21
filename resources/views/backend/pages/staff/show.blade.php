@@ -446,9 +446,6 @@
                 <div class="info-row"><span class="info-label">Mother's Name :</span><span class="info-value">{{ $user->familyInfo->mother_name ?? '' }} </span></div>
                 <div class="info-row"><span class="info-label">Mother's NID :</span><span class="info-value">{{ $user->familyInfo->mother_nid ?? '' }}</span></div>
                 <div class="info-row"><span class="info-label">Marital Status :</span><span class="info-value">{{ family_constant_option('marital_status')[$user->familyInfo->marital_status ?? ''] ?? '' }}</span></div>
-                @if(isset($user->familyInfo->marital_status) && $user->familyInfo->marital_status != 1)
-                <div class="info-row"><span class="info-label">Spouse Name :</span><span class="info-value">{{ $user->familyInfo->spouse_name ?? '' }}</span></div>
-                @endif
             </div>
             <div class="col">
                 <div class="info-row"><span class="info-label">Father's Name :</span><span class="info-value">{{ $user->familyInfo->father_name_bn ?? '' }}</span></div>
@@ -456,7 +453,6 @@
                 <div class="info-row"><span class="info-label">Mother's Name :</span><span class="info-value"> {{ $user->familyInfo->mother_name_bn ?? '' }}</span></div>
                 <div class="info-row"><span class="info-label">Mother's Live Status :</span><span class="info-value">{{ family_constant_option('live_status')[$user->familyInfo->mother_live_status ?? ''] ?? '' }}</span></div>
                 @if(isset($user->familyInfo->marital_status) && $user->familyInfo->marital_status != 1)
-                <div class="info-row"><span class="info-label">Married Date :</span><span class="info-value">{{ $user->familyInfo->married_date ?? '' }}</span></div>
                 <div class="info-row"><span class="info-label">Spouse NID :</span><span class="info-value">{{ $user->familyInfo->spouse_nid ?? '' }}</span></div>
                 @endif
                 @if($user->familyInfo->have_children ?? false)

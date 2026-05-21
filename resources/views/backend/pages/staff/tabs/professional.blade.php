@@ -45,15 +45,23 @@
                                             
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Recruitment Notice No.</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" name="recruitment_notice_noU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->recruitment_notice_no ?? '' }}" class="form-control">
+                                                <div class="col-sm-4">
+                                                    <input type="text" name="recruitment_notice_noU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->recruitment_notice_no ?? '' }}" class="form-control" placeholder="Notice No.">
+                                                </div>
+                                                <label class="col-sm-2 col-form-label">Recruitment Notice Date</label>
+                                                <div class="col-sm-3">
+                                                    <input type="date" name="recruitment_notice_dateU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->recruitment_notice_date ?? '' }}" class="form-control">
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label">Appointment Letter No.</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" name="appointment_letter_noU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->appointment_letter_no ?? '' }}" class="form-control">
+                                                <div class="col-sm-4">
+                                                    <input type="text" name="appointment_letter_noU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->appointment_letter_no ?? '' }}" class="form-control" placeholder="Letter No.">
+                                                </div>
+                                                <label class="col-sm-2 col-form-label">Appointment Letter Date</label>
+                                                <div class="col-sm-3">
+                                                    <input type="date" name="appointment_letter_dateU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->appointment_letter_date ?? '' }}" class="form-control">
                                                 </div>
                                             </div>
 
@@ -125,15 +133,23 @@
                                         
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">Recruitment Notice No.</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="recruitment_notice_no[]" class="form-control">
+                                            <div class="col-sm-4">
+                                                <input type="text" name="recruitment_notice_no[]" class="form-control" placeholder="Notice No.">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label">Recruitment Notice Date</label>
+                                            <div class="col-sm-3">
+                                                <input type="date" name="recruitment_notice_date[]" class="form-control">
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">Appointment Letter No.</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="appointment_letter_no[]" class="form-control">
+                                            <div class="col-sm-4">
+                                                <input type="text" name="appointment_letter_no[]" class="form-control" placeholder="Letter No.">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label">Appointment Letter Date</label>
+                                            <div class="col-sm-3">
+                                                <input type="date" name="appointment_letter_date[]" class="form-control">
                                             </div>
                                         </div>
 
@@ -269,15 +285,23 @@
                 
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Recruitment Notice No.</label>
-                    <div class="col-sm-9">
-                        <input type="text" name="recruitment_notice_no[]" class="form-control">
+                    <div class="col-sm-4">
+                        <input type="text" name="recruitment_notice_no[]" class="form-control" placeholder="Notice No.">
+                    </div>
+                    <label class="col-sm-2 col-form-label">Recruitment Notice Date</label>
+                    <div class="col-sm-3">
+                        <input type="date" name="recruitment_notice_date[]" class="form-control">
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Appointment Letter No.</label>
-                    <div class="col-sm-9">
-                        <input type="text" name="appointment_letter_no[]" class="form-control">
+                    <div class="col-sm-4">
+                        <input type="text" name="appointment_letter_no[]" class="form-control" placeholder="Letter No.">
+                    </div>
+                    <label class="col-sm-2 col-form-label">Appointment Letter Date</label>
+                    <div class="col-sm-3">
+                        <input type="date" name="appointment_letter_date[]" class="form-control">
                     </div>
                 </div>
 
