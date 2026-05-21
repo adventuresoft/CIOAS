@@ -392,13 +392,13 @@ class ApplicationFormController extends Controller
                             $applicationForm->status = 'revision';
                             $applicationForm->current_department_id = $firstApprover->department_id;
                             $applicationForm->current_section_id = $firstApprover->section_id;
-                            $applicationForm->receive_id = null; // Needs to be received again
-                            $applicationForm->current_officer_id = null;
+                            $applicationForm->receive_id = $firstApprover->id; // Assigned directly without needing re-receive
+                            $applicationForm->current_officer_id = $firstApprover->id;
                             $applicationForm->revision_note = $request->approval_note;
                             $applicationForm->note = $request->approval_note; // update last assignment note
                             $applicationForm->updated_by = $user->id;
 
-                            // Create assignment record to show in history
+                            // Create assignment record to show in history as received
                             \App\Models\ApplicationForm\ApplicationAssign::create([
                                 'application_from_id' => $applicationForm->id,
                                 'from_department_id' => $fromDepartmentId,
@@ -408,7 +408,9 @@ class ApplicationFormController extends Controller
                                 'from_user_id' => $user->id,
                                 'assigned_by' => $user->id,
                                 'note' => $request->approval_note,
-                                'is_received' => false,
+                                'is_received' => true,
+                                'received_by' => $firstApprover->id,
+                                'received_at' => now(),
                             ]);
                         }
                     }
