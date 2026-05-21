@@ -38,6 +38,7 @@
                 $subMenu == 'Village' ||
                 $subMenu == 'VillageArea' ||
                 $subMenu == 'Union' ||
+                $subMenu == 'LicenseType' ||
                 $subMenu == 'Year') menu-open @endif
         ">
     <a href="#" class="nav-link {{ $mainMenu == 'Basic' ? 'active' : '' }}">
@@ -135,6 +136,16 @@
                 class="nav-link {{ $subMenu == 'LicenseSubcategory' ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>License Subcategory</p>
+            </a>
+        </li>
+        @endif
+
+        @if (has_module_access('license-type') || has_module_access('license_type') || has_module_access('basic-settings') || has_module_access('basic_settings'))
+        <li class="nav-item">
+            <a href="{{ route('basic-settings.license-type.index') }}"
+                class="nav-link {{ $subMenu == 'LicenseType' ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>License Type</p>
             </a>
         </li>
         @endif

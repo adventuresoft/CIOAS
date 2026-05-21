@@ -49,8 +49,8 @@ use App\Http\Controllers\BasicSettings\UnionWardController;
 use App\Http\Controllers\BasicSettings\VehicleCategoryController;
 use App\Http\Controllers\BasicSettings\VehicleSubCategoryController;
 use App\Http\Controllers\BasicSettings\VehicleTypeController;
-use App\Http\Controllers\BasicSettings\VillageController;
 use App\Http\Controllers\BasicSettings\VillageAreaController;
+use App\Http\Controllers\BasicSettings\LicenseTypeController;
 use App\Http\Controllers\UnionController as BasicUnionController;
 use App\Http\Controllers\BridgeController;
 use App\Http\Controllers\Certificate\BirthCertificateController;
@@ -452,6 +452,7 @@ Route::group([ 'prefix' => 'dashboard', 'middleware' => [ 'auth' ] ], function (
         // license category
         Route::resource('license-category', LicenseCategoryController::class);
         Route::resource('license-subcategory', LicenseSubCategoryController::class);
+        Route::resource('license-type', LicenseTypeController::class);
 
         //Department
         Route::resource('department', DepartmentController::class);
