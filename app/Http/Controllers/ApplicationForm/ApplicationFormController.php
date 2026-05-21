@@ -78,7 +78,8 @@ class ApplicationFormController extends Controller
         $applicationForm->fill($request->only($this->formFields()));
         $applicationForm->created_by = optional(auth()->user())->id;
         $applicationForm->status     = 'pending';
-
+        $applicationForm->institute_id  = auth()->user()->institute_id;
+ 
         if ($request->hasFile('attachment')) {
             $applicationForm->attachment = $this->uploadFile($request->attachment, 'uploads/application-form/', 'app_doc_');
         }

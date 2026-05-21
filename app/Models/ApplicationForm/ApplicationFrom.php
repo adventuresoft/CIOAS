@@ -56,10 +56,30 @@ class ApplicationFrom extends Model
     {
         parent::boot();
 
+
         static::creating(function ($application) {
-            $lastId                          = self::max('id') + 1;
-            $number                          = str_pad($lastId, 4, '0', STR_PAD_LEFT);
-            $application->application_number = 'APP-' . $number;
+            $currentYear = date('Y');
+
+$lastApplication = self::whereYear('created_at', $currentYear)
+    ->latest('id')
+    ->first();
+
+$lastNumber = 0;
+
+if ($lastApplication) {
+    preg_match('/N(\d{4})$/', $lastApplication->application_number, $matches);
+
+    if (!empty($matches[1])) {
+        $lastNumber = (int) $matches[1];
+    }
+}
+
+$newNumber = $lastNumber + 1;
+
+$number = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+
+$application->application_number = 'APP-' . date('ymd') . '-N' . $number;
+           
         });
     }
 

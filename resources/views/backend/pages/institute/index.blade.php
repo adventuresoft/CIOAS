@@ -68,8 +68,8 @@
                                             @elseif($institute->institute_type_id == 3)
                                               {{$institute->cityCorporation->name ?? ''}}
                                             @elseif($institute->institute_type_id == 4)
-                                              {{$institute->district->name ?? ''}}
-                                            @endif
+                                            {{$institute->district->name ?? ''}}
+                                            @endif  
                                           </td>
                                           <td>{{$institute->type->name ?? ''}}</td>
                                           <td>{{$institute->category->name ?? ''}}</td>
