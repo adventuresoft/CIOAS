@@ -303,17 +303,10 @@ class ApplicationFormController extends Controller
             $applicationForm->updated_by = $user->id;
             $applicationForm->save();
 
-            $assignQuery = ApplicationAssign::where('application_from_id', $applicationForm->id)
-                ->where('to_department_id', $user->department_id)
-                ->whereNull('received_at');
-
-            if (!empty($user->section_id)) {
-                $assignQuery->where('to_section_id', $user->section_id);
-            } else {
-                $assignQuery->whereNull('to_section_id');
-            }
-
-            $latestAssign = $assignQuery->latest('id')->first();
+            $latestAssign = ApplicationAssign::where('application_from_id', $applicationForm->id)
+                ->where('is_received', false)
+                ->latest('id')
+                ->first();
 
             if ($latestAssign) {
                 $latestAssign->is_received = true;
@@ -338,32 +331,116 @@ class ApplicationFormController extends Controller
         $applicationForm = ApplicationFrom::findOrFail($id);
         $user = auth()->user();
 
-        if (!$this->canApproveApplication($user, $applicationForm)) {
+        if ($applicationForm->status === 'received' || $applicationForm->status === 'revision') {
+            if (!$this->canApproveApplication($user, $applicationForm)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'You do not have permission to approve this application.',
+                ], 403);
+            }
+        } elseif ($applicationForm->status === 'processing') {
+            if (!$user->can('application_form.update')) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Only users with application update access can finally approve, reject, or request revision for this application.',
+                ], 403);
+            }
+        } else {
             return response()->json([
                 'status' => false,
-                'message' => 'You do not have permission to approve this application.',
-            ], 403);
-        }
-
-        if ($applicationForm->status !== 'received') {
-            return response()->json([
-                'status' => false,
-                'message' => 'Application must be received before approval.',
+                'message' => 'Application must be received, revision, or processing before approval.',
             ], 422);
         }
 
-        DB::transaction(function () use ($applicationForm, $request, $user) {
-            $applicationForm->status = 'approved';
-            $applicationForm->approval_note = $request->approval_note;
-            $applicationForm->approved_by = $user->id;
-            $applicationForm->approved_at = now();
-            $applicationForm->updated_by = $user->id;
+        $action = $request->input('status_action', 'approve');
+
+        DB::transaction(function () use ($applicationForm, $request, $user, $action) {
+            if ($applicationForm->status === 'received' || $applicationForm->status === 'revision') {
+                $applicationForm->status = 'processing';
+                $applicationForm->initial_approval_note = $request->approval_note;
+                $applicationForm->approval_note = $request->approval_note;
+                $applicationForm->initial_approved_by = $user->id; // First approver
+                $applicationForm->initial_approved_at = now(); // First approval time
+                $applicationForm->updated_by = $user->id;
+            } elseif ($applicationForm->status === 'processing') {
+                if ($action === 'reject') {
+                    $applicationForm->status = 'rejected';
+                    $applicationForm->final_approval_note = $request->approval_note;
+                    $applicationForm->approval_note = $request->approval_note;
+                    $applicationForm->approved_by = $user->id; // Final approver
+                    $applicationForm->approved_at = now();
+                    $applicationForm->final_approved_by = $user->id;
+                    $applicationForm->final_approved_at = now();
+                    $applicationForm->updated_by = $user->id;
+                } elseif ($action === 'revision') {
+                    // Send back to the first approver (initial_approved_by)
+                    $firstApproverId = $applicationForm->initial_approved_by;
+                    if (!$firstApproverId) {
+                        $firstApproverId = $applicationForm->receive_id;
+                    }
+                    if (!$firstApproverId) {
+                        $firstApproverId = $applicationForm->created_by;
+                    }
+
+                    if ($firstApproverId) {
+                        $firstApprover = \App\Models\User::find($firstApproverId);
+                        if ($firstApprover) {
+                            $fromDepartmentId = $applicationForm->current_department_id;
+                            $fromSectionId = $applicationForm->current_section_id;
+
+                            // Set status to revision and re-assign to first approver
+                            $applicationForm->status = 'revision';
+                            $applicationForm->current_department_id = $firstApprover->department_id;
+                            $applicationForm->current_section_id = $firstApprover->section_id;
+                            $applicationForm->receive_id = $firstApprover->id; // Assigned directly without needing re-receive
+                            $applicationForm->current_officer_id = $firstApprover->id;
+                            $applicationForm->revision_note = $request->approval_note;
+                            $applicationForm->note = $request->approval_note; // update last assignment note
+                            $applicationForm->updated_by = $user->id;
+
+                            // Create assignment record to show in history as received
+                            \App\Models\ApplicationForm\ApplicationAssign::create([
+                                'application_from_id' => $applicationForm->id,
+                                'from_department_id' => $fromDepartmentId,
+                                'from_section_id' => $fromSectionId,
+                                'to_department_id' => $firstApprover->department_id,
+                                'to_section_id' => $firstApprover->section_id,
+                                'from_user_id' => $user->id,
+                                'assigned_by' => $user->id,
+                                'note' => $request->approval_note,
+                                'is_received' => true,
+                                'received_by' => $firstApprover->id,
+                                'received_at' => now(),
+                            ]);
+                        }
+                    }
+                } else {
+                    $applicationForm->status = 'approved';
+                    $applicationForm->final_approval_note = $request->approval_note;
+                    $applicationForm->approval_note = $request->approval_note;
+                    $applicationForm->approved_by = $user->id; // Final approver
+                    $applicationForm->approved_at = now();
+                    $applicationForm->final_approved_by = $user->id;
+                    $applicationForm->final_approved_at = now();
+                    $applicationForm->updated_by = $user->id;
+                }
+            }
             $applicationForm->save();
         });
 
+        if ($applicationForm->status === 'processing') {
+            $message = 'Application status updated to processing.';
+        } elseif ($applicationForm->status === 'revision') {
+            $message = 'Application sent back for revision successfully.';
+        } elseif ($applicationForm->status === 'rejected') {
+            $message = 'Application rejected successfully.';
+        } else {
+            $message = 'Application approved successfully.';
+        }
+
         return response()->json([
             'status' => true,
-            'message' => 'Application approved successfully.',
+            'message' => $message,
         ], 200);
     }
 
@@ -496,7 +573,7 @@ class ApplicationFormController extends Controller
 
     private function canReceiveApplication($user, ApplicationFrom $applicationForm): bool
     {
-        if (!in_array($applicationForm->status, [ 'assigned', 'pending' ], true)) {
+        if (!in_array($applicationForm->status, [ 'assigned', 'pending', 'revision' ], true)) {
             return false;
         }
 
@@ -509,12 +586,16 @@ class ApplicationFormController extends Controller
 
     private function canApproveApplication($user, ApplicationFrom $applicationForm): bool
     {
-        if ($applicationForm->status !== 'received') {
+        if (!in_array($applicationForm->status, ['received', 'processing', 'revision'], true)) {
             return false;
         }
 
         if (!$user) {
             return false;
+        }
+
+        if ($applicationForm->status === 'processing') {
+            return $user->can('application_form.update');
         }
 
         if ($this->canViewAllApplications($user)) {

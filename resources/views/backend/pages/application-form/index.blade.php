@@ -43,15 +43,13 @@
                                             <th>Sl.</th>
                                             <th>Application No</th>
                                             <th>Date</th>
+                                            <th>Form Type</th>
                                             <th>Status</th>
                                             <th>Current Department</th>
                                             <th>Current Section</th>
                                             <th>Received By</th>
                                             <th>Recipient</th>
                                             <th>Subject</th>
-                                            <th>Sender</th>
-                                            <th>NID</th>
-                                            <th>Mobile</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -63,10 +61,23 @@
                                                 <td>{{ $item->date ? date('d M, Y', strtotime($item->date)) : '-' }}</td>
                                                 <td>
                                                     @php
+                                                        $typeBadge = match ($item->form_type) {
+                                                            'regular' => 'info',
+                                                            'urgent' => 'danger',
+                                                            default => 'secondary',
+                                                        };
+                                                    @endphp
+                                                    <span class="badge badge-{{ $typeBadge }}">
+                                                        {{ ucfirst($item->form_type ?? '-') }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    @php
                                                         $statusBadge = match ($item->status) {
                                                             'pending' => 'secondary',
                                                             'assigned' => 'info',
                                                             'received' => 'primary',
+                                                            'processing' => 'warning',
                                                             'approved' => 'success',
                                                             'rejected' => 'danger',
                                                             default => 'secondary',
@@ -81,9 +92,6 @@
                                                 <td>{{ $item->receiver->name ?? '-' }}</td>
                                                 <td>{{ $item->recipient }}</td>
                                                 <td>{{ $item->subject }}</td>
-                                                <td>{{ $item->sender }}</td>
-                                                <td>{{ $item->nid_no ?? '-' }}</td>
-                                                <td>{{ $item->mobile ?? '-' }}</td>
                                                 <td>
                                                     <div class="table-action">
                                                         <a class="btn btn-sm btn-info" title="View" data-toggle="tooltip"

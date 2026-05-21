@@ -33,14 +33,23 @@ class ApplicationFrom extends Model
         'receive_id',
         'status',
         'note',
+        'initial_approved_by',
+        'initial_approved_at',
+        'initial_approval_note',
         'approval_note',
         'approved_by',
         'approved_at',
+        'final_approved_by',
+        'final_approved_at',
+        'final_approval_note',
+        'revision_note',
         'application_number',
     ];
 
     protected $casts = [
         'approved_at' => 'datetime',
+        'final_approved_at' => 'datetime',
+        'initial_approved_at' => 'datetime',
     ];
 
     protected static function boot()
@@ -80,9 +89,19 @@ class ApplicationFrom extends Model
         return $this->belongsTo(User::class, 'receive_id');
     }
 
+    public function initialApprover()
+    {
+        return $this->belongsTo(User::class, 'initial_approved_by');
+    }
+
     public function approver()
     {
         return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    public function finalApprover()
+    {
+        return $this->belongsTo(User::class, 'final_approved_by');
     }
 
 }
