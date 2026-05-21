@@ -199,7 +199,7 @@
                 {{-- People Info --}}
                 @if (has_module_access('people'))
                 <li
-                    class="nav-item @if ($subMenu == 'Create' || $subMenu == 'View' || $subMenu == 'Show' || $subMenu == 'approvedList') menu-open @endif">
+                    class="nav-item @if ($mainMenu == 'People' && ($subMenu == 'Create' || $subMenu == 'View' || $subMenu == 'Show' || $subMenu == 'approvedList')) menu-open @endif">
                     <a href="#" class="nav-link @if ($mainMenu == 'People') active @endif">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
@@ -211,7 +211,7 @@
                         @if (has_sub_module_access('people', 'create'))
                         <li class="nav-item">
                             <a href="{{ route('people.create') }}"
-                                class="nav-link @if ($subMenu == 'Create') active @endif">
+                                class="nav-link @if ($mainMenu == 'People' && $subMenu == 'Create') active @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Create</p>
                             </a>
@@ -221,7 +221,7 @@
                         @if (has_sub_module_access('people', 'read'))
                             <li class="nav-item">
                                 <a href="{{ route('people.index') }}"
-                                    class="nav-link @if ($subMenu == 'View') active @endif">
+                                    class="nav-link @if ($mainMenu == 'People' && $subMenu == 'View') active @endif">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Applicant List</p>
                                 </a>
@@ -229,9 +229,52 @@
 
                             <li class="nav-item">
                                 <a href="{{ route('peopleapprovedlist') }}"
-                                    class="nav-link @if ($subMenu == 'approvedList') active @endif">
+                                    class="nav-link @if ($mainMenu == 'People' && $subMenu == 'approvedList') active @endif">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Reg. People List</p>
+                                </a>
+                            </li>
+                        @endif
+                    </ul>
+                </li>
+                @endif
+
+                {{-- Staff Info --}}
+                @if (has_module_access('staff') || has_module_access('staffs'))
+                <li
+                    class="nav-item @if ($mainMenu == 'Staff' && ($subMenu == 'StaffCreate' || $subMenu == 'Create' || $subMenu == 'StaffList' || $subMenu == 'StaffApproveList' || $subMenu == 'approvedList' || $subMenu == 'Index')) menu-open @endif">
+                    <a href="#" class="nav-link @if ($mainMenu == 'Staff') active @endif">
+                        <i class="nav-icon fas fa-user-tie"></i>
+                        <p>
+                            Staff Info
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @if (has_sub_module_access('staff', 'create') || has_sub_module_access('staffs', 'create'))
+                        <li class="nav-item">
+                            <a href="{{ route('staff.create') }}"
+                                class="nav-link @if ($mainMenu == 'Staff' && ($subMenu == 'StaffCreate' || $subMenu == 'Create')) active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create</p>
+                            </a>
+                        </li>
+                        @endif
+
+                        @if (has_sub_module_access('staff', 'read') || has_sub_module_access('staffs', 'read'))
+                            <li class="nav-item">
+                                <a href="{{ route('staff.index') }}"
+                                    class="nav-link @if ($mainMenu == 'Staff' && ($subMenu == 'StaffList' || $subMenu == 'Index')) active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Staff List</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('staffapprovedlist') }}"
+                                    class="nav-link @if ($mainMenu == 'Staff' && ($subMenu == 'StaffApproveList' || $subMenu == 'approvedList')) active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Approve Staff List</p>
                                 </a>
                             </li>
                         @endif

@@ -313,14 +313,43 @@ class CounsilorController extends Controller
             }
 
             $result = DB::transaction(function () use ($request) {
+                $permanent_division_id = $request->permanent_division_id;
+                $permanent_district_id = $request->permanent_district_id;
+                $permanent_thana_id = $request->permanent_thana_id;
+                $permanent_union_id = $request->permanent_union_id;
+
+                if ($request->permanent_village_id) {
+                    $village = \App\Models\BasicSettings\Village::find($request->permanent_village_id);
+                    if ($village) {
+                        $permanent_division_id = $permanent_division_id ?: $village->division_id;
+                        $permanent_district_id = $permanent_district_id ?: $village->district_id;
+                        $permanent_thana_id = $permanent_thana_id ?: $village->thana_id;
+                        $permanent_union_id = $permanent_union_id ?: $village->union_id;
+                    }
+                }
+
+                $present_division_id = $request->present_division_id;
+                $present_district_id = $request->present_district_id;
+                $present_thana_id = $request->present_thana_id;
+                $present_union_id = $request->present_union_id;
+
+                if ($request->present_village_id) {
+                    $present_village = \App\Models\BasicSettings\Village::find($request->present_village_id);
+                    if ($present_village) {
+                        $present_division_id = $present_division_id ?: $present_village->division_id;
+                        $present_district_id = $present_district_id ?: $present_village->district_id;
+                        $present_thana_id = $present_thana_id ?: $present_village->thana_id;
+                        $present_union_id = $present_union_id ?: $present_village->union_id;
+                    }
+                }
 
                 $peopleFamily = AddressInfo::updateOrCreate([
                     'user_id' => $request->user_id
                 ], [
-                    'permanent_division_id' => $request->permanent_division_id,
-                    'permanent_district_id' => $request->permanent_district_id,
-                    'permanent_thana_id' => $request->permanent_thana_id,
-                    'permanent_union_id' => $request->permanent_union_id,
+                    'permanent_division_id' => $permanent_division_id,
+                    'permanent_district_id' => $permanent_district_id,
+                    'permanent_thana_id' => $permanent_thana_id,
+                    'permanent_union_id' => $permanent_union_id,
                     'permanent_ward_id' => $request->permanent_ward_id,
                     'permanent_village_id' => $request->permanent_village_id,
                     'permanent_village_area_id' => $request->permanent_village_area_id,
@@ -329,10 +358,10 @@ class CounsilorController extends Controller
                     'permanent_flat' => $request->permanent_flat,
                     'permanent_area' => $request->permanent_area,
                     'permanent_area_bn' => $request->permanent_area_bn,
-                    'present_division_id' => $request->present_division_id,
-                    'present_district_id' => $request->present_district_id,
-                    'present_thana_id' => $request->present_thana_id,
-                    'present_union_id' => $request->present_union_id,
+                    'present_division_id' => $present_division_id,
+                    'present_district_id' => $present_district_id,
+                    'present_thana_id' => $present_thana_id,
+                    'present_union_id' => $present_union_id,
                     'present_ward_id' => $request->present_ward_id,
                     'present_village_id' => $request->present_village_id,
                     'present_village_area_id' => $request->present_village_area_id,

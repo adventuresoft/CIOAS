@@ -1,4 +1,4 @@
-@extends('backend.master', ['mainMenu' => 'People', 'subMenu' =>'View'])
+@extends('backend.master', ['mainMenu' => 'Staff', 'subMenu' =>'View'])
 
 @push('style')
 <style>
@@ -372,7 +372,7 @@
 </style>
 @endpush
 
-@section('title', 'People Information Details')
+@section('title', 'Staff Information Details')
 
 @section('content')
 <div class="people-certificate-page">
@@ -514,11 +514,20 @@
                 @foreach($user->educationInfos as $edu)
                 <tr>
                     <td>
-                        @if($edu->degree_id == 1) HSC
-                        @elseif($edu->degree_id == 2) SSC
-                        @elseif($edu->degree_id == 3) JSC
-                        @else {{ $edu->degree_id ?? '' }}
-                        @endif
+                        @php
+                            $degreeNames = [
+                                1 => 'PSC', 2 => 'JSC', 3 => 'SSC', 4 => 'HSC',
+                                5 => 'Diploma', 6 => 'Bachelor of Arts (BA)',
+                                7 => 'Bachelor of Science (BSc)', 8 => 'Bachelor of Business Administration (BBA)',
+                                9 => 'Bachelor of Social Science (BSS)', 10 => 'Honours',
+                                11 => 'Masters', 12 => 'MBA', 13 => 'M.Sc', 14 => 'M.A',
+                                15 => 'M.Phil', 16 => 'PhD', 17 => 'Post Graduate Diploma (PGD)',
+                                18 => 'LLB', 19 => 'MBBS', 20 => 'BDS',
+                                21 => 'B.Ed', 22 => 'M.Ed', 23 => 'Engineering (BSc Eng)',
+                                24 => 'Fazil', 25 => 'Kamil', 26 => 'Dakhil', 27 => 'Alim', 28 => 'Other'
+                            ];
+                        @endphp
+                        {{ $degreeNames[$edu->degree_id] ?? $edu->degree_id }}
                     </td>
                     <td>
                         @if($edu->group_id == 1) Science
@@ -548,20 +557,33 @@
 
         {{-- Profession Section --}}
         @if(count($user->professionalInfos) > 0)
-        <div class="section-header">পেশাগত তথ্য / Professional Information</div>
+        <div class="section-header">পেশাগত তথ্য / Employment Information</div>
         @foreach($user->professionalInfos as $prof)
+        @php
+            $deptName = '';
+            if ($prof->department) {
+                $dept = \App\Models\Department\Department::find($prof->department);
+                $deptName = $dept ? $dept->name : '';
+            }
+            $sectionName = '';
+            if ($prof->current_designation) {
+                $sect = \App\Models\Department\Section::find($prof->current_designation);
+                $sectionName = $sect ? $sect->name : '';
+            }
+        @endphp
         <div class="two-columns">
             <div class="col">
-                <div class="info-row"><span class="info-label">Profession :</span><span class="info-value">{{ $prof->subcategory->category->type->profession->en_name ?? '' }}</span></div>
-                <div class="info-row"><span class="info-label">Category :</span><span class="info-value">{{ $prof->subcategory->category->en_name ?? '' }}</span></div>
-                <div class="info-row"><span class="info-label">Organization :</span><span class="info-value">{{ $prof->organization ?? '' }}</span></div>
-                <div class="info-row"><span class="info-label">Duration :</span><span class="info-value">{{ $prof->profession_start ?? '' }} to {{ $prof->profession_end ?? 'Present' }}</span></div>
+                <div class="info-row"><span class="info-label">Recruitment Notice No :</span><span class="info-value">{{ $prof->recruitment_notice_no ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Appointment Letter No :</span><span class="info-value">{{ $prof->appointment_letter_no ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Designation at Joining :</span><span class="info-value">{{ $prof->designation_joining ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Date of Joining :</span><span class="info-value">{{ $prof->date_of_joining ? date('d-m-Y', strtotime($prof->date_of_joining)) : '' }}</span></div>
+                <div class="info-row"><span class="info-label">Department :</span><span class="info-value">{{ $deptName }}</span></div>
             </div>
             <div class="col">
-                <div class="info-row"><span class="info-label">Type :</span><span class="info-value">{{ $prof->subcategory->category->type->en_name ?? '' }}</span></div>
-                <div class="info-row"><span class="info-label">Subcategory :</span><span class="info-value">{{ $prof->subcategory->en_name ?? '' }}</span></div>
-                <div class="info-row"><span class="info-label">Designation :</span><span class="info-value">{{ $prof->designation ?? '' }}</span></div>
-                <div class="info-row"><span class="info-label">Address :</span><span class="info-value">{{ $prof->address ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Section :</span><span class="info-value">{{ $sectionName }}</span></div>
+                <div class="info-row"><span class="info-label">Date of Current Designation :</span><span class="info-value">{{ $prof->date_current_designation ? date('d-m-Y', strtotime($prof->date_current_designation)) : '' }}</span></div>
+                <div class="info-row"><span class="info-label">Current Workplace :</span><span class="info-value">{{ $prof->current_workplace ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Date of Joining Current Workplace :</span><span class="info-value">{{ $prof->date_joining_current_workplace ? date('d-m-Y', strtotime($prof->date_joining_current_workplace)) : '' }}</span></div>
             </div>
         </div>
         @if(!$loop->last)<hr>@endif
@@ -654,15 +676,17 @@
 
 
     <button class="btn btn-success px-5 py-2 btn-print-custom" onclick="window.print()"><i class="fa fa-print"></i> Print / প্রিন্ট</button>
-    <a href="{{ route('people.index') }}" class="btn btn-secondary px-5 py-2 ms-3"><i class="fa fa-arrow-left"></i> Back to List</a>
+    <a href="{{ route('staff.index') }}" class="btn btn-secondary px-5 py-2 ms-3"><i class="fa fa-arrow-left"></i> Back to List</a>
 
     @if(empty($people->approved_id))
-    <a href="{{ route('people.approve', $people->id) }}"
-       class="btn btn-primary px-5 py-2 ms-3"
-       onclick="return confirm('আপনি কি নিশ্চিত অনুমোদন করতে চান?')">
-        <i class="fa fa-check"></i> Approve
-    </a>
-@endif
+        @hasrole('DC')
+        <a href="{{ route('staff.approve', $people->id) }}"
+           class="btn btn-primary px-5 py-2 ms-3"
+           onclick="return confirm('আপনি কি নিশ্চিত অনুমোদন করতে চান?')">
+            <i class="fa fa-check"></i> Approve
+        </a>
+        @endhasrole
+    @endif
 
 </div>
 @endsection
@@ -674,7 +698,7 @@ function approvePeople(id) {
 
     if (!confirm("আপনি কি নিশ্চিত অনুমোদন করতে চান?")) return;
 
-    let url = "{{ route('people.approve', ':id') }}";
+    let url = "{{ route('staff.approve', ':id') }}";
     url = url.replace(':id', id);
 
     fetch(url, {
@@ -689,7 +713,7 @@ function approvePeople(id) {
         console.log(data);
         if (data.status) {
             alert(data.message);
-            window.location.href = "{{ route('people.index') }}";
+            window.location.href = "{{ route('staff.index') }}";
         } else {
             alert("Error: " + data.message);
         }

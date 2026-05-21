@@ -112,6 +112,8 @@ class PermissionSeeder extends Seeder
             'permissions',
             'user',
             'users',
+            'staff',
+            'staffs',
             'hotel_category',
             'hotel_subcategory',
             'hotel_restaurant',

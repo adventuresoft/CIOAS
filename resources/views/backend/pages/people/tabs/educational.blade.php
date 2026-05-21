@@ -343,7 +343,7 @@
             if (confirm("Are you sure?")) {
                 $.ajax({
                     type: "GET",
-                    url: "{{url('/admin/people/education-delete')}}/"+id,
+                    url: "{{ route('people.educationDelete', '') }}/" + id,
                     success: function (response) {
                         toastr.success(response.message);
                         setTimeout(function() {

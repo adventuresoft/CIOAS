@@ -1,6 +1,19 @@
 <?php
 
 use App\Http\Controllers\AddressInfoController;
+// Staff Controllers
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\StaffFamilyInfoController;
+use App\Http\Controllers\StaffAddressInfoController;
+use App\Http\Controllers\StaffEducationalInfoController;
+use App\Http\Controllers\StaffProfessionalInfoController;
+use App\Http\Controllers\StaffFinancialInfoController;
+use App\Http\Controllers\StaffPropertyInfoController;
+use App\Http\Controllers\StaffDisabilityInfoController;
+use App\Http\Controllers\StaffFreedomFighterInfoController;
+use App\Http\Controllers\StaffHealthInfoController;
+use App\Http\Controllers\StaffParentInfoController;
+
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApplicationController;
 
@@ -297,6 +310,40 @@ Route::group([ 'prefix' => 'dashboard', 'middleware' => [ 'auth' ] ], function (
     Route::post('/people/property-store', [ PropertyInfoController::class, 'store' ])->name('people.propertyStore');
     Route::get('/people/property-delete/{proID}', [ PropertyInfoController::class, 'destroy' ])->name('people.propertyDelete');
 
+    // Staff Routes
+    Route::resource('staff', StaffController::class);
+
+    Route::get('/staff/family/{userID}', [ StaffFamilyInfoController::class, 'create' ])->name('staff.family');
+    Route::post('/staff/family-store', [ StaffFamilyInfoController::class, 'store' ])->name('staff.familyStore');
+
+    Route::get('/staff/address/{userID}', [ StaffAddressInfoController::class, 'create' ])->name('staff.address');
+    Route::post('/staff/address-store', [ StaffAddressInfoController::class, 'store' ])->name('staff.addressStore');
+
+    Route::get('/staff/health/{userID}', [ StaffHealthInfoController::class, 'create' ])->name('staff.health');
+    Route::post('/staff/health-store', [ StaffHealthInfoController::class, 'store' ])->name('staff.healthStore');
+
+    Route::get('/staff/disability/{userID}', [ StaffDisabilityInfoController::class, 'create' ])->name('staff.disability');
+    Route::post('/staff/disability-store', [ StaffDisabilityInfoController::class, 'store' ])->name('staff.disabilityStore');
+
+    Route::get('/staff/freedom/{userID}', [ StaffFreedomFighterInfoController::class, 'create' ])->name('staff.freedom');
+    Route::post('/staff/freedom-store', [ StaffFreedomFighterInfoController::class, 'store' ])->name('staff.freedomStore');
+
+    Route::get('/staff/education/{userID}', [ StaffEducationalInfoController::class, 'create' ])->name('staff.education');
+    Route::post('/staff/education-store', [ StaffEducationalInfoController::class, 'store' ])->name('staff.educationStore');
+    Route::get('/staff/education-delete/{eduID}', [ StaffEducationalInfoController::class, 'destroy' ])->name('staff.educationDelete');
+
+    Route::get('/staff/professional/{userID}', [ StaffProfessionalInfoController::class, 'create' ])->name('staff.professional');
+    Route::post('/staff/professional-store', [ StaffProfessionalInfoController::class, 'store' ])->name('staff.professionalStore');
+    Route::get('/staff/professional-delete/{proID}', [ StaffProfessionalInfoController::class, 'destroy' ])->name('staff.professionalDelete');
+
+    Route::get('/staff/financial/{userID}', [ StaffFinancialInfoController::class, 'create' ])->name('staff.financial');
+    Route::post('/staff/financial-store', [ StaffFinancialInfoController::class, 'store' ])->name('staff.financialStore');
+    Route::get('/staff/financial-delete/{proID}', [ StaffFinancialInfoController::class, 'destroy' ])->name('staff.financialDelete');
+
+    Route::get('/staff/property/{userID}', [ StaffPropertyInfoController::class, 'create' ])->name('staff.property');
+    Route::post('/staff/property-store', [ StaffPropertyInfoController::class, 'store' ])->name('staff.propertyStore');
+    Route::get('/staff/property-delete/{proID}', [ StaffPropertyInfoController::class, 'destroy' ])->name('staff.propertyDelete');
+
     Route::resource('certificate/citizen', CitizenCertificateController::class);
     Route::get('certificate/citizen/bn/{id}', [ CitizenCertificateController::class, 'bn_certificate' ])->name('citizen.bn_certificate');
     Route::resource('certificate/character', CharacterCertificateController::class);
@@ -518,9 +565,13 @@ Route::group([ 'prefix' => 'dashboard', 'middleware' => [ 'auth' ] ], function (
         ->name('organizationA.trade-license.online-payment');
     Route::get('/people/approve/{id}', [ PeopleController::class, 'approve' ])
         ->name('people.approve');
+    Route::get('/staff/approve/{id}', [ StaffController::class, 'approve' ])
+        ->name('staff.approve');
 
     Route::get('peopleapprovedlist', [ PeopleController::class, 'approvedlist' ])
         ->name('peopleapprovedlist');
+    Route::get('staffapprovedlist', [ StaffController::class, 'approvedlist' ])
+        ->name('staffapprovedlist');
 
     Route::post('/save-new-ownership', [ OrganizationOwnershipController::class, 'saveNewOwnership' ])
         ->name('savenewownership');

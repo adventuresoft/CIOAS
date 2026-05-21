@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class PeopleController extends Controller
+class StaffController extends Controller
 {
 
     public function __construct()
@@ -85,7 +85,7 @@ class PeopleController extends Controller
             'addressInfo.permanentRoad',
             'addressInfo.permanentHouse',
         ])->whereHas('people', function ($q) {
-            $q->whereNull('approved_id')->where('is_staff', 0);
+            $q->whereNull('approved_id')->where('is_staff', 1);
         });
 
         if (Auth::user()->institute_id) {
@@ -93,7 +93,7 @@ class PeopleController extends Controller
         }
 
         $data['users'] = $query->latest()->get();
-        return view('backend.pages.people.index', $data);
+        return view('backend.pages.staff.index', $data);
     }
 
     public function approvedlist()
@@ -110,7 +110,7 @@ class PeopleController extends Controller
             'addressInfo.presentRoad',
             'addressInfo.presentHouse',
         ])->whereHas('people', function ($q) {
-            $q->whereNotNull('approved_id')->where('is_staff', 0);
+            $q->whereNotNull('approved_id')->where('is_staff', 1);
         });
 
         if (Auth::user()->institute_id) {
@@ -118,7 +118,7 @@ class PeopleController extends Controller
         }
 
         $data['users'] = $query->latest()->get();
-        return view('backend.pages.people.approvedList', $data);
+        return view('backend.pages.staff.approvedList', $data);
     }
 
     /**
@@ -131,7 +131,7 @@ class PeopleController extends Controller
         $data['religions'] = Religion::where('status', true)->get();
         $data['districts'] = District::where('status', true)->orderBy('name')->get();
         $data['countries'] = Country::orderBy('name')->get();
-        return view('backend.pages.people.create', $data);
+        return view('backend.pages.staff.create', $data);
     }
 
     /**
@@ -201,6 +201,7 @@ class PeopleController extends Controller
                     $people->gender        = $request->gender;
                     $people->religion_id   = $request->religion;
                     $people->blood_group   = $request->blood_group;
+                    $people->is_staff = 2;
                     if ($people->save()) {
 
 
@@ -209,7 +210,7 @@ class PeopleController extends Controller
                         $data['user']         = $user;
                         $data['people']       = $people;
                         $data['code']         = 200;
-                        $data['redirect_url'] = route('people.family', $people->user_id);
+                        $data['redirect_url'] = route('staff.family', $people->user_id);
                         return $data;
                     } else {
                         $data['status']  = false;
@@ -249,14 +250,7 @@ class PeopleController extends Controller
             ->with('institute')
             ->with(array(
                 'addressInfo' => function ($address) {
-                    $address->with(
-                        'presentUnion', 'permanentHouse', 'presentHouse',
-                        'presentRoad', 'permanentRoad',
-                        'presentVillage', 'presentDistrict', 'presentThana',
-                        'permanentDistrict', 'permanentThana', 'permanentUnion',
-                        'permanentPostoffice', 'permanentWard',
-                        'presentPostoffice', 'presentWard'
-                    );
+                    $address->with('presentUnion', 'permanentHouse', 'presentHouse', 'presentRoad', 'permanentRoad', 'presentVillage', 'presentDistrict', 'presentThana');
                 }
             ))
             ->with(array(
@@ -279,7 +273,7 @@ class PeopleController extends Controller
             ->find($id);
 
         if (!$user) {
-            return redirect()->route('people.index')->with('error', 'User not found.');
+            return redirect()->route('staff.index')->with('error', 'User not found.');
         }
 
         $institute      = $user->institute;
@@ -322,7 +316,7 @@ class PeopleController extends Controller
 
 
 
-        return view('backend.pages.people.show', $data);
+        return view('backend.pages.staff.show', $data);
     }
 
     /**
@@ -343,7 +337,7 @@ class PeopleController extends Controller
         $data['user']      = $user = User::with('people')->find($id);
 
         if (!$user) {
-            return redirect()->route('people.index')->with('error', 'User not found.');
+            return redirect()->route('staff.index')->with('error', 'User not found.');
         }
 
         $presentUnionId   = $user->addressInfo ? $user->addressInfo->present_union_id : null;
@@ -351,7 +345,7 @@ class PeopleController extends Controller
 
 
 
-        return view('backend.pages.people.edit', $data);
+        return view('backend.pages.staff.edit', $data);
     }
 
     /**
@@ -430,6 +424,7 @@ class PeopleController extends Controller
                 $people->gender        = $request->gender;
                 $people->religion_id   = $request->religion;
                 $people->blood_group   = $request->blood_group;
+                $people->is_staff = $people->is_staff == 2 ? 2 : 1;
 
                 try {
                     $people->save();
@@ -438,7 +433,7 @@ class PeopleController extends Controller
                     $data['user']         = $user;
                     $data['people']       = $people;
                     $data['code']         = 200;
-                    $data['redirect_url'] = route('people.family', $userID);
+                    $data['redirect_url'] = route('staff.family', $userID);
                     return $data;
                 } catch (\Throwable $th) {
                     $data['status']  = false;
@@ -502,6 +497,9 @@ class PeopleController extends Controller
 
     public function approve($id)
     {
+        if (!Auth::user()->hasRole('DC')) {
+            return redirect()->back()->with('error', 'Only DC role can approve staff.');
+        }
 
         DB::beginTransaction();
 
@@ -509,7 +507,7 @@ class PeopleController extends Controller
             $people = People::findOrFail($id);
             if (!empty($people->approved_id)) {
                 DB::commit();
-                return redirect()->route('peopleapprovedlist')
+                return redirect()->route('staffapprovedlist')
                     ->with('success', 'Already approved.');
             }
 
@@ -538,7 +536,7 @@ class PeopleController extends Controller
 
             DB::commit();
 
-            return redirect()->route('peopleapprovedlist')
+            return redirect()->route('staffapprovedlist')
                 ->with('success', 'Approved Successfully!');
 
         } catch (\Throwable $e) {

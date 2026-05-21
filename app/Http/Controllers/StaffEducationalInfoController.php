@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class EducationalInfoController extends Controller
+class StaffEducationalInfoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,7 +29,7 @@ class EducationalInfoController extends Controller
     {
         $data['user'] = User::with('educationInfos')->find($id);
         $data['religions'] = Religion::where('status', true)->get();
-        return view('backend.pages.people.tabs.educational', $data);
+        return view('backend.pages.staff.tabs.educational', $data);
     }
 
     /**
@@ -86,7 +86,7 @@ class EducationalInfoController extends Controller
 
                     $data['status'] = true;
                     $data['message'] = "Education submitted successfully!";
-                    $data['redirect_url'] = route('people.professional', $request->user_id);
+                    $data['redirect_url'] = route('staff.professional', $request->user_id);
                     $data['code'] = 200;
                     return $data;
                 } catch (\Throwable $th) {

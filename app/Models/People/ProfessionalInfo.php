@@ -19,7 +19,16 @@ class ProfessionalInfo extends Model
     'grade',
     'salary_structure',
     'company',
-    'address'
+    'address',
+    'recruitment_notice_no',
+    'appointment_letter_no',
+    'designation_joining',
+    'date_of_joining',
+    'department',
+    'current_designation',
+    'date_current_designation',
+    'current_workplace',
+    'date_joining_current_workplace'
     ];
 
 

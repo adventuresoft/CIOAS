@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class AddressInfoController extends Controller
+class StaffAddressInfoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -45,7 +45,7 @@ class AddressInfoController extends Controller
         ->find($id);
 
         if (! $user) {
-            return redirect()->route('people.index')->with('error', 'User not found.');
+            return redirect()->route('staff.index')->with('error', 'User not found.');
         }
 
         if (! $user->addressInfo) {
@@ -100,7 +100,7 @@ class AddressInfoController extends Controller
 
         // return response()->json($data, 200);
 
-        return view('backend.pages.people.tabs.address', $data);
+        return view('backend.pages.staff.tabs.address', $data);
     }
 
     /**
@@ -213,7 +213,7 @@ class AddressInfoController extends Controller
                     $data['message'] = "Address submitted successfully!";
                     $data['result'] = $peopleFamily;
                     $data['code'] = 200;
-                    $data['redirect_url'] = route('people.education', $request->user_id);
+                    $data['redirect_url'] = route('staff.education', $request->user_id);
                     return $data;
                 } else {
                     $data['status'] = false;
