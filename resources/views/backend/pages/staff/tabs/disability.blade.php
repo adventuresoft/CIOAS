@@ -156,7 +156,7 @@
             <button type="submit" class="btn btn-primary btn-block" style="background-color: #5b4bdf; border-color: #5b4bdf;"><i class="fas fa-save mr-1"></i> Save & Next</button>
         </div>
         <div class="col-md-4">
-            <a href="{{ route('staff.freedom', $user->id) }}" class="btn btn-outline-primary btn-block" style="color: #5b4bdf; border-color: #5b4bdf;">Freedom <i class="fas fa-arrow-right ml-1"></i></a>
+            <a href="{{ route('staff.freedom', $user->id) }}" class="btn btn-outline-primary btn-block" style="color: #5b4bdf; border-color: #5b4bdf;">Freedom Fighter <i class="fas fa-arrow-right ml-1"></i></a>
         </div>
     </div>
 </div>
@@ -243,5 +243,5 @@
         })
 
     </script>
-   
+
 @endpush

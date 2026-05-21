@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\BasicSettings\Profession;
+use App\Models\Department\Section;
 use App\Models\People\ProfessionalInfo;
 use App\Models\Religion;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class StaffProfessionalInfoController extends Controller
 {
@@ -51,6 +53,64 @@ class StaffProfessionalInfoController extends Controller
      */
     public function store(Request $request)
     {
+            $validate = Validator::make($request->all(), [
+                'department.*' => 'nullable|integer',
+                'current_designation.*' => 'nullable|integer',
+                'departmentU.*' => 'nullable|integer',
+                'current_designationU.*' => 'nullable|integer',
+            ]);
+
+            $validate->after(function ($validator) use ($request) {
+                foreach (($request->department ?? []) as $key => $departmentId) {
+                    $departmentId = trim((string) $departmentId);
+                    if ($departmentId === '') {
+                        continue;
+                    }
+
+                    $sectionId = trim((string) ($request->current_designation[$key] ?? ''));
+                    if ($sectionId === '') {
+                        $validator->errors()->add("current_designation.$key", 'Department select korle Section select korte hobe.');
+                        continue;
+                    }
+
+                    $belongsToDepartment = Section::where('id', $sectionId)
+                        ->where('department_id', $departmentId)
+                        ->exists();
+
+                    if (!$belongsToDepartment) {
+                        $validator->errors()->add("current_designation.$key", 'Selected section does not belong to the selected department.');
+                    }
+                }
+
+                foreach (($request->departmentU ?? []) as $key => $departmentId) {
+                    $departmentId = trim((string) $departmentId);
+                    if ($departmentId === '') {
+                        continue;
+                    }
+
+                    $sectionId = trim((string) ($request->current_designationU[$key] ?? ''));
+                    if ($sectionId === '') {
+                        $validator->errors()->add("current_designationU.$key", 'Department select korle Section select korte hobe.');
+                        continue;
+                    }
+
+                    $belongsToDepartment = Section::where('id', $sectionId)
+                        ->where('department_id', $departmentId)
+                        ->exists();
+
+                    if (!$belongsToDepartment) {
+                        $validator->errors()->add("current_designationU.$key", 'Selected section does not belong to the selected department.');
+                    }
+                }
+            });
+
+            if ($validate->fails()) {
+                $data['status'] = false;
+                $data['message'] = "Sorry! Invalid Entry.";
+                $data['errors'] = $validate->errors();
+                return response(json_encode($data, JSON_PRETTY_PRINT), 400)->header('Content-Type', 'application/json');
+            }
+
             $result = DB::transaction(function () use ($request) {
                 $user_id = $request->user_id;
 
@@ -62,6 +122,7 @@ class StaffProfessionalInfoController extends Controller
                 $date_of_joining = $request->date_of_joining;
                 $department = $request->department;
                 $current_designation = $request->current_designation;
+                $current_designation_manual = $request->current_designation_manual;
                 $date_current_designation = $request->date_current_designation;
                 $current_workplace = $request->current_workplace;
                 $date_joining_current_workplace = $request->date_joining_current_workplace;
@@ -74,6 +135,7 @@ class StaffProfessionalInfoController extends Controller
                 $date_of_joiningU = $request->date_of_joiningU;
                 $departmentU = $request->departmentU;
                 $current_designationU = $request->current_designationU;
+                $current_designation_manualU = $request->current_designation_manualU;
                 $date_current_designationU = $request->date_current_designationU;
                 $current_workplaceU = $request->current_workplaceU;
                 $date_joining_current_workplaceU = $request->date_joining_current_workplaceU;
@@ -82,6 +144,12 @@ class StaffProfessionalInfoController extends Controller
 
                     if (!empty($recruitment_notice_no)) {
                         foreach ($recruitment_notice_no as $key => $val) {
+                            $selectedSection = $current_designation[$key] ?? null;
+                            $manualDesignation = trim((string) ($current_designation_manual[$key] ?? ''));
+                            $resolvedSectionOrDesignation = filled($selectedSection)
+                                ? $selectedSection
+                                : ($manualDesignation !== '' ? $manualDesignation : null);
+
                             $prof = new ProfessionalInfo();
                             $prof->profession_subcategory_id = '0'; // default since not used for staff
                             $prof->recruitment_notice_no = $recruitment_notice_no[$key] ?? null;
@@ -89,9 +157,10 @@ class StaffProfessionalInfoController extends Controller
                             $prof->appointment_letter_no = $appointment_letter_no[$key] ?? null;
                             $prof->appointment_letter_date = $appointment_letter_date[$key] ?? null;
                             $prof->designation_joining = $designation_joining[$key] ?? null;
+                            $prof->designation = $manualDesignation !== '' ? $manualDesignation : null;
                             $prof->date_of_joining = $date_of_joining[$key] ?? null;
                             $prof->department = $department[$key] ?? null;
-                            $prof->current_designation = $current_designation[$key] ?? null;
+                            $prof->current_designation = $resolvedSectionOrDesignation;
                             $prof->date_current_designation = $date_current_designation[$key] ?? null;
                             $prof->current_workplace = $current_workplace[$key] ?? null;
                             $prof->date_joining_current_workplace = $date_joining_current_workplace[$key] ?? null;
@@ -102,6 +171,12 @@ class StaffProfessionalInfoController extends Controller
 
                     if (!empty($recruitment_notice_noU)) {
                         foreach ($recruitment_notice_noU as $key => $val) {
+                            $selectedSectionU = $current_designationU[$key] ?? null;
+                            $manualDesignationU = trim((string) ($current_designation_manualU[$key] ?? ''));
+                            $resolvedSectionOrDesignationU = filled($selectedSectionU)
+                                ? $selectedSectionU
+                                : ($manualDesignationU !== '' ? $manualDesignationU : null);
+
                             $profs = ProfessionalInfo::find($key);
                             if ($profs) {
                                 $profs->recruitment_notice_no = $recruitment_notice_noU[$key] ?? null;
@@ -109,9 +184,10 @@ class StaffProfessionalInfoController extends Controller
                                 $profs->appointment_letter_no = $appointment_letter_noU[$key] ?? null;
                                 $profs->appointment_letter_date = $appointment_letter_dateU[$key] ?? null;
                                 $profs->designation_joining = $designation_joiningU[$key] ?? null;
+                                $profs->designation = $manualDesignationU !== '' ? $manualDesignationU : null;
                                 $profs->date_of_joining = $date_of_joiningU[$key] ?? null;
                                 $profs->department = $departmentU[$key] ?? null;
-                                $profs->current_designation = $current_designationU[$key] ?? null;
+                                $profs->current_designation = $resolvedSectionOrDesignationU;
                                 $profs->date_current_designation = $date_current_designationU[$key] ?? null;
                                 $profs->current_workplace = $current_workplaceU[$key] ?? null;
                                 $profs->date_joining_current_workplace = $date_joining_current_workplaceU[$key] ?? null;
@@ -137,11 +213,11 @@ class StaffProfessionalInfoController extends Controller
 
 
 
-                
+
             });
 
             return response(json_encode($result, JSON_PRETTY_PRINT), $result['code'])->header('Content-Type', 'application/json');
-      
+
     }
 
     /**

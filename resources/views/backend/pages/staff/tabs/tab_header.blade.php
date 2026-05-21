@@ -98,7 +98,8 @@
         'financial' => ['label' => 'FINANCIAL', 'icon' => 'fas fa-wallet', 'route' => 'staff.financial'],
         'property' => ['label' => 'PROPERTY', 'icon' => 'fas fa-building', 'route' => 'staff.property'],
         'disability' => ['label' => 'DISABILITY', 'icon' => 'fas fa-wheelchair', 'route' => 'staff.disability'],
-        'freedom' => ['label' => 'FREEDOM', 'icon' => 'fas fa-medal', 'route' => 'staff.freedom'],
+        'freedom' => ['label' => 'FREEDOM FIGHTER', 'icon' => 'fas fa-medal', 'route' => 'staff.freedom'],
+        'july_figher' => ['label' => 'JULY FIGHER', 'icon' => 'fas fa-flag', 'route' => 'staff.julyFigher'],
     ];
 
     $step_keys = array_keys($steps);

@@ -82,7 +82,7 @@ class StaffFreedomFighterInfoController extends Controller
                     $data['status'] = true;
                     $data['message'] = "Freedom fighter information submitted successfully!";
                     $data['code'] = 200;
-                    $data['redirect_url'] = route('staff.index');
+                    $data['redirect_url'] = route('staff.julyFigher', $request->user_id);
                     return $data;
                 } catch (\Throwable $th) {
                     $data['status'] = false;
@@ -94,7 +94,63 @@ class StaffFreedomFighterInfoController extends Controller
             });
 
             return response(json_encode($result, JSON_PRETTY_PRINT), $result['code'])->header('Content-Type', 'application/json');
-      
+
+    }
+
+    public function julyFigher($id)
+    {
+        $data['user'] = User::with('freedomFighterInfo')->find($id);
+        $data['religions'] = Religion::where('status', true)->get();
+        return view('backend.pages.staff.tabs.july_figher', $data);
+    }
+
+    public function julyFigherStore(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'is_july_fighter' => 'required',
+            'july_type_id' => 'nullable',
+            'july_fighter_id' => 'nullable',
+        ]);
+
+        if ($validate->fails()) {
+            $data['status'] = false;
+            $data['message'] = "Sorry! Invalid Entry.";
+            $data['errors'] = $validate->errors();
+            return response(json_encode($data, JSON_PRETTY_PRINT), 400)->header('Content-Type', 'application/json');
+        }
+
+        $result = DB::transaction(function () use ($request) {
+            try {
+                FreedomFighterInfo::updateOrCreate([
+                    'user_id' => $request->user_id
+                ], [
+                    'is_july_fighter' => $request->is_july_fighter ?? false,
+                    'july_type_id' => $request->is_july_fighter ? $request->july_type_id : null,
+                    'july_fighter_id' => $request->is_july_fighter ? $request->july_fighter_id : null,
+                ]);
+
+                $people = \App\Models\People::where('user_id', $request->user_id)->first();
+                if ($people && $people->is_staff == 2) {
+                    $people->is_staff = 1;
+                    $people->save();
+                }
+
+                $data['status'] = true;
+                $data['message'] = "July fighter information submitted successfully!";
+                $data['code'] = 200;
+                $data['redirect_url'] = route('staff.index');
+                return $data;
+            } catch (\Throwable $th) {
+                $data['status'] = false;
+                $data['message'] = "July Fighter Information Save Failed!";
+                $data['code'] = 500;
+                $data['errors'] = $th;
+                return $data;
+            }
+        });
+
+        return response(json_encode($result, JSON_PRETTY_PRINT), $result['code'])->header('Content-Type', 'application/json');
     }
 
     /**

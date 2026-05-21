@@ -29,12 +29,15 @@ class VillageController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function villagesByUnion(Request $request, $id, $type)
+    public function villagesByUnion(Request $request, $id, $type = null)
     {
 
         $villages_ps = null;
 
         $villages_union = null;
+
+        // default to 'union' when type is not provided (route /get-villages-by-union/{unionID})
+        $type = $type ?? 'union';
 
         if ($type == 'pourashova') {
 

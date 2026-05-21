@@ -42,47 +42,44 @@
                                                 <button type="button" data-id="{{ $professionalInfo->id }}" class="btn btn-danger btn-sm deleteBtn"><i class="fas fa-times"></i></button>
                                             </div>
                                             <h5 class="mb-3 text-info">Employment Details</h5>
-                                            
+
                                             <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Recruitment Notice No.</label>
+                                                <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Recruitment Notice No.</label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" name="recruitment_notice_noU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->recruitment_notice_no ?? '' }}" class="form-control" placeholder="Notice No.">
+                                                    <input type="text" name="recruitment_notice_noU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->recruitment_notice_no ?? '' }}" class="form-control form-control-sm" placeholder="Notice No.">
                                                 </div>
-                                                <label class="col-sm-2 col-form-label">Recruitment Notice Date</label>
-                                                <div class="col-sm-3">
-                                                    <input type="date" name="recruitment_notice_dateU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->recruitment_notice_date ?? '' }}" class="form-control">
+                                                <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Recruitment Notice Date</label>
+                                                <div class="col-sm-3 offset-sm-1">
+                                                    <input type="date" name="recruitment_notice_dateU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->recruitment_notice_date ?? '' }}" class="form-control form-control-sm">
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Appointment Letter No.</label>
+                                                <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Appointment Letter No.</label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" name="appointment_letter_noU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->appointment_letter_no ?? '' }}" class="form-control" placeholder="Letter No.">
+                                                    <input type="text" name="appointment_letter_noU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->appointment_letter_no ?? '' }}" class="form-control form-control-sm" placeholder="Letter No.">
                                                 </div>
-                                                <label class="col-sm-2 col-form-label">Appointment Letter Date</label>
-                                                <div class="col-sm-3">
-                                                    <input type="date" name="appointment_letter_dateU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->appointment_letter_date ?? '' }}" class="form-control">
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Designation at Joining</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" name="designation_joiningU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->designation_joining ?? '' }}" class="form-control">
+                                                <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Appointment Letter Date</label>
+                                                <div class="col-sm-3 offset-sm-1">
+                                                    <input type="date" name="appointment_letter_dateU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->appointment_letter_date ?? '' }}" class="form-control form-control-sm">
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Date of Joining</label>
-                                                <div class="col-sm-9">
-                                                    <input type="date" name="date_of_joiningU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->date_of_joining ?? '' }}" class="form-control">
+                                                <label class="col-sm-2 col-form-label col-form-label-sm">Designation at Joining</label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" name="designation_joiningU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->designation_joining ?? '' }}" class="form-control form-control-sm">
+                                                </div>
+                                                <label class="col-sm-2 col-form-label col-form-label-sm">Date of Joining</label>
+                                                <div class="col-sm-3 offset-sm-1">
+                                                    <input type="date" name="date_of_joiningU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->date_of_joining ?? '' }}" class="form-control form-control-sm">
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Department</label>
-                                                <div class="col-sm-9">
-                                                    <select name="departmentU[{{ $professionalInfo->id }}]" class="form-control department-select">
+                                                <label class="col-sm-2 col-form-label col-form-label-sm">Department</label>
+                                                <div class="col-sm-4">
+                                                    <select name="departmentU[{{ $professionalInfo->id }}]" class="form-control form-control-sm department-select">
                                                         <option value="">-- Select Department --</option>
                                                         @foreach($departments as $department)
                                                             <option value="{{ $department->id }}" {{ $professionalInfo->department == $department->id ? 'selected' : '' }}>
@@ -91,35 +88,33 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Section</label>
-                                                <div class="col-sm-9">
-                                                    <select name="current_designationU[{{ $professionalInfo->id }}]" class="form-control section-select" data-selected="{{ $professionalInfo->current_designation }}">
+                                                <label class="col-sm-2 col-form-label col-form-label-sm">Section</label>
+                                                <div class="col-sm-4">
+                                                    <select name="current_designationU[{{ $professionalInfo->id }}]" class="form-control form-control-sm section-select" data-selected="{{ $professionalInfo->current_designation }}">
                                                         <option value="">-- Select Section --</option>
                                                     </select>
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Date of Current Designation</label>
-                                                <div class="col-sm-9">
-                                                    <input type="date" name="date_current_designationU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->date_current_designation ?? '' }}" class="form-control">
+                                                <label class="col-sm-2 col-form-label col-form-label-sm">Current Designation</label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" name="current_designation_manualU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->designation ?? '' }}" class="form-control form-control-sm" placeholder="Type current designation">
+                                                </div>
+                                                <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Date of Current Designation</label>
+                                                <div class="col-sm-3 offset-sm-1">
+                                                    <input type="date" name="date_current_designationU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->date_current_designation ?? '' }}" class="form-control form-control-sm">
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Current Workplace</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" name="current_workplaceU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->current_workplace ?? '' }}" class="form-control">
+                                                <label class="col-sm-2 col-form-label col-form-label-sm">Current Workplace</label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" name="current_workplaceU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->current_workplace ?? '' }}" class="form-control form-control-sm">
                                                 </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Date of Joining Current Workplace</label>
-                                                <div class="col-sm-9">
-                                                    <input type="date" name="date_joining_current_workplaceU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->date_joining_current_workplace ?? '' }}" class="form-control">
+                                                <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Date of Joining Current Workplace</label>
+                                                <div class="col-sm-3 offset-sm-1">
+                                                    <input type="date" name="date_joining_current_workplaceU[{{ $professionalInfo->id }}]" value="{{ $professionalInfo->date_joining_current_workplace ?? '' }}" class="form-control form-control-sm">
                                                 </div>
                                             </div>
                                         </div>
@@ -130,47 +125,44 @@
                                             <button type="button" class="btn btn-danger btn-sm removeBtn"><i class="fas fa-times"></i></button>
                                         </div>
                                         <h5 class="mb-3 text-info">Employment Details</h5>
-                                        
+
                                         <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Recruitment Notice No.</label>
+                                            <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Recruitment Notice No.</label>
                                             <div class="col-sm-4">
-                                                <input type="text" name="recruitment_notice_no[]" class="form-control" placeholder="Notice No.">
+                                                <input type="text" name="recruitment_notice_no[]" class="form-control form-control-sm" placeholder="Notice No.">
                                             </div>
-                                            <label class="col-sm-2 col-form-label">Recruitment Notice Date</label>
-                                            <div class="col-sm-3">
-                                                <input type="date" name="recruitment_notice_date[]" class="form-control">
+                                            <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Recruitment Notice Date</label>
+                                            <div class="col-sm-3 offset-sm-1">
+                                                <input type="date" name="recruitment_notice_date[]" class="form-control form-control-sm">
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Appointment Letter No.</label>
+                                            <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Appointment Letter No.</label>
                                             <div class="col-sm-4">
-                                                <input type="text" name="appointment_letter_no[]" class="form-control" placeholder="Letter No.">
+                                                <input type="text" name="appointment_letter_no[]" class="form-control form-control-sm" placeholder="Letter No.">
                                             </div>
-                                            <label class="col-sm-2 col-form-label">Appointment Letter Date</label>
-                                            <div class="col-sm-3">
-                                                <input type="date" name="appointment_letter_date[]" class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Designation at Joining</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="designation_joining[]" class="form-control">
+                                            <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Appointment Letter Date</label>
+                                            <div class="col-sm-3 offset-sm-1">
+                                                <input type="date" name="appointment_letter_date[]" class="form-control form-control-sm">
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Date of Joining</label>
-                                            <div class="col-sm-9">
-                                                <input type="date" name="date_of_joining[]" class="form-control">
+                                            <label class="col-sm-2 col-form-label col-form-label-sm">Designation at Joining</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="designation_joining[]" class="form-control form-control-sm">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label col-form-label-sm">Date of Joining</label>
+                                            <div class="col-sm-4">
+                                                <input type="date" name="date_of_joining[]" class="form-control form-control-sm">
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Department</label>
-                                            <div class="col-sm-9">
-                                                <select name="department[]" class="form-control department-select">
+                                            <label class="col-sm-2 col-form-label col-form-label-sm">Department</label>
+                                            <div class="col-sm-4">
+                                                <select name="department[]" class="form-control form-control-sm department-select">
                                                     <option value="">-- Select Department --</option>
                                                     @foreach($departments as $department)
                                                         <option value="{{ $department->id }}">
@@ -179,41 +171,39 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Section</label>
-                                            <div class="col-sm-9">
-                                                <select name="current_designation[]" class="form-control section-select">
+                                            <label class="col-sm-2 col-form-label col-form-label-sm">Section</label>
+                                            <div class="col-sm-4">
+                                                <select name="current_designation[]" class="form-control form-control-sm section-select">
                                                     <option value="">-- Select Section --</option>
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Date of Current Designation</label>
-                                            <div class="col-sm-9">
-                                                <input type="date" name="date_current_designation[]" class="form-control">
+                                            <label class="col-sm-2 col-form-label col-form-label-sm">Current Designation</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="current_designation_manual[]" class="form-control form-control-sm" placeholder="Type current designation">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Date of Current Designation</label>
+                                            <div class="col-sm-4">
+                                                <input type="date" name="date_current_designation[]" class="form-control form-control-sm">
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Current Workplace</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="current_workplace[]" class="form-control">
+                                            <label class="col-sm-2 col-form-label col-form-label-sm">Current Workplace</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="current_workplace[]" class="form-control form-control-sm">
                                             </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Date of Joining Current Workplace</label>
-                                            <div class="col-sm-9">
-                                                <input type="date" name="date_joining_current_workplace[]" class="form-control">
+                                            <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Date of Joining Current Workplace</label>
+                                            <div class="col-sm-4">
+                                                <input type="date" name="date_joining_current_workplace[]" class="form-control form-control-sm">
                                             </div>
                                         </div>
                                     </div>
                                 @endif
                             </div>
-                            
+
                             <div class="col-md-12 text-right mb-3">
                                 <button type="button" class="btn btn-success" id="addNewProfession"><i class="fas fa-plus"></i> Add More Employment</button>
                             </div>
@@ -282,47 +272,44 @@
                     <button type="button" class="btn btn-danger btn-sm removeBtn"><i class="fas fa-times"></i></button>
                 </div>
                 <h5 class="mb-3 text-info">Employment Details</h5>
-                
+
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Recruitment Notice No.</label>
+                    <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Recruitment Notice No.</label>
                     <div class="col-sm-4">
-                        <input type="text" name="recruitment_notice_no[]" class="form-control" placeholder="Notice No.">
+                        <input type="text" name="recruitment_notice_no[]" class="form-control form-control-sm" placeholder="Notice No.">
                     </div>
-                    <label class="col-sm-2 col-form-label">Recruitment Notice Date</label>
-                    <div class="col-sm-3">
-                        <input type="date" name="recruitment_notice_date[]" class="form-control">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Appointment Letter No.</label>
+                    <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Recruitment Notice Date</label>
                     <div class="col-sm-4">
-                        <input type="text" name="appointment_letter_no[]" class="form-control" placeholder="Letter No.">
-                    </div>
-                    <label class="col-sm-2 col-form-label">Appointment Letter Date</label>
-                    <div class="col-sm-3">
-                        <input type="date" name="appointment_letter_date[]" class="form-control">
+                        <input type="date" name="recruitment_notice_date[]" class="form-control form-control-sm">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Designation at Joining</label>
-                    <div class="col-sm-9">
-                        <input type="text" name="designation_joining[]" class="form-control">
+                    <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Appointment Letter No.</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="appointment_letter_no[]" class="form-control form-control-sm" placeholder="Letter No.">
+                    </div>
+                    <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Appointment Letter Date</label>
+                    <div class="col-sm-4">
+                        <input type="date" name="appointment_letter_date[]" class="form-control form-control-sm">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Date of Joining</label>
-                    <div class="col-sm-9">
-                        <input type="date" name="date_of_joining[]" class="form-control">
+                    <label class="col-sm-2 col-form-label col-form-label-sm">Designation at Joining</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="designation_joining[]" class="form-control form-control-sm">
+                    </div>
+                    <label class="col-sm-2 col-form-label col-form-label-sm">Date of Joining</label>
+                    <div class="col-sm-3 offset-sm-1">
+                        <input type="date" name="date_of_joining[]" class="form-control form-control-sm">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Department</label>
-                    <div class="col-sm-9">
-                        <select name="department[]" class="form-control department-select">
+                    <label class="col-sm-2 col-form-label col-form-label-sm">Department</label>
+                    <div class="col-sm-4">
+                        <select name="department[]" class="form-control form-control-sm department-select">
                             <option value="">-- Select Department --</option>
                             @foreach($departments as $department)
                                 <option value="{{ $department->id }}">
@@ -331,35 +318,33 @@
                             @endforeach
                         </select>
                     </div>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Section</label>
-                    <div class="col-sm-9">
-                        <select name="current_designation[]" class="form-control section-select">
+                    <label class="col-sm-2 col-form-label col-form-label-sm">Section</label>
+                    <div class="col-sm-4">
+                        <select name="current_designation[]" class="form-control form-control-sm section-select">
                             <option value="">-- Select Section --</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Date of Current Designation</label>
-                    <div class="col-sm-9">
-                        <input type="date" name="date_current_designation[]" class="form-control">
+                    <label class="col-sm-2 col-form-label col-form-label-sm">Current Designation</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="current_designation_manual[]" class="form-control form-control-sm" placeholder="Type current designation">
+                    </div>
+                    <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Date of Current Designation</label>
+                    <div class="col-sm-3 offset-sm-1">
+                        <input type="date" name="date_current_designation[]" class="form-control form-control-sm">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Current Workplace</label>
-                    <div class="col-sm-9">
-                        <input type="text" name="current_workplace[]" class="form-control">
+                    <label class="col-sm-2 col-form-label col-form-label-sm">Current Workplace</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="current_workplace[]" class="form-control form-control-sm">
                     </div>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Date of Joining Current Workplace</label>
-                    <div class="col-sm-9">
-                        <input type="date" name="date_joining_current_workplace[]" class="form-control">
+                    <label class="col-sm-2 col-form-label col-form-label-sm text-nowrap">Date of Joining Current Workplace</label>
+                    <div class="col-sm-3 offset-sm-1">
+                        <input type="date" name="date_joining_current_workplace[]" class="form-control form-control-sm">
                     </div>
                 </div>
             </div>`;
@@ -423,9 +408,10 @@
             let departmentId = $(this).val();
             let sectionSelect = $(this).closest('.single-profession').find('.section-select');
             let selectedSection = sectionSelect.attr('data-selected');
-            
+
             sectionSelect.html('<option value="">-- Select Section --</option>');
-            
+            sectionSelect.prop('required', !!departmentId);
+
             if (departmentId) {
                 $.ajax({
                     url: "{{ route('basic-settings.get-sections-by-department', '') }}/" + departmentId,
@@ -442,6 +428,8 @@
                         console.error("Failed to load sections: " + error);
                     }
                 });
+            } else {
+                sectionSelect.removeAttr('data-selected');
             }
         });
 

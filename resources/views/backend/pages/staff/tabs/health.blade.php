@@ -345,7 +345,7 @@
                               <div class="card-footer bg-white mt-3" style="border-top: none;">
     <div class="row">
         <div class="col-md-4">
-            <a href="{{ route('staff.freedom', $user->id) }}" class="btn btn-outline-secondary btn-block"><i class="fas fa-arrow-left mr-1"></i> Freedom</a>
+            <a href="{{ route('staff.freedom', $user->id) }}" class="btn btn-outline-secondary btn-block"><i class="fas fa-arrow-left mr-1"></i> Freedom Fighter</a>
         </div>
         <div class="col-md-4">
             <button type="submit" class="btn btn-primary btn-block" style="background-color: #5b4bdf; border-color: #5b4bdf;"><i class="fas fa-save mr-1"></i> Save & Next</button>

@@ -228,6 +228,53 @@
         flex: 1;
     }
 
+    .property-card-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 10px;
+    }
+
+    .property-card {
+        background: #fbfdfc;
+        border: 1px solid #d5e6dd;
+        border-radius: 8px;
+        padding: 12px 14px;
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .property-card-title {
+        margin: 0 0 10px 0;
+        padding-bottom: 6px;
+        border-bottom: 1px solid #dbe8e2;
+        color: #0f5132;
+        font-size: 14px;
+        font-weight: bold;
+        letter-spacing: 0.3px;
+    }
+
+    .property-card .info-row:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    @media (max-width: 768px) {
+        .property-card-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .property-card .info-row {
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .property-card .info-label {
+            width: 100%;
+        }
+    }
+
     /* Education table styles */
     .education-table {
         width: 100%;
@@ -412,7 +459,7 @@
             <div class="id-info-columns">
                 <div class="id-info-item"><span>Name :</span> {{ $user->name ?? '' }}</div> </br>
                 <div class="id-info-item"><span>Name (Bangla) :</span> {{ $user->people->bn_name ?? '' }}</div> </br>
-                <div class="id-info-item"><span>Reg. People ID :</span> {{ $user->people->approved_id ?? '' }}</div> </br>
+                <div class="id-info-item"><span>Staff ID :</span> {{ $user->people->staff_id ?? $user->people->approved_id ?? '' }}</div> </br>
                 <div class="id-info-item"><span>NID :</span> {{ $user->nid ?? '' }}</div> </br>
                 <div class="id-info-item"><span>Mobile :</span> {{ $user->mobile ?? '' }}</div> </br>
             </div>
@@ -563,8 +610,19 @@
             }
             $sectionName = '';
             if ($prof->current_designation) {
-                $sect = \App\Models\Department\Section::find($prof->current_designation);
-                $sectionName = $sect ? $sect->name : '';
+                $sectionValue = trim((string) $prof->current_designation);
+                if ($sectionValue !== '' && ctype_digit($sectionValue)) {
+                    $sect = \App\Models\Department\Section::find((int) $sectionValue);
+                    $sectionName = $sect
+                        ? ($sect->name . (!empty($sect->bn_name) ? ' (' . $sect->bn_name . ')' : ''))
+                        : $sectionValue;
+                } else {
+                    $sectionName = $sectionValue;
+                }
+            }
+            $currentDesignationName = trim((string) ($prof->designation ?? ''));
+            if ($currentDesignationName === '') {
+                $currentDesignationName = $sectionName;
             }
         @endphp
         <div class="two-columns">
@@ -576,7 +634,8 @@
                 <div class="info-row"><span class="info-label">Department :</span><span class="info-value">{{ $deptName }}</span></div>
             </div>
             <div class="col">
-                <div class="info-row"><span class="info-label">Section :</span><span class="info-value">{{ $sectionName }}</span></div>
+                <div class="info-row"><span class="info-label">Section :</span><span class="info-value">{{ $sectionName ?: 'N/A' }}</span></div>
+                <div class="info-row"><span class="info-label">Current Designation :</span><span class="info-value">{{ $currentDesignationName ?: 'N/A' }}</span></div>
                 <div class="info-row"><span class="info-label">Date of Current Designation :</span><span class="info-value">{{ $prof->date_current_designation ? date('d-m-Y', strtotime($prof->date_current_designation)) : '' }}</span></div>
                 <div class="info-row"><span class="info-label">Current Workplace :</span><span class="info-value">{{ $prof->current_workplace ?? '' }}</span></div>
                 <div class="info-row"><span class="info-label">Date of Joining Current Workplace :</span><span class="info-value">{{ $prof->date_joining_current_workplace ? date('d-m-Y', strtotime($prof->date_joining_current_workplace)) : '' }}</span></div>
@@ -598,33 +657,211 @@
 
         {{-- Property Details (if any) --}}
         @if(isset($user->propertyInfos) && ($user->propertyInfos->is_property ?? false))
+        @php
+            $property = $user->propertyInfos;
+
+            $districtCollection = collect($districts ?? []);
+            $landThanaCollection = collect($landThanas ?? []);
+            $landMouzaCollection = collect($landMouzas ?? []);
+            $flatThanaCollection = collect($flatThanas ?? []);
+            $flatMouzaCollection = collect($flatMouzas ?? []);
+
+            $nameOf = function ($item) {
+                if (!$item) {
+                    return '';
+                }
+                return $item->name ?? $item->en_name ?? $item->bn_name ?? '';
+            };
+
+            $hasText = function ($value) {
+                return !is_null($value) && trim((string) $value) !== '';
+            };
+
+            $hasAmount = function ($value) use ($hasText) {
+                if (!$hasText($value)) {
+                    return false;
+                }
+                $normalized = str_replace(',', '', trim((string) $value));
+                return !is_numeric($normalized) || (float) $normalized > 0;
+            };
+
+            $formatCurrency = function ($value) {
+                $normalized = str_replace(',', '', trim((string) $value));
+                if (is_numeric($normalized)) {
+                    return number_format((float) $normalized, 2) . ' BDT';
+                }
+                return $value . ' BDT';
+            };
+
+            $landDistrictName = $nameOf($districtCollection->firstWhere('id', $property->land_district_id));
+            $landThanaName = $nameOf($landThanaCollection->firstWhere('id', $property->land_thana_id));
+            $landMouzaName = $nameOf($landMouzaCollection->firstWhere('id', $property->land_mouza_id));
+            $landLocationParts = array_filter([$landDistrictName, $landThanaName, $landMouzaName]);
+
+            $flatDistrictName = $nameOf($districtCollection->firstWhere('id', $property->flat_district_id));
+            $flatThanaName = $nameOf($flatThanaCollection->firstWhere('id', $property->flat_thana_id));
+            $flatMouzaName = $nameOf($flatMouzaCollection->firstWhere('id', $property->flat_mouza_id));
+            $flatLocationParts = array_filter([$flatDistrictName, $flatThanaName, $flatMouzaName]);
+        @endphp
+
+        @php
+            $showGeneralCard = $hasAmount($property->cash_amount) || $hasText($property->tin_number);
+        @endphp
+
         <div class="section-header">সম্পত্তির তথ্য / Property Information</div>
-        <div class="two-columns">
-            <div class="col">
-                @if($user->propertyInfos->cash_amount ?? false)
-                <div class="info-row"><span class="info-label">Cash Amount :</span><span class="info-value">{{ $user->propertyInfos->cash_amount }} BDT</span></div>
+        <div class="property-card-grid">
+            @if($showGeneralCard)
+            <div class="property-card">
+                <h5 class="property-card-title">General Property Info</h5>
+                @if($hasAmount($property->cash_amount))
+                <div class="info-row"><span class="info-label">Cash Amount :</span><span class="info-value">{{ $formatCurrency($property->cash_amount) }}</span></div>
                 @endif
-                @if($user->propertyInfos->tin_number ?? false)
-                <div class="info-row"><span class="info-label">E-TIN :</span><span class="info-value">{{ $user->propertyInfos->tin_number }}</span></div>
-                @endif
-                @if($user->propertyInfos->house ?? false)
-                <div class="info-row"><span class="info-label">House :</span><span class="info-value">{{ $user->propertyInfos->house_type }} ({{ $user->propertyInfos->house_area }}) Price: {{ $user->propertyInfos->house_price }} BDT</span></div>
-                @endif
-                @if($user->propertyInfos->land ?? false)
-                <div class="info-row"><span class="info-label">Land :</span><span class="info-value">{{ $user->propertyInfos->land_quantity }} {{ $user->propertyInfos->land_type }} in {{ $user->propertyInfos->landDistrict->name ?? '' }}</span></div>
+                @if($hasText($property->tin_number))
+                <div class="info-row"><span class="info-label">E-TIN :</span><span class="info-value">{{ $property->tin_number }}</span></div>
                 @endif
             </div>
-            <div class="col">
-                @if($user->propertyInfos->flat ?? false)
-                <div class="info-row"><span class="info-label">Flat :</span><span class="info-value">{{ $user->propertyInfos->flat_area }} sqft, Price: {{ $user->propertyInfos->flat_price }} BDT</span></div>
+            @endif
+
+            @if($property->house)
+            <div class="property-card">
+                <h5 class="property-card-title">House Information</h5>
+                @if($hasText($property->house_type))
+                <div class="info-row"><span class="info-label">House Type :</span><span class="info-value">{{ $property->house_type }}</span></div>
                 @endif
-                @if($user->propertyInfos->diamond ?? false)
-                <div class="info-row"><span class="info-label">Diamond :</span><span class="info-value">{{ $user->propertyInfos->diamond_quantity }} pcs, Price: {{ $user->propertyInfos->diamond_price }}</span></div>
+                @if($hasText($property->house_area))
+                <div class="info-row"><span class="info-label">House Area :</span><span class="info-value">{{ $property->house_area }}</span></div>
                 @endif
-                @if($user->propertyInfos->gold ?? false)
-                <div class="info-row"><span class="info-label">Gold :</span><span class="info-value">{{ $user->propertyInfos->gold_quantity }} gm, Price: {{ $user->propertyInfos->gold_price }}</span></div>
+                @if($hasText($property->house_land_quantity))
+                <div class="info-row"><span class="info-label">Land Quantity :</span><span class="info-value">{{ $property->house_land_quantity }}</span></div>
+                @endif
+                @if($hasAmount($property->house_price))
+                <div class="info-row"><span class="info-label">House Price :</span><span class="info-value">{{ $formatCurrency($property->house_price) }}</span></div>
+                @endif
+                @if($hasText($property->house_ownership_status))
+                <div class="info-row"><span class="info-label">Owner Information :</span><span class="info-value">{{ $property->house_ownership_status }}</span></div>
+                @endif
+                @if($hasText($property->house_address))
+                <div class="info-row"><span class="info-label">House Address :</span><span class="info-value">{{ $property->house_address }}</span></div>
                 @endif
             </div>
+            @endif
+
+            @if($property->land)
+            <div class="property-card">
+                <h5 class="property-card-title">Land Information</h5>
+                @if($hasText($property->land_quantity))
+                <div class="info-row"><span class="info-label">Land Quantity :</span><span class="info-value">{{ $property->land_quantity }}</span></div>
+                @endif
+                @if($hasText($property->land_type))
+                <div class="info-row"><span class="info-label">Land Type :</span><span class="info-value">{{ $property->land_type }}</span></div>
+                @endif
+                @if($hasText($property->land_ownership_status))
+                <div class="info-row"><span class="info-label">Owner Information :</span><span class="info-value">{{ $property->land_ownership_status }}</span></div>
+                @endif
+                @if(!empty($landLocationParts))
+                <div class="info-row"><span class="info-label">Location :</span><span class="info-value">{{ implode(', ', $landLocationParts) }}</span></div>
+                @endif
+                @if($hasText($property->land_khatian_id))
+                <div class="info-row"><span class="info-label">Khatian No :</span><span class="info-value">{{ $property->land_khatian_id }}</span></div>
+                @endif
+                @if($hasText($property->land_dag_no))
+                <div class="info-row"><span class="info-label">Dag No :</span><span class="info-value">{{ $property->land_dag_no }}</span></div>
+                @endif
+                @if($hasText($property->land_bs))
+                <div class="info-row"><span class="info-label">BS :</span><span class="info-value">{{ $property->land_bs }}</span></div>
+                @endif
+                @if($hasText($property->land_rs))
+                <div class="info-row"><span class="info-label">RS :</span><span class="info-value">{{ $property->land_rs }}</span></div>
+                @endif
+                @if($hasText($property->land_sa))
+                <div class="info-row"><span class="info-label">SA :</span><span class="info-value">{{ $property->land_sa }}</span></div>
+                @endif
+                @if($hasText($property->land_cs))
+                <div class="info-row"><span class="info-label">CS :</span><span class="info-value">{{ $property->land_cs }}</span></div>
+                @endif
+            </div>
+            @endif
+
+            @if($property->flat)
+            <div class="property-card">
+                <h5 class="property-card-title">Flat Information</h5>
+                @if($hasText($property->flat_area))
+                <div class="info-row"><span class="info-label">Flat Area :</span><span class="info-value">{{ $property->flat_area }}</span></div>
+                @endif
+                @if($hasText($property->flat_quantity))
+                <div class="info-row"><span class="info-label">Flat Quantity :</span><span class="info-value">{{ $property->flat_quantity }}</span></div>
+                @endif
+                @if($hasText($property->flat_road))
+                <div class="info-row"><span class="info-label">Road :</span><span class="info-value">{{ $property->flat_road }}</span></div>
+                @endif
+                @if($hasText($property->flat_house_no))
+                <div class="info-row"><span class="info-label">House No :</span><span class="info-value">{{ $property->flat_house_no }}</span></div>
+                @endif
+                @if($hasAmount($property->flat_price))
+                <div class="info-row"><span class="info-label">Flat Price :</span><span class="info-value">{{ $formatCurrency($property->flat_price) }}</span></div>
+                @endif
+                @if($hasText($property->flat_ownership_status))
+                <div class="info-row"><span class="info-label">Owner Information :</span><span class="info-value">{{ $property->flat_ownership_status }}</span></div>
+                @endif
+                @if(!empty($flatLocationParts))
+                <div class="info-row"><span class="info-label">Location :</span><span class="info-value">{{ implode(', ', $flatLocationParts) }}</span></div>
+                @endif
+            </div>
+            @endif
+
+            @if($property->gold)
+            <div class="property-card">
+                <h5 class="property-card-title">Gold Information</h5>
+                @if($hasText($property->gold_type))
+                <div class="info-row"><span class="info-label">Gold Type :</span><span class="info-value">{{ $property->gold_type }}</span></div>
+                @endif
+                @if($hasText($property->gold_quantity))
+                <div class="info-row"><span class="info-label">Quantity :</span><span class="info-value">{{ $property->gold_quantity }}</span></div>
+                @endif
+                @if($hasAmount($property->gold_price))
+                <div class="info-row"><span class="info-label">Price :</span><span class="info-value">{{ $formatCurrency($property->gold_price) }}</span></div>
+                @endif
+                @if($hasText($property->gold_ownership_status))
+                <div class="info-row"><span class="info-label">Owner Information :</span><span class="info-value">{{ $property->gold_ownership_status }}</span></div>
+                @endif
+            </div>
+            @endif
+
+            @if($property->diamond)
+            <div class="property-card">
+                <h5 class="property-card-title">Diamond Information</h5>
+                @if($hasText($property->diamond_type))
+                <div class="info-row"><span class="info-label">Diamond Type :</span><span class="info-value">{{ $property->diamond_type }}</span></div>
+                @endif
+                @if($hasText($property->diamond_quantity))
+                <div class="info-row"><span class="info-label">Quantity :</span><span class="info-value">{{ $property->diamond_quantity }}</span></div>
+                @endif
+                @if($hasAmount($property->diamond_price))
+                <div class="info-row"><span class="info-label">Price :</span><span class="info-value">{{ $formatCurrency($property->diamond_price) }}</span></div>
+                @endif
+                @if($hasText($property->diamond_ownership_status))
+                <div class="info-row"><span class="info-label">Owner Information :</span><span class="info-value">{{ $property->diamond_ownership_status }}</span></div>
+                @endif
+            </div>
+            @endif
+
+            @if($property->silver)
+            <div class="property-card">
+                <h5 class="property-card-title">Silver Information</h5>
+                @if($hasText($property->silver_type))
+                <div class="info-row"><span class="info-label">Silver Type :</span><span class="info-value">{{ $property->silver_type }}</span></div>
+                @endif
+                @if($hasText($property->silver_quantity))
+                <div class="info-row"><span class="info-label">Quantity :</span><span class="info-value">{{ $property->silver_quantity }}</span></div>
+                @endif
+                @if($hasAmount($property->silver_price))
+                <div class="info-row"><span class="info-label">Price :</span><span class="info-value">{{ $formatCurrency($property->silver_price) }}</span></div>
+                @endif
+                @if($hasText($property->silver_ownership_status))
+                <div class="info-row"><span class="info-label">Owner Information :</span><span class="info-value">{{ $property->silver_ownership_status }}</span></div>
+                @endif
+            </div>
+            @endif
         </div>
         @endif
 
@@ -646,6 +883,12 @@
         <div class="info-row"><span class="info-label">Designation :</span><span class="info-value">{{ freedom_fighter_constant_option('designation')[$user->freedomFighterInfo->designation_id ?? ''] ?? '' }}</span></div>
         <div class="info-row"><span class="info-label">FF ID :</span><span class="info-value">{{ $user->freedomFighterInfo->freedom_fighter_id ?? '' }}</span></div>
         <div class="info-row"><span class="info-label">Commander :</span><span class="info-value">{{ $user->freedomFighterInfo->commander_name ?? '' }}</span></div>
+        @endif
+
+        @if(isset($user->freedomFighterInfo) && ($user->freedomFighterInfo->is_july_fighter ?? false))
+        <div class="section-header">জুলাই যোদ্ধা তথ্য / July Fighter Information</div>
+        <div class="info-row"><span class="info-label">Type :</span><span class="info-value">{{ freedom_fighter_constant_option('type')[$user->freedomFighterInfo->july_type_id ?? ''] ?? '' }}</span></div>
+        <div class="info-row"><span class="info-label">July Fighter ID :</span><span class="info-value">{{ $user->freedomFighterInfo->july_fighter_id ?? '' }}</span></div>
         @endif
 
         {{-- Signature Area like Certificate --}}
