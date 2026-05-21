@@ -119,6 +119,26 @@
         </li>
         @endif
 
+        @if (has_module_access('license-category') || has_module_access('license_category') || has_module_access('basic-settings') || has_module_access('basic_settings'))
+        <li class="nav-item">
+            <a href="{{ route('basic-settings.license-category.index') }}"
+                class="nav-link {{ $subMenu == 'LicenseCategory' ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>License Category</p>
+            </a>
+        </li>
+        @endif
+
+        @if (has_module_access('license-subcategory') || has_module_access('license_subcategory') || has_module_access('basic-settings') || has_module_access('basic_settings'))
+        <li class="nav-item">
+            <a href="{{ route('basic-settings.license-subcategory.index') }}"
+                class="nav-link {{ $subMenu == 'LicenseSubcategory' ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>License Subcategory</p>
+            </a>
+        </li>
+        @endif
+
         @if (has_module_access('family-type'))
         <li class="nav-item">
             <a href="{{ route('basic-settings.family-type.index') }}"

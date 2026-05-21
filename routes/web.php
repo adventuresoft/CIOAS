@@ -136,6 +136,9 @@ use App\Http\Controllers\HotelRestaurant\HotelRestaurantController;
 use App\Http\Controllers\HotelRestaurant\HotelCategoryController;
 use App\Http\Controllers\HotelRestaurant\HotelSubCategoryController;
 use App\Http\Controllers\HotelRestaurant\HotelRestaurantOwnershipController;
+use App\Http\Controllers\License\LicenseController;
+use App\Http\Controllers\License\LicenseCategoryController;
+use App\Http\Controllers\License\LicenseSubCategoryController;
 
 // DepartmentController
 use App\Http\Controllers\Departments\DepartmentController;
@@ -261,6 +264,7 @@ Route::get('/house-ownership-remove/{id}', [ HouseOwnershipController::class, 'd
 
 Route::get('/organization-subcategory-options/{id}', [ OrganizationSubCategoryController::class, 'options' ]);
 Route::get('/hotel-subcategory-options/{id}', [ HotelSubCategoryController::class, 'options' ]);
+Route::get('/license-subcategory-options/{id}', [ LicenseSubCategoryController::class, 'options' ]);
 Route::get('/house-options/{id}', [ HouseController::class, 'options' ]);
 Route::get('/organization-work-area-options/{id}', [ OrganizationWorkAreaController::class, 'options' ]);
 Route::get('/organization-type-options/{id}', [ OrganizationTypeController::class, 'options' ]);
@@ -443,6 +447,10 @@ Route::group([ 'prefix' => 'dashboard', 'middleware' => [ 'auth' ] ], function (
         Route::resource('hotel-category', HotelCategoryController::class);
         Route::resource('hotel-subcategory', HotelSubCategoryController::class);
 
+        // license category
+        Route::resource('license-category', LicenseCategoryController::class);
+        Route::resource('license-subcategory', LicenseSubCategoryController::class);
+
         //Department
         Route::resource('department', DepartmentController::class);
 
@@ -458,6 +466,7 @@ Route::group([ 'prefix' => 'dashboard', 'middleware' => [ 'auth' ] ], function (
     });
 
     Route::resource('organization', OrganizationController::class);
+    Route::resource('license', LicenseController::class);
 
     // HotelRestaurantController
 

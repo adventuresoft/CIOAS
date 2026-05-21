@@ -905,7 +905,7 @@
             if (_this_value) {
                 $.ajax({
                     type: "GET",
-                    url: "{{ url('hotel-subcategory-options') }}/" + _this_value,
+                    url: "{{ $subcategoryOptionsUrl ?? url('hotel-subcategory-options') }}/" + _this_value,
                     beforeSend: function () {
                         $('#organization_subcategory_id').prop("disabled", true);
                         console.log("Searcing organization category");
