@@ -44,7 +44,7 @@
 
                             <div class="card-body">
 
-                            
+
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Is Freedom Fighter?</label>
                                     <div class="col-sm-9 px-2">
@@ -62,7 +62,7 @@
 
                                 <div class="fighter-content {{(isset($user->freedomFighterInfo->is_freedom_fighter) ?  (($user->freedomFighterInfo->is_freedom_fighter == 1) ? '' : 'd-none')  : 'd-none')}}">
 
-                                
+
                                 <div class="form-group row">
                                     <label for="type_id" class="col-sm-3 col-form-label">Freedom Fighter Type</label>
                                     <div class="col-sm-9">
@@ -134,7 +134,7 @@
             <a href="{{ route('staff.disability', $user->id) }}" class="btn btn-outline-secondary btn-block"><i class="fas fa-arrow-left mr-1"></i> Disability</a>
         </div>
         <div class="col-md-4 text-center">
-            <button type="submit" class="btn btn-primary btn-block" style="background-color: #5b4bdf; border-color: #5b4bdf;"><i class="fas fa-save mr-1"></i> Save & Finish</button>
+            <button type="submit" class="btn btn-primary btn-block" style="background-color: #5b4bdf; border-color: #5b4bdf;"><i class="fas fa-save mr-1"></i> Save & Next</button>
         </div>
         <div class="col-md-4">
             <!-- No next step -->
@@ -160,50 +160,32 @@
                 e.preventDefault();
                 let thisForm = $(this);
 
-                Swal.fire({
-                    title: 'স্টাফ তৈরি করতে Okay বাটনে ক্লিক করুন',
-                    icon: 'info',
-                    showCancelButton: true,
-                    confirmButtonColor: '#5b4bdf',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Okay',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: "POST",
-                            url: "{{ route('staff.freedomStore') }}",
-                            data: new FormData(thisForm[0]),
-                            dataType: "json",
-                            contentType: false,
-                            cache: false,
-                            processData: false,
-                            beforeSend: function() {
-                                thisForm.find('button[type="submit"]').prop("disabled", true);
-                            },
-                            success: function(response) {
-                                thisForm.find('button[type="submit"]').prop("disabled", false);
-                                
-                                Swal.fire({
-                                    title: 'অভিনন্দন!',
-                                    text: 'আপনি সফলভাবে স্টাফ তৈরি করেছেন এবং পরবর্তী প্রসেস এর জন্য অপেক্ষা করুন।',
-                                    icon: 'success',
-                                    confirmButtonColor: '#5b4bdf',
-                                    confirmButtonText: 'ঠিক আছে'
-                                }).then(() => {
-                                    if (response.redirect_url) {
-                                        location.href = response.redirect_url;
-                                    }
-                                });
-                            },
-                            error: function(xhr, status, error) {
-                                thisForm.find('button[type="submit"]').prop("disabled", false);
-                                var responseText = jQuery.parseJSON(xhr.responseText);
-                                toastr.error(responseText.message);
-                                $.each(responseText.errors, function(key, val) {
-                                    thisForm.find("." + key + "-error").text(val[0]);
-                                });
-                            }
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('staff.freedomStore') }}",
+                    data: new FormData(thisForm[0]),
+                    dataType: "json",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    beforeSend: function() {
+                        thisForm.find('button[type="submit"]').prop("disabled", true);
+                    },
+                    success: function(response) {
+                        thisForm.find('button[type="submit"]').prop("disabled", false);
+                        toastr.success(response.message);
+                        if (response.redirect_url) {
+                            setTimeout(function() {
+                                location.href = response.redirect_url;
+                            }, 1000);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        thisForm.find('button[type="submit"]').prop("disabled", false);
+                        var responseText = jQuery.parseJSON(xhr.responseText);
+                        toastr.error(responseText.message);
+                        $.each(responseText.errors, function(key, val) {
+                            thisForm.find("." + key + "-error").text(val[0]);
                         });
                     }
                 });
@@ -221,5 +203,5 @@
             }
         })
     </script>
-    
+
 @endpush

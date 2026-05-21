@@ -43,20 +43,38 @@
                                 <h6 class="card-title">Permanent Address</h6>
                             </div>
                             <div class="card-body">
-                                <!-- Row 1: Village, Post Office, Permanent Ward -->
+                                <!-- Row 1: Division, District, Thana -->
                                 <div class="form-group row">
                                     <div class="col-sm-4">
-                                        <label for="permanent_village_id">Village</label>
-                                        <select name="permanent_village_id" class="form-control select2 select2bs4" id="permanent_village_id">
-                                            <option value="">Select Village</option>
-                                            @if ($villages)
-                                                @foreach ($villages as $village)
-                                                    <option value="{{$village->id}}" {{$user->addressInfo ? ($user->addressInfo->permanent_village_id == $village->id ? 'selected' : '' ) : ''}}>{{$village->en_name}}</option>
+                                        <label for="permanent_division_id">Division</label>
+                                        <select name="permanent_division_id" class="form-control select2 select2bs4" id="permanent_division_id">
+                                            <option value="">Select Division</option>
+                                            @if ($divisions)
+                                                @foreach ($divisions as $division)
+                                                    <option value="{{ $division->id }}" {{$user->addressInfo ? ($user->addressInfo->permanent_division_id == $division->id ? 'selected' : '') : ''}}>{{ $division->name }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
-                                        <small class="text-danger error permanent_village_id_error"></small>
+                                        <small class="text-danger error permanent_division_id_error"></small>
                                     </div>
+                                    <div class="col-sm-4">
+                                        <label for="permanent_district_id">District</label>
+                                        <select name="permanent_district_id" class="form-control select2 select2bs4" id="permanent_district_id">
+                                            <option value="{{$user->addressInfo->permanent_district_id ?? ''}}">{{$user->addressInfo?->permanentDistrict?->name ?? 'Select District'}}</option>
+                                        </select>
+                                        <small class="text-danger error permanent_district_id_error"></small>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="permanent_thana_id">Thana</label>
+                                        <select name="permanent_thana_id" class="form-control select2 select2bs4" id="permanent_thana_id">
+                                            <option value="{{$user->addressInfo->permanent_thana_id ?? ''}}">{{$user->addressInfo?->permanentThana?->name ?? 'Select Thana'}}</option>
+                                        </select>
+                                        <small class="text-danger error permanent_thana_id_error"></small>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Post Office, UP, Village -->
+                                <div class="form-group row">
                                     <div class="col-sm-4">
                                         <label for="permanent_post_office_id">Post Office</label>
                                         <select name="permanent_post_office_id" class="form-control select2 select2bs4" id="permanent_post_office_id">
@@ -70,7 +88,29 @@
                                         <small class="text-danger error permanent_post_office_id_error"></small>
                                     </div>
                                     <div class="col-sm-4">
-                                        <label for="permanent_ward_id">Permanent Ward</label>
+                                        <label for="permanent_union_id">UP (Union Parishad)</label>
+                                        <select name="permanent_union_id" class="form-control select2 select2bs4" id="permanent_union_id">
+                                            <option value="{{$user->addressInfo->permanent_union_id ?? ''}}">{{$user->addressInfo?->permanentUnion?->name ?? 'Select Union'}}</option>
+                                        </select>
+                                        <small class="text-danger error permanent_union_id_error"></small>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="permanent_village_id">Village</label>
+                                        <select name="permanent_village_id" class="form-control select2 select2bs4" id="permanent_village_id">
+                                            @if($permanent_villages)
+                                            @foreach($permanent_villages as $village)
+                                            <option {{$user->addressInfo->permanent_village_id ==$village->id?'selected':''}} value="{{$village->id}}">{{$village->en_name ?? 'Select Village'}}</option>
+                                            @endforeach
+                                            @endif
+                                        </select>
+                                        <small class="text-danger error permanent_village_id_error"></small>
+                                    </div>
+                                </div>
+
+                                <!-- Row 3: Ward, Road, House -->
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <label for="permanent_ward_id">Ward</label>
                                         <select name="permanent_ward_id" class="form-control select2 select2bs4" id="permanent_ward_id">
                                             <option value="">Select Ward</option>
                                             @if ($wards)
@@ -81,10 +121,6 @@
                                         </select>
                                         <small class="text-danger error permanent_ward_id_error"></small>
                                     </div>
-                                </div>
-
-                                <!-- Row 2: Road, House, House (Bangla) -->
-                                <div class="form-group row">
                                     <div class="col-sm-4">
                                         <label for="permanent_road">Road</label>
                                         <input type="text" name="permanent_road" class="form-control" id="permanent_road"
@@ -97,7 +133,11 @@
                                             value="{{ $user->addressInfo->permanent_house ?? '' }}" placeholder="Permanent House">
                                         <small class="text-danger error permanent_house_error"></small>
                                     </div>
-                                    <div class="col-sm-4">
+                                </div>
+
+                                <!-- Row 4: House (Bangla) -->
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
                                         <label for="permanent_house_bn">House (Bangla)</label>
                                         <input type="text" name="permanent_house_bn" class="form-control" id="permanent_house_bn"
                                             value="{{ $user->addressInfo->permanent_house_bn ?? '' }}" placeholder="স্থায়ী বাড়ি">
@@ -397,6 +437,125 @@
             } else {
                 present_village_id.html('<option value="">Select Village</option>');
                 present_village_id.prop("disabled", true);
+            }
+        });
+
+        // Permanent Address - Division change handler
+        $(document).on('change', '#permanent_division_id', function(e){
+            e.preventDefault();
+            let district_id = $('#permanent_district_id');
+            let division_id = $(this).val();
+            if (division_id) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('/get-districts-by-division') }}/"+division_id,
+                    beforeSend: function() {
+                        district_id.prop("disabled", true);
+                        district_id.html('<option value="">Loading...</option>');
+                    },
+                    success: function(response) {
+                        district_id.html(response);
+                        district_id.prop("disabled", false);
+                    },
+                    error: function(xhr, status, error) {
+                        district_id.prop("disabled", false);
+                        var responseText = jQuery.parseJSON(xhr.responseText);
+                        toastr.error(responseText.message);
+                    }
+                });
+            } else {
+                district_id.html('<option value="">Select District</option>');
+                district_id.prop("disabled", true);
+            }
+        });
+
+        // Permanent Address - District change handler
+        $(document).on('change', '#permanent_district_id', function(e){
+            e.preventDefault();
+            let district_id = $(this).val();
+            let permanent_thana_id = $("#permanent_thana_id");
+            if (district_id) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('/get-thanas-by-district') }}/"+district_id,
+                    beforeSend: function() {
+                        permanent_thana_id.prop("disabled", true);
+                        permanent_thana_id.html('<option value="">Loading...</option>');
+                    },
+                    success: function(response) {
+                        permanent_thana_id.html(response);
+                        permanent_thana_id.prop("disabled", false);
+                    },
+                    error: function(xhr, status, error) {
+                        permanent_thana_id.prop("disabled", false);
+                        var responseText = jQuery.parseJSON(xhr.responseText);
+                        toastr.error(responseText.message);
+                    }
+                });
+            } else {
+                permanent_thana_id.html('<option value="">Select Thana</option>');
+                permanent_thana_id.prop("disabled", true);
+            }
+        });
+
+        // Permanent Address - Thana change handler
+        $(document).on('change', '#permanent_thana_id', function(e){
+            e.preventDefault();
+            let thana_id = $(this).val();
+            let permanent_union_id = $('#permanent_union_id');
+            if (thana_id) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('/get-unions-by-thana') }}/"+thana_id,
+                    beforeSend: function() {
+                        permanent_union_id.prop("disabled", true);
+                        permanent_union_id.html('<option value="">Loading...</option>');
+                    },
+                    success: function(response) {
+                        permanent_union_id.html(response);
+                        permanent_union_id.prop("disabled", false);
+                    },
+                    error: function(xhr, status, error) {
+                        permanent_union_id.prop("disabled", false);
+                        var responseText = jQuery.parseJSON(xhr.responseText);
+                        toastr.error(responseText.message);
+                    }
+                });
+            } else {
+                permanent_union_id.html('<option value="">Select Union</option>');
+                permanent_union_id.prop("disabled", true);
+            }
+        });
+
+        // Permanent Address - Union change handler
+        $(document).on('change', '#permanent_union_id', function(e){
+            e.preventDefault();
+            let permanent_union_id = $(this).val();
+            let permanent_village_id = $('#permanent_village_id');
+            if (permanent_union_id) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('/get-villages-by-union') }}/"+permanent_union_id,
+                    beforeSend: function() {
+                        permanent_village_id.prop("disabled", true);
+                        permanent_village_id.html('<option value="">Loading...</option>');
+                    },
+                    success: function(response) {
+                        permanent_village_id.html(response.villageOptions);
+                        permanent_village_id.prop("disabled", false);
+                        if(response.roadOptions) {
+                            $("#permanent_road").html(response.roadOptions);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        permanent_village_id.prop("disabled", false);
+                        var responseText = jQuery.parseJSON(xhr.responseText);
+                        toastr.error(responseText.message);
+                    }
+                });
+            } else {
+                permanent_village_id.html('<option value="">Select Village</option>');
+                permanent_village_id.prop("disabled", true);
             }
         });
     </script>

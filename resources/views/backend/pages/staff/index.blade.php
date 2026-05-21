@@ -5,21 +5,46 @@
     .citizen-id {
         font-weight: bold;
         color: black;
-        font-size: 15px;
+        font-size: 13px;
     }
 
-    .table td {
+    .table td,
+    .table th {
         vertical-align: middle !important;
     }
 
+    #example1 th,
+    #example1 td {
+        font-size: 12px;
+        padding: 0.35rem 0.45rem;
+        line-height: 1.25;
+    }
+
+    #example1 thead th {
+        font-size: 11.5px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    #example1 strong,
+    #example1 a,
+    #example1 small {
+        font-size: 12px;
+    }
+
     .row.mb-3 input {
-        height: 32px;
-        font-size: 13px;
+        height: 30px;
+        font-size: 12px;
     }
 
     .row.mb-3 select {
-        height: 32px;
-        font-size: 13px;
+        height: 30px;
+        font-size: 12px;
+    }
+
+    .dataTables_wrapper .dataTables_info,
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        font-size: 12px;
     }
 
     /* hide datatable search */
@@ -40,16 +65,16 @@
 
     .table-action {
         display: flex;
-        gap: 5px;
+        gap: 4px;
     }
 
     .btn-action {
-        padding: 4px 8px;
-        font-size: 12px;
+        padding: 3px 6px;
+        font-size: 11px;
         border-radius: 4px;
         display: inline-flex;
         align-items: center;
-        gap: 4px;
+        gap: 3px;
     }
 </style>
 @endpush
@@ -69,7 +94,7 @@
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col-md-6">
-                                <h3 class="card-title" style="font-size:24px; font-weight: semi-bold;">Staff Information</h3>
+                                <h3 class="card-title" style="font-size:20px; font-weight: semi-bold;">Staff Information</h3>
                             </div>
 
                             <div class="col-md-6 text-right">
@@ -174,8 +199,8 @@
 
                                         <td>
                                             <img src="{{ asset($user->image ?? 'default.png') }}"
-                                                width="45"
-                                                height="55"
+                                                width="38"
+                                                height="48"
                                                 class="img"
                                                 onerror="this.src='{{ asset('default.png') }}'">
                                         </td>

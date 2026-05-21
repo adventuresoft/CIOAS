@@ -203,6 +203,13 @@ class StaffController extends Controller
                     $people->blood_group   = $request->blood_group;
                     $people->is_staff = 2;
                     if ($people->save()) {
+                        if (empty($people->staff_id)) {
+                            $people->staff_id = $this->generateStaffId(
+                                $people->date_of_birth,
+                                $people->district_id
+                            );
+                            $people->save();
+                        }
 
 
                         $data['status']       = true;
@@ -425,6 +432,12 @@ class StaffController extends Controller
                 $people->religion_id   = $request->religion;
                 $people->blood_group   = $request->blood_group;
                 $people->is_staff = $people->is_staff == 2 ? 2 : 1;
+                if ($people->is_staff == 2 && empty($people->staff_id)) {
+                    $people->staff_id = $this->generateStaffId(
+                        $people->date_of_birth,
+                        $people->district_id
+                    );
+                }
 
                 try {
                     $people->save();
@@ -492,6 +505,11 @@ class StaffController extends Controller
         $serialPart = str_pad($newSerial, 4, '0', STR_PAD_LEFT);
 
         return $districtPart . '-' . $datePart . '-' . $serialPart;
+    }
+
+    private function generateStaffId($date_of_birth, $district_id)
+    {
+        return 'SID-' . $this->generateApprovedId($date_of_birth, $district_id);
     }
 
 

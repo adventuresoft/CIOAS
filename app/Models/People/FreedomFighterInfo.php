@@ -17,6 +17,12 @@ class FreedomFighterInfo extends Model
     'area_id',
     'designation_id',
     'freedom_fighter_id',
-    'commander_name'
+    'commander_name',
+    'is_july_fighter',
+    'july_type_id',
+    'july_area_id',
+    'july_designation_id',
+    'july_fighter_id',
+    'july_commander_name'
     ];
 }

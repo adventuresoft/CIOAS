@@ -446,9 +446,6 @@
                 <div class="info-row"><span class="info-label">Mother's Name :</span><span class="info-value">{{ $user->familyInfo->mother_name ?? '' }} </span></div>
                 <div class="info-row"><span class="info-label">Mother's NID :</span><span class="info-value">{{ $user->familyInfo->mother_nid ?? '' }}</span></div>
                 <div class="info-row"><span class="info-label">Marital Status :</span><span class="info-value">{{ family_constant_option('marital_status')[$user->familyInfo->marital_status ?? ''] ?? '' }}</span></div>
-                @if(isset($user->familyInfo->marital_status) && $user->familyInfo->marital_status != 1)
-                <div class="info-row"><span class="info-label">Spouse Name :</span><span class="info-value">{{ $user->familyInfo->spouse_name ?? '' }}</span></div>
-                @endif
             </div>
             <div class="col">
                 <div class="info-row"><span class="info-label">Father's Name :</span><span class="info-value">{{ $user->familyInfo->father_name_bn ?? '' }}</span></div>
@@ -456,7 +453,6 @@
                 <div class="info-row"><span class="info-label">Mother's Name :</span><span class="info-value"> {{ $user->familyInfo->mother_name_bn ?? '' }}</span></div>
                 <div class="info-row"><span class="info-label">Mother's Live Status :</span><span class="info-value">{{ family_constant_option('live_status')[$user->familyInfo->mother_live_status ?? ''] ?? '' }}</span></div>
                 @if(isset($user->familyInfo->marital_status) && $user->familyInfo->marital_status != 1)
-                <div class="info-row"><span class="info-label">Married Date :</span><span class="info-value">{{ $user->familyInfo->married_date ?? '' }}</span></div>
                 <div class="info-row"><span class="info-label">Spouse NID :</span><span class="info-value">{{ $user->familyInfo->spouse_nid ?? '' }}</span></div>
                 @endif
                 @if($user->familyInfo->have_children ?? false)
@@ -514,18 +510,23 @@
                 @foreach($user->educationInfos as $edu)
                 <tr>
                     <td>
-                        @if($edu->degree_id == 1) HSC
-                        @elseif($edu->degree_id == 2) SSC
-                        @elseif($edu->degree_id == 3) JSC
-                        @else {{ $edu->degree_id ?? '' }}
-                        @endif
+                        @php
+                            $degrees = [
+                                1 => 'PSC', 2 => 'JSC', 3 => 'SSC', 4 => 'HSC', 5 => 'Diploma', 6 => 'Bachelor of Arts (BA)', 
+                                7 => 'Bachelor of Science (BSc)', 8 => 'Bachelor of Business Administration (BBA)', 
+                                9 => 'Bachelor of Social Science (BSS)', 10 => 'Honours', 11 => 'Masters', 12 => 'MBA', 
+                                13 => 'M.Sc', 14 => 'M.A', 15 => 'M.Phil', 16 => 'PhD', 17 => 'Post Graduate Diploma (PGD)', 
+                                18 => 'LLB', 19 => 'MBBS', 20 => 'BDS', 21 => 'B.Ed', 22 => 'M.Ed', 23 => 'Engineering (BSc Eng)', 
+                                24 => 'Fazil', 25 => 'Kamil', 26 => 'Dakhil', 27 => 'Alim', 28 => 'Other'
+                            ];
+                        @endphp
+                        {{ $edu->degree_id ? ($degrees[$edu->degree_id] ?? $edu->degree_id) : '' }}
                     </td>
                     <td>
-                        @if($edu->group_id == 1) Science
-                        @elseif($edu->group_id == 2) Business
-                        @elseif($edu->group_id == 3) Humanities
-                        @else {{ $edu->group_id ?? '' }}
-                        @endif
+                        @php
+                            $groups = [1 => 'Science', 2 => 'Business', 3 => 'Humanities'];
+                        @endphp
+                        {{ $edu->group_id ? ($groups[$edu->group_id] ?? $edu->group_id) : '' }}
                     </td>
                     <td>
                         @php
@@ -548,7 +549,7 @@
 
         {{-- Profession Section --}}
         @if(count($user->professionalInfos) > 0)
-        <div class="section-header">পেশাগত তথ্য / Professional Information</div>
+        <div class="section-header">কর্মসংস্থান তথ্য / Employment Information</div>
         @foreach($user->professionalInfos as $prof)
         <div class="two-columns">
             <div class="col">
