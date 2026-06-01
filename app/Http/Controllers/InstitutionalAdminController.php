@@ -36,8 +36,7 @@ class InstitutionalAdminController extends Controller
      */
     public function index()
     {
-        $data['admins'] = User::where('role_id', 6)
-        ->where('institute_id', Auth::user()->institute_id)
+        $data['admins'] = User::where('institute_id', Auth::user()->institute_id)
         ->get();
         return view('backend.pages.institutional_admin.index', $data);
     }
@@ -50,6 +49,7 @@ class InstitutionalAdminController extends Controller
     public function create()
     {
         $data['departments'] = \App\Models\Department\Department::all();
+        $data['roles'] = \App\Models\Role::all();
         return view('backend.pages.institutional_admin.create', $data);
     }
 
@@ -65,9 +65,11 @@ class InstitutionalAdminController extends Controller
             'name' => 'required|max:190',
             'email' => 'required|max:190|email',
             'mobile' => 'nullable|max:190',
-            'password' => 'required|min:6',
+            'role_id' => 'required|integer',
+            'password' => 'required|min:6|confirmed',
             'department_id' => 'nullable|integer',
             'section_id' => 'nullable|integer',
+            'status' => 'required|in:0,1',
         ]);
 
         if ($validate->fails()) {
@@ -80,7 +82,7 @@ class InstitutionalAdminController extends Controller
         try {
 
             $user = new User();
-            $user->role_id = 6;
+            $user->role_id = $request->role_id;
             $user->institute_id = Auth::user()->institute_id;
             $user->department_id = $request->department_id;
             $user->section_id = $request->section_id;
@@ -88,9 +90,15 @@ class InstitutionalAdminController extends Controller
             $user->mobile = $request->mobile;
             $user->password = Hash::make($request->password);
             $user->name = $request->name;
-            $user->status = true;
+            $user->status = $request->status;
             $user->created_by = Auth::id();
             $user->save();
+
+            // Sync Spatie role
+            $role = \App\Models\Role::find($request->role_id);
+            if ($role) {
+                $user->syncRoles([$role->name]);
+            }
 
             $data['status'] = true;
             $data['message'] = "Successfully Saved Admin Information!";
@@ -111,7 +119,29 @@ class InstitutionalAdminController extends Controller
      */
     public function show($id)
     {
-        $data['admin'] = User::find($id);
+        $user = User::with([
+            'institute.union.thana.district',
+            'department',
+            'section',
+            'people',
+            'familyInfo',
+            'addressInfo.presentUnion',
+            'addressInfo.permanentHouse',
+            'addressInfo.presentHouse',
+            'addressInfo.presentRoad',
+            'addressInfo.permanentRoad',
+            'addressInfo.presentVillage',
+            'addressInfo.presentDistrict',
+            'addressInfo.presentThana',
+            'educationInfos',
+            'professionalInfos',
+            'financialInfos',
+            'propertyInfos',
+        ])->findOrFail($id);
+
+        $data['user'] = $user;
+        $data['people'] = $user->people;
+
         return view('backend.pages.institutional_admin.show', $data);
     }
 
@@ -126,6 +156,7 @@ class InstitutionalAdminController extends Controller
         $admin = User::findOrFail($id);
         $data['admin'] = $admin;
         $data['departments'] = \App\Models\Department\Department::all();
+        $data['roles'] = \App\Models\Role::all();
         $data['sections'] = $admin->department_id ? \App\Models\Department\Section::where('department_id', $admin->department_id)->get() : collect([]);
         return view('backend.pages.institutional_admin.edit', $data);
     }
@@ -143,8 +174,11 @@ class InstitutionalAdminController extends Controller
             'name' => 'required|max:190',
             'email' => 'required|max:190|email',
             'mobile' => 'nullable|max:190',
+            'role_id' => 'required|integer',
+            'password' => 'nullable|min:6|confirmed',
             'department_id' => 'nullable|integer',
             'section_id' => 'nullable|integer',
+            'status' => 'required|in:0,1',
         ]);
 
         if ($validate->fails()) {
@@ -159,12 +193,24 @@ class InstitutionalAdminController extends Controller
             $user->email = $request->email;
             $user->mobile = $request->mobile;
             $user->name = $request->name;
+            $user->role_id = $request->role_id;
             $user->department_id = $request->department_id;
             $user->section_id = $request->section_id;
+            $user->status = $request->status;
+            if ($request->filled('password')) {
+                $user->password = Hash::make($request->password);
+            }
             $user->updated_by = Auth::id();
 
 
             $user->save();
+
+            // Sync Spatie role
+            $role = \App\Models\Role::find($request->role_id);
+            if ($role) {
+                $user->syncRoles([$role->name]);
+            }
+
             $data['status'] = true;
             $data['message'] = "Successfully Saved Admin Information!";
             return response()->json($data, 200);

@@ -132,12 +132,12 @@
                                 <div class="form-group row">
                                     <div class="col-sm-6">
                                         <label for="mobile">Mobile No.</label>
-                                        <input type="tel" value="" name="mobile" placeholder="Mobile" class="form-control" id="mobile">
+                                        <input type="tel" value="" required name="mobile" placeholder="Mobile" class="form-control" id="mobile">
                                         <small class="error mobile-error text-danger"></small>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="email">Email</label>
-                                        <input type="email" required value="" name="email" placeholder="Email" class="form-control" id="email">
+                                        <input type="email" value="" name="email" placeholder="Email" class="form-control" id="email">
                                         <small class="error email-error text-danger"></small>
                                     </div>
                                 </div>

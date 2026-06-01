@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             // TaxYearSeeder::class,
             // DepartmentSeeder::class,
             // SectionSeeder::class,
+            DemoStaffSeeder::class,
         ]);
     }
 }

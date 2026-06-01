@@ -54,13 +54,6 @@ class StaffController extends Controller
         }
     }
 
-
-
-
-
-
-
-
     /**
      * Display a listing of the resource.
      *

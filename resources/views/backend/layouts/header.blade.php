@@ -6,10 +6,15 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{route('home')}}" class="nav-link">{{user_institute_name(Auth::user()->institute_id)}}</a>
+        <a href="{{route('home')}}" class="nav-link">
+          {{user_institute_name(Auth::user()->institute_id)}} 
+          {{Auth::user()->institute->type->name ?? ''}} 
+          @if(Auth::user()->institute && Auth::user()->institute->institute_subcategory_id)
+            - {{instituteSubCategory(Auth::user()->institute->institute_subcategory_id)}}
+          @endif
+        </a>
       </li>
     </ul>
-
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->

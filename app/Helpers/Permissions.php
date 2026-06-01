@@ -68,7 +68,7 @@ if (!function_exists('is_superadmin')) {
             return false;
         }
         $user = Auth::user();
-        return $user->role_id == 1 || $user->role_id == 4 || $user->hasRole(['Admin', 'Developer']);
+        return $user->role_id == 1 || $user->role_id == 2 || $user->role_id == 4 || $user->hasRole(['Admin', 'DC', 'Developer']);
     }
 }
 

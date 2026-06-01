@@ -39,6 +39,27 @@ if (!function_exists('user_institute_information')) {
         }
     }
 }
+if (!function_exists('instituteSubCategory')) {
+    function instituteSubCategory($institute_id)
+    {
+        $institute_sub_category = "";
+        switch ($institute_id) {
+            case 1:
+                $institute_sub_category = "Category A";
+                break;
+            case 2:
+                $institute_sub_category = "Category B";
+                break;
+            case 3:
+                $institute_sub_category = "Category C";
+                break;
+            default:
+                $institute_sub_category = "";
+                break;
+        }
+        return $institute_sub_category;
+    }
+}
 
 if (!function_exists('user_institute_name')) {
     function user_institute_name($institute_id)
