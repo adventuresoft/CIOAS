@@ -12,23 +12,24 @@ class ProfessionalInfo extends Model
 
     public static $snakeAttributes = false;
     public $table = 'professional_infos';
-    protected $fillable = ['user_id',
-    'profession',
-    'profession_start',
-    'profession_end',
-    'grade',
-    'salary_structure',
-    'company',
-    'address',
-    'recruitment_notice_no',
-    'appointment_letter_no',
-    'designation_joining',
-    'date_of_joining',
-    'department',
-    'current_designation',
-    'date_current_designation',
-    'current_workplace',
-    'date_joining_current_workplace'
+    protected $fillable = [
+        'user_id',
+        'profession',
+        'profession_start',
+        'profession_end',
+        'grade',
+        'salary_structure',
+        'company',
+        'address',
+        'recruitment_notice_no',
+        'appointment_letter_no',
+        'designation_joining',
+        'date_of_joining',
+        'department',
+        'current_designation',
+        'date_current_designation',
+        'current_workplace',
+        'date_joining_current_workplace'
     ];
 
 

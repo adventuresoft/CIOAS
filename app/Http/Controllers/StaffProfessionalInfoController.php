@@ -30,15 +30,23 @@ class StaffProfessionalInfoController extends Controller
      */
     public function create($id)
     {
-        $data['user'] = User::with(array('professionalInfos' => function($q1){
-            $q1->with(array('subcategory' => function($q2){
-                $q2->with(array('category' => function($q3){
-                    $q3->with(array('type'=> function($q4){
-                        $q4->with('profession');
-                    }));
-                }));
-            }));
-        }))->find($id);
+        $data['user'] = User::with(array(
+            'professionalInfos' => function ($q1) {
+                $q1->with(array(
+                    'subcategory' => function ($q2) {
+                        $q2->with(array(
+                            'category' => function ($q3) {
+                                $q3->with(array(
+                                    'type' => function ($q4) {
+                                        $q4->with('profession');
+                                    }
+                                ));
+                            }
+                        ));
+                    }
+                ));
+            }
+        ))->find($id);
         $data['professions'] = Profession::where('status', true)->get();
         $data['departments'] = \App\Models\Department\Department::all();
         // return response()->json($data,  200);
@@ -53,170 +61,178 @@ class StaffProfessionalInfoController extends Controller
      */
     public function store(Request $request)
     {
-            $validate = Validator::make($request->all(), [
-                'department.*' => 'nullable|integer',
-                'current_designation.*' => 'nullable|integer',
-                'departmentU.*' => 'nullable|integer',
-                'current_designationU.*' => 'nullable|integer',
-            ]);
+        $validate = Validator::make($request->all(), [
+            'department.*' => 'nullable|integer',
+            'current_designation.*' => 'nullable|integer',
+            'departmentU.*' => 'nullable|integer',
+            'current_designationU.*' => 'nullable|integer',
+        ]);
 
-            $validate->after(function ($validator) use ($request) {
-                foreach (($request->department ?? []) as $key => $departmentId) {
-                    $departmentId = trim((string) $departmentId);
-                    if ($departmentId === '') {
-                        continue;
-                    }
-
-                    $sectionId = trim((string) ($request->current_designation[$key] ?? ''));
-                    if ($sectionId === '') {
-                        $validator->errors()->add("current_designation.$key", 'Department select korle Section select korte hobe.');
-                        continue;
-                    }
-
-                    $belongsToDepartment = Section::where('id', $sectionId)
-                        ->where('department_id', $departmentId)
-                        ->exists();
-
-                    if (!$belongsToDepartment) {
-                        $validator->errors()->add("current_designation.$key", 'Selected section does not belong to the selected department.');
-                    }
+        $validate->after(function ($validator) use ($request) {
+            foreach (($request->department ?? []) as $key => $departmentId) {
+                $departmentId = trim((string) $departmentId);
+                if ($departmentId === '') {
+                    continue;
                 }
 
-                foreach (($request->departmentU ?? []) as $key => $departmentId) {
-                    $departmentId = trim((string) $departmentId);
-                    if ($departmentId === '') {
-                        continue;
-                    }
-
-                    $sectionId = trim((string) ($request->current_designationU[$key] ?? ''));
-                    if ($sectionId === '') {
-                        $validator->errors()->add("current_designationU.$key", 'Department select korle Section select korte hobe.');
-                        continue;
-                    }
-
-                    $belongsToDepartment = Section::where('id', $sectionId)
-                        ->where('department_id', $departmentId)
-                        ->exists();
-
-                    if (!$belongsToDepartment) {
-                        $validator->errors()->add("current_designationU.$key", 'Selected section does not belong to the selected department.');
-                    }
+                $sectionId = trim((string) ($request->current_designation[$key] ?? ''));
+                if ($sectionId === '') {
+                    $validator->errors()->add("current_designation.$key", 'Department select korle Section select korte hobe.');
+                    continue;
                 }
-            });
 
-            if ($validate->fails()) {
-                $data['status'] = false;
-                $data['message'] = "Sorry! Invalid Entry.";
-                $data['errors'] = $validate->errors();
-                return response(json_encode($data, JSON_PRETTY_PRINT), 400)->header('Content-Type', 'application/json');
+                $belongsToDepartment = Section::where('id', $sectionId)
+                    ->where('department_id', $departmentId)
+                    ->exists();
+
+                if (!$belongsToDepartment) {
+                    $validator->errors()->add("current_designation.$key", 'Selected section does not belong to the selected department.');
+                }
             }
 
-            $result = DB::transaction(function () use ($request) {
-                $user_id = $request->user_id;
-
-                $recruitment_notice_no = $request->recruitment_notice_no;
-                $recruitment_notice_date = $request->recruitment_notice_date;
-                $appointment_letter_no = $request->appointment_letter_no;
-                $appointment_letter_date = $request->appointment_letter_date;
-                $designation_joining = $request->designation_joining;
-                $date_of_joining = $request->date_of_joining;
-                $department = $request->department;
-                $current_designation = $request->current_designation;
-                $current_designation_manual = $request->current_designation_manual;
-                $date_current_designation = $request->date_current_designation;
-                $current_workplace = $request->current_workplace;
-                $date_joining_current_workplace = $request->date_joining_current_workplace;
-
-                $recruitment_notice_noU = $request->recruitment_notice_noU;
-                $recruitment_notice_dateU = $request->recruitment_notice_dateU;
-                $appointment_letter_noU = $request->appointment_letter_noU;
-                $appointment_letter_dateU = $request->appointment_letter_dateU;
-                $designation_joiningU = $request->designation_joiningU;
-                $date_of_joiningU = $request->date_of_joiningU;
-                $departmentU = $request->departmentU;
-                $current_designationU = $request->current_designationU;
-                $current_designation_manualU = $request->current_designation_manualU;
-                $date_current_designationU = $request->date_current_designationU;
-                $current_workplaceU = $request->current_workplaceU;
-                $date_joining_current_workplaceU = $request->date_joining_current_workplaceU;
-
-                try {
-
-                    if (!empty($recruitment_notice_no)) {
-                        foreach ($recruitment_notice_no as $key => $val) {
-                            $selectedSection = $current_designation[$key] ?? null;
-                            $manualDesignation = trim((string) ($current_designation_manual[$key] ?? ''));
-                            $resolvedSectionOrDesignation = filled($selectedSection)
-                                ? $selectedSection
-                                : ($manualDesignation !== '' ? $manualDesignation : null);
-
-                            $prof = new ProfessionalInfo();
-                            $prof->profession_subcategory_id = '0'; // default since not used for staff
-                            $prof->recruitment_notice_no = $recruitment_notice_no[$key] ?? null;
-                            $prof->recruitment_notice_date = $recruitment_notice_date[$key] ?? null;
-                            $prof->appointment_letter_no = $appointment_letter_no[$key] ?? null;
-                            $prof->appointment_letter_date = $appointment_letter_date[$key] ?? null;
-                            $prof->designation_joining = $designation_joining[$key] ?? null;
-                            $prof->designation = $manualDesignation !== '' ? $manualDesignation : null;
-                            $prof->date_of_joining = $date_of_joining[$key] ?? null;
-                            $prof->department = $department[$key] ?? null;
-                            $prof->current_designation = $resolvedSectionOrDesignation;
-                            $prof->date_current_designation = $date_current_designation[$key] ?? null;
-                            $prof->current_workplace = $current_workplace[$key] ?? null;
-                            $prof->date_joining_current_workplace = $date_joining_current_workplace[$key] ?? null;
-                            $prof->user_id = $user_id;
-                            $prof->save();
-                        }
-                    }
-
-                    if (!empty($recruitment_notice_noU)) {
-                        foreach ($recruitment_notice_noU as $key => $val) {
-                            $selectedSectionU = $current_designationU[$key] ?? null;
-                            $manualDesignationU = trim((string) ($current_designation_manualU[$key] ?? ''));
-                            $resolvedSectionOrDesignationU = filled($selectedSectionU)
-                                ? $selectedSectionU
-                                : ($manualDesignationU !== '' ? $manualDesignationU : null);
-
-                            $profs = ProfessionalInfo::find($key);
-                            if ($profs) {
-                                $profs->recruitment_notice_no = $recruitment_notice_noU[$key] ?? null;
-                                $profs->recruitment_notice_date = $recruitment_notice_dateU[$key] ?? null;
-                                $profs->appointment_letter_no = $appointment_letter_noU[$key] ?? null;
-                                $profs->appointment_letter_date = $appointment_letter_dateU[$key] ?? null;
-                                $profs->designation_joining = $designation_joiningU[$key] ?? null;
-                                $profs->designation = $manualDesignationU !== '' ? $manualDesignationU : null;
-                                $profs->date_of_joining = $date_of_joiningU[$key] ?? null;
-                                $profs->department = $departmentU[$key] ?? null;
-                                $profs->current_designation = $resolvedSectionOrDesignationU;
-                                $profs->date_current_designation = $date_current_designationU[$key] ?? null;
-                                $profs->current_workplace = $current_workplaceU[$key] ?? null;
-                                $profs->date_joining_current_workplace = $date_joining_current_workplaceU[$key] ?? null;
-                                $profs->save();
-                            }
-                        }
-                    }
-
-                    $data['status'] = true;
-                    $data['message'] = "Employment details submitted successfully!";
-                    $data['code'] = 200;
-                    $data['redirect_url'] = route('staff.financial', $request->user_id);
-                    return $data;
-
-                } catch (\Throwable $th) {
-                    $data['status'] = false;
-                    $data['code'] = 500;
-                    $data['message'] = "Something went wrong! Please try again...";
-                    $data['errors'] = $th;
-                    return $data;
-
+            foreach (($request->departmentU ?? []) as $key => $departmentId) {
+                $departmentId = trim((string) $departmentId);
+                if ($departmentId === '') {
+                    continue;
                 }
 
+                $sectionId = trim((string) ($request->current_designationU[$key] ?? ''));
+                if ($sectionId === '') {
+                    $validator->errors()->add("current_designationU.$key", 'Department select korle Section select korte hobe.');
+                    continue;
+                }
+
+                $belongsToDepartment = Section::where('id', $sectionId)
+                    ->where('department_id', $departmentId)
+                    ->exists();
+
+                if (!$belongsToDepartment) {
+                    $validator->errors()->add("current_designationU.$key", 'Selected section does not belong to the selected department.');
+                }
+            }
+        });
+
+        if ($validate->fails()) {
+            $data['status'] = false;
+            $data['message'] = "Sorry! Invalid Entry.";
+            $data['errors'] = $validate->errors();
+            return response(json_encode($data, JSON_PRETTY_PRINT), 400)->header('Content-Type', 'application/json');
+        }
+
+        $result = DB::transaction(function () use ($request) {
+            $user_id = $request->user_id;
+
+            $recruitment_notice_no = $request->recruitment_notice_no;
+            $recruitment_notice_date = $request->recruitment_notice_date;
+            $appointment_letter_no = $request->appointment_letter_no;
+            $appointment_letter_date = $request->appointment_letter_date;
+            $designation_joining = $request->designation_joining;
+            $date_of_joining = $request->date_of_joining;
+            $department = $request->department;
+            $current_designation = $request->current_designation;
+            $current_designation_manual = $request->current_designation_manual;
+            $date_current_designation = $request->date_current_designation;
+            $current_workplace = $request->current_workplace;
+            $date_joining_current_workplace = $request->date_joining_current_workplace;
+
+            $recruitment_notice_noU = $request->recruitment_notice_noU;
+            $recruitment_notice_dateU = $request->recruitment_notice_dateU;
+            $appointment_letter_noU = $request->appointment_letter_noU;
+            $appointment_letter_dateU = $request->appointment_letter_dateU;
+            $designation_joiningU = $request->designation_joiningU;
+            $date_of_joiningU = $request->date_of_joiningU;
+            $departmentU = $request->departmentU;
+            $current_designationU = $request->current_designationU;
+            $current_designation_manualU = $request->current_designation_manualU;
+            $date_current_designationU = $request->date_current_designationU;
+            $current_workplaceU = $request->current_workplaceU;
+            $date_joining_current_workplaceU = $request->date_joining_current_workplaceU;
+
+            try {
+
+                if (!empty($recruitment_notice_no)) {
+                    foreach ($recruitment_notice_no as $key => $val) {
+                        $selectedSection = $current_designation[$key] ?? null;
+                        $manualDesignation = trim((string) ($current_designation_manual[$key] ?? ''));
+                        $resolvedSectionOrDesignation = filled($selectedSection)
+                            ? $selectedSection
+                            : ($manualDesignation !== '' ? $manualDesignation : null);
+
+                        $prof = new ProfessionalInfo();
+                        $user_table = User::find($user_id);
+                        $prof->profession_subcategory_id = '0'; // default since not used for staff
+                        $prof->recruitment_notice_no = $recruitment_notice_no[$key] ?? null;
+                        $prof->recruitment_notice_date = $recruitment_notice_date[$key] ?? null;
+                        $prof->appointment_letter_no = $appointment_letter_no[$key] ?? null;
+                        $prof->appointment_letter_date = $appointment_letter_date[$key] ?? null;
+                        $prof->designation_joining = $designation_joining[$key] ?? null;
+                        $prof->designation = $manualDesignation !== '' ? $manualDesignation : null;
+                        $prof->date_of_joining = $date_of_joining[$key] ?? null;
+                        $prof->department = $department[$key] ?? null;
+                        $prof->current_designation = $resolvedSectionOrDesignation;
+                        $prof->date_current_designation = $date_current_designation[$key] ?? null;
+                        $prof->current_workplace = $current_workplace[$key] ?? null;
+                        $prof->date_joining_current_workplace = $date_joining_current_workplace[$key] ?? null;
+                        $prof->user_id = $user_id;
+                        $user_table->department_id = $department[$key] ?? null;
+                        $user_table->section_id = $resolvedSectionOrDesignation;
+                        $user_table->save();
+                        $prof->save();
+                    }
+                }
+
+                if (!empty($recruitment_notice_noU)) {
+                    foreach ($recruitment_notice_noU as $key => $val) {
+                        $selectedSectionU = $current_designationU[$key] ?? null;
+                        $manualDesignationU = trim((string) ($current_designation_manualU[$key] ?? ''));
+                        $resolvedSectionOrDesignationU = filled($selectedSectionU)
+                            ? $selectedSectionU
+                            : ($manualDesignationU !== '' ? $manualDesignationU : null);
+
+                        $profs = ProfessionalInfo::find($key);
+                        $user_table = User::find($user_id);
+                        if ($profs) {
+                            $profs->recruitment_notice_no = $recruitment_notice_noU[$key] ?? null;
+                            $profs->recruitment_notice_date = $recruitment_notice_dateU[$key] ?? null;
+                            $profs->appointment_letter_no = $appointment_letter_noU[$key] ?? null;
+                            $profs->appointment_letter_date = $appointment_letter_dateU[$key] ?? null;
+                            $profs->designation_joining = $designation_joiningU[$key] ?? null;
+                            $profs->designation = $manualDesignationU !== '' ? $manualDesignationU : null;
+                            $profs->date_of_joining = $date_of_joiningU[$key] ?? null;
+                            $profs->department = $departmentU[$key] ?? null;
+                            $profs->current_designation = $resolvedSectionOrDesignationU;
+                            $profs->date_current_designation = $date_current_designationU[$key] ?? null;
+                            $profs->current_workplace = $current_workplaceU[$key] ?? null;
+                            $profs->date_joining_current_workplace = $date_joining_current_workplaceU[$key] ?? null;
+                            $profs->save();
+                            $user_table->section_id = $resolvedSectionOrDesignationU;
+                            $user_table->department_id = $departmentU[$key] ?? null;
+                            $user_table->save();
+                        }
+                    }
+                }
+
+                $data['status'] = true;
+                $data['message'] = "Employment details submitted successfully!";
+                $data['code'] = 200;
+                $data['redirect_url'] = route('staff.financial', $request->user_id);
+                return $data;
+
+            } catch (\Throwable $th) {
+                $data['status'] = false;
+                $data['code'] = 500;
+                $data['message'] = "Something went wrong! Please try again...";
+                $data['errors'] = $th;
+                return $data;
+
+            }
 
 
 
-            });
 
-            return response(json_encode($result, JSON_PRETTY_PRINT), $result['code'])->header('Content-Type', 'application/json');
+        });
+
+        return response(json_encode($result, JSON_PRETTY_PRINT), $result['code'])->header('Content-Type', 'application/json');
 
     }
 
