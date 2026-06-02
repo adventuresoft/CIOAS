@@ -11,14 +11,12 @@
         <!-- Sidebar user panel (optional) -->
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
 
                 {{-- Dashboard --}}
                 <li class="nav-item menu-open">
-                    <a href="{{ route('dashboard') }}"
-                        class="nav-link  @if ($subMenu == 'dashboard') active @endif">
+                    <a href="{{ route('dashboard') }}" class="nav-link  @if ($subMenu == 'dashboard') active @endif">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
@@ -29,7 +27,7 @@
                         <a href="#" class="nav-link @if ($mainMenu == 'Application Form') active @endif">
                             <i class="nav-icon fas fa-file-alt"></i>
                             <p>
-                                Application Form
+                                Letter Submit
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -48,7 +46,7 @@
                                     <a href="{{ route('application-form.index') }}"
                                         class="nav-link @if ($subMenu == 'ApplicationFormList') active @endif">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Application Form List</p>
+                                        <p>Letter Submit List</p>
                                     </a>
                                 </li>
                             @endif
@@ -107,11 +105,12 @@
                 @if (institute_permissions())
                     {{-- Institute Settings --}}
                     <li class="nav-item
-                        @if (
-                            $subMenu == 'InstituteCreate' ||
-                                $subMenu == 'InstituteType' ||
-                                $subMenu == 'InstituteCategory' ||
-                                $subMenu == 'InstituteList') menu-open @endif">
+                                @if (
+                                    $subMenu == 'InstituteCreate' ||
+                                    $subMenu == 'InstituteType' ||
+                                    $subMenu == 'InstituteCategory' ||
+                                    $subMenu == 'InstituteList'
+                                ) menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'Institute') active @endif ">
                             <i class="nav-icon fas fa-university"></i>
                             <p>
@@ -164,7 +163,8 @@
                 @endif
 
                 @if (has_module_access('institutional-admin') || has_module_access('institutional_admin'))
-                    <li class="nav-item @if ($subMenu == 'AdminCreate' || $subMenu == 'AdminList' || $subMenu == 'AdminShow') menu-open @endif">
+                    <li
+                        class="nav-item @if ($subMenu == 'AdminCreate' || $subMenu == 'AdminList' || $subMenu == 'AdminShow') menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'Admin') active @endif">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
@@ -200,7 +200,8 @@
                 @if (has_module_access('people'))
                     <li class="nav-item @if (
                         $mainMenu == 'People' &&
-                            ($subMenu == 'Create' || $subMenu == 'View' || $subMenu == 'Show' || $subMenu == 'approvedList')) menu-open @endif">
+                        ($subMenu == 'Create' || $subMenu == 'View' || $subMenu == 'Show' || $subMenu == 'approvedList')
+                    ) menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'People') active @endif">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
@@ -244,12 +245,13 @@
                 @if (has_module_access('staff') || has_module_access('staffs'))
                     <li class="nav-item @if (
                         $mainMenu == 'Staff' &&
-                            ($subMenu == 'StaffCreate' ||
-                                $subMenu == 'Create' ||
-                                $subMenu == 'StaffList' ||
-                                $subMenu == 'StaffApproveList' ||
-                                $subMenu == 'approvedList' ||
-                                $subMenu == 'Index')) menu-open @endif">
+                        ($subMenu == 'StaffCreate' ||
+                            $subMenu == 'Create' ||
+                            $subMenu == 'StaffList' ||
+                            $subMenu == 'StaffApproveList' ||
+                            $subMenu == 'approvedList' ||
+                            $subMenu == 'Index')
+                    ) menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'Staff') active @endif">
                             <i class="nav-icon fas fa-user-tie"></i>
                             <p>
@@ -300,9 +302,11 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            @if (has_module_access('citizen-certificate') ||
+                            @if (
+                                    has_module_access('citizen-certificate') ||
                                     has_module_access('citizen_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('citizen.index') }}"
                                         class="nav-link @if ($subMenu == 'Citizen') active @endif">
@@ -312,9 +316,11 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('character-certificate') ||
+                            @if (
+                                    has_module_access('character-certificate') ||
                                     has_module_access('character_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('character.index') }}"
                                         class="nav-link  @if ($subMenu == 'Character') active @endif">
@@ -324,9 +330,11 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('death-certificate') ||
+                            @if (
+                                    has_module_access('death-certificate') ||
                                     has_module_access('death_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('death.index') }}"
                                         class="nav-link  @if ($subMenu == 'Death') active @endif">
@@ -336,9 +344,11 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('succession-certificate') ||
+                            @if (
+                                    has_module_access('succession-certificate') ||
                                     has_module_access('succession_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('succession.index') }}"
                                         class="nav-link  @if ($subMenu == 'Succession') active @endif">
@@ -348,9 +358,11 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('unmarried-certificate') ||
+                            @if (
+                                    has_module_access('unmarried-certificate') ||
                                     has_module_access('unmarried_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('unmarried.index') }}"
                                         class="nav-link  @if ($subMenu == 'Unmarried') active @endif">
@@ -360,9 +372,11 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('married-certificate') ||
+                            @if (
+                                    has_module_access('married-certificate') ||
                                     has_module_access('married_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('married.index') }}"
                                         class="nav-link  @if ($subMenu == 'Married') active @endif">
@@ -372,9 +386,11 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('remarried-certificate') ||
+                            @if (
+                                    has_module_access('remarried-certificate') ||
                                     has_module_access('remarried_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('remarried.index') }}"
                                         class="nav-link  @if ($subMenu == 'Remarried') active @endif">
@@ -384,9 +400,11 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('landless-certificate') ||
+                            @if (
+                                    has_module_access('landless-certificate') ||
                                     has_module_access('landless_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('landless.index') }}"
                                         class="nav-link  @if ($subMenu == 'Landless') active @endif">
@@ -406,9 +424,11 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('yearly-income-certificate') ||
+                            @if (
+                                    has_module_access('yearly-income-certificate') ||
                                     has_module_access('yearly_income_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('income.index') }}"
                                         class="nav-link  @if ($subMenu == 'Income') active @endif">
@@ -418,9 +438,11 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('disability-certificate') ||
+                            @if (
+                                    has_module_access('disability-certificate') ||
                                     has_module_access('disability_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('disability-certificate.index') }}"
                                         class="nav-link  @if ($subMenu == 'Disability') active @endif">
@@ -430,9 +452,11 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('voter-area-certificate') ||
+                            @if (
+                                    has_module_access('voter-area-certificate') ||
                                     has_module_access('voter_area_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('voter-area.index') }}"
                                         class="nav-link  @if ($subMenu == 'VoterArea') active @endif">
@@ -442,9 +466,11 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('voter-list-certificate') ||
+                            @if (
+                                    has_module_access('voter-list-certificate') ||
                                     has_module_access('voter_list_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('voter-list.index') }}"
                                         class="nav-link  @if ($subMenu == 'VoterList') active @endif">
@@ -454,9 +480,11 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('nid-correction-certificate') ||
+                            @if (
+                                    has_module_access('nid-correction-certificate') ||
                                     has_module_access('nid_correction_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('nid-correction.index') }}"
                                         class="nav-link  @if ($subMenu == 'NidCorrection') active @endif">
@@ -466,9 +494,11 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('childless-certificate') ||
+                            @if (
+                                    has_module_access('childless-certificate') ||
                                     has_module_access('childless_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('childless.index') }}"
                                         class="nav-link  @if ($subMenu == 'Childless') active @endif">
@@ -478,9 +508,11 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('orphan-certificate') ||
+                            @if (
+                                    has_module_access('orphan-certificate') ||
                                     has_module_access('orphan_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('orphan.index') }}"
                                         class="nav-link  @if ($subMenu == 'Orphan') active @endif">
@@ -490,9 +522,11 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('financial-instability-certificate') ||
+                            @if (
+                                    has_module_access('financial-instability-certificate') ||
                                     has_module_access('financial_instability_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('financial-instability.index') }}"
                                         class="nav-link  @if ($subMenu == 'FinancialInstability') active @endif">
@@ -504,17 +538,18 @@
 
                             @if (has_module_access('age-certificate') || has_module_access('age_certificate') || has_module_access('certificate'))
                                 <li class="nav-item">
-                                    <a href="{{ route('age.index') }}"
-                                        class="nav-link  @if ($subMenu == 'Age') active @endif">
+                                    <a href="{{ route('age.index') }}" class="nav-link  @if ($subMenu == 'Age') active @endif">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Age</p>
                                     </a>
                                 </li>
                             @endif
 
-                            @if (has_module_access('permanent-citizen-certificate') ||
+                            @if (
+                                    has_module_access('permanent-citizen-certificate') ||
                                     has_module_access('permanent_citizen_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('permanent-citizen.index') }}"
                                         class="nav-link  @if ($subMenu == 'PermanentCitizen') active @endif">
@@ -524,9 +559,11 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('residential-certificate') ||
+                            @if (
+                                    has_module_access('residential-certificate') ||
                                     has_module_access('residential_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('residential.index') }}"
                                         class="nav-link  @if ($subMenu == 'Residential') active @endif">
@@ -536,9 +573,11 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('guardian-certificate') ||
+                            @if (
+                                    has_module_access('guardian-certificate') ||
                                     has_module_access('guardian_certificate') ||
-                                    has_module_access('certificate'))
+                                    has_module_access('certificate')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('guardian-income.index') }}"
                                         class="nav-link  @if ($subMenu == 'GuardianIncome') active @endif">
@@ -554,20 +593,23 @@
 
                 {{-- Organization Info --}}
                 {{-- Organization Info --}}
-                @if (has_module_access('organization') ||
+                @if (
+                        has_module_access('organization') ||
                         has_module_access('organizations') ||
                         has_module_access('trade-license') ||
-                        has_module_access('trade_license'))
+                        has_module_access('trade_license')
+                    )
                     <li class="nav-item
-  @if (
-      $subMenu == 'OrganizationCreate' ||
-          $subMenu == 'OrganizationList' ||
-          $subMenu == 'OrganizationShow' ||
-          $subMenu == 'RegistrationFees' ||
-          $subMenu == 'RenewFees' ||
-          $subMenu == 'TradeLicense' ||
-          $subMenu == 'GetTradeLicense') menu-open @endif
-  ">
+                          @if (
+                            $subMenu == 'OrganizationCreate' ||
+                            $subMenu == 'OrganizationList' ||
+                            $subMenu == 'OrganizationShow' ||
+                            $subMenu == 'RegistrationFees' ||
+                            $subMenu == 'RenewFees' ||
+                            $subMenu == 'TradeLicense' ||
+                            $subMenu == 'GetTradeLicense'
+                        ) menu-open @endif
+                          ">
                         <a href="#" class="nav-link @if ($mainMenu == 'Organization') active @endif ">
                             <i class="nav-icon fas fa-briefcase"></i>
                             <p>
@@ -596,10 +638,12 @@
                                 </li>
                             @endif
 
-                            @if (has_module_access('registration-fees') ||
+                            @if (
+                                    has_module_access('registration-fees') ||
                                     has_module_access('registration_fees') ||
                                     has_module_access('renew-fees') ||
-                                    has_module_access('renew_fees'))
+                                    has_module_access('renew_fees')
+                                )
                                 <li class="nav-item">
                                     <a href="{{ route('organizationA.registration-fees.index') }}"
                                         class="nav-link @if ($subMenu == 'RegistrationFees') active @endif">
@@ -635,8 +679,8 @@
                 {{-- License --}}
                 @if (has_module_access('license') || has_module_access('licenses'))
                     <li class="nav-item
-  @if ($subMenu == 'LicenseCreate' || $subMenu == 'LicenseList' || $subMenu == 'LicenseShow' || $subMenu == 'LicenseEdit') menu-open @endif
-  ">
+                          @if ($subMenu == 'LicenseCreate' || $subMenu == 'LicenseList' || $subMenu == 'LicenseShow' || $subMenu == 'LicenseEdit') menu-open @endif
+                          ">
                         <a href="#" class="nav-link @if ($mainMenu == 'License') active @endif ">
                             <i class="nav-icon fas fa-id-card"></i>
                             <p>
@@ -672,7 +716,7 @@
                 {{-- Hotel & Restaurant --}}
                 @if (has_module_access('hotel-restaurant') || has_module_access('hotel_restaurant'))
                     <li class="nav-item
-                     @if ($subMenu == 'HotelRestaurant' || $subMenu == 'HotelRestaurantist') menu-open @endif">
+                             @if ($subMenu == 'HotelRestaurant' || $subMenu == 'HotelRestaurantist') menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'HotelRestaurant') active @endif ">
                             <i class="nav-icon fas fa-briefcase"></i>
                             <p>
@@ -709,8 +753,8 @@
                 {{-- Tax --}}
                 @if (has_module_access('tax') || has_module_access('taxes'))
                     <li class="nav-item
-@if ($subMenu == 'TaxGenerate' || $subMenu == 'TaxReceived' || $subMenu == 'TaxRateList' || $subMenu == 'TaxList') menu-open @endif
-">
+                        @if ($subMenu == 'TaxGenerate' || $subMenu == 'TaxReceived' || $subMenu == 'TaxRateList' || $subMenu == 'TaxList') menu-open @endif
+                        ">
                         <a href="#" class="nav-link @if ($mainMenu == 'Tax') active @endif">
                             <i class="nav-icon fas fa-money-bill"></i>
                             <p>
@@ -888,8 +932,8 @@
                 {{-- Land Info --}}
                 @if (has_module_access('land') || has_module_access('lands'))
                     <li class="nav-item
-        @if ($subMenu == 'LandCreate' || $subMenu == 'LandList') menu-open @endif
-        ">
+                        @if ($subMenu == 'LandCreate' || $subMenu == 'LandList') menu-open @endif
+                        ">
                         <a href="#" class="nav-link @if ($mainMenu == 'Land') active @endif">
                             <i class="nav-icon fas fa-bacon"></i>
                             <p>
@@ -925,16 +969,17 @@
                 {{-- Vehicle Info --}}
                 @if (has_module_access('vehicle') || has_module_access('vehicles'))
                     <li class="nav-item
-      @if (
-          $subMenu == 'VehicleCreate' ||
-              $subMenu == 'VehicleList' ||
-              $subMenu == 'VehicleApprovalList' ||
-              $subMenu == 'VehicleGenerateInvoice' ||
-              $subMenu == 'VehicleLicense' ||
-              $subMenu == 'VehicleOwnershipChangeApplication' ||
-              $subMenu == 'VehicleOwnershipChangeApproval' ||
-              $subMenu == 'VehicleAddFeesNewSetup' ||
-              $subMenu == 'VehicleAddFeesList') menu-open @endif">
+                          @if (
+                            $subMenu == 'VehicleCreate' ||
+                            $subMenu == 'VehicleList' ||
+                            $subMenu == 'VehicleApprovalList' ||
+                            $subMenu == 'VehicleGenerateInvoice' ||
+                            $subMenu == 'VehicleLicense' ||
+                            $subMenu == 'VehicleOwnershipChangeApplication' ||
+                            $subMenu == 'VehicleOwnershipChangeApproval' ||
+                            $subMenu == 'VehicleAddFeesNewSetup' ||
+                            $subMenu == 'VehicleAddFeesList'
+                        ) menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'Vehicle') active @endif">
                             <i class="nav-icon fas fa-truck"></i>
                             <p>
@@ -965,8 +1010,7 @@
 
                             @if (has_sub_module_access('vehicle', 'read') || has_sub_module_access('vehicles', 'read'))
                                 <li class="nav-item">
-                                    <a href="#"
-                                        class="nav-link @if ($subMenu == 'VehicleApprovalList') active @endif">
+                                    <a href="#" class="nav-link @if ($subMenu == 'VehicleApprovalList') active @endif">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Approval List</p>
                                     </a>
@@ -1005,8 +1049,7 @@
 
                             @if (has_sub_module_access('vehicle', 'read') || has_sub_module_access('vehicles', 'read'))
                                 <li class="nav-item">
-                                    <a href="#"
-                                        class="nav-link @if ($subMenu == 'VehicleGenerateInvoice') active @endif">
+                                    <a href="#" class="nav-link @if ($subMenu == 'VehicleGenerateInvoice') active @endif">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Generate Invoice</p>
                                     </a>
@@ -1015,8 +1058,7 @@
 
                             @if (has_sub_module_access('vehicle', 'read') || has_sub_module_access('vehicles', 'read'))
                                 <li class="nav-item">
-                                    <a href="#"
-                                        class="nav-link @if ($subMenu == 'VehicleLicense') active @endif">
+                                    <a href="#" class="nav-link @if ($subMenu == 'VehicleLicense') active @endif">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>License</p>
                                     </a>
@@ -1093,8 +1135,8 @@
                 {{-- Bridge Info --}}
                 @if (has_module_access('bridge') || has_module_access('bridges'))
                     <li class="nav-item
-    @if ($subMenu == 'BridgeCreate' || $subMenu == 'BridgeList') menu-open @endif
-    ">
+                        @if ($subMenu == 'BridgeCreate' || $subMenu == 'BridgeList') menu-open @endif
+                        ">
                         <a href="#" class="nav-link @if ($mainMenu == 'Bridge') active @endif">
                             <i class="nav-icon fas fa-archway"></i>
                             <p>
@@ -1289,17 +1331,20 @@
           </li> -->
 
                 {{-- Wedding --}}
-                @if (has_module_access('marriage') ||
+                @if (
+                        has_module_access('marriage') ||
                         has_module_access('marriages') ||
                         has_module_access('divorce') ||
-                        has_module_access('divorces'))
+                        has_module_access('divorces')
+                    )
                     <li class="nav-item
-          @if (
-              $subMenu == 'MarriageCreate' ||
-                  $subMenu == 'MarriageList' ||
-                  $subMenu == 'DivorceCreate' ||
-                  $subMenu == 'DivorceList') menu-open @endif
-          ">
+                          @if (
+                            $subMenu == 'MarriageCreate' ||
+                            $subMenu == 'MarriageList' ||
+                            $subMenu == 'DivorceCreate' ||
+                            $subMenu == 'DivorceList'
+                        ) menu-open @endif
+                          ">
                         <a href="#" class="nav-link @if ($mainMenu == 'Marriage' || $mainMenu == 'Divorce') active @endif ">
                             <i class="nav-icon fas fa-ring"></i>
                             <p>

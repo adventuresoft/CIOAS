@@ -5,11 +5,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Application Form</h1>
+                    <h1>Letter Submit</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('application-form.index') }}">Application Form</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('application-form.index') }}">Application Form</a>
+                        </li>
                         <li class="breadcrumb-item active">Create</li>
                     </ol>
                 </div>
@@ -32,8 +33,8 @@
                                 <div class="row">
                                     <div class="col-sm-4">
                                         <div class="form-group">
-                                            <input type="date" value="{{ date('Y-m-d') }}" name="date"
-                                                class="form-control" readonly>
+                                            <input type="date" value="{{ date('Y-m-d') }}" name="date" class="form-control"
+                                                readonly>
                                             <small class="text-danger error date_error"></small>
                                         </div>
 
@@ -105,7 +106,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <textarea rows="8" name="message" placeholder="বার্তা (Message)" class="form-control"></textarea>
+                                    <textarea rows="8" name="message" placeholder="বার্তা (Message)"
+                                        class="form-control"></textarea>
                                     <small class="text-danger error message_error"></small>
                                 </div>
 
@@ -130,8 +132,8 @@
 
 @push('script')
     <script>
-        $(document).ready(function() {
-            $("#applicationForm").on('submit', function(e) {
+        $(document).ready(function () {
+            $("#applicationForm").on('submit', function (e) {
                 e.preventDefault();
                 let thisForm = $(this);
 
@@ -143,22 +145,22 @@
                     contentType: false,
                     cache: false,
                     processData: false,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         thisForm.find('button[type="submit"]').prop("disabled", true);
                         $('.error').text('');
                     },
-                    success: function(response) {
+                    success: function (response) {
                         thisForm.find('button[type="submit"]').prop("disabled", false);
                         toastr.success(response.message);
-                        setTimeout(function() {
+                        setTimeout(function () {
                             location.href = "{{ route('application-form.index') }}";
                         }, 2000);
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         thisForm.find('button[type="submit"]').prop("disabled", false);
                         let responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
-                        $.each(responseText.errors, function(key, val) {
+                        $.each(responseText.errors, function (key, val) {
                             thisForm.find("." + key + "_error").text(val[0]);
                         });
                     }
