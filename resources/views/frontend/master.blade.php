@@ -18,6 +18,10 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('plugins')}}/select2/css/select2.min.css">
     <link rel="stylesheet" href="{{ asset('plugins')}}/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+     <script src="https://cdn.tailwindcss.com"></script>
+
+    
+    <link rel="stylesheet" href="{{ asset('assets/style/global.css') }}" />
     <style type="text/css">
         body {
             background: #eeeeee;
@@ -35,38 +39,6 @@
         .application-link:hover{
             color: #fff !important;
         }
-
-        /* Bootstrap 4 to 5 Spacing and Utility Compatibility Bridge */
-        .mr-1 { margin-right: 0.25rem !important; }
-        .mr-2 { margin-right: 0.5rem !important; }
-        .mr-3 { margin-right: 1rem !important; }
-        .mr-4 { margin-right: 1.5rem !important; }
-        .mr-5 { margin-right: 3rem !important; }
-        .mr-auto { margin-right: auto !important; }
-
-        .ml-1 { margin-left: 0.25rem !important; }
-        .ml-2 { margin-left: 0.5rem !important; }
-        .ml-3 { margin-left: 1rem !important; }
-        .ml-4 { margin-left: 1.5rem !important; }
-        .ml-5 { margin-left: 3rem !important; }
-        .ml-auto { margin-left: auto !important; }
-
-        .pr-1 { padding-right: 0.25rem !important; }
-        .pr-2 { padding-right: 0.5rem !important; }
-        .pr-3 { padding-right: 1rem !important; }
-        .pr-4 { padding-right: 1.5rem !important; }
-        .pr-5 { padding-right: 3rem !important; }
-
-        .pl-1 { padding-left: 0.25rem !important; }
-        .pl-2 { padding-left: 0.5rem !important; }
-        .pl-3 { padding-left: 1rem !important; }
-        .pl-4 { padding-left: 1.5rem !important; }
-        .pl-5 { padding-left: 3rem !important; }
-
-        .float-left { float: left !important; }
-        .float-right { float: right !important; }
-        .text-right { text-align: right !important; }
-        .text-left { text-align: left !important; }
         .custom-select {
             display: inline-block;
             width: 100%;
@@ -96,7 +68,7 @@
     <div class="wrap">
         @include('frontend.layouts.header')
         <!-- Main Content Section -->
-        <section id="main-content">
+        <section id="main-content" class="p-5">
             @yield('content')
         </section>
         <!-- Footer Top Section-->

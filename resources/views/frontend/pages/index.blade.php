@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UPMS | SUKTAIL UNION PARISHAD</title>
+    <title>CIOAS | DHAKA</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Splide CSS -->
@@ -138,8 +138,7 @@
                 <a href="{{ url('/') }}" class="block px-1 py-1 hover:bg-gray-100 rounded">
                     হোম
                 </a>
-                <a href="{{ url('/') }}/login"
-                    class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded">
+                <a href="{{ url('/') }}/login" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded">
                     <span class="inline-flex h-5 w-5 items-center justify-center text-red-600" aria-hidden="true">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
                             <path
@@ -148,22 +147,18 @@
                     </span>
                     নাগরিক লগইন
                 </a>
-                <a href="{{ url('/') }}/login"
-                    class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded">
+                <a href="{{ url('/') }}/login" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded">
                     <span class="inline-flex h-5 w-5 items-center justify-center text-red-600" aria-hidden="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                            class="h-4 w-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
                             <path
                                 d="M12 12a4.2 4.2 0 1 0-4.2-4.2A4.2 4.2 0 0 0 12 12Zm0 1.8c-3.6 0-6.8 2-6.8 5.2 0 .6.4 1 1 1h11.6c.6 0 1-.4 1-1 0-3.2-3.2-5.2-6.8-5.2Z" />
                         </svg>
                     </span>
                     অ্যাডমিন লগইন
                 </a>
-                <a href="{{ url('/') }}/login"
-                    class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded">
+                <a href="{{ url('/') }}/login" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded">
                     <span class="inline-flex h-5 w-5 items-center justify-center text-red-600" aria-hidden="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                            class="h-4 w-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
                             <path
                                 d="M12 12a4.2 4.2 0 1 0-4.2-4.2A4.2 4.2 0 0 0 12 12Zm0 1.8c-3.6 0-6.8 2-6.8 5.2 0 .6.4 1 1 1h11.6c.6 0 1-.4 1-1 0-3.2-3.2-5.2-6.8-5.2Z" />
                         </svg>
@@ -193,7 +188,7 @@
 
 
                 <div class="mx-auto mt-8 max-w-5xl md:mt-10">
-                    <div class="grid grid-cols-1 gap-6 lg:grid-cols-4 lg:gap-4">
+                    <div class="grid grid-cols-1 gap-10 lg:grid-cols-4 lg:gap-10">
                         <article class="mx-auto w-full max-w-[290px] text-center text-black">
                             <div
                                 class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#0ea5d9] md:h-28 md:w-28">
@@ -268,7 +263,7 @@
                                         stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                             </div>
-                            <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">ট্রেড লাইসেন্সের আবেদন</h3>
+                            <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">লাইসেন্সের আবেদন</h3>
                             <div class="mx-auto mt-3 h-px w-full max-w-[520px] bg-black/30"></div>
                             <p class="mx-auto mt-1 max-w-sm text-sm leading-6 text-black md:text-base">
                                 ট্রেড লাইসেন্সের আবেদন করুন।
@@ -303,7 +298,7 @@
                             <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">ট্রেড লাইসেন্স যাচাই</h3>
                             <div class="mx-auto mt-3 h-px w-full max-w-[520px] bg-black/30"></div>
                             <p class="mx-auto mt-1 max-w-sm text-sm leading-6 text-black md:text-base">
-                                ট্রেড লাইসেন্স যাচাই করতে ক্লিক করুন।
+                                লাইসেন্স যাচাই করতে ক্লিক করুন।
                             </p>
                             <a href="{{ route('certificate.verify') }}"
                                 class="mt-5 inline-flex items-center justify-center gap-1.5 rounded-md bg-[#2d88c7] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#1f75b3] md:text-base">
@@ -313,6 +308,36 @@
                                     <path d="m16 16 4.2 4.2" stroke-linecap="round" />
                                 </svg>
                                 যাচাই
+                            </a>
+                        </article>
+
+                        <article class="mx-auto w-full max-w-[290px] text-center text-black">
+                            <div
+                                class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#27ae60] md:h-28 md:w-28">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    class="h-14 w-14 md:h-16 md:w-16" aria-hidden="true">
+                                    <path d="M7 3.5h8l3 3V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"
+                                        fill="#f4f4f5" />
+                                    <path d="M15 3.5v3h3" fill="#d4d4d8" />
+                                    <path d="M9 8h6M9 11h6M9 14h4" stroke="#b3b3b8" stroke-width="1.4"
+                                        stroke-linecap="round" />
+                                    <path d="m12.5 16.2 2.3 2.2 4.5-4.8" stroke="#e74c3c" stroke-width="1.9"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">জিজ্ঞাসা আবেদন</h3>
+                            <div class="mx-auto mt-3 h-px w-full max-w-[520px] bg-black/30"></div>
+                            <p class="mx-auto mt-1 max-w-sm text-sm leading-6 text-black md:text-base">
+                                আবেদন করতে ক্লিক করুন।
+                            </p>
+                            <a href="{{ route('inquiry.index') }}"
+                                class="mt-5 inline-flex items-center justify-center gap-1.5 rounded-md bg-[#2d88c7] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#1f75b3] md:text-base">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" class="h-6 w-6" aria-hidden="true">
+                                    <path d="M12 20h9" />
+                                    <path d="M16.5 3.5a2.1 2.1 0 1 1 3 3L8 18l-4 1 1-4 11.5-11.5Z" />
+                                </svg>
+                                আবেদন
                             </a>
                         </article>
 
@@ -494,7 +519,7 @@
     <script src="{{ asset('assets/js/navbar.js') }}"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             new Splide("#image-carousel", {
                 type: "loop",
                 perPage: 1,

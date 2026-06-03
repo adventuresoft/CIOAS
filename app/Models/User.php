@@ -44,7 +44,8 @@ class User extends Authenticatable
         'email',
         'mobile',
         'password',
-        'status'
+        'status',
+        'signature'
     ];
 
     /**
@@ -72,7 +73,7 @@ class User extends Authenticatable
     {
         parent::boot();
         self::creating(function ($model) {
-            $model->system_id = IdGenerator::generate(['table' => 'users', 'field' => 'system_id', 'length' => 11, 'prefix' => date("Ymd") ]);
+            $model->system_id = IdGenerator::generate(['table' => 'users', 'field' => 'system_id', 'length' => 11, 'prefix' => date("Ymd")]);
         });
     }
 

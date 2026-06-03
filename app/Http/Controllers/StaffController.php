@@ -28,9 +28,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use App\Traits\FileUploadTrait;
 
 class StaffController extends Controller
 {
+
+    use FileUploadTrait;
 
     public function __construct()
     {
@@ -149,6 +152,7 @@ class StaffController extends Controller
             'birth_certificate' => 'nullable|max:190',
             'nid' => 'nullable|max:190',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'signature' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
 
         if ($validate->fails()) {
@@ -173,16 +177,15 @@ class StaffController extends Controller
                 $user->created_by = Auth::id();
                 $user->password = Hash::make('12345678');
                 $image = $request->file('image');
+                $signature = $request->file('signature');
+
+                if ($signature) {
+                    $user->signature = $this->uploadFile($signature, 'uploads/signatures/', 'sig_');
+                }
+
                 if ($image) {
-                    $image_name = $request->name . '-' . rand(1111, 9999);
-                    $ext = strtolower($image->getClientOriginalExtension());
-                    $image_full_name = $image_name . "." . $ext;
-                    $upload_path = 'uploads/users/';
-                    $image_url = $upload_path . $image_full_name;
-                    $success = $image->move($upload_path, $image_full_name);
-                    if ($success) {
-                        $user->image = $image_url;
-                    }
+                    $user->image = $this->uploadFile($image, 'uploads/users/', 'avatar_');
+
                 }
                 if ($user->save()) {
                     $people = new People();

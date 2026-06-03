@@ -149,6 +149,10 @@ use App\Http\Controllers\Departments\DepartmentSectionController;
 // Application Form
 
 use App\Http\Controllers\ApplicationForm\ApplicationFormController;
+use App\Http\Controllers\ApplicationForm\InquiryFormController;
+
+Route::get('/inquiry', [InquiryFormController::class, 'index'])->name('inquiry.index');
+Route::post('/inquiry', [InquiryFormController::class, 'store'])->name('inquiry.store');
 
 
 

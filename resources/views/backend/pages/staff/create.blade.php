@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Staff Information</h1>
+                    <h1>Employee Information</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -37,13 +37,17 @@
                                 <!-- Row 1: Name and Bangla Name -->
                                 <div class="form-group row">
                                     <div class="col-sm-6">
-                                        <label for="name">Name <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
-                                        <input type="text" required value="" class="form-control" name="name" id="name" placeholder="Name English">
+                                        <label for="name">Name <span class="text-danger" title="Required"
+                                                data-toggle="tooltip">*</span></label>
+                                        <input type="text" required value="" class="form-control" name="name" id="name"
+                                            placeholder="Name English">
                                         <small class="error name-error text-danger"></small>
                                     </div>
                                     <div class="col-sm-6">
-                                        <label for="bn_name">Name Bangla <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
-                                        <input type="text" required value="" class="form-control" name="bn_name" id="bn_name" placeholder="Name Bangla">
+                                        <label for="bn_name">Name Bangla <span class="text-danger" title="Required"
+                                                data-toggle="tooltip">*</span></label>
+                                        <input type="text" required value="" class="form-control" name="bn_name"
+                                            id="bn_name" placeholder="Name Bangla">
                                         <small class="error bn_name-error text-danger"></small>
                                     </div>
                                 </div>
@@ -52,12 +56,14 @@
                                 <div class="form-group row">
                                     <div class="col-sm-4">
                                         <label for="date_of_birth">Date of Birth</label>
-                                        <input type="date" value="" name="date_of_birth" class="form-control" id="date_of_birth">
+                                        <input type="date" value="" name="date_of_birth" class="form-control"
+                                            id="date_of_birth">
                                         <small class="error date_of_birth-error text-danger"></small>
                                     </div>
                                     <div class="col-sm-4">
                                         <label for="age">Age</label>
-                                        <input type="text" value="" class="form-control" id="age" readonly placeholder="Auto calculated">
+                                        <input type="text" value="" class="form-control" id="age" readonly
+                                            placeholder="Auto calculated">
                                         <small class="error age-error text-danger"></small>
                                     </div>
                                     <div class="col-sm-4">
@@ -118,12 +124,14 @@
                                 <div class="form-group row">
                                     <div class="col-sm-6">
                                         <label for="birth_certificate">Birth Reg. No.</label>
-                                        <input type="text" value="" name="birth_certificate" placeholder="Birth Reg. No." class="form-control" id="birth_certificate">
+                                        <input type="text" value="" name="birth_certificate" placeholder="Birth Reg. No."
+                                            class="form-control" id="birth_certificate">
                                         <small class="error birth_certificate-error text-danger"></small>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="nid">NID No.</label>
-                                        <input type="text" value="" name="nid" placeholder="NID No." class="form-control" id="nid">
+                                        <input type="text" value="" name="nid" placeholder="NID No." class="form-control"
+                                            id="nid">
                                         <span class="error nid-error text-danger"></span>
                                     </div>
                                 </div>
@@ -132,16 +140,17 @@
                                 <div class="form-group row">
                                     <div class="col-sm-6">
                                         <label for="mobile">Mobile No.</label>
-                                        <input type="tel" value="" required name="mobile" placeholder="Mobile" class="form-control" id="mobile">
+                                        <input type="tel" value="" required name="mobile" placeholder="Mobile"
+                                            class="form-control" id="mobile">
                                         <small class="error mobile-error text-danger"></small>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="email">Email</label>
-                                        <input type="email" value="" name="email" placeholder="Email" class="form-control" id="email">
+                                        <input type="email" value="" name="email" placeholder="Email" class="form-control"
+                                            id="email">
                                         <small class="error email-error text-danger"></small>
                                     </div>
                                 </div>
-
                                 <!-- Row 6: Photo -->
                                 <div class="form-group row">
                                     <div class="col-sm-6">
@@ -150,18 +159,24 @@
                                         <span class="error image-error text-danger"></span>
                                     </div>
                                     <div class="col-sm-6">
-                                        <img class="img-fluid img-thumbnail" src="{{ asset('no-image-found.jpeg') }}" id="preview" alt="Preview" width="100" height="100">
+                                        <label for="signature">Signature</label>
+                                        <input type="file" name="signature" class="signature form-control-file"
+                                            id="signature">
+                                        <span class="error signature-error text-danger"></span>
                                     </div>
                                 </div>
 
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer bg-white mt-3" style="border-top: none;">
-    <div class="text-right">
-        <a href="{{ route('staff.index') }}" class="btn btn-outline-secondary mr-2 px-4">Cancel</a>
-        <button type="submit" class="btn btn-primary px-4" style="background-color: #5b4bdf; border-color: #5b4bdf;">Save & Next <i class="fas fa-arrow-right ml-1"></i></button>
-    </div>
-</div>
+                                <div class="text-right">
+                                    <a href="{{ route('staff.index') }}"
+                                        class="btn btn-outline-secondary mr-2 px-4">Cancel</a>
+                                    <button type="submit" class="btn btn-primary px-4"
+                                        style="background-color: #5b4bdf; border-color: #5b4bdf;">Save & Next <i
+                                            class="fas fa-arrow-right ml-1"></i></button>
+                                </div>
+                            </div>
                             <!-- /.card-footer -->
                         </form>
                     </div>
@@ -177,9 +192,9 @@
 
 @push('script')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Age calculation
-            $('#date_of_birth').on('change', function() {
+            $('#date_of_birth').on('change', function () {
                 let dob = $(this).val();
                 if (dob) {
                     let birthDate = new Date(dob);
@@ -198,7 +213,7 @@
             });
 
             // Form submission
-            $("#peoplePersonalForm").on('submit', function(e) {
+            $("#peoplePersonalForm").on('submit', function (e) {
                 e.preventDefault();
                 let thisForm = $(this);
                 $.ajax({
@@ -209,22 +224,22 @@
                     contentType: false,
                     cache: false,
                     processData: false,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         thisForm.find('.error').html('')
                         thisForm.find('button[type="submit"]').prop("disabled", true);
                     },
-                    success: function(response) {
+                    success: function (response) {
                         thisForm.find('button[type="submit"]').prop("disabled", false);
                         toastr.success(response.message);
-                        setTimeout(function() {
+                        setTimeout(function () {
                             location.href = response.redirect_url;
                         }, 2000)
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         thisForm.find('button[type="submit"]').prop("disabled", false);
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
-                        $.each(responseText.errors, function(key, val) {
+                        $.each(responseText.errors, function (key, val) {
                             thisForm.find("." + key + "-error").text(val[0]);
                         });
                     }
@@ -232,7 +247,7 @@
             });
 
             // Birth place change handler
-            $('#birth_place').on('change', function(e) {
+            $('#birth_place').on('change', function (e) {
                 e.preventDefault();
             });
         });
@@ -241,14 +256,14 @@
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     $('#preview').attr('src', e.target.result);
                 }
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        $("#image").change(function() {
+        $("#image").change(function () {
             readURL(this);
         });
     </script>

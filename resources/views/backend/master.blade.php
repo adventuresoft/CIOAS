@@ -42,6 +42,10 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('plugins') }}/select2/css/select2.min.css">
     <link rel="stylesheet" href="{{ asset('plugins') }}/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
+     {{-- data table --}}
+    <link rel="stylesheet" href="//cdn.datatables.net/2.3.6/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.6/css/dataTables.bootstrap5.css">
     <style>
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             color: #444;
@@ -198,6 +202,10 @@
     <script src="{{ asset('plugins') }}/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
     <!-- Toastr -->
     <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+
+    {{-- Data Table --}}
+    <script src="//cdn.datatables.net/2.3.6/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.3.6/js/dataTables.bootstrap5.js"></script>
 
     <!-- sweetalert2 -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

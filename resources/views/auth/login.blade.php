@@ -1,4 +1,3 @@
-
 @extends('backend.layouts.login', ['title' => 'লগইন'])
 @push('style')
     <style>
@@ -302,7 +301,7 @@
             <div class="login-left">
                 <div class="login-top">
                     <h6>Welcome to</h6>
-                    <h3>CSMCRS</h3>
+                    <h3>CIOAS</h3>
                     <h4></h4>
                 </div>
                 <div class="login-bottom">
@@ -313,71 +312,58 @@
 
             <!-- Right Side -->
             <div class="login-right">
-            <div class="login-form-wrapper">
-                <div class="login-form-header">
-                    <img src="{{ asset('frontend/img/govt-logo.png') }}" alt="Bangladesh Logo">
-                    <h4></h4>
-                    <h5>Login Panel</h5>
-                </div>
-
-                <form method="POST" action="{{ route('login.check') }}">
-                    @csrf
-
-                    @if (Session::has('success'))
-                        <div class="alert alert-success">
-                            {{ Session::get('success') }}
-                        </div>
-                    @endif
-                    @if (Session::has('error'))
-                        <div class="alert alert-danger">
-                            {{ Session::get('error') }}
-                        </div>
-                    @endif
-
-                    <div class="form-group">
-                        <label for="email">User ID</label>
-                        <div class="input-wrapper">
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                placeholder="User ID"
-                                class="form-control"
-                                required
-                                value="{{ old('email') }}"
-                            >
-                        </div>
+                <div class="login-form-wrapper">
+                    <div class="login-form-header">
+                        <img src="{{ asset('frontend/img/govt-logo.png') }}" alt="Bangladesh Logo">
+                        <h4></h4>
+                        <h5>Login Panel</h5>
                     </div>
 
-                    <div class="form-group has-icon">
-                        <label for="password">Password</label>
-                        <div class="input-wrapper">
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                placeholder="Password"
-                                class="form-control"
-                                required
-                            >
-                            <span class="input-icon show" id="togglePassword" onclick="togglePasswordVisibility()">
-                                <i class="fas fa-eye"></i>
-                            </span>
+                    <form method="POST" action="{{ route('login.check') }}">
+                        @csrf
+
+                        @if (Session::has('success'))
+                            <div class="alert alert-success">
+                                {{ Session::get('success') }}
+                            </div>
+                        @endif
+                        @if (Session::has('error'))
+                            <div class="alert alert-danger">
+                                {{ Session::get('error') }}
+                            </div>
+                        @endif
+
+                        <div class="form-group">
+                            <label for="email">User ID</label>
+                            <div class="input-wrapper">
+                                <input type="email" id="email" name="email" placeholder="User ID" class="form-control"
+                                    required value="{{ old('email') }}">
+                            </div>
                         </div>
-                    </div>
 
-                    <button type="submit" class="btn-login">Login</button>
-                </form>
+                        <div class="form-group has-icon">
+                            <label for="password">Password</label>
+                            <div class="input-wrapper">
+                                <input type="password" id="password" name="password" placeholder="Password"
+                                    class="form-control" required>
+                                <span class="input-icon show" id="togglePassword" onclick="togglePasswordVisibility()">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </div>
+                        </div>
 
-                <div class="form-footer">
-                    <a href="#" class="forgot-password">Forgot password?</a>
-                    <div class="footer-links">
-                        <a href="#">Terms of use.</a>
-                        <a href="#">Privacy policy</a>
+                        <button type="submit" class="btn-login">Login</button>
+                    </form>
+
+                    <div class="form-footer">
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                        <div class="footer-links">
+                            <a href="#">Terms of use.</a>
+                            <a href="#">Privacy policy</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
     </div>
 
