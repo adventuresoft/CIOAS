@@ -301,7 +301,32 @@
                     </a>
                 </li>
 
-
+                {{-- Appointment Management --}}
+                <li class="nav-item @if (isset($mainMenu) && $mainMenu == 'Appointment') menu-open @endif">
+                    <a href="#" class="nav-link @if (isset($mainMenu) && $mainMenu == 'Appointment') active @endif">
+                        <i class="nav-icon fas fa-calendar-check"></i>
+                        <p>
+                            Appointments
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('appointment.slots.index') }}"
+                                class="nav-link @if (isset($subMenu) && $subMenu == 'Slots') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Manage Slots</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('appointment.booking.index') }}"
+                                class="nav-link @if (isset($subMenu) && $subMenu == 'Bookings') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Bookings List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 {{-- Certificate --}}
                 @if (has_module_access('certificate') || has_module_access('certificates'))
                     <li class="nav-item  @if ($mainMenu == 'Certificate') menu-open @endif ">

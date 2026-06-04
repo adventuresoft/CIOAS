@@ -656,6 +656,24 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::resource('institute-type', InstituteTypeController::class);
     Route::resource('institute-category', InstituteCategoryController::class);
 
+    // Backend Appointments (inside the auth middleware group)
+    Route::get('appointment-slots', [\App\Http\Controllers\Backend\AppointmentSlotController::class, 'index'])->name('appointment.slots.index');
+    Route::get('appointment-slots/api', [\App\Http\Controllers\Backend\AppointmentSlotController::class, 'getSlots'])->name('appointment.slots.api');
+    Route::post('appointment-slots', [\App\Http\Controllers\Backend\AppointmentSlotController::class, 'store'])->name('appointment.slots.store');
+    Route::delete('appointment-slots/{id}', [\App\Http\Controllers\Backend\AppointmentSlotController::class, 'destroy'])->name('appointment.slots.destroy');
+    
+    Route::get('appointment-bookings', [\App\Http\Controllers\Backend\AppointmentBookingController::class, 'index'])->name('appointment.booking.index');
+    Route::get('appointment-bookings/{id}', [\App\Http\Controllers\Backend\AppointmentBookingController::class, 'show'])->name('appointment.booking.show');
+    Route::post('appointment-bookings/{id}/status', [\App\Http\Controllers\Backend\AppointmentBookingController::class, 'updateStatus'])->name('appointment.booking.updateStatus');
 
+});
 
+// Frontend Appointments
+Route::prefix('appointments')->name('appointment.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Frontend\AppointmentController::class, 'officerList'])->name('officers');
+    Route::get('/calendar/{officer_id}', [\App\Http\Controllers\Frontend\AppointmentController::class, 'calendar'])->name('calendar');
+    Route::get('/api/slots/{officer_id}', [\App\Http\Controllers\Frontend\AppointmentController::class, 'getAvailableSlots'])->name('public.slots.api');
+    Route::get('/api/slots-by-date/{officer_id}', [\App\Http\Controllers\Frontend\AppointmentController::class, 'getSlotsByDate'])->name('public.slots.by_date');
+    Route::get('/book/{slot_id}', [\App\Http\Controllers\Frontend\AppointmentController::class, 'bookForm'])->name('book');
+    Route::post('/book', [\App\Http\Controllers\Frontend\AppointmentController::class, 'storeBooking'])->name('store');
 });
