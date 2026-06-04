@@ -4,6 +4,8 @@ namespace App\Http\Controllers\ApplicationForm;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\DataTables\InquiryDataTable;
+use App\Models\Inquiry;
 
 class InquiryFormController extends Controller
 {
@@ -15,6 +17,12 @@ class InquiryFormController extends Controller
     public function index()
     {
         return view('frontend.pages.inquiry.index');
+    }
+
+
+    public function FormList(InquiryDataTable $dataTable)
+    {
+        return $dataTable->render('backend.pages.inquiry.form_list');
     }
 
     /**
@@ -51,7 +59,7 @@ class InquiryFormController extends Controller
             $data['proof_file'] = 'uploads/inquiries/' . $filename;
         }
 
-        \App\Models\Inquiry::create($data);
+        Inquiry::create($data);
 
         return redirect()->back()->with('success', 'আপনার জিজ্ঞাসা সফলভাবে জমা দেওয়া হয়েছে।');
     }
@@ -64,7 +72,8 @@ class InquiryFormController extends Controller
      */
     public function show($id)
     {
-        //
+        $inquiry = \App\Models\Inquiry::findOrFail($id);
+        return view('backend.pages.Inquiry.edit', compact('inquiry'));
     }
 
     /**
@@ -75,7 +84,8 @@ class InquiryFormController extends Controller
      */
     public function edit($id)
     {
-        //
+        $inquiry = \App\Models\Inquiry::findOrFail($id);
+        return view('backend.pages.Inquiry.edit', compact('inquiry'));
     }
 
     /**
@@ -87,7 +97,22 @@ class InquiryFormController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $inquiry = \App\Models\Inquiry::findOrFail($id);
+        
+        $request->validate([
+            'status' => 'required|string',
+            'comment' => 'nullable|string'
+        ]);
+
+        $inquiry->update([
+            'status' => $request->status,
+            'comment' => $request->comment
+        ]);
+
+        return response()->json([
+            'message' => 'Inquiry status and comment updated successfully!',
+            'redirect' => route('inquiry.formlist')
+        ], 200);
     }
 
     /**
@@ -98,6 +123,15 @@ class InquiryFormController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $inquiry = Inquiry::findOrFail($id);
+            if ($inquiry->proof_file && file_exists(public_path($inquiry->proof_file))) {
+                @unlink(public_path($inquiry->proof_file));
+            }
+            $inquiry->delete();
+            return response()->json(['message' => 'Inquiry successfully deleted!'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to delete inquiry.', 'error' => $e->getMessage()], 500);
+        }
     }
 }

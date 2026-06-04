@@ -142,6 +142,7 @@ class StaffController extends Controller
         $validate = Validator::make($request->all(), [
             'name' => 'required|max:190',
             'bn_name' => 'required|max:190',
+            'user_role' => 'required|in:normal,staff,admin',
             'date_of_birth' => 'nullable|max:190',
             'birth_place' => 'nullable|max:190',
             'gender' => 'nullable|max:190',
@@ -178,6 +179,7 @@ class StaffController extends Controller
                 $user->password = Hash::make('12345678');
                 $image = $request->file('image');
                 $signature = $request->file('signature');
+                $user->role = $request->user_role;
 
                 if ($signature) {
                     $user->signature = $this->uploadFile($signature, 'uploads/signatures/', 'sig_');
@@ -227,8 +229,9 @@ class StaffController extends Controller
             } catch (\Throwable $th) {
                 $data['status'] = false;
                 $data['code'] = 500;
-                $data['errors'] = $th;
+                $data['errors'] = $th->getMessage() . ' in ' . $th->getFile() . ':' . $th->getLine();
                 $data['message'] = "Something went wrong! Please try again or contact on support...";
+                Log::error('Staff Creation Failed: ' . $th->getMessage(), ['trace' => $th->getTraceAsString()]);
                 return $data;
             }
         });
@@ -376,11 +379,13 @@ class StaffController extends Controller
             'gender' => 'nullable|max:190',
             'religion' => 'nullable|max:190',
             'blood_group' => 'nullable|max:190',
-            'mobile' => 'nullable|max:190',
-            'email' => 'required|max:190|email',
+            'mobile' => 'required|max:190',
+            'email' => 'nullable|max:190|email',
             'birth_certificate' => 'nullable|max:190',
             'nid' => 'nullable|max:190',
+            'user_role' => 'required|max:190',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'signature' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
 
         if ($validate->fails()) {
@@ -399,9 +404,16 @@ class StaffController extends Controller
             $user->nid = $request->nid;
             $user->status = $request->status ?? true;
             $user->updated_by = Auth::id();
+            $user->role = $request->user_role;
+            $signature = $request->file('signature');
 
+            if ($signature) {
+                deleteFile($user->signature);
+                $user->signature = $this->uploadFile($signature, 'uploads/signatures/', 'sig_');
+            }
             $image = $request->file('image');
             if ($image) {
+                deleteFile($user->image);
                 //if ($user->image) {unlink($user->image);}
                 // $image_name = $user->username;
                 $image_name = now()->format('YmdHis') . '_' . $user->id;
@@ -449,14 +461,16 @@ class StaffController extends Controller
                     $data['status'] = false;
                     $data['message'] = "Something went wrong! Please try again...";
                     $data['code'] = 500;
-                    $data['errors'] = $th;
+                    $data['errors'] = $th->getMessage() . ' in ' . $th->getFile() . ':' . $th->getLine();
+                    Log::error('Staff Update Failed: ' . $th->getMessage(), ['trace' => $th->getTraceAsString()]);
                     return $data;
                 }
             } catch (\Throwable $th) {
                 $data['status'] = false;
                 $data['message'] = "Something went wrong! Please try again...";
                 $data['code'] = 500;
-                $data['errors'] = $th;
+                $data['errors'] = $th->getMessage() . ' in ' . $th->getFile() . ':' . $th->getLine();
+                Log::error('Staff Update Failed: ' . $th->getMessage(), ['trace' => $th->getTraceAsString()]);
                 return $data;
             }
 
@@ -506,7 +520,24 @@ class StaffController extends Controller
 
     private function generateStaffId($date_of_birth, $district_id)
     {
-        return 'SID-' . $this->generateApprovedId($date_of_birth, $district_id);
+        $datePart = \Carbon\Carbon::parse($date_of_birth)->format('ymd');
+        $districtPart = str_pad($district_id ?? 0, 2, '0', STR_PAD_LEFT);
+
+        $last = \App\Models\People::where('district_id', $district_id)
+            ->whereNotNull('staff_id')
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if ($last && $last->staff_id) {
+            $lastSerial = (int) substr($last->staff_id, -4);
+            $newSerial = $lastSerial + 1;
+        } else {
+            $newSerial = 1;
+        }
+
+        $serialPart = str_pad($newSerial, 4, '0', STR_PAD_LEFT);
+
+        return 'SID-' . $districtPart . '-' . $datePart . '-' . $serialPart;
     }
 
 

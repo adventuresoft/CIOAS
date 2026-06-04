@@ -19,5 +19,7 @@ class Inquiry extends Model
         'email',
         'address',
         'proof_file',
+        'status',
+        'comment',
     ];
 }

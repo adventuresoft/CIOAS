@@ -38,13 +38,17 @@
                                 <!-- Row 1: Name and Name Bangla -->
                                 <div class="form-group row">
                                     <div class="col-sm-6">
-                                        <label for="name">Name <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
-                                        <input type="text" required value="{{ $user->name ?? '' }}" class="form-control" name="name" id="name" placeholder="Name English">
+                                        <label for="name">Name <span class="text-danger" title="Required"
+                                                data-toggle="tooltip">*</span></label>
+                                        <input type="text" required value="{{ $user->name ?? '' }}" class="form-control"
+                                            name="name" id="name" placeholder="Name English">
                                         <small class="error name-error text-danger"></small>
                                     </div>
                                     <div class="col-sm-6">
-                                        <label for="bn_name">Name Bangla <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
-                                        <input type="text" required value="{{ $user->people->bn_name ?? '' }}" class="form-control" name="bn_name" id="bn_name" placeholder="নাম (বাংলা)">
+                                        <label for="bn_name">Name Bangla <span class="text-danger" title="Required"
+                                                data-toggle="tooltip">*</span></label>
+                                        <input type="text" required value="{{ $user->people->bn_name ?? '' }}"
+                                            class="form-control" name="bn_name" id="bn_name" placeholder="নাম (বাংলা)">
                                         <small class="error bn_name-error text-danger"></small>
                                     </div>
                                 </div>
@@ -53,12 +57,14 @@
                                 <div class="form-group row">
                                     <div class="col-sm-4">
                                         <label for="date_of_birth">Date of Birth</label>
-                                        <input type="date" value="{{ $user->people->date_of_birth ?? '' }}" name="date_of_birth" class="form-control" id="date_of_birth">
+                                        <input type="date" value="{{ $user->people->date_of_birth ?? '' }}"
+                                            name="date_of_birth" class="form-control" id="date_of_birth">
                                         <small class="error date_of_birth-error text-danger"></small>
                                     </div>
                                     <div class="col-sm-4">
                                         <label for="age">Age</label>
-                                        <input type="text" class="form-control" id="age" readonly placeholder="Auto calculated">
+                                        <input type="text" class="form-control" id="age" readonly
+                                            placeholder="Auto calculated">
                                         <small class="error age-error text-danger"></small>
                                     </div>
                                     <div class="col-sm-4">
@@ -67,7 +73,9 @@
                                             <option value="">Select Birth Place</option>
                                             @if (count($districts))
                                                 @foreach ($districts as $district)
-                                                    <option value="{{ $district->id }}" {{isset($user->people->birth_place) ? (($user->people->birth_place == $district->id) ? 'selected' : '') : ''}}>{{ $district->name }}</option>
+                                                    <option value="{{ $district->id }}" {{isset($user->people->birth_place) ? (($user->people->birth_place == $district->id) ? 'selected' : '') : ''}}>
+                                                        {{ $district->name }}
+                                                    </option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -86,7 +94,8 @@
                                             <option value="">Select Gender</option>
                                             @if (count(people_constant_option('gender')))
                                                 @foreach (people_constant_option('gender') as $key => $item)
-                                                    <option value="{{ $key }}" {{isset($user->people->gender) ? (($user->people->gender == $key) ? 'selected' : '') : ''}}>{{ $item }}</option>
+                                                    <option value="{{ $key }}" {{isset($user->people->gender) ? (($user->people->gender == $key) ? 'selected' : '') : ''}}>{{ $item }}
+                                                    </option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -98,7 +107,9 @@
                                             <option value="">Select Religion</option>
                                             @if (count($religions))
                                                 @foreach ($religions as $religion)
-                                                    <option value="{{ $religion->id }}" {{isset($user->people->religion_id) ? (($user->people->religion_id == $religion->id) ? 'selected' : '') : ''}}>{{ $religion->name }}</option>
+                                                    <option value="{{ $religion->id }}" {{isset($user->people->religion_id) ? (($user->people->religion_id == $religion->id) ? 'selected' : '') : ''}}>
+                                                        {{ $religion->name }}
+                                                    </option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -110,7 +121,8 @@
                                             <option value="">Select Blood Group</option>
                                             @if (count(people_constant_option('blood_group')))
                                                 @foreach (people_constant_option('blood_group') as $key => $item)
-                                                    <option value="{{ $key }}" {{isset($user->people->blood_group) ? (($user->people->blood_group == $key) ? 'selected' : '') : ''}}>{{ $item }}</option>
+                                                    <option value="{{ $key }}" {{isset($user->people->blood_group) ? (($user->people->blood_group == $key) ? 'selected' : '') : ''}}>{{ $item }}
+                                                    </option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -122,12 +134,15 @@
                                 <div class="form-group row">
                                     <div class="col-sm-6">
                                         <label for="birth_certificate">Birth Reg. No.</label>
-                                        <input type="text" value="{{ $user->birth_certificate ?? '' }}" name="birth_certificate" placeholder="Birth Reg. No." class="form-control" id="birth_certificate">
+                                        <input type="text" value="{{ $user->birth_certificate ?? '' }}"
+                                            name="birth_certificate" placeholder="Birth Reg. No." class="form-control"
+                                            id="birth_certificate">
                                         <small class="error birth_certificate-error text-danger"></small>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="nid">NID No.</label>
-                                        <input type="text" value="{{ $user->nid ?? '' }}" name="nid" placeholder="NID No." class="form-control" id="nid">
+                                        <input type="text" value="{{ $user->nid ?? '' }}" name="nid" placeholder="NID No."
+                                            class="form-control" id="nid">
                                         <span class="error nid-error text-danger"></span>
                                     </div>
                                 </div>
@@ -136,13 +151,30 @@
                                 <div class="form-group row">
                                     <div class="col-sm-6">
                                         <label for="mobile">Mobile No.</label>
-                                        <input type="tel" value="{{ $user->mobile ?? '' }}" name="mobile" placeholder="Mobile" class="form-control" id="mobile">
+                                        <input type="tel" required value="{{ $user->mobile ?? '' }}" name="mobile"
+                                            placeholder="Mobile" class="form-control" id="mobile">
                                         <small class="error mobile-error text-danger"></small>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="email">Email</label>
-                                        <input type="email" required value="{{ $user->email ?? '' }}" name="email" placeholder="Email" class="form-control" id="email">
+                                        <input type="email" value="{{ $user->email ?? '' }}" name="email"
+                                            placeholder="Email" class="form-control" id="email">
                                         <small class="error email-error text-danger"></small>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <label for="age">User Role</label>
+                                        <select name="user_role" class="form-control" id="user_role" required>
+                                            <option value="">Select User Role</option>
+                                            <option value="normal" {{$user->role == 'normal' ? 'selected' : ''}}>Normal
+                                            </option>
+                                            <option value="staff" {{$user->role == 'staff' ? 'selected' : ''}}>Employee
+                                            </option>
+                                            <option value="admin" {{$user->role == 'admin' ? 'selected' : ''}}>Admin</option>
+                                        </select>
+                                        <small class="error age-error text-danger"></small>
                                     </div>
                                 </div>
 
@@ -154,7 +186,22 @@
                                         <span class="error image-error text-danger"></span>
                                     </div>
                                     <div class="col-sm-6">
-                                        <img class="img-fluid img-thumbnail" src="{{ $user->image ? asset($user->image) : asset('public/no-image-found.jpeg') }}" id="preview" alt="Preview" width="100" height="100">
+                                        <img class="img-fluid img-thumbnail"
+                                            src="{{ $user->image ? asset($user->image) : asset('public/no-image-found.jpeg') }}"
+                                            id="preview" alt="Preview" width="100" height="100">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <label for="signature">Signature</label>
+                                        <input type="file" name="signature" class="form-control-file" id="signature">
+                                        <span class="error signature-error text-danger"></span>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <img class="img-fluid img-thumbnail"
+                                            src="{{ $user->signature ? asset($user->signature) : asset('public/no-image-found.jpeg') }}"
+                                            id="signature_preview" alt="Preview" width="100" height="100">
                                     </div>
                                 </div>
                             </div>
@@ -182,12 +229,12 @@
 
 @push('script')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Calculate age on page load if date of birth exists
             calculateAge();
 
             // Age calculation on date change
-            $('#date_of_birth').on('change', function() {
+            $('#date_of_birth').on('change', function () {
                 calculateAge();
             });
 
@@ -210,7 +257,7 @@
             }
 
             // Form submission
-            $("#peoplePersonalForm").on('submit', function(e) {
+            $("#peoplePersonalForm").on('submit', function (e) {
                 e.preventDefault();
                 let thisForm = $(this);
                 $.ajax({
@@ -221,22 +268,22 @@
                     contentType: false,
                     cache: false,
                     processData: false,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         thisForm.find('button[type="submit"]').prop("disabled", true);
                         $('.error').text('');
                     },
-                    success: function(response) {
+                    success: function (response) {
                         thisForm.find('button[type="submit"]').prop("disabled", false);
                         toastr.success(response.message);
-                        setTimeout(function() {
+                        setTimeout(function () {
                             location.href = response.redirect_url;
                         }, 2000);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         thisForm.find('button[type="submit"]').prop("disabled", false);
                         var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message);
-                        $.each(responseText.errors, function(key, val) {
+                        $.each(responseText.errors, function (key, val) {
                             thisForm.find("." + key + "-error").text(val[0]);
                         });
                     }
@@ -245,7 +292,7 @@
         });
 
         // Birth place change handler
-        $(document).on('change', '#birth_place', function(e) {
+        $(document).on('change', '#birth_place', function (e) {
             e.preventDefault();
         });
 
@@ -253,14 +300,14 @@
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     $('#preview').attr('src', e.target.result);
                 }
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        $("#image").change(function() {
+        $("#image").change(function () {
             readURL(this);
         });
     </script>

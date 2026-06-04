@@ -232,7 +232,7 @@
 
     <script>
         $(document).ready(function() {
-            $("#FormSubmit").on('submit', function(e) {
+            $(document).on('submit', '#FormSubmit', function(e) {
                 e.preventDefault();
                 let thisForm = $(this);
                 let url = $(this).data('url');
@@ -268,7 +268,7 @@
             })
 
             // delete item
-            $(".deleteData").on('submit', function(e) {
+            $(document).on('submit', '.deleteData', function(e) {
                 e.preventDefault();
                 var thisForm = $(this);
                 var formData = $(this).serialize();

@@ -151,33 +151,53 @@
                                         <small class="error email-error text-danger"></small>
                                     </div>
                                 </div>
-                                <!-- Row 6: Photo -->
+
                                 <div class="form-group row">
                                     <div class="col-sm-6">
-                                        <label for="image">Photo</label>
-                                        <input type="file" name="image" class="image form-control-file" id="image">
-                                        <span class="error image-error text-danger"></span>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="signature">Signature</label>
-                                        <input type="file" name="signature" class="signature form-control-file"
-                                            id="signature">
-                                        <span class="error signature-error text-danger"></span>
+                                        <label for="age">User Role</label>
+                                        <select name="user_role" class="form-control" id="user_role" required>
+                                            <option value="">Select User Role</option>
+                                            <option value="normal">Normal</option>
+                                            <option value="staff">Employee</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                        <small class="error age-error text-danger"></small>
                                     </div>
                                 </div>
 
-                            </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer bg-white mt-3" style="border-top: none;">
-                                <div class="text-right">
-                                    <a href="{{ route('staff.index') }}"
-                                        class="btn btn-outline-secondary mr-2 px-4">Cancel</a>
-                                    <button type="submit" class="btn btn-primary px-4"
-                                        style="background-color: #5b4bdf; border-color: #5b4bdf;">Save & Next <i
-                                            class="fas fa-arrow-right ml-1"></i></button>
+
+
+                                <div class="form-group row">
+
+                                    <!-- Row 6: Photo -->
+                                    <div class="form-group row">
+                                        <div class="col-sm-6">
+                                            <label for="image">Photo</label>
+                                            <input type="file" name="image" class="image form-control-file" id="image">
+                                            <span class="error image-error text-danger"></span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label for="signature">Signature</label>
+                                            <input type="file" name="signature" class="signature form-control-file"
+                                                id="signature">
+                                            <span class="error signature-error text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+
                                 </div>
-                            </div>
-                            <!-- /.card-footer -->
+                                <!-- /.card-body -->
+                                <div class="card-footer bg-white mt-3" style="border-top: none;">
+                                    <div class="text-right">
+                                        <a href="{{ route('staff.index') }}"
+                                            class="btn btn-outline-secondary mr-2 px-4">Cancel</a>
+                                        <button type="submit" class="btn btn-primary px-4"
+                                            style="background-color: #5b4bdf; border-color: #5b4bdf;">Save & Next <i
+                                                class="fas fa-arrow-right ml-1"></i></button>
+                                    </div>
+                                </div>
+                                <!-- /.card-footer -->
                         </form>
                     </div>
                     <!-- /.card -->

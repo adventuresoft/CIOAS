@@ -105,12 +105,12 @@
                 @if (institute_permissions())
                     {{-- Institute Settings --}}
                     <li class="nav-item
-                                                                        @if (
-                                                                            $subMenu == 'InstituteCreate' ||
-                                                                            $subMenu == 'InstituteType' ||
-                                                                            $subMenu == 'InstituteCategory' ||
-                                                                            $subMenu == 'InstituteList'
-                                                                        ) menu-open @endif">
+                                                                            @if (
+                                                                                $subMenu == 'InstituteCreate' ||
+                                                                                $subMenu == 'InstituteType' ||
+                                                                                $subMenu == 'InstituteCategory' ||
+                                                                                $subMenu == 'InstituteList'
+                                                                            ) menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'Institute') active @endif ">
                             <i class="nav-icon fas fa-university"></i>
                             <p>
@@ -292,7 +292,8 @@
                 @endif
 
                 <li class="nav-item  @if ($mainMenu == 'Inquiry') menu-open @endif ">
-                    <a href="#" class="nav-link @if ($mainMenu == 'Inquiry') active @endif">
+                    <a href="{{ route('inquiry.formlist') }}"
+                        class="nav-link @if ($mainMenu == 'Inquiry') active @endif">
                         <i class="nav-icon fas fa-question"></i>
                         <p>
                             Inquiries List
@@ -610,16 +611,16 @@
                         has_module_access('trade_license')
                     )
                     <li class="nav-item
-                                                                  @if (
-                                                                    $subMenu == 'OrganizationCreate' ||
-                                                                    $subMenu == 'OrganizationList' ||
-                                                                    $subMenu == 'OrganizationShow' ||
-                                                                    $subMenu == 'RegistrationFees' ||
-                                                                    $subMenu == 'RenewFees' ||
-                                                                    $subMenu == 'TradeLicense' ||
-                                                                    $subMenu == 'GetTradeLicense'
-                                                                ) menu-open @endif
-                                                                  ">
+                                                                      @if (
+                                                                        $subMenu == 'OrganizationCreate' ||
+                                                                        $subMenu == 'OrganizationList' ||
+                                                                        $subMenu == 'OrganizationShow' ||
+                                                                        $subMenu == 'RegistrationFees' ||
+                                                                        $subMenu == 'RenewFees' ||
+                                                                        $subMenu == 'TradeLicense' ||
+                                                                        $subMenu == 'GetTradeLicense'
+                                                                    ) menu-open @endif
+                                                                      ">
                         <a href="#" class="nav-link @if ($mainMenu == 'Organization') active @endif ">
                             <i class="nav-icon fas fa-briefcase"></i>
                             <p>
@@ -689,8 +690,8 @@
                 {{-- License --}}
                 @if (has_module_access('license') || has_module_access('licenses'))
                     <li class="nav-item
-                                                                  @if ($subMenu == 'LicenseCreate' || $subMenu == 'LicenseList' || $subMenu == 'LicenseShow' || $subMenu == 'LicenseEdit') menu-open @endif
-                                                                  ">
+                                                                      @if ($subMenu == 'LicenseCreate' || $subMenu == 'LicenseList' || $subMenu == 'LicenseShow' || $subMenu == 'LicenseEdit') menu-open @endif
+                                                                      ">
                         <a href="#" class="nav-link @if ($mainMenu == 'License') active @endif ">
                             <i class="nav-icon fas fa-id-card"></i>
                             <p>
@@ -727,7 +728,7 @@
                 @if (has_module_access('hotel-restaurant') || has_module_access('hotel_restaurant'))
                     <li
                         class="nav-item
-                                                                     @if ($subMenu == 'HotelRestaurant' || $subMenu == 'HotelRestaurantist') menu-open @endif">
+                                                                         @if ($subMenu == 'HotelRestaurant' || $subMenu == 'HotelRestaurantist') menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'HotelRestaurant') active @endif ">
                             <i class="nav-icon fas fa-briefcase"></i>
                             <p>
@@ -764,8 +765,8 @@
                 {{-- Tax --}}
                 @if (has_module_access('tax') || has_module_access('taxes'))
                     <li class="nav-item
-                                                                @if ($subMenu == 'TaxGenerate' || $subMenu == 'TaxReceived' || $subMenu == 'TaxRateList' || $subMenu == 'TaxList') menu-open @endif
-                                                                ">
+                                                                    @if ($subMenu == 'TaxGenerate' || $subMenu == 'TaxReceived' || $subMenu == 'TaxRateList' || $subMenu == 'TaxList') menu-open @endif
+                                                                    ">
                         <a href="#" class="nav-link @if ($mainMenu == 'Tax') active @endif">
                             <i class="nav-icon fas fa-money-bill"></i>
                             <p>
@@ -943,8 +944,8 @@
                 {{-- Land Info --}}
                 @if (has_module_access('land') || has_module_access('lands'))
                     <li class="nav-item
-                                                                @if ($subMenu == 'LandCreate' || $subMenu == 'LandList') menu-open @endif
-                                                                ">
+                                                                    @if ($subMenu == 'LandCreate' || $subMenu == 'LandList') menu-open @endif
+                                                                    ">
                         <a href="#" class="nav-link @if ($mainMenu == 'Land') active @endif">
                             <i class="nav-icon fas fa-bacon"></i>
                             <p>
@@ -980,17 +981,17 @@
                 {{-- Vehicle Info --}}
                 @if (has_module_access('vehicle') || has_module_access('vehicles'))
                     <li class="nav-item
-                                                                  @if (
-                                                                    $subMenu == 'VehicleCreate' ||
-                                                                    $subMenu == 'VehicleList' ||
-                                                                    $subMenu == 'VehicleApprovalList' ||
-                                                                    $subMenu == 'VehicleGenerateInvoice' ||
-                                                                    $subMenu == 'VehicleLicense' ||
-                                                                    $subMenu == 'VehicleOwnershipChangeApplication' ||
-                                                                    $subMenu == 'VehicleOwnershipChangeApproval' ||
-                                                                    $subMenu == 'VehicleAddFeesNewSetup' ||
-                                                                    $subMenu == 'VehicleAddFeesList'
-                                                                ) menu-open @endif">
+                                                                      @if (
+                                                                        $subMenu == 'VehicleCreate' ||
+                                                                        $subMenu == 'VehicleList' ||
+                                                                        $subMenu == 'VehicleApprovalList' ||
+                                                                        $subMenu == 'VehicleGenerateInvoice' ||
+                                                                        $subMenu == 'VehicleLicense' ||
+                                                                        $subMenu == 'VehicleOwnershipChangeApplication' ||
+                                                                        $subMenu == 'VehicleOwnershipChangeApproval' ||
+                                                                        $subMenu == 'VehicleAddFeesNewSetup' ||
+                                                                        $subMenu == 'VehicleAddFeesList'
+                                                                    ) menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'Vehicle') active @endif">
                             <i class="nav-icon fas fa-truck"></i>
                             <p>
@@ -1146,8 +1147,8 @@
                 {{-- Bridge Info --}}
                 @if (has_module_access('bridge') || has_module_access('bridges'))
                     <li class="nav-item
-                                                                @if ($subMenu == 'BridgeCreate' || $subMenu == 'BridgeList') menu-open @endif
-                                                                ">
+                                                                    @if ($subMenu == 'BridgeCreate' || $subMenu == 'BridgeList') menu-open @endif
+                                                                    ">
                         <a href="#" class="nav-link @if ($mainMenu == 'Bridge') active @endif">
                             <i class="nav-icon fas fa-archway"></i>
                             <p>
@@ -1349,13 +1350,13 @@
                         has_module_access('divorces')
                     )
                     <li class="nav-item
-                                                                  @if (
-                                                                    $subMenu == 'MarriageCreate' ||
-                                                                    $subMenu == 'MarriageList' ||
-                                                                    $subMenu == 'DivorceCreate' ||
-                                                                    $subMenu == 'DivorceList'
-                                                                ) menu-open @endif
-                                                                  ">
+                                                                      @if (
+                                                                        $subMenu == 'MarriageCreate' ||
+                                                                        $subMenu == 'MarriageList' ||
+                                                                        $subMenu == 'DivorceCreate' ||
+                                                                        $subMenu == 'DivorceList'
+                                                                    ) menu-open @endif
+                                                                      ">
                         <a href="#" class="nav-link @if ($mainMenu == 'Marriage' || $mainMenu == 'Divorce') active @endif ">
                             <i class="nav-icon fas fa-ring"></i>
                             <p>
