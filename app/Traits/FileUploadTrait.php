@@ -38,30 +38,10 @@ trait FileUploadTrait
      */
     protected function deleteFile($filePath)
     {
-        // Check if file path is provided and not empty
-        if (empty($filePath)) {
-            return false;
+
+        if (File::exists(public_path($filePath))) {
+            File::delete(public_path($filePath));
         }
-
-        // Get the full path to the file
-        $fullPath = public_path($filePath);
-
-        // Check if file exists and delete it
-        if (File::exists($fullPath)) {
-            try {
-                return File::delete($fullPath);
-            } catch (\Exception $e) {
-                // Log the error if deletion fails
-                Log::error('File deletion failed: ' . $e->getMessage(), [
-                    'file_path' => $filePath,
-                    'full_path' => $fullPath
-                ]);
-                return false;
-            }
-        }
-
-        // File doesn't exist, consider it "successfully deleted"
-        return true;
     }
 
     /**
@@ -73,7 +53,7 @@ trait FileUploadTrait
     protected function deleteFiles(array $filePaths)
     {
         $successCount = 0;
-        $failedFiles  = [];
+        $failedFiles = [];
 
         foreach ($filePaths as $filePath) {
             if (!$this->deleteFile($filePath)) {
@@ -85,7 +65,7 @@ trait FileUploadTrait
 
         return [
             'success' => $successCount,
-            'failed'  => $failedFiles
+            'failed' => $failedFiles
         ];
     }
 }

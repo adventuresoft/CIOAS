@@ -168,13 +168,12 @@
                                         <label for="age">User Role</label>
                                         <select name="user_role" class="form-control" id="user_role" required>
                                             <option value="">Select User Role</option>
-                                            <option value="normal" {{$user->role == 'normal' ? 'selected' : ''}}>Normal
+                                            <option value="staff" {{$user->user_type == 'staff' ? 'selected' : ''}}>Employee
                                             </option>
-                                            <option value="staff" {{$user->role == 'staff' ? 'selected' : ''}}>Employee
+                                            <option value="admin" {{$user->user_type == 'admin' ? 'selected' : ''}}>Admin
                                             </option>
-                                            <option value="admin" {{$user->role == 'admin' ? 'selected' : ''}}>Admin</option>
                                         </select>
-                                        <small class="error age-error text-danger"></small>
+                                        <small class="error user_type-error text-danger"></small>
                                     </div>
                                 </div>
 

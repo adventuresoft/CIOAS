@@ -81,9 +81,7 @@ class StaffController extends Controller
             'addressInfo.permanentVillage',
             'addressInfo.permanentRoad',
             'addressInfo.permanentHouse',
-        ])->whereHas('people', function ($q) {
-            $q->whereNull('approved_id')->where('is_staff', 1);
-        });
+        ])->orwhere('user_type', 'staff')->orwhere('user_type', 'admin');
 
         if (Auth::user()->institute_id) {
             $query->where('institute_id', Auth::user()->institute_id);
@@ -179,7 +177,7 @@ class StaffController extends Controller
                 $user->password = Hash::make('12345678');
                 $image = $request->file('image');
                 $signature = $request->file('signature');
-                $user->role = $request->user_role;
+                $user->user_type = $request->user_role;
 
                 if ($signature) {
                     $user->signature = $this->uploadFile($signature, 'uploads/signatures/', 'sig_');
@@ -404,28 +402,18 @@ class StaffController extends Controller
             $user->nid = $request->nid;
             $user->status = $request->status ?? true;
             $user->updated_by = Auth::id();
-            $user->role = $request->user_role;
+            $user->user_type = $request->user_role;
             $signature = $request->file('signature');
 
             if ($signature) {
-                deleteFile($user->signature);
+                $this->deleteFile($user->signature);
                 $user->signature = $this->uploadFile($signature, 'uploads/signatures/', 'sig_');
             }
             $image = $request->file('image');
+
             if ($image) {
-                deleteFile($user->image);
-                //if ($user->image) {unlink($user->image);}
-                // $image_name = $user->username;
-                $image_name = now()->format('YmdHis') . '_' . $user->id;
-                ;
-                $ext = strtolower($image->getClientOriginalExtension());
-                $image_full_name = $image_name . "." . $ext;
-                $upload_path = 'uploads/users/';
-                $image_url = $upload_path . $image_full_name;
-                $success = $image->move($upload_path, $image_full_name);
-                if ($success) {
-                    $user->image = $image_url;
-                }
+                $this->deleteFile($user->image);
+                $user->image = $this->uploadFile($image, 'uploads/users/', 'avatar_');
             }
 
 

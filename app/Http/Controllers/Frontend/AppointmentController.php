@@ -19,7 +19,7 @@ class AppointmentController extends Controller
 
     public function officerList()
     {
-        $officers = User::where('role', 'admin')->get();
+        $officers = User::where('user_type', 'admin')->get();
         return view('frontend.pages.appointment.officer_list', compact('officers'));
     }
 

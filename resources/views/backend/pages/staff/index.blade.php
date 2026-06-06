@@ -152,9 +152,9 @@
 
                                 <!-- Institute Filter -->
                                 <!-- <div class="col-md-2">
-                                    <input type="text" id="search_institute" class="form-control form-control-sm"
-                                        placeholder="Institute">
-                                </div> -->
+                                                <input type="text" id="search_institute" class="form-control form-control-sm"
+                                                    placeholder="Institute">
+                                            </div> -->
 
                                 <!-- GLOBAL SEARCH -->
                                 <!-- <div class="col-md-2 mt-2">  -->
@@ -165,10 +165,10 @@
 
                                 <!-- Reset Button -->
                                 <!-- <div class="col-md-2 mt-2">
-                                    <button id="resetFilter" class="btn btn-secondary btn-sm w-100">
-                                        Reset
-                                    </button>
-                                </div> -->
+                                                <button id="resetFilter" class="btn btn-secondary btn-sm w-100">
+                                                    Reset
+                                                </button>
+                                            </div> -->
 
                             </div>
 
@@ -185,7 +185,7 @@
                                         <th>Gender & DOB</th>
                                         <th>Department</th>
                                         <th>Section</th>
-                                        <th>Address</th>
+                                        <th>User Type</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -229,26 +229,14 @@
                                                 </td>
 
                                                 <td>
-                                                    @php
-                                                        $profInfo = optional($user->professionalInfos)->first();
-                                                        $deptName = '';
-                                                        if ($profInfo && $profInfo->department) {
-                                                            $dept = \App\Models\Department\Department::find($profInfo->department);
-                                                            $deptName = $dept ? $dept->name : '';
-                                                        }
-                                                    @endphp
-                                                    {{ $deptName }}
+                                                    {{$user->department->name ?? 'N/A'}}
                                                 </td>
 
                                                 <td>
-                                                    @php
-                                                        $sectionName = '';
-                                                        if ($profInfo && $profInfo->current_designation) {
-                                                            $section = \App\Models\Department\Section::find($profInfo->current_designation);
-                                                            $sectionName = $section ? $section->name : '';
-                                                        }
-                                                    @endphp
-                                                    {{ $sectionName }}
+                                                    {{$user->section->name ?? 'N/A'}}
+                                                </td>
+                                                <td>
+                                                    {{$user->user_type ?? 'N/A'}}
                                                 </td>
 
                                                 <td>
@@ -304,12 +292,13 @@
             let table = $('#example1').DataTable({
                 responsive: true,
                 autoWidth: false,
+                searching: false,
                 pageLength: 10,
                 lengthChange: false,
                 order: [[0, 'asc']],
                 columnDefs: [
                     { targets: 1, orderable: false }, // Disable sorting on photo column
-                    { targets: 9, orderable: false }  // Disable sorting on action column
+                    { targets: 8, orderable: false }  // Disable sorting on action column
                 ],
                 language: {
                     emptyTable: '<div class="empty-state"><i class="fas fa-folder-open"></i><h5>No data available</h5></div>',

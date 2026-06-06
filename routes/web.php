@@ -487,7 +487,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     // Inquiry Controller
 
     Route::get('/inquiry-list', [InquiryFormController::class, 'FormList'])->name('inquiry.formlist');
-    Route::resource('inquiry', InquiryFormController::class);
+    Route::post('inquiry/{id}/assign', [InquiryFormController::class, 'assignDepartmentSection'])->name('inquiry.assign');
+    Route::post('inquiry/{id}/receive', [InquiryFormController::class, 'receive'])->name('inquiry.receive');
+    Route::resource('inquiry', InquiryFormController::class)->except(['index', 'create', 'store']);
 
 
     // ApplicationFormController

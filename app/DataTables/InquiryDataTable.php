@@ -42,18 +42,20 @@ class InquiryDataTable extends DataTable
             ->editColumn('status', function ($query) {
 
                 switch ($query->status) {
-                    case 'Pending':
-                        return '<span class="badge badge-warning">Pending</span>';
-                        break;
-                    case 'In Progress':
-                        return '<span class="badge badge-info">In Progress</span>';
-                        break;
-                    case 'Resolved':
-                        return '<span class="badge badge-success">Resolved</span>';
-                        break;
-                    case 'Rejected':
+                    case 'pending':
+                        return '<span class="badge badge-secondary">Pending</span>';
+                    case 'assigned':
+                        return '<span class="badge badge-primary">Assigned</span>';
+                    case 'received':
+                        return '<span class="badge badge-info">Received</span>';
+                    case 'processing':
+                        return '<span class="badge badge-warning">Processing</span>';
+                    case 'approved':
+                        return '<span class="badge badge-success">Approved</span>';
+                    case 'rejected':
                         return '<span class="badge badge-danger">Rejected</span>';
-                        break;
+                    default:
+                        return '<span class="badge badge-secondary">' . ucfirst($query->status) . '</span>';
                 }
             })
             ->rawColumns(['action', 'date', 'status'])
@@ -65,7 +67,27 @@ class InquiryDataTable extends DataTable
      */
     public function query(Inquiry $model): QueryBuilder
     {
-        return $model->newQuery();
+        $user = auth()->user();
+        $query = $model->newQuery();
+
+        // if ($user && !$user->can('inquiry.read')) {
+        //     if ($user->department_id) {
+        //         $query->where('current_department_id', $user->department_id);
+        //         if ($user->section_id) {
+        //             $query->where(function ($q) use ($user) {
+        //                 $q->whereNull('current_section_id')
+        //                   ->orWhere('current_section_id', $user->section_id);
+        //             });
+        //         } else {
+        //             $query->whereNull('current_section_id');
+        //         }
+        //     } else {
+        //         // If the user has no read permission and no department, they shouldn't see anything.
+        //         $query->whereRaw('1 = 0');
+        //     }
+        // }
+
+        return $query;
     }
 
     /**

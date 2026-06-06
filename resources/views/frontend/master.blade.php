@@ -10,7 +10,6 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{ asset('plugins')}}/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{asset('frontend/css/jquery.mmenu.all.css')}}">
     <link rel="stylesheet" href="{{asset('frontend/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('frontend/css/mstyle.css')}}">
   <!-- Toastr -->
@@ -23,6 +22,9 @@
     
     <link rel="stylesheet" href="{{ asset('assets/style/global.css') }}" />
     <style type="text/css">
+        html,body{
+            overflow-x: hidden!important;
+        }
         body {
             background: #eeeeee;
         }
@@ -72,33 +74,13 @@
             @yield('content')
         </section>
         <!-- Footer Top Section-->
+        @include('frontend.layouts.footer')
     </div>
 
-    <nav class="main-menu" id="mmmenu">
-        <ul>
-            <li><a href="{{route('home')}}">হোম</a></li>
-            <li><a href="{{route('home')}}">আমাদের সম্পর্কে</a></li>
-            <li><a href="{{route('home')}}">ইউনিয়ন আইন</a></li>
-            <li><a href="{{route('home')}}">প্রকল্প</a></li>
-            <li><a href="{{route('home')}}">নোটিশ</a></li>
 
-            <li class="has-sub"><a href="#">অন্যান্য</a>
-                <ul>
-                    <li><a href="#">আবেদনের নিয়ম</a></li>
-                    <li><a href="#">সনদ প্রাপ্তির নিয়ম</a></li>
-                </ul>
-            </li>
-
-            <li><a href="#">ছবির গ্যালারী</a></li>
-            <li><a class="btn btn-outline-success application-link"
-                style="margin: 0px 0px 0px 10px; border-radius:0"
-                 href="{{url('/')}}/application">আবেদন করুন</a></li>
-        </ul>
-    </nav>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="{{asset('frontend/js/jquery.mmenu.all.js')}}"></script>
     <script src="{{asset('frontend/js/jquery.waypoints.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -111,15 +93,6 @@
 
     <script>
         $(document).ready(function() {
-            $("#mmmenu").mmenu({
-                navbar: {
-                    title: "SUKTAIL UNION PARISHAD"
-                }
-            });
-            var API = $("#mmmenu").data("mmenu");
-            $("#mmmenu").click(function() {
-                API.open();
-            });
 
             // Map Bootstrap 4 data attributes to Bootstrap 5
             function mapBS4toBS5(context) {

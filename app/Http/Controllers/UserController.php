@@ -30,16 +30,16 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        
+
         $query = User::with(['roles.permissions', 'permissions', 'institute.union', 'institute.pourashava', 'institute.cityCorporation', 'institute.district', 'institute.type'])
             ->orderBy('id', 'desc');
 
         if ($search) {
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%{$search}%")
-                  ->orWhere('email', 'LIKE', "%{$search}%")
-                  ->orWhere('mobile', 'LIKE', "%{$search}%")
-                  ->orWhere('system_id', 'LIKE', "%{$search}%");
+                    ->orWhere('email', 'LIKE', "%{$search}%")
+                    ->orWhere('mobile', 'LIKE', "%{$search}%")
+                    ->orWhere('system_id', 'LIKE', "%{$search}%");
             });
         }
 
@@ -62,6 +62,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
+            'user_type' => 'required|in:admin,staff',
             'mobile' => 'required|string',
             'password' => 'required|min:6|confirmed',
             'institute_id' => 'required',
@@ -82,6 +83,7 @@ class UserController extends Controller
             $user->department_id = $request->department_id;
             $user->section_id = $request->section_id;
             $user->status = $request->status;
+            $user->user_type = $request->user_type;
             $user->save();
 
             // Sync Spatie role
@@ -90,10 +92,10 @@ class UserController extends Controller
                 $user->syncRoles([$role->name]);
             }
 
-            session()->flash("success", "Operator registered successfully.");
+            session()->flash("success", "Employee registered successfully.");
             return redirect()->route('user.index');
         } catch (\Throwable $th) {
-            session()->flash("error", "Failed to register operator: " . $th->getMessage());
+            session()->flash("error", "Failed to register Employee: " . $th->getMessage());
             return redirect()->back()->withInput();
         }
     }
@@ -102,7 +104,7 @@ class UserController extends Controller
     {
         $user = User::with(['roles', 'institute.union', 'institute.pourashava', 'institute.cityCorporation', 'institute.district', 'institute.type'])->findOrFail($id);
         return view('backend.pages.user.show', compact('user'))
-            ->with(['title' => 'Operator Details', 'page' => 'user']);
+            ->with(['title' => 'Employee Details', 'page' => 'user']);
     }
 
     public function edit($id)
@@ -113,7 +115,7 @@ class UserController extends Controller
         $departments = \App\Models\Department\Department::all();
         $sections = $user->department_id ? \App\Models\Department\Section::where('department_id', $user->department_id)->get() : collect([]);
         return view('backend.pages.user.edit', compact('user', 'roles', 'institutes', 'departments', 'sections'))
-            ->with(['title' => 'Modify Operator', 'page' => 'user']);
+            ->with(['title' => 'Modify Employee', 'page' => 'user']);
     }
 
     public function update(Request $request, $id)
@@ -122,6 +124,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
+            'user_type' => 'required|in:admin,staff',
             'mobile' => 'required|string',
             'password' => 'nullable|min:6|confirmed',
             'institute_id' => 'required',
@@ -143,6 +146,7 @@ class UserController extends Controller
             $user->department_id = $request->department_id;
             $user->section_id = $request->section_id;
             $user->status = $request->status;
+            $user->user_type = $request->user_type;
             $user->save();
 
             // Sync Spatie role
@@ -151,10 +155,10 @@ class UserController extends Controller
                 $user->syncRoles([$role->name]);
             }
 
-            session()->flash("success", "Operator updated successfully.");
+            session()->flash("success", "Employee updated successfully.");
             return redirect()->route('user.index');
         } catch (\Throwable $th) {
-            session()->flash("error", "Failed to update operator: " . $th->getMessage());
+            session()->flash("error", "Failed to update Employee: " . $th->getMessage());
             return redirect()->back()->withInput();
         }
     }
@@ -168,10 +172,10 @@ class UserController extends Controller
                 return redirect()->route('user.index');
             }
             $user->delete();
-            session()->flash('success', 'Operator account deleted successfully.');
+            session()->flash('success', 'Employee account deleted successfully.');
             return redirect()->route('user.index');
         } catch (\Throwable $th) {
-            session()->flash('error', 'Failed to delete operator: ' . $th->getMessage());
+            session()->flash('error', 'Failed to delete Employee: ' . $th->getMessage());
             return redirect()->route('user.index');
         }
     }
