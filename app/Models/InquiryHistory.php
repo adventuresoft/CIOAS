@@ -19,6 +19,14 @@ class InquiryHistory extends Model
         'from_user_id',
         'to_user_id',
         'note',
+        'is_received',
+        'received_by',
+        'received_at',
+    ];
+
+    protected $casts = [
+        'is_received' => 'boolean',
+        'received_at' => 'datetime',
     ];
 
     public function fromDepartment()
@@ -54,5 +62,10 @@ class InquiryHistory extends Model
     public function assignedByUser()
     {
         return $this->belongsTo(\App\Models\User::class, 'user_id');
+    }
+
+    public function receivedByUser()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'received_by');
     }
 }

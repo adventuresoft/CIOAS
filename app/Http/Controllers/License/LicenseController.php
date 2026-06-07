@@ -28,8 +28,18 @@ class LicenseController extends Controller
 {
     use FileUploadTrait;
 
+
+    public function __construct()
+    {
+        $this->middleware('permission:license.read')->only('index', 'show');
+        $this->middleware('permission:license.create')->only('create', 'store');
+        $this->middleware('permission:license.update')->only('update', 'edit');
+        $this->middleware('permission:license.delete')->only('destroy');
+    }
+
     public function index()
     {
+
         $licenses = License::with('category', 'subcategory')->latest()->get();
         return view('backend.pages.license.index', compact('licenses'));
     }
@@ -42,65 +52,65 @@ class LicenseController extends Controller
 
     public function store(Request $request)
     {
-        $licenseCategoryId    = $request->input('organization_category_id', $request->license_category_id);
+        $licenseCategoryId = $request->input('organization_category_id', $request->license_category_id);
         $licenseSubcategoryId = $request->input('organization_subcategory_id', $request->license_subcategory_id);
 
         $validate = Validator::make($request->all(), [
-            'id'                          => 'nullable|integer',
-            'name'                        => 'required|max:190',
-            'bn_name'                     => 'nullable|max:190',
-            'organization_category_id'    => 'nullable|integer|exists:license_categories,id',
+            'id' => 'nullable|integer',
+            'name' => 'required|max:190',
+            'bn_name' => 'nullable|max:190',
+            'organization_category_id' => 'nullable|integer|exists:license_categories,id',
             'organization_subcategory_id' => 'nullable|integer|exists:license_sub_categories,id',
-            'organization_type_id'        => 'nullable|integer',
-            'license_category_id'         => 'nullable|integer|exists:license_categories,id',
-            'license_subcategory_id'      => 'nullable|integer|exists:license_sub_categories,id',
-            'license_no'                  => 'nullable|max:190',
-            'issue_date'                  => 'nullable|date',
-            'expire_date'                 => 'nullable|date|after_or_equal:issue_date',
-            'application_type'            => 'nullable|in:new,old',
-            'remarks'                     => 'nullable|max:500',
-            'rjsc_reg_no'                 => 'nullable|max:190',
-            'no_of_owner'                 => 'nullable|integer',
-            'no_of_dir'                   => 'nullable|integer',
-            'capital'                     => 'nullable|numeric',
-            'establish_year'              => 'nullable|integer|min:1900|max:' . date('Y'),
-            'division_id'                 => 'nullable|integer',
-            'district_id'                 => 'nullable|integer',
-            'thana_id'                    => 'nullable|integer',
-            'post_office_id'              => 'nullable|integer',
-            'union_id'                    => 'nullable|integer',
-            'village_id'                  => 'nullable|integer',
-            'city_id'                     => 'nullable|integer',
-            'pos_id'                      => 'nullable|integer',
-            'ward_id'                     => 'nullable|integer',
-            'road'                        => 'nullable|max:190',
-            'house'                       => 'nullable|max:190',
-            'house_bn'                    => 'nullable|max:190',
-            'office_division_id'          => 'nullable|integer',
-            'office_district_id'          => 'nullable|integer',
-            'office_thana_id'             => 'nullable|integer',
-            'office_post_office_id'       => 'nullable|integer',
-            'office_union_id'             => 'nullable|integer',
-            'office_village_id'           => 'nullable|integer',
-            'office_city_id'              => 'nullable|integer',
-            'office_pos_id'               => 'nullable|integer',
-            'office_ward_id'              => 'nullable|integer',
-            'office_road'                 => 'nullable|max:190',
-            'office_house'                => 'nullable|max:190',
-            'office_house_bn'             => 'nullable|max:190',
-            'location_type'               => 'nullable',
-            'office_location_type'        => 'nullable',
-            'premises_ownership'          => 'nullable|in:owned,rented',
-            'hotel_logo'                  => 'nullable|image|max:2048',
-            'owned_document_file.*'       => 'nullable|file|max:2048',
-            'rented_document_file.*'      => 'nullable|file|max:2048',
+            'organization_type_id' => 'nullable|integer',
+            'license_category_id' => 'nullable|integer|exists:license_categories,id',
+            'license_subcategory_id' => 'nullable|integer|exists:license_sub_categories,id',
+            'license_no' => 'nullable|max:190',
+            'issue_date' => 'nullable|date',
+            'expire_date' => 'nullable|date|after_or_equal:issue_date',
+            'application_type' => 'nullable|in:new,old',
+            'remarks' => 'nullable|max:500',
+            'rjsc_reg_no' => 'nullable|max:190',
+            'no_of_owner' => 'nullable|integer',
+            'no_of_dir' => 'nullable|integer',
+            'capital' => 'nullable|numeric',
+            'establish_year' => 'nullable|integer|min:1900|max:' . date('Y'),
+            'division_id' => 'nullable|integer',
+            'district_id' => 'nullable|integer',
+            'thana_id' => 'nullable|integer',
+            'post_office_id' => 'nullable|integer',
+            'union_id' => 'nullable|integer',
+            'village_id' => 'nullable|integer',
+            'city_id' => 'nullable|integer',
+            'pos_id' => 'nullable|integer',
+            'ward_id' => 'nullable|integer',
+            'road' => 'nullable|max:190',
+            'house' => 'nullable|max:190',
+            'house_bn' => 'nullable|max:190',
+            'office_division_id' => 'nullable|integer',
+            'office_district_id' => 'nullable|integer',
+            'office_thana_id' => 'nullable|integer',
+            'office_post_office_id' => 'nullable|integer',
+            'office_union_id' => 'nullable|integer',
+            'office_village_id' => 'nullable|integer',
+            'office_city_id' => 'nullable|integer',
+            'office_pos_id' => 'nullable|integer',
+            'office_ward_id' => 'nullable|integer',
+            'office_road' => 'nullable|max:190',
+            'office_house' => 'nullable|max:190',
+            'office_house_bn' => 'nullable|max:190',
+            'location_type' => 'nullable',
+            'office_location_type' => 'nullable',
+            'premises_ownership' => 'nullable|in:owned,rented',
+            'hotel_logo' => 'nullable|image|max:2048',
+            'owned_document_file.*' => 'nullable|file|max:2048',
+            'rented_document_file.*' => 'nullable|file|max:2048',
         ]);
 
         if ($validate->fails()) {
             return response()->json([
-                'status'  => false,
+                'status' => false,
                 'message' => 'Sorry! Invalid Entry.',
-                'errors'  => $validate->errors(),
+                'errors' => $validate->errors(),
             ], 400);
         }
 
@@ -137,66 +147,66 @@ class LicenseController extends Controller
         }
 
         $payload = [
-            'name'                   => $request->name,
-            'bn_name'                => $request->bn_name,
-            'license_category_id'    => $licenseCategoryId,
+            'name' => $request->name,
+            'bn_name' => $request->bn_name,
+            'license_category_id' => $licenseCategoryId,
             'license_subcategory_id' => $licenseSubcategoryId,
-            'license_type_id'        => $request->organization_type_id,
-            'license_no'             => $request->license_no,
-            'issue_date'             => $request->issue_date,
-            'expire_date'            => $request->expire_date,
-            'application_type'       => $request->application_type ?? 'new',
-            'remarks'                => $request->remarks,
-            'rjsc_reg_no'            => $request->rjsc_reg_no,
-            'no_of_owner'            => $request->no_of_owner,
-            'no_of_dir'              => $request->no_of_dir,
-            'capital'                => $request->capital,
-            'establish_year'         => $request->establish_year,
-            'division_id'            => $request->division_id,
-            'district_id'            => $request->district_id,
-            'thana_id'               => $request->thana_id,
-            'post_office_id'         => $request->post_office_id,
-            'union_id'               => $request->union_id,
-            'village_id'             => $request->village_id,
-            'city_id'                => $request->city_id,
-            'pos_id'                 => $request->pos_id,
-            'ward_id'                => $request->ward_id,
-            'road'                   => $request->road,
-            'house'                  => $request->house,
-            'house_bn'               => $request->house_bn,
-            'location_type'          => $request->location_type,
-            'office_division_id'     => $request->office_division_id,
-            'office_district_id'     => $request->office_district_id,
-            'office_thana_id'        => $request->office_thana_id,
-            'office_post_office_id'  => $request->office_post_office_id,
-            'office_union_id'        => $request->office_union_id,
-            'office_village_id'      => $request->office_village_id,
-            'office_city_id'         => $request->office_city_id,
-            'office_pos_id'          => $request->office_pos_id,
-            'office_ward_id'         => $request->office_ward_id,
-            'office_road'            => $request->office_road,
-            'office_house'           => $request->office_house,
-            'office_house_bn'        => $request->office_house_bn,
-            'office_location_type'   => $request->office_location_type,
-            'premises_ownership'     => $request->premises_ownership,
-            'document_files'         => $documentFiles,
-            'license_logo'           => $logoName,
+            'license_type_id' => $request->organization_type_id,
+            'license_no' => $request->license_no,
+            'issue_date' => $request->issue_date,
+            'expire_date' => $request->expire_date,
+            'application_type' => $request->application_type ?? 'new',
+            'remarks' => $request->remarks,
+            'rjsc_reg_no' => $request->rjsc_reg_no,
+            'no_of_owner' => $request->no_of_owner,
+            'no_of_dir' => $request->no_of_dir,
+            'capital' => $request->capital,
+            'establish_year' => $request->establish_year,
+            'division_id' => $request->division_id,
+            'district_id' => $request->district_id,
+            'thana_id' => $request->thana_id,
+            'post_office_id' => $request->post_office_id,
+            'union_id' => $request->union_id,
+            'village_id' => $request->village_id,
+            'city_id' => $request->city_id,
+            'pos_id' => $request->pos_id,
+            'ward_id' => $request->ward_id,
+            'road' => $request->road,
+            'house' => $request->house,
+            'house_bn' => $request->house_bn,
+            'location_type' => $request->location_type,
+            'office_division_id' => $request->office_division_id,
+            'office_district_id' => $request->office_district_id,
+            'office_thana_id' => $request->office_thana_id,
+            'office_post_office_id' => $request->office_post_office_id,
+            'office_union_id' => $request->office_union_id,
+            'office_village_id' => $request->office_village_id,
+            'office_city_id' => $request->office_city_id,
+            'office_pos_id' => $request->office_pos_id,
+            'office_ward_id' => $request->office_ward_id,
+            'office_road' => $request->office_road,
+            'office_house' => $request->office_house,
+            'office_house_bn' => $request->office_house_bn,
+            'office_location_type' => $request->office_location_type,
+            'premises_ownership' => $request->premises_ownership,
+            'document_files' => $documentFiles,
+            'license_logo' => $logoName,
         ];
 
         if ($request->id) {
             $payload['updated_by'] = Auth::id();
             $license->update($payload);
         } else {
-            $payload['institute_id']   = Auth::user()->institute_id ?? null;
+            $payload['institute_id'] = Auth::user()->institute_id ?? null;
             $payload['application_id'] = $this->generateApplicationId();
-            $payload['created_by']     = Auth::id();
-            $license                   = License::create($payload);
+            $payload['created_by'] = Auth::id();
+            $license = License::create($payload);
         }
 
         return response()->json([
-            'status'       => true,
-            'message'      => 'License saved successfully!',
-            'result'       => $license,
+            'status' => true,
+            'message' => 'License saved successfully!',
+            'result' => $license,
             'redirect_url' => route('license.index'),
         ], 200);
     }
@@ -218,7 +228,7 @@ class LicenseController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->merge([ 'id' => $id ]);
+        $request->merge(['id' => $id]);
         return $this->store($request);
     }
 
@@ -227,7 +237,7 @@ class LicenseController extends Controller
         License::findOrFail($id)->delete();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => 'License deleted successfully.',
         ], 200);
     }
@@ -248,10 +258,10 @@ class LicenseController extends Controller
 
     private function formData(?License $license = null)
     {
-        $data['types']          = OwnerShipType::where('status', true)->latest()->get();
-        $data['categories']     = LicenseCategory::where('status', true)->latest()->get();
-        $data['wards']          = UnionWard::where('status', true)->get();
-        $data['divisions']      = Division::where('status', true)->get();
+        $data['types'] = OwnerShipType::where('status', true)->latest()->get();
+        $data['categories'] = LicenseCategory::where('status', true)->latest()->get();
+        $data['wards'] = UnionWard::where('status', true)->get();
+        $data['divisions'] = Division::where('status', true)->get();
         $data['post_officeses'] = PostOffice::latest()->get();
 
         $institute = Institute::find(Auth::user()->institute_id ?? null);

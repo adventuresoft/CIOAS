@@ -686,10 +686,16 @@
                         </a>
                     </div>
                 </li>
-                <li>
+                <li class="has-dropdown">
                     <a href="#">
                         <i class="fas fa-gavel"></i> আইন ও বিধিমালা
+                        <i class="fas fa-chevron-down caret-icon"></i>
                     </a>
+                    <div class="gov-dropdown">
+                        <a href="{{ route('inquiry.index') }}">
+                            <i class="fas fa-desktop"></i> জিজ্ঞাসা
+                        </a>
+                    </div>
                 </li>
                 <li>
                     <a href="#">

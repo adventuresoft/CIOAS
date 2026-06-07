@@ -62,7 +62,7 @@ class LicenseTypeController extends Controller
             $query->en_name = $request->en_name;
             $query->bn_name = $request->bn_name;
             $query->slug = Str::slug($request->en_name, '-');
-            $query->status = $request->has('status') ? (bool)$request->status : true;
+            $query->status = $request->has('status') ? (bool) $request->status : true;
             $query->created_by = Auth::id();
 
             if ($query->save()) {
@@ -118,8 +118,8 @@ class LicenseTypeController extends Controller
     {
         try {
             $validate = Validator::make($request->all(), [
-                'en_name' => 'required|unique:license_types,en_name,'. $id,
-                'bn_name' => 'required|unique:license_types,bn_name,'. $id,
+                'en_name' => 'required|unique:license_types,en_name,' . $id,
+                'bn_name' => 'required|unique:license_types,bn_name,' . $id,
             ]);
 
             if ($validate->fails()) {
@@ -135,7 +135,7 @@ class LicenseTypeController extends Controller
                 $query->en_name = $request->en_name;
                 $query->bn_name = $request->bn_name;
                 $query->slug = Str::slug($request->en_name, '-');
-                $query->status = $request->has('status') ? (bool)$request->status : true;
+                $query->status = $request->has('status') ? (bool) $request->status : true;
                 $query->updated_by = Auth::id();
 
                 if ($query->save()) {
@@ -170,7 +170,7 @@ class LicenseTypeController extends Controller
     {
         try {
             $query = LicenseType::find($id);
-            if($query) {
+            if ($query) {
                 if ($query->delete()) {
                     $data['status'] = true;
                     $data['message'] = "License Type Deleted successfully";

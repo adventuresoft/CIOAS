@@ -37,7 +37,7 @@ class InstitutionalAdminController extends Controller
     public function index()
     {
         $data['admins'] = User::where('institute_id', Auth::user()->institute_id)
-        ->get();
+            ->get();
         return view('backend.pages.institutional_admin.index', $data);
     }
 
@@ -91,6 +91,7 @@ class InstitutionalAdminController extends Controller
             $user->password = Hash::make($request->password);
             $user->name = $request->name;
             $user->status = $request->status;
+            $user->user_type = 'admin';
             $user->created_by = Auth::id();
             $user->save();
 
@@ -189,7 +190,7 @@ class InstitutionalAdminController extends Controller
         }
 
         try {
-            $user =  User::findOrFail($id);
+            $user = User::findOrFail($id);
             $user->email = $request->email;
             $user->mobile = $request->mobile;
             $user->name = $request->name;

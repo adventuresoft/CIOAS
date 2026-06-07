@@ -17,7 +17,16 @@ class InquiryFormController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * 
      */
+    public function __construct()
+    {
+        $this->middleware('permission:inquiry.read')->only('FormList', 'show');
+        $this->middleware('permission:inquiry.create')->only('create', 'store');
+        $this->middleware('permission:inquiry.update')->only('update', 'edit');
+        $this->middleware('permission:inquiry.delete')->only('destroy');
+    }
+
     public function index()
     {
         return view('frontend.pages.inquiry.index');
@@ -82,12 +91,14 @@ class InquiryFormController extends Controller
             'currentDepartment',
             'currentSection',
             'approver',
+            'receiver',
             'assignments.fromDepartment',
             'assignments.fromSection',
             'assignments.toDepartment',
             'assignments.toSection',
             'assignments.fromUser',
             'assignments.assignedByUser',
+            'assignments.receivedByUser',
         ])->findOrFail($id);
 
         $departments = Department::orderBy('name')->get();
@@ -96,9 +107,9 @@ class InquiryFormController extends Controller
             : collect();
 
         $canManageAllApplications = true; // or based on user role
-        $canAssign = in_array($inquiry->status, ['pending', 'assigned', 'revision']);
+        $canAssign = in_array($inquiry->status, ['pending', 'assigned', 'revision', 'received', 'processing']);
         $canReceive = in_array($inquiry->status, ['assigned', 'pending', 'revision']);
-        $canApprove = in_array($inquiry->status, ['received', 'processing', 'revision']);
+        $canApprove = in_array($inquiry->status, ['assigned', 'received', 'processing', 'revision']);
         $showApproveForm = true;
 
         return view('backend.pages.inquiry.show', compact('inquiry', 'departments', 'sections', 'canManageAllApplications', 'canAssign', 'canReceive', 'canApprove', 'showApproveForm'));
@@ -132,7 +143,11 @@ class InquiryFormController extends Controller
             'status_action' => 'required|string'
         ]);
 
-        $status = $request->status_action === 'reject' ? 'rejected' : 'approved';
+        $status = match ($request->status_action) {
+            'reject' => 'rejected',
+            'revision' => 'revision',
+            default => 'approved',
+        };
 
         $inquiry->update([
             'status' => $status,
@@ -172,9 +187,9 @@ class InquiryFormController extends Controller
         }
 
         DB::transaction(function () use ($inquiry, $request, $user) {
-            $fromDepartmentId = $inquiry->current_department_id;
-            $fromSectionId = $inquiry->current_section_id;
-            $fromUserId = $inquiry->receive_id;
+            $fromDepartmentId = $inquiry->current_department_id ?? optional($user)->department_id ?? 1;
+            $fromSectionId = $inquiry->current_section_id ?? optional($user)->section_id ?? 1;
+            $fromUserId = $inquiry->receive_id ?? optional($user)->id;
 
             $inquiry->current_department_id = $request->department_id;
             $inquiry->current_section_id = $request->section_id;

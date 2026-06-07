@@ -258,9 +258,9 @@ class ApplicationFormController extends Controller
         }
 
         DB::transaction(function () use ($applicationForm, $request, $user) {
-            $fromDepartmentId = $applicationForm->current_department_id;
-            $fromSectionId = $applicationForm->current_section_id;
-            $fromUserId = $applicationForm->receive_id;
+            $fromDepartmentId = $applicationForm->current_department_id ?? optional($user)->department_id ?? 1;
+            $fromSectionId = $applicationForm->current_section_id ?? optional($user)->section_id ?? 1;
+            $fromUserId = $applicationForm->receive_id ?? optional($user)->id;
 
             $applicationForm->current_department_id = $request->department_id;
             $applicationForm->current_section_id = $request->section_id;

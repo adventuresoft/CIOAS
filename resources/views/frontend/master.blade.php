@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <title>UPMS | @yield('title') </title>
+    <title>CIOAS | @yield('title') </title>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{ asset('plugins')}}/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">

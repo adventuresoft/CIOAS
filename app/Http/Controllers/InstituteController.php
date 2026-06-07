@@ -36,11 +36,11 @@ class InstituteController extends Controller
     public function uploadImage($image, $name)
     {
         if ($image && $name) {
-            $image_name      = $name;
-            $ext             = strtolower($image->getClientOriginalExtension());
+            $image_name = $name;
+            $ext = strtolower($image->getClientOriginalExtension());
             $image_full_name = $image_name . "." . $ext;
-            $upload_path     = 'uploads/institute/';
-            $image_url       = $upload_path . $image_full_name;
+            $upload_path = 'uploads/institute/';
+            $image_url = $upload_path . $image_full_name;
 
             try {
                 $image->move($upload_path, $image_full_name);
@@ -111,8 +111,8 @@ class InstituteController extends Controller
     public function create()
     {
         $data['institute_categories'] = InstituteCategory::where('status', true)->get();
-        $data['institute_types']      = InstituteType::where('status', true)->get();
-        $data['divisions']            = Division::where('status', true)->get();
+        $data['institute_types'] = InstituteType::where('status', true)->get();
+        $data['divisions'] = Division::where('status', true)->get();
         return view('backend.pages.institute.create', $data);
     }
 
@@ -126,19 +126,19 @@ class InstituteController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'institute_category' => 'required|exists:institute_categories,id',
-            'activation_time'    => 'required',
-            'division'           => 'required|exists:divisions,id',
-            'district'           => 'required|exists:districts,id',
-            'institute_type'     => 'required|exists:institute_types,id',
-            'union'              => 'nullable',
-            'pourashava'         => 'nullable',
-            'city_corporation'   => 'nullable',
+            'activation_time' => 'required',
+            'division' => 'required|exists:divisions,id',
+            'district' => 'required|exists:districts,id',
+            'institute_type' => 'required|exists:institute_types,id',
+            'union' => 'nullable',
+            'pourashava' => 'nullable',
+            'city_corporation' => 'nullable',
         ]);
 
         if ($validate->fails()) {
-            $data['status']  = false;
+            $data['status'] = false;
             $data['message'] = "Sorry! Invalid Entry.";
-            $data['errors']  = $validate->errors();
+            $data['errors'] = $validate->errors();
             return response(json_encode($data, JSON_PRETTY_PRINT), 400)->header('Content-Type', 'application/json');
         }
 
@@ -151,33 +151,33 @@ class InstituteController extends Controller
             ->first();
 
         if (!$institute) {
-            $institute                           = new Institute();
-            $institute->institute_category_id    = $request->institute_category;
+            $institute = new Institute();
+            $institute->institute_category_id = $request->institute_category;
             $institute->institute_subcategory_id = $request->institute_subcategory_id;
 
-            $institute->institute_type_id   = $request->institute_type;
-            $institute->union_id            = $request->union ?? null;
-            $institute->pourashava_id       = $request->pourashava ?? null;
+            $institute->institute_type_id = $request->institute_type;
+            $institute->union_id = $request->union ?? null;
+            $institute->pourashava_id = $request->pourashava ?? null;
             $institute->city_corporation_id = $request->city_corporation ?? null;
-            $institute->district_id         = $request->district ?? null;
-            $institute->activation_time     = $request->activation_time;
+            $institute->district_id = $request->district ?? null;
+            $institute->activation_time = $request->activation_time;
 
             try {
                 $institute->save();
-                $data['status']       = true;
-                $data['code']         = 200;
-                $data['message']      = "Institute created successfully.";
+                $data['status'] = true;
+                $data['code'] = 200;
+                $data['message'] = "Institute created successfully.";
                 $data['redirect_url'] = route('instituteA.adminCreate', $institute->id);
                 return response()->json($data, 200);
             } catch (\Throwable $th) {
-                $data['status']  = false;
-                $data['code']    = 500;
+                $data['status'] = false;
+                $data['code'] = 500;
                 $data['message'] = "Failed to create institute.";
-                $data['errors']  = $th;
+                $data['errors'] = $th;
                 return response()->json($data, 400);
             }
         } else {
-            $data['status']  = false;
+            $data['status'] = false;
             $data['message'] = "Already available this institute.";
             return response()->json($data, 400);
         }
@@ -203,7 +203,7 @@ class InstituteController extends Controller
      */
     public function edit($id)
     {
-        $data['institute']            = Institute::find($id);
+        $data['institute'] = Institute::find($id);
         $data['institute_categories'] = InstituteCategory::where('status', true)->get();
         return view('backend.pages.institute.edit', $data);
     }
@@ -219,13 +219,13 @@ class InstituteController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'institute_category' => 'required|exists:institute_categories,id',
-            'activation_time'    => 'required',
+            'activation_time' => 'required',
         ]);
 
         if ($validate->fails()) {
-            $data['status']  = false;
+            $data['status'] = false;
             $data['message'] = "Sorry! Invalid Entry.";
-            $data['errors']  = $validate->errors();
+            $data['errors'] = $validate->errors();
             return response(json_encode($data, JSON_PRETTY_PRINT), 400)->header('Content-Type', 'application/json');
         }
 
@@ -233,25 +233,25 @@ class InstituteController extends Controller
         $institute = Institute::find($id);
 
         if ($institute) {
-            $institute->institute_category_id    = $request->institute_category;
+            $institute->institute_category_id = $request->institute_category;
             $institute->institute_subcategory_id = $request->institute_subcategory_id;
-            $institute->activation_time          = $request->activation_time;
+            $institute->activation_time = $request->activation_time;
 
             try {
                 $institute->save();
-                $data['status']       = true;
-                $data['message']      = "Institute Updated Successfully!";
-                $data['institute']    = $institute;
+                $data['status'] = true;
+                $data['message'] = "Institute Updated Successfully!";
+                $data['institute'] = $institute;
                 $data['redirect_url'] = route('instituteA.adminCreate', $institute->id);
                 return response()->json($data, 200);
             } catch (\Throwable $th) {
-                $data['status']  = false;
-                $data['errors']  = $th;
+                $data['status'] = false;
+                $data['errors'] = $th;
                 $data['message'] = "Failed to update institute.";
             }
 
         } else {
-            $data['status']  = false;
+            $data['status'] = false;
             $data['message'] = "Institute not found!";
             return response()->json($data, 404);
         }
@@ -272,14 +272,14 @@ class InstituteController extends Controller
             try {
                 Institute::where('id', $id)->delete();
                 User::where('institute_id', $id)->delete();
-                $data['status']  = true;
-                $data['code']    = 200;
+                $data['status'] = true;
+                $data['code'] = 200;
                 $data['message'] = "Institute Deleted Successfully!";
                 return $data;
             } catch (\Throwable $th) {
-                $data['status']  = false;
-                $data['code']    = 500;
-                $data['errors']  = $th;
+                $data['status'] = false;
+                $data['code'] = 500;
+                $data['errors'] = $th;
                 $data['message'] = "Institute Delete Failed!";
                 return $data;
             }
@@ -297,7 +297,7 @@ class InstituteController extends Controller
         $institute = Institute::with('superUser')->find($id);
         $data['institute'] = $institute;
         $data['departments'] = \App\Models\Department\Department::all();
-        
+
         $superUser = $institute->superUser ?? null;
         $data['sections'] = ($superUser && $superUser->department_id)
             ? \App\Models\Department\Section::where('department_id', $superUser->department_id)->get()
@@ -309,18 +309,18 @@ class InstituteController extends Controller
     public function adminStore(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'name'          => 'required|max:190',
-            'email'         => 'required|max:190|email',
-            'mobile'        => 'nullable|max:190',
-            'password'      => 'required|min:6',
+            'name' => 'required|max:190',
+            'email' => 'required|max:190|email',
+            'mobile' => 'nullable|max:190',
+            'password' => 'required|min:6',
             'department_id' => 'nullable|integer',
-            'section_id'    => 'nullable|integer',
+            'section_id' => 'nullable|integer',
         ]);
 
         if ($validate->fails()) {
-            $data['status']  = false;
+            $data['status'] = false;
             $data['message'] = "Sorry! Invalid Entry.";
-            $data['errors']  = $validate->errors();
+            $data['errors'] = $validate->errors();
             return response(json_encode($data, JSON_PRETTY_PRINT), 400)->header('Content-Type', 'application/json');
         }
         $user = User::find($request->user_id);
@@ -329,14 +329,16 @@ class InstituteController extends Controller
             $user = new User();
         }
 
-        $user->institute_id  = $request->institute_id;
+        $user->institute_id = $request->institute_id;
         $user->department_id = $request->department_id;
-        $user->section_id    = $request->section_id;
-        $user->role_id      = 6;
-        $user->email        = $request->email;
-        $user->status       = true;
-        $user->name         = $request->name;
-        $user->mobile       = $request->mobile;
+        $user->section_id = $request->section_id;
+        $user->role_id = 6;
+        $user->email = $request->email;
+        $user->status = true;
+        $user->name = $request->name;
+        $user->mobile = $request->mobile;
+        $user->user_type = 'admin';
+
         if ($request->password) {
             $user->password = Hash::make($request->password);
         }
@@ -373,14 +375,14 @@ class InstituteController extends Controller
             // }
 
 
-            $data['status']       = true;
-            $data['message']      = "Successfully Saved Admin Information!";
+            $data['status'] = true;
+            $data['message'] = "Successfully Saved Admin Information!";
             $data['redirect_url'] = route('instituteA.imagesCreate', $request->institute_id);
             return response()->json($data, 200);
         } catch (\Throwable $th) {
-            $data['status']  = false;
+            $data['status'] = false;
             $data['message'] = "Failed to store Admin Information!";
-            $data['errors']  = $th;
+            $data['errors'] = $th;
             return response()->json($data, 500);
         }
 
@@ -395,15 +397,15 @@ class InstituteController extends Controller
     public function imagesStore(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'left_image'  => 'nullable|mimes:jpeg,jpg,png,gif|max:10000',
-            'top_image'   => 'nullable|mimes:jpeg,jpg,png,gif|max:10000',
+            'left_image' => 'nullable|mimes:jpeg,jpg,png,gif|max:10000',
+            'top_image' => 'nullable|mimes:jpeg,jpg,png,gif|max:10000',
             'right_image' => 'nullable|mimes:jpeg,jpg,png,gif|max:10000',
         ]);
 
         if ($validate->fails()) {
-            $data['status']  = false;
+            $data['status'] = false;
             $data['message'] = "Sorry! Invalid Entry.";
-            $data['errors']  = $validate->errors();
+            $data['errors'] = $validate->errors();
             return response(json_encode($data, JSON_PRETTY_PRINT), 400)->header('Content-Type', 'application/json');
         }
 
@@ -436,16 +438,16 @@ class InstituteController extends Controller
                 }
             }
 
-            $instituteInfo  = $this->getInstituteName($institute->institute_type_id, $institute->union_id, $institute->pourashava_id, $institute->city_corporation_id, $institute->district_id);
-            $left_image     = $request->file('left_image');
+            $instituteInfo = $this->getInstituteName($institute->institute_type_id, $institute->union_id, $institute->pourashava_id, $institute->city_corporation_id, $institute->district_id);
+            $left_image = $request->file('left_image');
             $left_image_url = '';
             if ($left_image) {
-                $image_name      = Str::slug($instituteInfo->name, '-') . '-left-' . $instituteInfo->id;
-                $ext             = strtolower($left_image->getClientOriginalExtension());
+                $image_name = Str::slug($instituteInfo->name, '-') . '-left-' . $instituteInfo->id;
+                $ext = strtolower($left_image->getClientOriginalExtension());
                 $image_full_name = $image_name . "." . $ext;
-                $upload_path     = 'uploads/institute/';
-                $image_url       = $upload_path . $image_full_name;
-                $success         = $left_image->move($upload_path, $image_full_name);
+                $upload_path = 'uploads/institute/';
+                $image_url = $upload_path . $image_full_name;
+                $success = $left_image->move($upload_path, $image_full_name);
                 if ($success) {
                     $left_image_url = $image_url;
                 }
@@ -453,15 +455,15 @@ class InstituteController extends Controller
                 $left_image_url = $institute->left_image;
             }
 
-            $top_image     = $request->file('top_image');
+            $top_image = $request->file('top_image');
             $top_image_url = '';
             if ($top_image) {
-                $image_name      = Str::slug($instituteInfo->name, '-') . '-top-' . $instituteInfo->id;
-                $ext             = strtolower($top_image->getClientOriginalExtension());
+                $image_name = Str::slug($instituteInfo->name, '-') . '-top-' . $instituteInfo->id;
+                $ext = strtolower($top_image->getClientOriginalExtension());
                 $image_full_name = $image_name . "." . $ext;
-                $upload_path     = 'uploads/institute/';
-                $image_url       = $upload_path . $image_full_name;
-                $success         = $top_image->move($upload_path, $image_full_name);
+                $upload_path = 'uploads/institute/';
+                $image_url = $upload_path . $image_full_name;
+                $success = $top_image->move($upload_path, $image_full_name);
                 if ($success) {
                     $top_image_url = $image_url;
                 }
@@ -469,15 +471,15 @@ class InstituteController extends Controller
                 $top_image_url = $institute->top_image;
             }
 
-            $right_image     = $request->file('right_image');
+            $right_image = $request->file('right_image');
             $right_image_url = '';
             if ($right_image) {
-                $image_name      = Str::slug($instituteInfo->name, '-') . '-right-' . $instituteInfo->id;
-                $ext             = strtolower($right_image->getClientOriginalExtension());
+                $image_name = Str::slug($instituteInfo->name, '-') . '-right-' . $instituteInfo->id;
+                $ext = strtolower($right_image->getClientOriginalExtension());
                 $image_full_name = $image_name . "." . $ext;
-                $upload_path     = 'uploads/institute/';
-                $image_url       = $upload_path . $image_full_name;
-                $success         = $right_image->move($upload_path, $image_full_name);
+                $upload_path = 'uploads/institute/';
+                $image_url = $upload_path . $image_full_name;
+                $success = $right_image->move($upload_path, $image_full_name);
                 if ($success) {
                     $right_image_url = $image_url;
                 }
@@ -487,25 +489,25 @@ class InstituteController extends Controller
 
 
             try {
-                $institute->left_image  = $left_image_url;
-                $institute->top_image   = $top_image_url;
+                $institute->left_image = $left_image_url;
+                $institute->top_image = $top_image_url;
                 $institute->right_image = $right_image_url;
                 $institute->save();
 
-                $data['status']  = true;
+                $data['status'] = true;
                 $data['message'] = "Updated Institute Images";
                 return response()->json($data, 200);
 
             } catch (\Throwable $th) {
-                $data['status']  = false;
-                $data['errors']  = $th;
+                $data['status'] = false;
+                $data['errors'] = $th;
                 $data['message'] = "Failed to update data";
                 return response()->json($data, 200);
             }
 
         } else {
-            $data['status']  = false;
-            $data['code']    = 404;
+            $data['status'] = false;
+            $data['code'] = 404;
             $data['message'] = "Noting found to update";
             return response()->json($data, 200);
         }

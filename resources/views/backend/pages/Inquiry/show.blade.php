@@ -418,8 +418,322 @@
             color: #334155;
         }
 
+        .query-report-paper {
+            padding: 0;
+            overflow: hidden;
+            border: 1px solid #dbe5ef;
+            border-radius: 12px;
+            background:
+                linear-gradient(180deg, rgba(248, 250, 252, 0.92) 0%, #ffffff 180px),
+                #ffffff;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+        }
+
+        .query-report-inner {
+            padding: 32px 38px 36px;
+        }
+
+        .query-report-paper .govt-strip {
+            height: 6px;
+            background: linear-gradient(90deg, #0f8b55 0%, #0f8b55 68%, #24a8c5 68%, #24a8c5 84%, #ef4444 84%, #ef4444 100%);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .query-report-paper .govt-header {
+            padding: 22px 24px;
+            margin-bottom: 22px;
+            border: 1px solid #dbeafe;
+            border-bottom: 1px solid #dbeafe;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+        }
+
+        .query-report-paper .govt-logo-container img {
+            max-height: 72px;
+            padding: 8px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+        }
+
+        .query-report-paper .govt-maintext {
+            color: #065f46;
+            letter-spacing: 0;
+        }
+
+        .query-report-paper .govt-address {
+            color: #526070;
+            line-height: 1.6;
+        }
+
+        .query-report-paper .govt-divider {
+            display: none;
+        }
+
+        .query-report-title {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: fit-content;
+            max-width: 100%;
+            margin: 0 auto 28px;
+            padding: 9px 22px;
+            border: 1px solid #d1e4f6;
+            border-radius: 999px;
+            color: #0f3557;
+            background: #eef7ff;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0;
+            box-shadow: 0 8px 18px rgba(14, 116, 144, 0.09);
+        }
+
+        .report-summary-strip {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .report-summary-item {
+            min-height: 68px;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: #ffffff;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.045);
+        }
+
+        .report-summary-label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 5px;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .report-summary-value {
+            color: #0f172a;
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.35;
+            word-break: break-word;
+        }
+
+        .report-section-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            min-height: 42px;
+            border: 0;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 800;
+            line-height: 1.3;
+            padding: 11px 16px;
+            margin: 0 0 18px;
+            box-shadow: 0 10px 22px rgba(15, 23, 42, 0.1);
+        }
+
+        .report-section-bar i {
+            width: 26px;
+            height: 26px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #0f172a;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 12px;
+            flex: 0 0 26px;
+        }
+
+        .report-section-bar.recipient {
+            background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+        }
+
+        .report-section-bar.service {
+            background: linear-gradient(135deg, #334155 0%, #2563eb 100%);
+        }
+
+        .section-header-box {
+            background-color: #ffffff;
+            color: #000000;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 5px 12px;
+            border: 1px solid #000000;
+            width: 300px;
+            max-width: 100%;
+            margin-bottom: 15px;
+            margin-top: 25px;
+        }
+
+        .report-info-table {
+            width: 100%;
+            margin: 0 0 24px;
+            border-collapse: collapse;
+            font-family: 'Inter', 'Noto Sans Bengali', "Segoe UI", sans-serif;
+            font-size: 15.5px;
+            color: #000000;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+        }
+
+        .report-info-table tr {
+            border: none;
+        }
+
+        .report-info-table th,
+        .report-info-table td {
+            padding: 4px 8px;
+            vertical-align: top;
+            line-height: 1.6;
+            border: none;
+            box-shadow: none;
+            background: transparent;
+        }
+
+        .report-info-table th {
+            width: 25%;
+            text-align: left;
+            font-weight: 400;
+            color: #000000;
+            white-space: nowrap;
+        }
+
+        .report-info-table td.colon {
+            width: 2%;
+            text-align: center;
+        }
+
+        .report-info-table td {
+            text-align: left;
+            font-weight: 400;
+            color: #000000;
+            word-break: break-word;
+        }
+
+        .report-info-table .details-text {
+            font-weight: 400;
+            text-align: left;
+            white-space: pre-line;
+            color: #000000;
+            line-height: 1.7;
+        }
+
+        .report-attachment-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .report-attachment-preview {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 104px;
+            min-height: 72px;
+            border-radius: 8px;
+            background: #f8fafc;
+            text-decoration: none !important;
+        }
+
+        .report-attachment-preview img {
+            width: 104px;
+            height: 72px;
+            object-fit: cover;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+        }
+
+        .report-footer-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 24px;
+            padding-top: 18px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        @media screen and (max-width: 768px) {
+            .query-report-inner {
+                padding: 24px 14px 28px;
+            }
+
+            .query-report-paper .govt-header {
+                padding: 18px 14px;
+            }
+
+            .query-report-paper .govt-logo-container {
+                display: none;
+            }
+
+            .query-report-paper .govt-header .col-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .query-report-title {
+                width: 100%;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .report-summary-strip {
+                grid-template-columns: 1fr;
+                gap: 8px;
+                margin-bottom: 20px;
+            }
+
+            .report-section-bar {
+                min-height: 38px;
+                margin-bottom: 12px;
+                padding: 10px 12px;
+            }
+
+            .report-info-table {
+                margin-bottom: 24px;
+            }
+
+            .report-info-table th,
+            .report-info-table td {
+                display: block;
+                width: 100%;
+                text-align: left;
+                padding: 6px 12px;
+                white-space: normal;
+                border: none;
+            }
+
+            .report-info-table td.colon {
+                display: none;
+            }
+
+            .report-footer-actions {
+                justify-content: stretch;
+                flex-direction: column;
+            }
+        }
+
         /* Print media configurations */
         @media print {
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+
             body {
                 background: white !important;
                 color: black !important;
@@ -466,6 +780,15 @@
             .govt-logo-container img {
                 max-height: 90px !important;
             }
+
+            .query-report-inner {
+                padding: 0 !important;
+            }
+
+            .watermark-stamp,
+            .report-footer-actions {
+                display: none !important;
+            }
         }
     </style>
 @endpush
@@ -509,6 +832,13 @@
             'rejected' => 'fa-times-circle',
             default => 'fa-clock',
         };
+        $authUser = Auth::user();
+        $canShowRemarks = !empty($authUser->department_id)
+            && !empty($authUser->section_id)
+            && (int) $authUser->department_id === (int) $inquiry->current_department_id
+            && (int) $authUser->section_id === (int) $inquiry->current_section_id;
+        $canShowAssignForm = $canShowRemarks || ($canAssign && in_array($inquiry->status, ['pending', 'revision'], true));
+        $canShowApprovalPanel = ($showApproveForm ?? false) && $canShowRemarks && $canApprove;
     @endphp
 
     <section class="content application-view-container">
@@ -522,7 +852,8 @@
                         <h6 class="font-weight-bold text-warning-deep mb-1" style="color: #b45309;"><i class="fa fa-edit"></i>
                             সংশোধন নির্দেশনা (Revision Instruction)</h6>
                         <p class="mb-0 text-dark" style="white-space: pre-line; font-size:13.5px;">
-                            {{ $inquiry->revision_note }}</p>
+                            {{ $inquiry->revision_note }}
+                        </p>
                     </div>
                 </div>
             @endif
@@ -530,207 +861,152 @@
             <div class="row">
                 <!-- ================= Left Column: The Official Letter Sheet ================= -->
                 <div class="col-lg-8 col-md-12 print-document-area">
-                    <div class="document-paper">
+                    <div class="document-paper query-report-paper">
                         <div class="govt-strip"></div>
+                        <div class="query-report-inner">
 
-                        <!-- Rubber stamp watermark -->
-                        <div class="watermark-stamp {{ $statusClass }}">
-                            {{ $statusClass }}
-                        </div>
-
-                        <!-- Header Area -->
-                        <div class="govt-header text-center position-relative">
-                            <div class="row align-items-center">
-                                <div class="col-3 text-left govt-logo-container">
-                                    <img src="{{ asset('images/govt-bd-logo.png') }}" alt="Government Seal"
-                                        onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg'; this.onerror=null;"
-                                        style="height: 75px; width: auto; filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.08));">
-                                </div>
-                                <div class="col-6 text-center">
-                                    <h5 class="govt-subtext mb-1">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার</h5>
-                                    <h3 class="govt-maintext mb-1">
-                                        {{ Auth::user()->institute->union->bn_name ?? 'ইউনিয়ন পরিষদ কার্যালয়' }}
-                                    </h3>
-                                    <p class="govt-address mb-0">
-                                        উপজেলা: {{ Auth::user()->institute->union->thana->bn_name ?? 'সদর' }}, জেলা:
-                                        {{ Auth::user()->institute->union->thana->district->bn_name ?? 'ঢাকা' }}, বাংলাদেশ।
-                                    </p>
-                                </div>
-                                <div class="col-3 text-right govt-logo-container">
-                                    <img src="{{ asset('images/dhaka.png') }}" alt="Local Logo"
-                                        onerror="this.style.display='none';" style="height: 75px; width: auto;">
-                                </div>
-                            </div>
-                            <div class="govt-divider"
-                                style="height: 3px; background: linear-gradient(90deg, #006a4e 0%, #006a4e 80%, #f42a41 80%, #f42a41 100%); margin-top: 15px;">
-                            </div>
-                        </div>
-
-                        <!-- Memorandum and Date Grid -->
-                        <div class="row memo-info align-items-center">
-                            <div class="col-6">
-                                <strong>স্মারক নম্বর:</strong> <span class="mono-num"
-                                    style="color: #006a4e; font-size:14.5px;">{{ $inquiry->id ?? '-' }}</span>
-                            </div>
-                            <div class="col-6 text-right">
-                                <strong>তারিখ:</strong> <span
-                                    class="mono-num">{{ $inquiry->date ? date('d/m/Y', strtotime($inquiry->date)) : '-' }}
-                                    খ্রিঃ</span>
-                            </div>
-                        </div>
-
-                        <!-- Recipient Section -->
-                        <div class="letter-salutation">
-                            বরাবর,<br>
-                            <span
-                                class="font-weight-bold text-dark">{{ $inquiry->recipient ?? 'দায়িত্বপ্রাপ্ত কর্মকর্তা' }}</span>
-                        </div>
-
-                        <!-- Subject Section -->
-                        <div class="letter-subject">
-                            বিষয়: <span style="text-decoration: underline;">{{ $inquiry->subject ?? '-' }}</span>
-                        </div>
-
-                        <!-- Letter Opener -->
-                        <div class="letter-salutation">
-                            মহোদয়,<br>
-                            সবিনয় নিবেদন এই যে, {{ $inquiry->details ?: '-' }}
-                        </div>
-
-                        <!-- Letter Body Message -->
-                        <div class="letter-body">
-                            <!-- {{ $inquiry->details ?: '-' }} -->
-                        </div>
-
-                        <!-- Applicant Identity & Form Meta Table -->
-                        <div class="row mt-5 pt-4" style="border-top: 1px solid #f1f5f9;">
-                            <div class="col-md-6 mb-4">
-                                <h6 style="color:#006a4e; font-weight:700; font-size:14.5px; margin-bottom:12px;"><i
-                                        class="fa fa-user-circle"></i> আবেদনকারীর বিবরণ:</h6>
-                                <table class="table table-sm table-borderless"
-                                    style="font-size: 13.5px; line-height: 1.6; margin-bottom: 0;">
-                                    <tr>
-                                        <td style="width: 100px; color:#64748b; padding: 2px 0;">প্রেরক (Sender):</td>
-                                        <td style="font-weight:700; color: #1e293b; padding: 2px 0;">
-                                            {{ $inquiry->applicant_name ?? '-' }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="color:#64748b; padding: 2px 0;">মোবাইল নম্বর:</td>
-                                        <td style="font-weight:700; color: #1e293b; padding: 2px 0;">
-                                            {{ $inquiry->mobile_number ?? '-' }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="color:#64748b; padding: 2px 0;">এনআইডি নম্বর:</td>
-                                        <td style="font-weight:700; color: #1e293b; padding: 2px 0;">
-                                            {{ $inquiry->nid_number ?? '-' }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="color:#64748b; padding: 2px 0;">ঠিকানা:</td>
-                                        <td style="font-weight:700; color: #1e293b; padding: 2px 0; white-space: pre-line;">
-                                            {{ $inquiry->address ?: '-' }}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <h6 style="color:#006a4e; font-weight:700; font-size:14.5px; margin-bottom:12px;"><i
-                                        class="fa fa-info-circle"></i> আবেদনের দাপ্তরিক বিবরণ:</h6>
-                                <table class="table table-sm table-borderless"
-                                    style="font-size: 13.5px; line-height: 1.6; margin-bottom: 0;">
-                                    <tr>
-                                        <td style="width: 120px; color:#64748b; padding: 2px 0;">আবেদনের ধরণ:</td>
-                                        <td style="font-weight:700; color: #1e293b; padding: 2px 0;">
-                                            জিজ্ঞাসা (Inquiry)</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="color:#64748b; padding: 2px 0;">দাখিলকারী (Inward):</td>
-                                        <td style="font-weight:700; color: #1e293b; padding: 2px 0;">
-                                            {{ $inquiry->receiver->name ?? '-' }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="color:#64748b; padding: 2px 0;">দাখিলের সময়:</td>
-                                        <td style="font-weight:700; color: #1e293b; padding: 2px 0;">
-                                            {{ $inquiry->created_at ? $inquiry->created_at->format('d M, Y h:i A') : '-' }}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- Attachment Preview -->
-                        @if ($inquiry->proof_file)
-                            <div class="mt-4 pt-3 no-print" style="border-top: 1px solid #f1f5f9;">
-                                <h6 style="color:#006a4e; font-weight:700; font-size:14.5px; margin-bottom:12px;"><i
-                                        class="fa fa-paperclip"></i> আবেদনপত্রের সংযুক্তি (Attachment):</h6>
-                                <a href="{{ asset($inquiry->proof_file) }}" target="_blank" class="attachment-badge">
-                                    <i class="fa fa-file-pdf text-danger" style="font-size: 18px;"></i>
-                                    <span>সংযুক্ত ফাইলটি দেখুন (View Attachment)</span>
-                                    <i class="fa fa-external-link-alt"
-                                        style="font-size:10px; margin-left:5px; opacity:0.6;"></i>
-                                </a>
-                            </div>
-                        @endif
-
-                        <!-- Signatures & Approval Blocks Section -->
-                        <div class="row signature-row mt-5">
-                            <div class="col-md-6 mb-4">
-                                <div class="sig-block">
-                                    <span class="sig-stamp-placeholder warn"><i class="fa fa-check-circle"></i> প্রথম
-                                        অনুমোদন</span>
-                                    <div style="height: 45px; display: flex; align-items: center; justify-content: center;">
-                                        @if($inquiry->initialApprover || $inquiry->approver)
-                                            <div
-                                                style="font-family:'Courier Prime', monospace; color: #16a34a; font-weight: 700; font-size:15px; border: 2px solid #16a34a; padding: 2px 8px; border-radius: 4px; transform: rotate(-3deg);">
-                                                ✓ INITIAL OK
-                                            </div>
-                                        @else
-                                            <span style="color:#cbd5e1; font-size: 13px; font-style: italic;">অপেক্ষমান
-                                                (Pending)</span>
-                                        @endif
+                            <!-- Header Area -->
+                            <div class="govt-header text-center position-relative">
+                                <div class="row align-items-center mb-4">
+                                    <div class="col-3 text-left govt-logo-container">
+                                        <img src="{{ asset('images/govt-bd-logo.png') }}" alt="Government Seal"
+                                            onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg'; this.onerror=null;"
+                                            style="height: 75px; width: auto; filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.08));">
                                     </div>
-                                    <div class="sig-name">
-                                        {{ $inquiry->initialApprover->name ?? ($inquiry->approver->name ?? '-') }}
+                                    <div class="col-6 text-center">
+                                        <h5 class="govt-subtext mb-1" style="font-weight: bold; color: #000;">গণপ্রজাতন্ত্রী
+                                            বাংলাদেশ সরকার</h5>
+                                        <h3 class="govt-maintext mb-1" style="color: #000; font-size: 18px;">
+                                            জেলা প্রশাসক কার্যালয়,
+                                            {{ Auth::user()->institute->district->bn_name ?? 'ঢাকা' }}
+                                        </h3>
+                                        <p class="govt-address mb-0" style="color: #000; font-size: 15px;">
+                                            {{ Auth::user()->department->bn_name }}<br>
+                                            <span style="color: blue;">(
+                                                www.{{ strtolower(Auth::user()->institute->union->thana->district->en_name ?? 'dhaka') }}.gov.bd
+                                                )</span>
+                                        </p>
                                     </div>
-                                    <div class="sig-title">দায়িত্বপ্রাপ্ত কর্মকর্তা (প্রথম অনুমোদনকারী)</div>
-                                    <div class="sig-date">
-                                        {{ $inquiry->initial_approved_at ? $inquiry->initial_approved_at->format('d M, Y h:i A') : ($inquiry->approved_at ? $inquiry->approved_at->format('d M, Y h:i A') : '-') }}
+                                    <div class="col-3 text-right govt-logo-container">
+                                        <img src="{{ asset('images/dhaka.png') }}" alt="Local Logo"
+                                            onerror="this.style.display='none';" style="height: 75px; width: auto;">
                                     </div>
-                                    @if($inquiry->initial_approval_note ?? $inquiry->approval_note)
+                                </div>
+                            </div>
+
+                            <div class="section-header-box">সেবা গ্রহীতার তথ্য</div>
+                            <table class="report-info-table">
+                                <tr>
+                                    <th>আবেদন আইডি নং</th>
+                                    <td class="colon">:</td>
+                                    <td>{{ str_pad($inquiry->id ?? '', 4, '0', STR_PAD_LEFT) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>সেবা গ্রহীতার নাম</th>
+                                    <td class="colon">:</td>
+                                    <td>{{ $inquiry->applicant_name ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>মোবাইল নম্বর</th>
+                                    <td class="colon">:</td>
+                                    <td>{{ $inquiry->mobile_number ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>জাতীয় পরিচয়পত্র নং</th>
+                                    <td class="colon">:</td>
+                                    <td>{{ $inquiry->nid_number ?: '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>পিতার নাম</th>
+                                    <td class="colon">:</td>
+                                    <td>{{ $inquiry->father_name ?: '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>ঠিকানা</th>
+                                    <td class="colon">:</td>
+                                    <td>{{ $inquiry->address ?: '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>ই-মেইল</th>
+                                    <td class="colon">:</td>
+                                    <td>{{ $inquiry->email ?: '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>তারিখ</th>
+                                    <td class="colon">:</td>
+                                    <td>{{ $inquiry->created_at ? $inquiry->created_at->format('d-m-Y') : '-' }}</td>
+                                </tr>
+                            </table>
+
+                            <div class="section-header-box">সেবা সংক্রান্ত তথ্য</div>
+                            <table class="report-info-table mb-0">
+                                <tr>
+                                    <th>জিজ্ঞাসা</th>
+                                    <td class="colon">:</td>
+                                    <td>{{ $inquiry->subject ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>বিস্তারিত</th>
+                                    <td class="colon">:</td>
+                                    <td class="details-text">{{ $inquiry->details ?: '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>গৃহীত ব্যবস্থা</th>
+                                    <td class="colon">:</td>
+                                    <td>{{ $inquiry->approval_note ?: '' }}</td>
+                                </tr>
+                            </table>
+
+                            <!-- Attachment Preview (Image Style - Bottom of Document) -->
+                            @if ($inquiry->proof_file)
+                                @php
+                                    $ext = strtolower(pathinfo($inquiry->proof_file, PATHINFO_EXTENSION));
+                                    $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']);
+                                @endphp
+                                <div class="attachment-top-preview text-left mt-2 mb-4 no-print"
+                                    style="padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: #ffffff; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);">
+                                    <h6
+                                        style="color:#0f172a; font-weight:700; font-size:14px; margin-bottom:15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px;">
+                                        <i class="fa fa-paperclip text-info"></i> আবেদনপত্রের সংযুক্তি (Attachment)
+                                    </h6>
+                                    @if($isImage)
                                         <div
-                                            style="font-size: 11.5px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 4px; padding: 6px; margin-top: 8px; text-align: left; color: #b45309; word-break: break-word; line-height: 1.4;">
-                                            <strong>নোট:</strong>
-                                            {{ $inquiry->initial_approval_note ?? $inquiry->approval_note }}
+                                            style="display:inline-block; border: 1px solid #cbd5e1; border-radius: 6px; overflow: hidden; max-width: 320px; width: 100%;">
+                                            <img src="{{ asset($inquiry->proof_file) }}" alt="Attachment"
+                                                style="width: 100%; max-height: 240px; object-fit: contain; display: block; background: #f8fafc; cursor: pointer;"
+                                                onclick="window.open('{{ asset($inquiry->proof_file) }}', '_blank')">
+                                        </div>
+                                        <div class="mt-3">
+                                            <a href="{{ asset($inquiry->proof_file) }}" target="_blank"
+                                                class="btn btn-sm btn-outline-info font-weight-bold">
+                                                <i class="fa fa-expand-alt"></i> বড় করে দেখুন
+                                            </a>
+                                            <a href="{{ asset($inquiry->proof_file) }}" download
+                                                class="btn btn-sm btn-info font-weight-bold ml-2">
+                                                <i class="fa fa-download"></i> ডাউনলোড
+                                            </a>
+                                        </div>
+                                    @else
+                                        <div
+                                            style="display:inline-flex; flex-direction:row; align-items:center; gap: 15px; border: 1px solid #cbd5e1; border-radius: 6px; padding: 15px 25px; background: #f8fafc;">
+                                            <i class="fa fa-file-pdf text-danger" style="font-size: 32px;"></i>
+                                            <div>
+                                                <div class="font-weight-bold text-dark mb-1" style="font-size: 13px;">সংযুক্ত ফাইলটি
+                                                    দেখুন</div>
+                                                <a href="{{ asset($inquiry->proof_file) }}" target="_blank"
+                                                    class="btn btn-xs btn-outline-info">
+                                                    <i class="fa fa-external-link-alt"></i> View
+                                                </a>
+                                                <a href="{{ asset($inquiry->proof_file) }}" download
+                                                    class="btn btn-xs btn-info ml-1">
+                                                    <i class="fa fa-download"></i> Download
+                                                </a>
+                                            </div>
                                         </div>
                                     @endif
                                 </div>
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <div class="sig-block">
-                                    <span class="sig-stamp-placeholder"><i class="fa fa-check-double"></i> চূড়ান্ত
-                                        অনুমোদন</span>
-                                    <div style="height: 45px; display: flex; align-items: center; justify-content: center;">
-                                        @if($inquiry->finalApprover)
-                                            <div
-                                                style="font-family:'Courier Prime', monospace; color: #16a34a; font-weight: 700; font-size:15px; border: 2px double #16a34a; padding: 2px 8px; border-radius: 4px; transform: rotate(-3deg);">
-                                                ✓ FINAL APPROVED
-                                            </div>
-                                        @else
-                                            <span style="color:#cbd5e1; font-size: 13px; font-style: italic;">অপেক্ষমান
-                                                (Pending)</span>
-                                        @endif
-                                    </div>
-                                    <div class="sig-name">{{ $inquiry->finalApprover->name ?? '-' }}</div>
-                                    <div class="sig-title">উর্ধ্বতন কর্তৃপক্ষ (চূড়ান্ত অনুমোদনকারী)</div>
-                                    <div class="sig-date">
-                                        {{ $inquiry->final_approved_at ? $inquiry->final_approved_at->format('d M, Y h:i A') : '-' }}
-                                    </div>
-                                    @if($inquiry->final_approval_note)
-                                        <div
-                                            style="font-size: 11.5px; background: #ecfdf5; border: 1px solid #d1fae5; border-radius: 4px; padding: 6px; margin-top: 8px; text-align: left; color: #065f46; word-break: break-word; line-height: 1.4;">
-                                            <strong>নোট:</strong> {{ $inquiry->final_approval_note }}
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
+                            @endif
+
                         </div>
                     </div>
                 </div>
@@ -828,7 +1104,7 @@
                         </div>
                     @else
                         <!-- Original Action Panel Card for Active Stages -->
-                        @if ($canAssign || $canReceive || ($showApproveForm ?? false))
+                        @if ($canShowAssignForm || $canShowApprovalPanel)
                             <div class="control-card">
                                 <div class="control-card-header bg-success text-white"
                                     style="background-color: #006a4e !important;">
@@ -836,21 +1112,8 @@
                                 </div>
                                 <div class="control-card-body">
 
-                                    @if ($canReceive)
-                                        <form id="receiveForm" method="POST" class="mb-3">
-                                            @csrf
-                                            <div class="alert alert-info p-2 mb-2" style="font-size:12.5px; border-radius: 4px;">
-                                                <i class="fa fa-info-circle"></i> আবেদনটি আপনার দপ্তর বা শাখায় হস্তান্তরের জন্য প্রথমে
-                                                <strong>রিসিভ (Receive)</strong> করুন।
-                                            </div>
-                                            <button type="submit" class="btn btn-success w-100 font-weight-bold" id="receiveBtn">
-                                                <i class="fa fa-check"></i> ফাইল গ্রহণ করুন (Receive File)
-                                            </button>
-                                        </form>
-                                    @endif
-
-                                    @if ($canAssign && ($inquiry->status === 'pending' || $inquiry->status === 'revision'))
-                                        <form id="assignForm" method="POST" class="mb-3 border-top pt-3">
+                                    @if ($canShowAssignForm)
+                                        <form id="assignForm" method="POST" class="mb-3">
                                             @csrf
                                             <h6 class="font-weight-bold text-dark mb-2" style="font-size:13.5px;"><i
                                                     class="fa fa-share"></i> নথি প্রেরণ / রি-অ্যাসাইন করুন:</h6>
@@ -884,22 +1147,14 @@
                                                 <small class="text-danger error section_id_error"></small>
                                             </div>
 
-                                            <div class="form-group mb-3">
-                                                <label for="assign_note" style="font-size:12px; font-weight:600; color:#555;">মন্তব্য
-                                                    (Assignment Note)</label>
-                                                <textarea name="note" id="assign_note" rows="2" class="form-control form-control-sm"
-                                                    placeholder="প্রেরণের কারণ বা নির্দেশনা লিখুন (ঐচ্ছিক)"></textarea>
-                                                <small class="text-danger error note_error"></small>
-                                            </div>
-
                                             <button type="submit" class="btn btn-primary btn-sm w-100 font-weight-bold" id="assignBtn">
                                                 <i class="fa fa-paper-plane"></i> প্রেরণ করুন (Save & Assign)
                                             </button>
                                         </form>
                                     @endif
 
-                                    @if ($showApproveForm ?? false)
-                                        <form id="approveForm" method="POST" class="border-top pt-3">
+                                    @if ($canShowApprovalPanel)
+                                        <form id="approveForm" method="POST" class="{{ $canShowAssignForm ? 'border-top pt-3' : '' }}">
                                             @csrf
                                             @method('PUT')
                                             <input type="hidden" name="status_action" id="status_action" value="approve">
@@ -908,11 +1163,13 @@
 
                                             <div class="form-group mb-3">
                                                 <label for="approval_note"
-                                                    style="font-size:12px; font-weight:600; color:#555;">সিদ্ধান্ত নোট (Note/Remarks)
+                                                    style="font-size:12px; font-weight:600; color:#555;">সিদ্ধান্ত
+                                                    নোট (Note/Remarks)
                                                     <span class="text-danger">*</span></label>
                                                 <textarea name="approval_note" id="approval_note" rows="3"
                                                     class="form-control form-control-sm"
-                                                    placeholder="মতামত বা সিদ্ধান্ত বিবরণী এখানে লিখুন" {{ $canApprove ? 'required' : 'disabled' }}>{{ $inquiry->approval_note }}</textarea>
+                                                    placeholder="মতামত বা সিদ্ধান্ত বিবরণী এখানে লিখুন"
+                                                    required>{{ $inquiry->approval_note }}</textarea>
                                                 <small class="text-danger error approval_note_error"></small>
 
                                                 @if ($inquiry->status === 'processing' && !$canApprove)
@@ -1121,32 +1378,6 @@
 
                         const response = xhr.responseJSON || {};
                         toastr.error(response.message || 'Assign failed');
-                    }
-                });
-            });
-
-            $('#receiveForm').on('submit', function (e) {
-                e.preventDefault();
-                const submitBtn = $('#receiveBtn');
-
-                $.ajax({
-                    type: 'POST',
-                    url: "{{ route('inquiry.receive', $inquiry->id) }}",
-                    data: $(this).serialize(),
-                    beforeSend: function () {
-                        submitBtn.prop('disabled', true);
-                    },
-                    success: function (response) {
-                        submitBtn.prop('disabled', false);
-                        toastr.success(response.message);
-                        setTimeout(function () {
-                            location.reload();
-                        }, 900);
-                    },
-                    error: function (xhr) {
-                        submitBtn.prop('disabled', false);
-                        const response = xhr.responseJSON || {};
-                        toastr.error(response.message || 'Receive failed');
                     }
                 });
             });

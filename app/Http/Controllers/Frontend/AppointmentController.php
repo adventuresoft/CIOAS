@@ -14,6 +14,7 @@ class AppointmentController extends Controller
 
     public function __construct(AppointmentService $appointmentService)
     {
+
         $this->appointmentService = $appointmentService;
     }
 

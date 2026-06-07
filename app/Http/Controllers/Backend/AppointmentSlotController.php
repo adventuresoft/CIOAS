@@ -9,6 +9,15 @@ use Illuminate\Support\Facades\Auth;
 
 class AppointmentSlotController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:appointment.read')->only('index', 'show');
+        $this->middleware('permission:appointment.create')->only('create', 'store');
+        $this->middleware('permission:appointment.update')->only('update', 'edit');
+        $this->middleware('permission:appointment.delete')->only('destroy');
+    }
+
     public function index()
     {
         return view('backend.pages.appointment.slots');
@@ -79,7 +88,7 @@ class AppointmentSlotController extends Controller
     public function destroy($id)
     {
         $slot = AppointmentSlot::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
-        
+
         // Cannot delete if already booked
         if ($slot->bookings()->whereIn('status', ['Pending', 'Approved', 'Completed'])->exists()) {
             return response()->json(['status' => false, 'message' => 'Cannot delete a slot with active bookings.'], 400);

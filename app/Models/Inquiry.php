@@ -23,7 +23,14 @@ class Inquiry extends Model
         'comment',
         'current_department_id',
         'current_section_id',
+        'receive_id',
         'approved_by',
+        'approved_at',
+        'approval_note',
+    ];
+
+    protected $casts = [
+        'approved_at' => 'datetime',
     ];
 
     public function currentDepartment()
@@ -39,6 +46,11 @@ class Inquiry extends Model
     public function approver()
     {
         return $this->belongsTo(\App\Models\User::class, 'approved_by');
+    }
+
+    public function receiver()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'receive_id');
     }
 
     public function assignments()
