@@ -227,6 +227,104 @@
                         </div>
 
                         <hr class="my-4">
+                        <form action="{{ route('user.update', $user->id) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            {{-- ===== Security Identity Section ===== --}}
+                            <div class="row mb-4">
+                                {{-- Primary Security Role --}}
+                                <div class="col-md-6">
+                                    <h6 class="font-weight-bold text-dark mb-2" style="font-size:0.95rem;">
+                                        <i class="fas fa-shield-alt text-secondary mr-1"></i> Security Identity
+                                    </h6>
+                                    <div class="detail-label">
+                                        <label class="form-label-premium" for="role_id">Primary Security Role</label>
+                                        <select name="role_id" id="role_id"
+                                            class="form-control form-control-premium @error('role_id') is-invalid @enderror"
+                                            required>
+                                            <option value="" disabled>Select a Role</option>
+                                            @foreach($roles as $role)
+                                                <option value="{{ $role->id }}" {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
+                                                    {{ $role->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <small class="text-muted mt-2 d-block">
+                                            Users inherit all capabilities assigned to their chosen role. Direct
+                                            overrides are
+                                            disabled for simplicity.
+                                        </small>
+                                        @error('role_id')
+                                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror
+                                    </div>
+                                    <div class="detail-value mt-1">
+                                        @if($user->roles->count() > 0)
+                                            @foreach($user->roles as $role)
+                                                <span class="badge badge-primary px-3 py-2 font-weight-bold"
+                                                    style="border-radius: 8px; font-size: 0.88rem;">
+                                                    <i class="fas fa-user-shield mr-1"></i>{{ $role->name }}
+                                                </span>
+                                            @endforeach
+                                        @else
+                                            <span class="badge badge-secondary px-3 py-2 font-weight-bold"
+                                                style="border-radius: 8px; font-size: 0.88rem;">
+                                                <i class="fas fa-ban mr-1"></i> No Role Assigned
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                {{-- Account Status --}}
+                                <div class="col-md-6">
+                                    <h6 class="font-weight-bold text-dark mb-2" style="font-size:0.95rem;">
+                                        <i class="fas fa-toggle-on text-secondary mr-1"></i> Account Status
+                                    </h6>
+                                    <div class="detail-label">
+                                        <label class="form-label-premium">Account Status</label>
+
+                                        <div class="form-check pl-0">
+                                            <label class="status-radio-label text-success">
+                                                <input type="radio" name="status" value="1" {{ old('status', $user->status) == 1 ? 'checked' : '' }}
+                                                    style="width: 18px; height: 18px; cursor: pointer;">
+                                                Verified / Active
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check pl-0">
+                                            <label class="status-radio-label text-warning">
+                                                <input type="radio" name="status" value="0" {{ old('status', $user->status) == 0 ? 'checked' : '' }}
+                                                    style="width: 18px; height: 18px; cursor: pointer;">
+                                                Pending Review
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="detail-value mt-1">
+                                        @if($user->status == 1)
+                                            <span class="badge badge-success px-3 py-2 font-weight-bold"
+                                                style="border-radius: 8px; font-size: 0.88rem;">
+                                                <i class="fas fa-check-circle mr-1"></i> Verified / Active
+                                            </span>
+                                        @else
+                                            <span class="badge badge-warning px-3 py-2 font-weight-bold"
+                                                style="border-radius: 8px; font-size: 0.88rem; color: #92400e;">
+                                                <i class="fas fa-clock mr-1"></i> Pending Review
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="row mt-5  d-flex justify-content-start">
+                                    <button type="submit" class="btn btn-primary btn-premium px-5 py-2 font-weight-bold"
+                                        style="border-radius: 8px;"><i class="fas fa-check-circle mr-1"></i> Update
+                                        Employee</button>
+                                    <a href="{{ route('user.index') }}"
+                                        class="btn btn-light btn-premium ml-3 px-4 mt-3 py-2 font-weight-bold"
+                                        style="border-radius: 8px;"><i class="fas fa-times-circle mr-1"></i> Cancel</a>
+                                </div>
+                            </div>
+                        </form>
+                        <hr class="my-4">
 
                         <h5 class="font-weight-bold text-dark mb-3">
                             <i class="fas fa-shield-alt text-primary mr-1"></i> Active System Permissions

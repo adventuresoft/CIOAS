@@ -214,16 +214,6 @@
 
         <!-- Active Employee Registry -->
         <div class="card premium-card">
-            <div class="card-header d-flex justify-content-between align-items-center flex-wrap" style="gap: 16px;">
-                <h3 class="card-title mb-0">
-                    <i class="fas fa-users-cog text-primary"></i>
-                    Active Employee Registry
-                </h3>
-                <a href="{{ route('user.create') }}" class="btn btn-primary px-4 py-2 font-weight-bold"
-                    style="border-radius: 8px; font-size: 0.95rem;">
-                    <i class="fas fa-plus-circle mr-1"></i> Register New Employee
-                </a>
-            </div>
 
             <div class="card-body">
                 <!-- Search Filter Bar -->

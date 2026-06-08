@@ -46,7 +46,6 @@ class User extends Authenticatable
         'mobile',
         'password',
         'status',
-        'signature'
     ];
 
     /**

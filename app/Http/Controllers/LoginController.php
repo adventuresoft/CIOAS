@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
-   
+
     public function register()
     {
         $data['divisions'] = Division::where('status', true)->get();
@@ -40,27 +40,27 @@ class LoginController extends Controller
     public function registerStore(Request $request)
     {
         $project_type = $request->institute_type;
-        $union_id = $request->union ? $request->union : null ;
-        $pourashava_id = $request->pourashava ?  $request->pourashava : null ;
+        $union_id = $request->union ? $request->union : null;
+        $pourashava_id = $request->pourashava ? $request->pourashava : null;
         $city_corporation_id = $request->city_corporation ? $request->city_corporation : null;
 
         $email = $request->email;
         $password = $request->password;
 
         $user = User::where('email', $email)->first();
-        if($user) {
+        if ($user) {
             $data['status'] = false;
             $data['message'] = "This email already registered!";
             return response()->json($data, 404);
         }
 
-      $result =   DB::transaction(function() use($project_type, $union_id, $pourashava_id, $city_corporation_id, $email,  $password   ) {
+        $result = DB::transaction(function () use ($project_type, $union_id, $pourashava_id, $city_corporation_id, $email, $password) {
             try {
-                $project = Institute::where('institute_type_id', $project_type )
-                ->where('union_id', $union_id)
-                ->where('pourashava_id', $pourashava_id)
-                ->where('city_corporation_id', $city_corporation_id)
-                ->first();
+                $project = Institute::where('institute_type_id', $project_type)
+                    ->where('union_id', $union_id)
+                    ->where('pourashava_id', $pourashava_id)
+                    ->where('city_corporation_id', $city_corporation_id)
+                    ->first();
 
                 if (!$project) {
                     $project = new Project();
@@ -96,7 +96,7 @@ class LoginController extends Controller
 
         return response()->json($result, $result['code']);
 
-    
+
 
     }
 
@@ -162,10 +162,10 @@ class LoginController extends Controller
     //             $data['message'] = "User is not authenticate!";
     //             return response()->json($data, 404);
     //         }
-      
+
     // }
 
-        public function login()
+    public function login()
     {
         return view('auth.login');
     }
@@ -191,7 +191,7 @@ class LoginController extends Controller
 
     public function profile()
     {
-        if(Auth::check()){
+        if (Auth::check()) {
             $data['districts'] = District::get();
             $data['countries'] = Country::get();
             $data['religions'] = Religion::get();
@@ -204,7 +204,7 @@ class LoginController extends Controller
             $data['houses'] = $data['permanent_houses'] = House::get();
             $data['user'] = User::with('people', 'familyInfo', 'addressInfo')->find(Auth::id());
             return view('frontend.pages.user.profile', $data);
-        } else{
+        } else {
             return "Unauthenticated";
         }
     }

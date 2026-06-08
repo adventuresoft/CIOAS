@@ -102,8 +102,6 @@ public function saveNewOwnership(Request $request)
         $user->name = $request->name;
         $user->email = $request->email;
         $user->mobile = $request->mobile;
-        $user->birth_certificate = $request->birth_certificate;
-        $user->nid = $request->nid;
         $user->status = 1;
         $user->created_by = Auth::id();
         $user->password = Hash::make('12345678');

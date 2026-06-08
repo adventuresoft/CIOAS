@@ -150,10 +150,7 @@ class StaffController extends Controller
             'blood_group' => 'nullable|max:190',
             'mobile' => 'nullable|max:190',
             'email' => 'nullable|max:190',
-            'birth_certificate' => 'nullable|max:190',
-            'nid' => 'nullable|max:190',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-            'signature' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
 
         if ($validate->fails()) {
@@ -172,18 +169,11 @@ class StaffController extends Controller
                 $user->name = $request->name;
                 $user->email = $request->email;
                 $user->mobile = $request->mobile;
-                $user->birth_certificate = $request->birth_certificate;
-                $user->nid = $request->nid;
                 $user->status = $request->status ?? true;
                 $user->created_by = Auth::id();
                 $user->password = Hash::make('12345678');
                 $image = $request->file('image');
-                $signature = $request->file('signature');
                 $user->user_type = 'staff';
-
-                if ($signature) {
-                    $user->signature = $this->uploadFile($signature, 'uploads/signatures/', 'sig_');
-                }
 
                 if ($image) {
                     $user->image = $this->uploadFile($image, 'uploads/users/', 'avatar_');
@@ -382,10 +372,7 @@ class StaffController extends Controller
             'blood_group' => 'nullable|max:190',
             'mobile' => 'required|max:190',
             'email' => 'nullable|max:190|email',
-            'birth_certificate' => 'nullable|max:190',
-            'nid' => 'nullable|max:190',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-            'signature' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
 
         if ($validate->fails()) {
@@ -400,17 +387,9 @@ class StaffController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->mobile = $request->mobile;
-            $user->birth_certificate = $request->birth_certificate;
-            $user->nid = $request->nid;
             $user->status = $request->status ?? true;
             $user->updated_by = Auth::id();
             $user->user_type = 'staff';
-            $signature = $request->file('signature');
-
-            if ($signature) {
-                $this->deleteFile($user->signature);
-                $user->signature = $this->uploadFile($signature, 'uploads/signatures/', 'sig_');
-            }
             $image = $request->file('image');
 
             if ($image) {

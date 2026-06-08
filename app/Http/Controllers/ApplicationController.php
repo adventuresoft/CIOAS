@@ -89,8 +89,6 @@ class ApplicationController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->mobile = $request->mobile;
-            $user->birth_certificate = $request->birth_certificate;
-            $user->nid = $request->nid;
             $user->password = Hash::make(date('dmY', strtotime($request->date_of_birth)));
             $user->created_by = 1;
             $user->status = 1;

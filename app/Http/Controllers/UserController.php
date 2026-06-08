@@ -102,9 +102,13 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = User::with(['roles', 'institute.union', 'institute.pourashava', 'institute.cityCorporation', 'institute.district', 'institute.type'])->findOrFail($id);
-        return view('backend.pages.user.show', compact('user'))
-            ->with(['title' => 'Employee Details', 'page' => 'user']);
+        $user = User::findOrFail($id);
+        $roles = Role::all();
+        $institutes = Institute::with(['union', 'pourashava', 'cityCorporation', 'district', 'type'])->get();
+        $departments = \App\Models\Department\Department::all();
+        $sections = $user->department_id ? \App\Models\Department\Section::where('department_id', $user->department_id)->get() : collect([]);
+        return view('backend.pages.user.show', compact('user', 'roles', 'institutes', 'departments', 'sections'))
+            ->with(['title' => 'Modify Employee', 'page' => 'user']);
     }
 
     public function edit($id)
@@ -120,33 +124,17 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+
         $user = User::findOrFail($id);
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'user_type' => 'required|in:admin,staff',
-            'mobile' => 'required|string',
-            'password' => 'nullable|min:6|confirmed',
-            'institute_id' => 'required',
             'role_id' => 'required',
-            'department_id' => 'nullable|integer',
-            'section_id' => 'nullable|integer',
             'status' => 'required|in:0,1'
         ]);
 
         try {
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->mobile = $request->mobile;
-            if ($request->filled('password')) {
-                $user->password = Hash::make($request->password);
-            }
-            $user->institute_id = $request->institute_id;
+
             $user->role_id = $request->role_id;
-            $user->department_id = $request->department_id;
-            $user->section_id = $request->section_id;
             $user->status = $request->status;
-            $user->user_type = $request->user_type;
             $user->save();
 
             // Sync Spatie role

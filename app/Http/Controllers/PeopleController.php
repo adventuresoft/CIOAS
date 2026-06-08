@@ -152,8 +152,6 @@ class PeopleController extends Controller
             'blood_group'       => 'nullable|max:190',
             'mobile'            => 'nullable|max:190',
             'email'             => 'required|max:190',
-            'birth_certificate' => 'nullable|max:190',
-            'nid'               => 'nullable|max:190',
             'image'             => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
 
@@ -173,8 +171,6 @@ class PeopleController extends Controller
                 $user->name              = $request->name;
                 $user->email             = $request->email;
                 $user->mobile            = $request->mobile;
-                $user->birth_certificate = $request->birth_certificate;
-                $user->nid               = $request->nid;
                 $user->status            = $request->status ?? true;
                 $user->created_by        = Auth::id();
                 $user->password          = Hash::make('12345678');
@@ -380,8 +376,6 @@ class PeopleController extends Controller
             'blood_group'       => 'nullable|max:190',
             'mobile'            => 'nullable|max:190',
             'email'             => 'required|max:190|email',
-            'birth_certificate' => 'nullable|max:190',
-            'nid'               => 'nullable|max:190',
             'image'             => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
 
@@ -397,8 +391,6 @@ class PeopleController extends Controller
             $user->name              = $request->name;
             $user->email             = $request->email;
             $user->mobile            = $request->mobile;
-            $user->birth_certificate = $request->birth_certificate;
-            $user->nid               = $request->nid;
             $user->status            = $request->status ?? true;
             $user->updated_by        = Auth::id();
 
