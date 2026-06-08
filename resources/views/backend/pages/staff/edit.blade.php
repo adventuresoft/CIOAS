@@ -163,20 +163,6 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <div class="col-sm-6">
-                                        <label for="age">User Role</label>
-                                        <select name="user_role" class="form-control" id="user_role" required>
-                                            <option value="">Select User Role</option>
-                                            <option value="staff" {{$user->user_type == 'staff' ? 'selected' : ''}}>Employee
-                                            </option>
-                                            <option value="admin" {{$user->user_type == 'admin' ? 'selected' : ''}}>Admin
-                                            </option>
-                                        </select>
-                                        <small class="error user_type-error text-danger"></small>
-                                    </div>
-                                </div>
-
                                 <!-- Row 6: Photo with Preview -->
                                 <div class="form-group row">
                                     <div class="col-sm-6">

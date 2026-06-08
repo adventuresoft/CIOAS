@@ -37,6 +37,7 @@ class InstitutionalAdminController extends Controller
     public function index()
     {
         $data['admins'] = User::where('institute_id', Auth::user()->institute_id)
+            ->where('user_type', 'admin')
             ->get();
         return view('backend.pages.institutional_admin.index', $data);
     }

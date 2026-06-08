@@ -17,7 +17,7 @@
                         <div class="card-header">
                             <div class="row align-items-center">
                                 <div class="col-md-6">
-                                    <h3 class="card-title" style="font-size:24px; font-weight: semi-bold;">Organization
+                                    <h3 class="card-title" style="font-size:24px; font-weight: semi-bold;">Hotel Restaurant
                                         Information</h3>
                                 </div>
 
@@ -107,14 +107,14 @@
 @endsection
 @push('script')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             let table = $('#hotelRestaurant').DataTable({
                 serverSide: true,
                 ajax: {
                     url: '{{ route('hotel-restaurant.records') }}',
                     type: 'post',
-                    data: function(d) {
+                    data: function (d) {
                         // Add custom search parameters
                         d.csrf_token = $('meta[name="csrf-token"]').attr('content');
                         d.search_hotel_name = $('#search_hotel_name').val();
@@ -125,54 +125,52 @@
 
                 },
                 dom: 'rtip',
-                responsive: true,
-                autoWidth: false,
                 pageLength: 10,
                 lengthChange: false,
                 processing: true,
-                drawCallback: function(settings) {
+                drawCallback: function (settings) {
                     bindDeleteEvents();
                 },
                 order: [
                     [0, 'asc']
                 ],
                 columns: [{
-                        data: 'sl',
-                        name: 'sl',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'application_id',
-                        name: 'application_id'
-                    },
-                    {
-                        data: 'name',
-                        name: 'name'
-                    },
-                    {
-                        data: 'category_name',
-                        name: 'category.en_name'
-                    },
-                    {
-                        data: 'subcategory_name',
-                        name: 'subcategory.en_name'
-                    },
-                    {
-                        data: 'status',
-                        name: 'status',
-                        orderable: false
-                    },
-                    {
-                        data: 'created_at',
-                        name: 'created_at'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false
-                    }
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'application_id',
+                    name: 'application_id'
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'category_name',
+                    name: 'category.en_name'
+                },
+                {
+                    data: 'subcategory_name',
+                    name: 'subcategory.en_name'
+                },
+                {
+                    data: 'status',
+                    name: 'status',
+                    orderable: false
+                },
+                {
+                    data: 'created_at',
+                    name: 'created_at'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                }
                 ],
 
             });
@@ -181,7 +179,7 @@
 
             // Function to bind delete events
             function bindDeleteEvents() {
-                $(".deleteHouse").off('submit').on('submit', function(e) {
+                $(".deleteHouse").off('submit').on('submit', function (e) {
                     e.preventDefault();
                     var thisForm = $(this);
                     var formData = $(this).serialize();
@@ -190,54 +188,54 @@
                     toastr.success(
                         "<br /><button type='button' id='confirmationRevertNo' class='btn clear'>No</button><br /><button type='button' id='confirmationRevertYes' class='btn clear'>Yes</button>",
                         'Are you sure, you want to delete it?', {
-                            closeButton: false,
-                            allowHtml: true,
-                            onShown: function(toast) {
-                                $("#confirmationRevertYes").click(function() {
-                                    $.ajax({
-                                        type: "POST",
-                                        url: deleteUrl,
-                                        data: formData,
-                                        beforeSend: function() {
-                                            thisForm.find(
-                                                    'button[type="submit"]'
-                                                )
-                                                .prop("disabled",
-                                                    true);
-                                        },
-                                        success: function(response) {
-                                            thisForm.find(
-                                                    'button[type="submit"]'
-                                                )
-                                                .prop("disabled",
-                                                    false);
-                                            toastr.success(response
-                                                .message);
-                                            table.ajax.reload();
-                                        },
-                                        error: function(xhr, status,
-                                            error) {
-                                            thisForm.find(
-                                                    'button[type="submit"]'
-                                                )
-                                                .prop("disabled",
-                                                    false);
-                                            var responseText =
-                                                jQuery.parseJSON(
-                                                    xhr
+                        closeButton: false,
+                        allowHtml: true,
+                        onShown: function (toast) {
+                            $("#confirmationRevertYes").click(function () {
+                                $.ajax({
+                                    type: "POST",
+                                    url: deleteUrl,
+                                    data: formData,
+                                    beforeSend: function () {
+                                        thisForm.find(
+                                            'button[type="submit"]'
+                                        )
+                                            .prop("disabled",
+                                                true);
+                                    },
+                                    success: function (response) {
+                                        thisForm.find(
+                                            'button[type="submit"]'
+                                        )
+                                            .prop("disabled",
+                                                false);
+                                        toastr.success(response
+                                            .message);
+                                        table.ajax.reload();
+                                    },
+                                    error: function (xhr, status,
+                                        error) {
+                                        thisForm.find(
+                                            'button[type="submit"]'
+                                        )
+                                            .prop("disabled",
+                                                false);
+                                        var responseText =
+                                            jQuery.parseJSON(
+                                                xhr
                                                     .responseText);
-                                            toastr.error(
-                                                responseText
+                                        toastr.error(
+                                            responseText
                                                 .message);
-                                        }
-                                    });
+                                    }
                                 });
+                            });
 
-                                $("#confirmationRevertNo").click(function() {
-                                    $("#toast-container").hide();
-                                })
-                            }
-                        });
+                            $("#confirmationRevertNo").click(function () {
+                                $("#toast-container").hide();
+                            })
+                        }
+                    });
                 });
             }
 
@@ -249,7 +247,7 @@
 
             function debounceSearch() {
                 clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(function() {
+                searchTimeout = setTimeout(function () {
                     table.ajax.reload();
                 }, 300);
             }
@@ -259,7 +257,7 @@
             $('#search_subcategory').on('keyup', debounceSearch);
             $('#search_global').on('keyup', debounceSearch);
 
-            $('#tableLength').change(function() {
+            $('#tableLength').change(function () {
                 table.page.len($(this).val()).draw();
             });
 

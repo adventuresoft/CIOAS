@@ -153,21 +153,6 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <div class="col-sm-6">
-                                        <label for="age">User Role</label>
-                                        <select name="user_role" class="form-control" id="user_role" required>
-                                            <option value="">Select User Role</option>
-                                            <option value="normal">Normal</option>
-                                            <option value="staff">Employee</option>
-                                            <option value="admin">Admin</option>
-                                        </select>
-                                        <small class="error age-error text-danger"></small>
-                                    </div>
-                                </div>
-
-
-
-                                <div class="form-group row">
 
                                     <!-- Row 6: Photo -->
                                     <div class="form-group row">

@@ -81,7 +81,7 @@ class StaffController extends Controller
             'addressInfo.permanentVillage',
             'addressInfo.permanentRoad',
             'addressInfo.permanentHouse',
-        ])->orwhere('user_type', 'staff')->orwhere('user_type', 'admin');
+        ])->orwhere('user_type', 'staff');
 
         if (Auth::user()->institute_id) {
             $query->where('institute_id', Auth::user()->institute_id);
@@ -140,7 +140,6 @@ class StaffController extends Controller
         $validate = Validator::make($request->all(), [
             'name' => 'required|max:190',
             'bn_name' => 'required|max:190',
-            'user_role' => 'required|in:normal,staff,admin',
             'date_of_birth' => 'nullable|max:190',
             'birth_place' => 'nullable|max:190',
             'gender' => 'nullable|max:190',
@@ -177,7 +176,7 @@ class StaffController extends Controller
                 $user->password = Hash::make('12345678');
                 $image = $request->file('image');
                 $signature = $request->file('signature');
-                $user->user_type = $request->user_role;
+                $user->user_type = 'staff';
 
                 if ($signature) {
                     $user->signature = $this->uploadFile($signature, 'uploads/signatures/', 'sig_');
@@ -381,7 +380,6 @@ class StaffController extends Controller
             'email' => 'nullable|max:190|email',
             'birth_certificate' => 'nullable|max:190',
             'nid' => 'nullable|max:190',
-            'user_role' => 'required|max:190',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'signature' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
@@ -402,7 +400,7 @@ class StaffController extends Controller
             $user->nid = $request->nid;
             $user->status = $request->status ?? true;
             $user->updated_by = Auth::id();
-            $user->user_type = $request->user_role;
+            $user->user_type = 'staff';
             $signature = $request->file('signature');
 
             if ($signature) {
