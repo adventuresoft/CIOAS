@@ -22,6 +22,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Spatie\Permission\Traits\HasRoles;
 use App\Traits\BelongsToInstitute;
+use App\Models\Staff;
 
 class User extends Authenticatable
 {
@@ -96,6 +97,11 @@ class User extends Authenticatable
     public function people()
     {
         return $this->hasOne(People::class, 'user_id', 'id');
+    }
+
+    public function staff()
+    {
+        return $this->hasOne(Staff::class, 'user_id', 'id');
     }
     public function familyInfo()
     {

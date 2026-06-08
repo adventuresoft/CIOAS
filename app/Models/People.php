@@ -26,7 +26,6 @@ class People extends Model
     'birth_certificate',
     'nid',
     'image',
-    'staff_id',
     'status',
     'created_by',
     'updated_by'

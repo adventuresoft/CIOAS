@@ -15,6 +15,7 @@ use App\Models\House;
 use App\Models\Mouza;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use App\Models\People;
+use App\Models\Staff;
 use App\Models\Religion;
 use App\Models\Road;
 use App\Models\Thana;
@@ -105,7 +106,9 @@ class StaffController extends Controller
             'addressInfo.presentRoad',
             'addressInfo.presentHouse',
         ])->whereHas('people', function ($q) {
-            $q->whereNotNull('approved_id')->where('is_staff', 1);
+            $q->whereNotNull('approved_id');
+        })->whereHas('staff', function ($q) {
+            $q->where('is_staff', 1);
         });
 
         if (Auth::user()->institute_id) {
@@ -197,15 +200,16 @@ class StaffController extends Controller
                     $people->gender = $request->gender;
                     $people->religion_id = $request->religion;
                     $people->blood_group = $request->blood_group;
-                    $people->is_staff = 2;
                     if ($people->save()) {
-                        if (empty($people->staff_id)) {
-                            $people->staff_id = $this->generateStaffId(
+                        $staff = Staff::firstOrNew(['user_id' => $user->id]);
+                        $staff->is_staff = 2;
+                        if (empty($staff->staff_id)) {
+                            $staff->staff_id = $this->generateStaffId(
                                 $people->date_of_birth,
                                 $people->district_id
                             );
-                            $people->save();
                         }
+                        $staff->save();
 
 
                         $data['status'] = true;
@@ -426,9 +430,10 @@ class StaffController extends Controller
                 $people->gender = $request->gender;
                 $people->religion_id = $request->religion;
                 $people->blood_group = $request->blood_group;
-                $people->is_staff = $people->is_staff == 2 ? 2 : 1;
-                if ($people->is_staff == 2 && empty($people->staff_id)) {
-                    $people->staff_id = $this->generateStaffId(
+                $staff = Staff::firstOrNew(['user_id' => $userID]);
+                $staff->is_staff = ($staff->is_staff ?? 2) == 2 ? 2 : 1;
+                if ($staff->is_staff == 2 && empty($staff->staff_id)) {
+                    $staff->staff_id = $this->generateStaffId(
                         $people->date_of_birth,
                         $people->district_id
                     );
@@ -436,6 +441,7 @@ class StaffController extends Controller
 
                 try {
                     $people->save();
+                    $staff->save();
                     $data['status'] = true;
                     $data['message'] = "People updated successfully.";
                     $data['user'] = $user;
@@ -509,9 +515,10 @@ class StaffController extends Controller
         $datePart = \Carbon\Carbon::parse($date_of_birth)->format('ymd');
         $districtPart = str_pad($district_id ?? 0, 2, '0', STR_PAD_LEFT);
 
-        $last = \App\Models\People::where('district_id', $district_id)
-            ->whereNotNull('staff_id')
-            ->orderBy('id', 'desc')
+        $last = \App\Models\Staff::whereNotNull('staffs.staff_id')
+            ->join('people', 'people.user_id', '=', 'staffs.user_id')
+            ->where('people.district_id', $district_id)
+            ->orderBy('staffs.id', 'desc')
             ->first();
 
         if ($last && $last->staff_id) {
