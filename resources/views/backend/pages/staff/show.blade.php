@@ -1085,7 +1085,7 @@
 
         @if(empty($people->approved_id))
 
-            <a href="{{ route('staff.approve', $people->id) }}" class="btn btn-primary px-5 py-2 ms-3"
+            <a href="{{ route('staff.approve', $people->user_id) }}" class="btn btn-primary px-5 py-2 ms-3"
                 onclick="return confirm('আপনি কি নিশ্চিত অনুমোদন করতে চান?')">
                 <i class="fa fa-check"></i> Approve
             </a>

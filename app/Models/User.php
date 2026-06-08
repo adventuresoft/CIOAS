@@ -96,7 +96,7 @@ class User extends Authenticatable
 
     public function people()
     {
-        return $this->hasOne(People::class, 'user_id', 'id');
+        return $this->hasOne(Staff::class, 'user_id', 'id');
     }
 
     public function staff()
