@@ -19,72 +19,7 @@
         <div class="container-fluid">
             <!-- Small boxes (Stat box) -->
             <div class="row">
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-warning">
-                        @php
 
-                            $male = 0;
-                            $female = 0;
-                            $others = 0;
-                            foreach ($users as $user) {
-                                if ($user->gender == 1) {
-                                    $male = $user->count;
-                                } else if($user->gender ==2){
-                                    $female = $user->count;
-                                } else{
-                                    $others = $user->count;
-                                }
-                            }
-                            $total = $male + $female + $others;
-
-                        @endphp
-                        <div class="inner">
-                            <h3>{{$total}}</h3>
-
-                            <p>Total People</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-users"></i>
-                        </div>
-                        <p class="small-box-footer">Male: {{$male}} Female: {{$female}} Others: {{$others}}</p>
-                    </div>
-                </div>
-                <!-- ./col -->
-
-                <div class="col-lg-3 col-6">
-                    @php
-                    $total = $age_certificates + $character_certificates + $childless_certificates + $citizen_certificates + $disability_certificates + $financial_instability_certificates + $guardian_certificates + $landless_certificates + $married_certificates + $name_certificates + $nid_correction_certificates + $orphan_certificates + $permanent_citizen_certificates + $remarried_certificates + $residential_certificates + $unmarried_certificates + $voter_area_certificates + $voter_list_certificates + $yearly_income_certificates;
-                    @endphp
-                    <!-- small box -->
-                    <div class="small-box bg-secondary">
-                        <div class="inner">
-                            <h3>{{$total}}</h3>
-                            <p>Total Certificates</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-certificate"></i>
-                        </div>
-                        <p class="small-box-footer">Age: {{$age_certificates}} Others: {{$total - $age_certificates}}</p>
-                    </div>
-                </div>
-                <!-- ./col -->
-
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-info">
-                        <div class="inner">
-                            <h3>{{$taxes}}</h3>
-
-                            <p>Total Tax</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-id-card"></i>
-                        </div>
-                      <a class="link-light small-box-footer" href="{{route('tax.index')}}" class="btn btn-link">View All Taxes</a>
-                    </div>
-                </div>
-                <!-- ./col -->
 
                 <div class="col-lg-3 col-6">
                     <!-- small box -->
@@ -102,99 +37,83 @@
                 </div>
                 <!-- ./col -->
 
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-primary">
+                        <div class="inner">
+                            <h3>{{$staffs}}</h3>
+                            <p>Total Staff</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <a class="link-light small-box-footer" href="{{route('staff.index')}}">View All Staff</a>
+                    </div>
+                </div>
+                <!-- ./col -->
+
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3>{{$appointments}}</h3>
+                            <p>Total Appointment</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <a class="link-light small-box-footer" href="{{route('appointment.booking.index')}}">View All Appointments</a>
+                    </div>
+                </div>
+                <!-- ./col -->
+
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3>{{$hotel_restaurants}}</h3>
+                            <p>Total Hotel & Restaurant</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <a class="link-light small-box-footer" href="{{route('hotel-restaurant.index')}}">View Hotel & Restaurant</a>
+                    </div>
+                </div>
+                <!-- ./col -->
 
                 <div class="col-lg-3 col-6">
                     <!-- small box -->
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>{{$houses}}</h3>
-
-                            <p>Total House</p>
+                            <h3>{{$inquiries}}</h3>
+                            <p>Total Inquiries</p>
                         </div>
                         <div class="icon">
-                            <i class="fa fa-home"></i>
+                            <i class="fas fa-question-circle"></i>
                         </div>
-                        <a href="{{route('house.index')}}" class="small-box-footer link-light">View All Houses</a>
+                        <a class="link-light small-box-footer" href="{{route('inquiry.formlist')}}">View All Inquiries</a>
                     </div>
                 </div>
                 <!-- ./col -->
 
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-primary">
-                        <div class="inner">
-                            <h3>{{$roads}}</h3>
-
-                            <p>Total Road KM</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fas fa-road"></i>
-                        </div>
-                        <a class="small-box-footer link-light" href="{{route('road.index')}}">View All Roads</a>
-                    </div>
-                </div>
-                <!-- ./col -->
-
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-dark">
-                        <div class="inner">
-                            <h3>400</h3>
-
-                            <p>Total Land</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fas fa-bacon"></i>
-                        </div>
-                        <p class="small-box-footer">Land: 300 Others: 100</p>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-success">
-                        <div class="inner">
-                            <h3>560</h3>
-
-                            <p>Total Vehicle</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fas fa-truck"></i>
-                        </div>
-                        <p class="small-box-footer">Auto: 200 Others: 360</p>
-                    </div>
-                </div>
-                <!-- ./col -->
                 <div class="col-lg-3 col-6">
                     <!-- small box -->
                     <div class="small-box bg-secondary">
                         <div class="inner">
-                            <h3>30</h3>
-
-                            <p>Total Bridge</p>
+                            <h3>{{$letters}}</h3>
+                            <p>Total Letter</p>
                         </div>
                         <div class="icon">
-                            <i class="fas fa-archway"></i>
+                            <i class="fas fa-envelope"></i>
                         </div>
-                        <p class="small-box-footer">Concrit: 18 Others: 12</p>
+                        <a class="link-light small-box-footer" href="{{route('application-form.index')}}">View All Letters</a>
                     </div>
                 </div>
                 <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-success">
-                        <div class="inner">
-                            <h3>12</h3>
 
-                            <p>Total River KM</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fas fa-water"></i>
-                        </div>
-                        <p class="small-box-footer">River: 6 Others: 6</p>
-                    </div>
-                </div>
-                <!-- ./col -->
+
+
             </div>
             <!-- /.row -->
 
