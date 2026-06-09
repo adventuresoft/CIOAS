@@ -72,7 +72,7 @@
         @include('backend.pages.access-nav-tabs')
 
         <!-- Alert Notifications -->
-        @if(session()->has('error'))
+        @if (session()->has('error'))
             <div class="alert alert-danger alert-dismissible fade show premium-card p-3 mb-4" role="alert"
                 style="border-left: 5px solid #ef4444;">
                 <i class="fas fa-exclamation-circle mr-2"></i> {{ session()->get('error') }}
@@ -97,7 +97,7 @@
                 <div class="card-body">
                     <div class="row">
                         <!-- Left Side: Basic Profile Information -->
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-6 form-group mb-4">
                                     <label class="form-label-premium" for="name">Full Name</label>
@@ -105,7 +105,8 @@
                                         class="form-control form-control-premium @error('name') is-invalid @enderror"
                                         value="{{ old('name', $user->name) }}" placeholder="Enter Full Name" required>
                                     @error('name')
-                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        <span class="invalid-feedback"
+                                            role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
 
@@ -115,7 +116,8 @@
                                         class="form-control form-control-premium @error('email') is-invalid @enderror"
                                         value="{{ old('email', $user->email) }}" placeholder="email@example.com" required>
                                     @error('email')
-                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        <span class="invalid-feedback"
+                                            role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
                             </div>
@@ -127,7 +129,8 @@
                                         class="form-control form-control-premium @error('mobile') is-invalid @enderror"
                                         value="{{ old('mobile', $user->mobile) }}" placeholder="e.g. 01700000000" required>
                                     @error('mobile')
-                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        <span class="invalid-feedback"
+                                            role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
 
@@ -137,17 +140,33 @@
                                         class="form-control form-control-premium @error('institute_id') is-invalid @enderror"
                                         required>
                                         <option value="" disabled>-- Select Area --</option>
-                                        @foreach($institutes as $institute)
+                                        @foreach ($institutes as $institute)
                                             @php
                                                 $name = '';
                                                 if ($institute->institute_type_id == 1) {
-                                                    $name = ($institute->union->name ?? '') . ' (' . ($institute->type->name ?? 'Union') . ')';
+                                                    $name =
+                                                        ($institute->union->name ?? '') .
+                                                        ' (' .
+                                                        ($institute->type->name ?? 'Union') .
+                                                        ')';
                                                 } elseif ($institute->institute_type_id == 2) {
-                                                    $name = ($institute->pourashava->name ?? '') . ' (' . ($institute->type->name ?? 'Pourashava') . ')';
+                                                    $name =
+                                                        ($institute->pourashava->name ?? '') .
+                                                        ' (' .
+                                                        ($institute->type->name ?? 'Pourashava') .
+                                                        ')';
                                                 } elseif ($institute->institute_type_id == 3) {
-                                                    $name = ($institute->cityCorporation->name ?? '') . ' (' . ($institute->type->name ?? 'City Corp') . ')';
+                                                    $name =
+                                                        ($institute->cityCorporation->name ?? '') .
+                                                        ' (' .
+                                                        ($institute->type->name ?? 'City Corp') .
+                                                        ')';
                                                 } elseif ($institute->institute_type_id == 4) {
-                                                    $name = ($institute->district->name ?? '') . ' (' . ($institute->type->name ?? 'District') . ')';
+                                                    $name =
+                                                        ($institute->district->name ?? '') .
+                                                        ' (' .
+                                                        ($institute->type->name ?? 'District') .
+                                                        ')';
                                                 } else {
                                                     $name = 'Area ID: ' . $institute->id;
                                                 }
@@ -155,14 +174,16 @@
                                                 if (!empty($institute->district->name)) {
                                                     $name .= ' - District: ' . $institute->district->name;
                                                 }
-                                             @endphp
-                                            <option value="{{ $institute->id }}" {{ old('institute_id', $user->institute_id) == $institute->id ? 'selected' : '' }}>
+                                            @endphp
+                                            <option value="{{ $institute->id }}"
+                                                {{ old('institute_id', $user->institute_id) == $institute->id ? 'selected' : '' }}>
                                                 {{ $name }}
                                             </option>
                                         @endforeach
                                     </select>
                                     @error('institute_id')
-                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        <span class="invalid-feedback"
+                                            role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
                             </div>
@@ -173,14 +194,16 @@
                                     <select name="department_id" id="department_id"
                                         class="form-control form-control-premium @error('department_id') is-invalid @enderror">
                                         <option value="" selected>-- Select Department --</option>
-                                        @foreach($departments as $department)
-                                            <option value="{{ $department->id }}" {{ old('department_id', $user->department_id) == $department->id ? 'selected' : '' }}>
+                                        @foreach ($departments as $department)
+                                            <option value="{{ $department->id }}"
+                                                {{ old('department_id', $user->department_id) == $department->id ? 'selected' : '' }}>
                                                 {{ $department->name }} ({{ $department->bn_name }})
                                             </option>
                                         @endforeach
                                     </select>
                                     @error('department_id')
-                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        <span class="invalid-feedback"
+                                            role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
 
@@ -189,14 +212,16 @@
                                     <select name="section_id" id="section_id"
                                         class="form-control form-control-premium @error('section_id') is-invalid @enderror">
                                         <option value="" selected>-- Select Section --</option>
-                                        @foreach($sections as $section)
-                                            <option value="{{ $section->id }}" {{ old('section_id', $user->section_id) == $section->id ? 'selected' : '' }}>
+                                        @foreach ($sections as $section)
+                                            <option value="{{ $section->id }}"
+                                                {{ old('section_id', $user->section_id) == $section->id ? 'selected' : '' }}>
                                                 {{ $section->name }} ({{ $section->bn_name }})
                                             </option>
                                         @endforeach
                                     </select>
                                     @error('section_id')
-                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        <span class="invalid-feedback"
+                                            role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
                             </div>
@@ -210,7 +235,8 @@
                                     <small class="text-muted d-block mt-1">Leave blank if password remains
                                         unchanged.</small>
                                     @error('password')
-                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        <span class="invalid-feedback"
+                                            role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
 
@@ -223,65 +249,7 @@
                         </div>
 
                         <!-- Right Side: Security Identity & Account Status -->
-                        <div class="col-md-4 border-left pl-md-4">
-                            <!-- Security Identity -->
-                            <div class="mb-4">
-                                <h5 class="font-weight-bold text-dark mb-3">
-                                    <i class="fas fa-shield-alt text-secondary mr-1"></i> Security Identity
-                                </h5>
 
-                                <div class="form-group mb-3">
-                                    <label class="form-label-premium" for="user_type">User Type</label>
-                                    <select name="user_type" id="user_type"
-                                        class="form-control form-control-premium @error('user_type') is-invalid @enderror"
-                                        required>
-                                        <option value="">Select User Type</option>
-                                        <option value="staff" {{ old('user_type', $user->user_type) == 'staff' ? 'selected' : '' }}>Employee</option>
-                                        <option value="admin" {{ old('user_type', $user->user_type) == 'admin' ? 'selected' : '' }}>Admin</option>
-                                    </select><br>
-
-                                    <label class="form-label-premium" for="role_id">Primary Security Role</label>
-                                    <select name="role_id" id="role_id"
-                                        class="form-control form-control-premium @error('role_id') is-invalid @enderror"
-                                        required>
-                                        <option value="" disabled>Select a Role</option>
-                                        @foreach($roles as $role)
-                                            <option value="{{ $role->id }}" {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
-                                                {{ $role->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <small class="text-muted mt-2 d-block">
-                                        Users inherit all capabilities assigned to their chosen role. Direct overrides are
-                                        disabled for simplicity.
-                                    </small>
-                                    @error('role_id')
-                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <hr class="my-4">
-
-                            <!-- Account Status -->
-                            <div class="mb-4">
-                                <label class="form-label-premium">Account Status</label>
-
-                                <div class="form-check pl-0">
-                                    <label class="status-radio-label text-success">
-                                        <input type="radio" name="status" value="1" {{ old('status', $user->status) == 1 ? 'checked' : '' }} style="width: 18px; height: 18px; cursor: pointer;">
-                                        Verified / Active
-                                    </label>
-                                </div>
-
-                                <div class="form-check pl-0">
-                                    <label class="status-radio-label text-warning">
-                                        <input type="radio" name="status" value="0" {{ old('status', $user->status) == 0 ? 'checked' : '' }} style="width: 18px; height: 18px; cursor: pointer;">
-                                        Pending Review
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -299,8 +267,8 @@
 
 @push('script')
     <script>
-        $(document).ready(function () {
-            $('#department_id').on('change', function () {
+        $(document).ready(function() {
+            $('#department_id').on('change', function() {
                 var departmentId = $(this).val();
                 var sectionSelect = $('#section_id');
 
@@ -308,15 +276,18 @@
 
                 if (departmentId) {
                     $.ajax({
-                        url: "{{ route('basic-settings.get-sections-by-department', '') }}/" + departmentId,
+                        url: "{{ route('basic-settings.get-sections-by-department', '') }}/" +
+                            departmentId,
                         type: "GET",
                         dataType: "json",
-                        success: function (data) {
-                            $.each(data, function (key, section) {
-                                sectionSelect.append('<option value="' + section.id + '">' + section.name + ' (' + (section.bn_name ? section.bn_name : '') + ')</option>');
+                        success: function(data) {
+                            $.each(data, function(key, section) {
+                                sectionSelect.append('<option value="' + section.id +
+                                    '">' + section.name + ' (' + (section.bn_name ?
+                                        section.bn_name : '') + ')</option>');
                             });
                         },
-                        error: function (xhr, status, error) {
+                        error: function(xhr, status, error) {
                             console.error("Failed to load sections: " + error);
                         }
                     });

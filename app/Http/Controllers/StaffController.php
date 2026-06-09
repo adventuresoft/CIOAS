@@ -91,6 +91,7 @@ class StaffController extends Controller
         return view('backend.pages.staff.index', $data);
     }
 
+
     public function approvedlist()
     {
         $data['subMenu'] = 'approvedList';
@@ -104,11 +105,7 @@ class StaffController extends Controller
             'addressInfo.presentWard',
             'addressInfo.presentRoad',
             'addressInfo.presentHouse',
-        ])->whereHas('staff', function ($q) {
-            $q->whereNotNull('approved_id');
-        })->whereHas('staff', function ($q) {
-            $q->where('is_staff', 1);
-        });
+        ])->where('user_type', 'staff')->where('status', 1);
 
         if (Auth::user()->institute_id) {
             $query->where('institute_id', Auth::user()->institute_id);
@@ -117,6 +114,7 @@ class StaffController extends Controller
         $data['users'] = $query->latest()->get();
         return view('backend.pages.staff.approvedList', $data);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -194,8 +192,8 @@ class StaffController extends Controller
                     $staff->blood_group   = $request->blood_group;
 
                     if ($request->hasFile('signature')) {
-                        $signature       = $request->file('signature');
-                        $user->signature = $this->uploadFile($signature, 'uploads/signatures/', 'sig_');
+                        $signature        = $request->file('signature');
+                        $staff->signature = $this->uploadFile($signature, 'uploads/signatures/', 'sig_');
                     }
 
                     if (empty($staff->staff_id)) {
@@ -375,6 +373,7 @@ class StaffController extends Controller
             'mobile'        => 'required|max:190',
             'email'         => 'nullable|max:190|email',
             'image'         => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'signature'     => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
 
         if ($validate->fails()) {
@@ -409,9 +408,14 @@ class StaffController extends Controller
                 $staff->gender        = $request->gender;
                 $staff->religion_id   = $request->religion;
                 $staff->blood_group   = $request->blood_group;
-                $staff->is_staff      = ($staff->is_staff ?? 2) == 2 ? 2 : 1;
 
-                if ($staff->is_staff == 2 && empty($staff->staff_id)) {
+                if ($request->hasFile('signature')) {
+                    $signature = $request->file('signature');
+                    $this->deleteFile($staff->signature);
+                    $staff->signature = $this->uploadFile($signature, 'uploads/signatures/', 'sig_');
+                }
+
+                if (empty($staff->staff_id)) {
                     $staff->staff_id = $this->generateStaffId(
                         $staff->date_of_birth,
                         $staff->district_id
@@ -457,33 +461,6 @@ class StaffController extends Controller
         //
     }
 
-    private function generateApprovedId($date_of_birth, $district_id)
-    {
-        // DOB থেকে YYMMDD
-        $datePart = Carbon::parse($date_of_birth)->format('ymd');
-
-        // District ID 2 digit
-        $districtPart = str_pad($district_id, 2, '0', STR_PAD_LEFT);
-
-        // একই district + DOB এর last serial বের করা
-        $last = Staff::where('district_id', $district_id)
-            ->whereNotNull('approved_id')
-            ->orderBy('id', 'desc')
-            ->first();
-
-        if ($last) {
-            $lastSerial = (int) substr($last->approved_id, -4);
-            $newSerial  = $lastSerial + 1;
-        } else {
-            $newSerial = 1;
-        }
-
-        // 4 digit serial
-        $serialPart = str_pad($newSerial, 4, '0', STR_PAD_LEFT);
-
-        return $districtPart . '-' . $datePart . '-' . $serialPart;
-    }
-
     private function generateStaffId($date_of_birth, $district_id)
     {
         $datePart     = \Carbon\Carbon::parse($date_of_birth)->format('ymd');
@@ -507,63 +484,6 @@ class StaffController extends Controller
     }
 
 
-    public function approve($id)
-    {
-        if (!Auth::user()->hasRole('DC')) {
-            return redirect()->back()->with('error', 'Only DC role can approve staff.');
-        }
 
-        DB::beginTransaction();
-
-        try {
-            $staff = Staff::where('user_id', $id)->firstOrFail();
-
-            if (!empty($staff->approved_id)) {
-                DB::commit();
-                return redirect()->route('staffapprovedlist')
-                    ->with('success', 'Already approved.');
-            }
-
-            $district_id = $staff->district_id
-                ?? ($staff->user->addressInfo->permanent_district_id ?? null)
-                ?? ($staff->user->addressInfo->present_district_id ?? null);
-
-            if (!$staff->date_of_birth || !$district_id) {
-                DB::rollBack();
-                return redirect()->back()->with('error', 'DOB or District missing');
-            }
-
-            $approvedId = $this->generateApprovedId(
-                $staff->date_of_birth,
-                $district_id
-            );
-
-            $staff->approved_id = $approvedId;
-            $staff->is_staff    = 1;
-
-            $user = $staff->user;
-            if ($user) {
-                if (empty($user->institute_id) && !empty(Auth::user()->institute_id)) {
-                    $user->institute_id = Auth::user()->institute_id;
-                }
-                $user->status = 1; // Set to 1 when staff is approved
-                $user->save();
-            }
-
-            $staff->save();
-
-            DB::commit();
-
-            return redirect()->route('staffapprovedlist')
-                ->with('success', 'Approved Successfully!');
-
-        } catch (\Throwable $e) {
-
-            DB::rollback();
-
-            return redirect()->back()
-                ->with('error', $e->getMessage());
-        }
-    }
 
 }

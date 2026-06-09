@@ -90,7 +90,7 @@
                             $firstLetter = strtoupper(substr($user->name, 0, 1));
                         @endphp
 
-                        @if(!empty($user->image) && file_exists(public_path('upload/users/images/' . $user->image)))
+                        @if (!empty($user->image) && file_exists(public_path('upload/users/images/' . $user->image)))
                             <img src="{{ asset('upload/users/images/' . $user->image) }}" class="rounded-circle mb-3"
                                 width="100" height="100"
                                 style="object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 3px solid #fff;">
@@ -101,7 +101,7 @@
                         <h4 class="font-weight-bold text-dark mb-1">{{ $user->name }}</h4>
                         <p class="text-muted mb-3" style="font-size: 0.9rem;">{{ $user->email }}</p>
 
-                        @if($user->status == 1)
+                        @if ($user->status == 1)
                             <span class="badge badge-success px-3 py-2 font-weight-bold" style="border-radius: 9999px;"><i
                                     class="fas fa-check-circle mr-1"></i> Verified Active</span>
                         @else
@@ -164,22 +164,10 @@
                             <!-- Location & Access Details -->
                             <div class="col-md-6 border-left pl-md-4">
                                 @php
-                                    $areaName = 'No Area Mapped';
+                                    $areaName = null;
                                     if ($user->institute) {
-                                        if ($user->institute->institute_type_id == 1) {
-                                            $areaName = ($user->institute->union->name ?? '') . ' (' . ($user->institute->type->name ?? 'Union') . ')';
-                                        } elseif ($user->institute->institute_type_id == 2) {
-                                            $areaName = ($user->institute->pourashava->name ?? '') . ' (' . ($user->institute->type->name ?? 'Pourashava') . ')';
-                                        } elseif ($user->institute->institute_type_id == 3) {
-                                            $areaName = ($user->institute->cityCorporation->name ?? '') . ' (' . ($user->institute->type->name ?? 'City Corp') . ')';
-                                        } elseif ($user->institute->institute_type_id == 4) {
-                                            $areaName = ($user->institute->district->name ?? '') . ' (' . ($user->institute->type->name ?? 'District') . ')';
-                                        } else {
-                                            $areaName = 'Area ID: ' . $user->institute->id;
-                                        }
-
                                         if (!empty($user->institute->district->name)) {
-                                            $areaName .= ' - District: ' . $user->institute->district->name;
+                                            $areaName .= 'District: ' . $user->institute->district->name;
                                         }
                                     }
                                 @endphp
@@ -193,8 +181,8 @@
                                 <div class="info-group">
                                     <div class="detail-label">Security Role</div>
                                     <div class="detail-value">
-                                        @if($user->roles->count() > 0)
-                                            @foreach($user->roles as $role)
+                                        @if ($user->roles->count() > 0)
+                                            @foreach ($user->roles as $role)
                                                 <span class="badge badge-primary px-2 py-1 font-weight-bold"
                                                     style="border-radius: 6px;">{{ $role->name }}</span>
                                             @endforeach
@@ -207,9 +195,10 @@
                                 <div class="info-group">
                                     <div class="detail-label">Direct Override Permissions</div>
                                     <div class="detail-value">
-                                        @if($user->permissions->count() > 0)
+                                        @if ($user->getAllPermissions()->count() > 0)
                                             <span class="badge badge-success px-2 py-1 font-weight-bold"
-                                                style="border-radius: 6px;">{{ $user->permissions->count() }} Direct
+                                                style="border-radius: 6px;">{{ $user->getAllPermissions()->count() }}
+                                                Direct
                                                 Overrides</span>
                                         @else
                                             <span class="text-muted font-italic">None (Strict Role-Based Policies)</span>
@@ -243,8 +232,9 @@
                                             class="form-control form-control-premium @error('role_id') is-invalid @enderror"
                                             required>
                                             <option value="" disabled>Select a Role</option>
-                                            @foreach($roles as $role)
-                                                <option value="{{ $role->id }}" {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
+                                            @foreach ($roles as $role)
+                                                <option value="{{ $role->id }}"
+                                                    {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
                                                     {{ $role->name }}
                                                 </option>
                                             @endforeach
@@ -255,12 +245,13 @@
                                             disabled for simplicity.
                                         </small>
                                         @error('role_id')
-                                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                            <span class="invalid-feedback"
+                                                role="alert"><strong>{{ $message }}</strong></span>
                                         @enderror
                                     </div>
                                     <div class="detail-value mt-1">
-                                        @if($user->roles->count() > 0)
-                                            @foreach($user->roles as $role)
+                                        @if ($user->roles->count() > 0)
+                                            @foreach ($user->roles as $role)
                                                 <span class="badge badge-primary px-3 py-2 font-weight-bold"
                                                     style="border-radius: 8px; font-size: 0.88rem;">
                                                     <i class="fas fa-user-shield mr-1"></i>{{ $role->name }}
@@ -285,7 +276,8 @@
 
                                         <div class="form-check pl-0">
                                             <label class="status-radio-label text-success">
-                                                <input type="radio" name="status" value="1" {{ old('status', $user->status) == 1 ? 'checked' : '' }}
+                                                <input type="radio" name="status" value="1"
+                                                    {{ old('status', $user->status) == 1 ? 'checked' : '' }}
                                                     style="width: 18px; height: 18px; cursor: pointer;">
                                                 Verified / Active
                                             </label>
@@ -293,14 +285,15 @@
 
                                         <div class="form-check pl-0">
                                             <label class="status-radio-label text-warning">
-                                                <input type="radio" name="status" value="0" {{ old('status', $user->status) == 0 ? 'checked' : '' }}
+                                                <input type="radio" name="status" value="0"
+                                                    {{ old('status', $user->status) == 0 ? 'checked' : '' }}
                                                     style="width: 18px; height: 18px; cursor: pointer;">
                                                 Pending Review
                                             </label>
                                         </div>
                                     </div>
                                     <div class="detail-value mt-1">
-                                        @if($user->status == 1)
+                                        @if ($user->status == 1)
                                             <span class="badge badge-success px-3 py-2 font-weight-bold"
                                                 style="border-radius: 8px; font-size: 0.88rem;">
                                                 <i class="fas fa-check-circle mr-1"></i> Verified / Active
@@ -314,12 +307,12 @@
                                     </div>
                                 </div>
 
-                                <div class="row mt-5  d-flex justify-content-start">
+                                <div class="mt-5  d-flex justify-content-start">
                                     <button type="submit" class="btn btn-primary btn-premium px-5 py-2 font-weight-bold"
                                         style="border-radius: 8px;"><i class="fas fa-check-circle mr-1"></i> Update
                                         Employee</button>
                                     <a href="{{ route('user.index') }}"
-                                        class="btn btn-light btn-premium ml-3 px-4 mt-3 py-2 font-weight-bold"
+                                        class="btn btn-dark btn-premium ml-3 px-4 py-2 font-weight-bold"
                                         style="border-radius: 8px;"><i class="fas fa-times-circle mr-1"></i> Cancel</a>
                                 </div>
                             </div>
@@ -338,9 +331,9 @@
                                 $groupedPerms[$module] = ($groupedPerms[$module] ?? 0) + 1;
                             }
                         @endphp
-                        @if(count($groupedPerms) > 0)
+                        @if (count($groupedPerms) > 0)
                             <div class="d-flex flex-wrap" style="gap: 8px;">
-                                @foreach($groupedPerms as $module => $count)
+                                @foreach ($groupedPerms as $module => $count)
                                     <span class="d-inline-flex align-items-center bg-light border px-3 py-2 text-dark"
                                         style="border-radius: 8px; font-size: 0.88rem; font-weight: 600; border-color: #cbd5e1 !important;">
                                         {{ ucfirst(str_replace('_', ' ', $module)) }}
