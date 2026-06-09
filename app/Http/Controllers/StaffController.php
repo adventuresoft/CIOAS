@@ -46,14 +46,14 @@ class StaffController extends Controller
         $user = User::with('staff')->where('system_id', $system_id)->first();
 
         if ($user) {
-            $data['status'] = true;
+            $data['status']  = true;
             $data['message'] = "Staff information loaded.";
-            $data['user'] = $user;
+            $data['user']    = $user;
             return response()->json($data, 200);
         } else {
-            $data['status'] = false;
+            $data['status']  = false;
             $data['message'] = "Staff not found.";
-            $data['user'] = $user;
+            $data['user']    = $user;
             return response()->json($data, 500);
         }
     }
@@ -94,7 +94,7 @@ class StaffController extends Controller
     public function approvedlist()
     {
         $data['subMenu'] = 'approvedList';
-        $query = User::with([
+        $query           = User::with([
             'staff',
             'professionalInfos',
             'addressInfo.presentDistrict',
@@ -140,57 +140,63 @@ class StaffController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'name' => 'required|max:190',
-            'bn_name' => 'required|max:190',
+            'name'          => 'required|max:190',
+            'bn_name'       => 'required|max:190',
             'date_of_birth' => 'nullable|max:190',
-            'birth_place' => 'nullable|max:190',
-            'gender' => 'nullable|max:190',
-            'religion' => 'nullable|max:190',
-            'blood_group' => 'nullable|max:190',
-            'mobile' => 'nullable|max:190',
-            'email' => 'nullable|max:190',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'birth_place'   => 'nullable|max:190',
+            'gender'        => 'nullable|max:190',
+            'religion'      => 'nullable|max:190',
+            'blood_group'   => 'nullable|max:190',
+            'mobile'        => 'nullable|max:190',
+            'email'         => 'nullable|max:190|unique:users,email',
+            'image'         => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'signature'     => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
 
         if ($validate->fails()) {
-            $data['status'] = false;
+            $data['status']  = false;
             $data['message'] = "Sorry! Invalid Entry.";
-            $data['errors'] = $validate->errors();
+            $data['errors']  = $validate->errors();
             return response(json_encode($data, JSON_PRETTY_PRINT), 400)->header('Content-Type', 'application/json');
         }
 
         $result = DB::transaction(function () use ($request) {
             try {
-                $user = new User();
-                $user->role_id = 0;
+                $user               = new User();
+                $user->role_id      = 0;
                 $user->institute_id = Auth::user()->institute_id ?? '';
 
-                $user->name = $request->name;
-                $user->email = $request->email;
-                $user->mobile = $request->mobile;
-                $user->birth_certificate = $request->birth_certificate;
-                $user->nid = $request->nid;
-                $user->status = $request->status ?? true;
+                $user->name       = $request->name;
+                $user->email      = $request->email;
+                $user->mobile     = $request->mobile;
+                $user->status     = 0; // Set to 0 by default, will be set to 1 when approved
                 $user->created_by = Auth::id();
-                $user->password = Hash::make('12345678');
-                $image = $request->file('image');
-                $user->user_type = 'staff';
+                $user->password   = Hash::make('12345678');
+                $image            = $request->file('image');
+                $user->user_type  = 'staff';
 
                 if ($image) {
                     $user->image = $this->uploadFile($image, 'uploads/users/', 'avatar_');
                 }
 
                 if ($user->save()) {
-                    $staff = Staff::firstOrNew(['user_id' => $user->id]);
-                    $staff->bn_name = $request->bn_name;
+
+
+
+                    $staff                = Staff::firstOrNew([ 'user_id' => $user->id ]);
+                    $staff->bn_name       = $request->bn_name;
                     $staff->date_of_birth = $request->date_of_birth;
-                    $staff->birth_place = $request->birth_place;
-                    $staff->district_id = $request->district_id;
-                    $staff->country_id = $request->country_id;
-                    $staff->gender = $request->gender;
-                    $staff->religion_id = $request->religion;
-                    $staff->blood_group = $request->blood_group;
-                    $staff->is_staff = 2;
+                    $staff->birth_place   = $request->birth_place;
+                    $staff->district_id   = $request->district_id;
+                    $staff->country_id    = $request->country_id;
+                    $staff->gender        = $request->gender;
+                    $staff->religion_id   = $request->religion;
+                    $staff->blood_group   = $request->blood_group;
+
+                    if ($request->hasFile('signature')) {
+                        $signature       = $request->file('signature');
+                        $user->signature = $this->uploadFile($signature, 'uploads/signatures/', 'sig_');
+                    }
 
                     if (empty($staff->staff_id)) {
                         $staff->staff_id = $this->generateStaffId(
@@ -200,26 +206,26 @@ class StaffController extends Controller
                     }
 
                     if ($staff->save()) {
-                        $data['status'] = true;
-                        $data['message'] = "Staff saved successfully.";
-                        $data['user'] = $user;
-                        $data['staff'] = $staff;
-                        $data['code'] = 200;
+                        $data['status']       = true;
+                        $data['message']      = "Staff saved successfully.";
+                        $data['user']         = $user;
+                        $data['staff']        = $staff;
+                        $data['code']         = 200;
                         $data['redirect_url'] = route('staff.family', $user->id);
                         return $data;
                     } else {
-                        $data['status'] = false;
+                        $data['status']  = false;
                         $data['message'] = "Staff save failed! Please try again...";
-                        $data['code'] = 500;
+                        $data['code']    = 500;
                         return $data;
                     }
                 }
             } catch (\Throwable $th) {
-                $data['status'] = false;
-                $data['code'] = 500;
-                $data['errors'] = $th->getMessage() . ' in ' . $th->getFile() . ':' . $th->getLine();
+                $data['status']  = false;
+                $data['code']    = 500;
+                $data['errors']  = $th->getMessage() . ' in ' . $th->getFile() . ':' . $th->getLine();
                 $data['message'] = "Something went wrong! Please try again or contact on support...";
-                Log::error('Staff Creation Failed: ' . $th->getMessage(), ['trace' => $th->getTraceAsString()]);
+                Log::error('Staff Creation Failed: ' . $th->getMessage(), [ 'trace' => $th->getTraceAsString() ]);
                 return $data;
             }
         });
@@ -234,13 +240,13 @@ class StaffController extends Controller
     public function show($id)
     {
 
-        $data['religions'] = Religion::where('status', true)->get();
-        $data['districts'] = District::where('status', true)->orderBy('name')->get();
-        $data['countries'] = Country::orderBy('name')->get();
-        $data['religions'] = Religion::where('status', true)->get();
-        $data['familyTypes'] = FamilyType::where('status', true)->get();
+        $data['religions']        = Religion::where('status', true)->get();
+        $data['districts']        = District::where('status', true)->orderBy('name')->get();
+        $data['countries']        = Country::orderBy('name')->get();
+        $data['religions']        = Religion::where('status', true)->get();
+        $data['familyTypes']      = FamilyType::where('status', true)->get();
         $data['familyCategories'] = FamilyCategory::where('status', true)->get();
-        $data['user'] = $user = User::with('familyInfo', 'educationInfos', 'financialInfos', 'propertyInfos', 'disabilityInfo', 'freedomFighterInfo')
+        $data['user']             = $user = User::with('familyInfo', 'educationInfos', 'financialInfos', 'propertyInfos', 'disabilityInfo', 'freedomFighterInfo')
             ->with('institute')
             ->with(array(
                 'addressInfo' => function ($address) {
@@ -270,20 +276,20 @@ class StaffController extends Controller
             return redirect()->route('staff.index')->with('error', 'User not found.');
         }
 
-        $institute = $user->institute;
+        $institute     = $user->institute;
         $data['staff'] = Staff::where('user_id', $id)->first();
         // Keep backward compat alias
         $data['people'] = $data['staff'];
 
-        $data['religions'] = Religion::where('status', true)->get();
-        $data['villages'] = [];
-        $data['wards'] = [];
+        $data['religions']        = Religion::where('status', true)->get();
+        $data['villages']         = [];
+        $data['wards']            = [];
         $data['permanent_houses'] = [];
-        $data['roads'] = [];
+        $data['roads']            = [];
         if (isset($institute?->institute_type_id) && $institute->institute_type_id == 1) {
             $data['villages'] = Village::where('union_id', $institute->union_id)->get();
-            $data['wards'] = UnionWard::where('status', true)->get();
-            $data['roads'] = Road::where('institute_id', $institute->id)->latest()->get();
+            $data['wards']    = UnionWard::where('status', true)->get();
+            $data['roads']    = Road::where('institute_id', $institute->id)->latest()->get();
         } else if (isset($institute?->institute_type_id) && $institute->institute_type_id == 2) {
 
         } else if (isset($institute?->institute_type_id) && $institute->institute_type_id == 3) {
@@ -302,7 +308,7 @@ class StaffController extends Controller
         $data['professions'] = Profession::where('status', true)->get();
 
         $data['account_types'] = AccountType::where('status', true)->latest()->get();
-        $data['banks'] = Bank::where('status', true)->latest()->get();
+        $data['banks']         = Bank::where('status', true)->latest()->get();
 
         $data['landThanas'] = $user->propertyInfos ? ($user->propertyInfos->land_district_id ? Thana::where('district_id', $user->propertyInfos->land_district_id)->get() : []) : [];
         $data['landMouzas'] = $user->propertyInfos ? ($user->propertyInfos->land_thana_id ? Mouza::where('thana_id', $user->propertyInfos->land_thana_id)->get() : []) : [];
@@ -329,13 +335,13 @@ class StaffController extends Controller
         $data['religions'] = Religion::where('status', true)->get();
         $data['districts'] = District::where('status', true)->orderBy('name')->get();
         $data['countries'] = Country::orderBy('name')->get();
-        $data['user'] = $user = User::with('staff')->find($id);
+        $data['user']      = $user = User::with('staff')->find($id);
 
         if (!$user) {
             return redirect()->route('staff.index')->with('error', 'User not found.');
         }
 
-        $presentUnionId = $user->addressInfo ? $user->addressInfo->present_union_id : null;
+        $presentUnionId   = $user->addressInfo ? $user->addressInfo->present_union_id : null;
         $data['villages'] = $presentUnionId ? Village::where('union_id', $presentUnionId)->get() : [];
 
 
@@ -353,40 +359,39 @@ class StaffController extends Controller
     {
         if (!view_permission()) {
             return response()->json([
-                'status' => false,
+                'status'  => false,
                 'message' => 'Unauthorized access.',
             ], 403);
         }
 
         $validate = Validator::make($request->all(), [
-            'name' => 'required|max:190',
-            'bn_name' => 'required|max:190',
+            'name'          => 'required|max:190',
+            'bn_name'       => 'required|max:190',
             'date_of_birth' => 'nullable|max:190',
-            'birth_place' => 'nullable|max:190',
-            'gender' => 'nullable|max:190',
-            'religion' => 'nullable|max:190',
-            'blood_group' => 'nullable|max:190',
-            'mobile' => 'required|max:190',
-            'email' => 'nullable|max:190|email',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'birth_place'   => 'nullable|max:190',
+            'gender'        => 'nullable|max:190',
+            'religion'      => 'nullable|max:190',
+            'blood_group'   => 'nullable|max:190',
+            'mobile'        => 'required|max:190',
+            'email'         => 'nullable|max:190|email',
+            'image'         => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
 
         if ($validate->fails()) {
-            $data['status'] = false;
+            $data['status']  = false;
             $data['message'] = "Sorry! Invalid Entry.";
-            $data['errors'] = $validate->errors();
+            $data['errors']  = $validate->errors();
             return response(json_encode($data, JSON_PRETTY_PRINT), 400)->header('Content-Type', 'application/json');
         }
 
         $result = DB::transaction(function () use ($request, $userID) {
-            $user = User::find($userID);
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->mobile = $request->mobile;
-            $user->status = $request->status ?? true;
+            $user             = User::find($userID);
+            $user->name       = $request->name;
+            $user->email      = $request->email;
+            $user->mobile     = $request->mobile;
             $user->updated_by = Auth::id();
-            $user->user_type = 'staff';
-            $image = $request->file('image');
+            $user->user_type  = 'staff';
+            $image            = $request->file('image');
 
             if ($image) {
                 $this->deleteFile($user->image);
@@ -395,16 +400,16 @@ class StaffController extends Controller
 
             try {
                 $user->save();
-                $staff = Staff::firstOrNew(['user_id' => $userID]);
-                $staff->bn_name = $request->bn_name;
+                $staff                = Staff::firstOrNew([ 'user_id' => $userID ]);
+                $staff->bn_name       = $request->bn_name;
                 $staff->date_of_birth = $request->date_of_birth;
-                $staff->birth_place = $request->birth_place;
-                $staff->district_id = $request->district_id;
-                $staff->country_id = $request->country_id;
-                $staff->gender = $request->gender;
-                $staff->religion_id = $request->religion;
-                $staff->blood_group = $request->blood_group;
-                $staff->is_staff = ($staff->is_staff ?? 2) == 2 ? 2 : 1;
+                $staff->birth_place   = $request->birth_place;
+                $staff->district_id   = $request->district_id;
+                $staff->country_id    = $request->country_id;
+                $staff->gender        = $request->gender;
+                $staff->religion_id   = $request->religion;
+                $staff->blood_group   = $request->blood_group;
+                $staff->is_staff      = ($staff->is_staff ?? 2) == 2 ? 2 : 1;
 
                 if ($staff->is_staff == 2 && empty($staff->staff_id)) {
                     $staff->staff_id = $this->generateStaffId(
@@ -415,27 +420,27 @@ class StaffController extends Controller
 
                 try {
                     $staff->save();
-                    $data['status'] = true;
-                    $data['message'] = "Staff updated successfully.";
-                    $data['user'] = $user;
-                    $data['staff'] = $staff;
-                    $data['code'] = 200;
+                    $data['status']       = true;
+                    $data['message']      = "Staff updated successfully.";
+                    $data['user']         = $user;
+                    $data['staff']        = $staff;
+                    $data['code']         = 200;
                     $data['redirect_url'] = route('staff.family', $userID);
                     return $data;
                 } catch (\Throwable $th) {
-                    $data['status'] = false;
+                    $data['status']  = false;
                     $data['message'] = "Something went wrong! Please try again...";
-                    $data['code'] = 500;
-                    $data['errors'] = $th->getMessage() . ' in ' . $th->getFile() . ':' . $th->getLine();
-                    Log::error('Staff Update Failed: ' . $th->getMessage(), ['trace' => $th->getTraceAsString()]);
+                    $data['code']    = 500;
+                    $data['errors']  = $th->getMessage() . ' in ' . $th->getFile() . ':' . $th->getLine();
+                    Log::error('Staff Update Failed: ' . $th->getMessage(), [ 'trace' => $th->getTraceAsString() ]);
                     return $data;
                 }
             } catch (\Throwable $th) {
-                $data['status'] = false;
+                $data['status']  = false;
                 $data['message'] = "Something went wrong! Please try again...";
-                $data['code'] = 500;
-                $data['errors'] = $th->getMessage() . ' in ' . $th->getFile() . ':' . $th->getLine();
-                Log::error('Staff Update Failed: ' . $th->getMessage(), ['trace' => $th->getTraceAsString()]);
+                $data['code']    = 500;
+                $data['errors']  = $th->getMessage() . ' in ' . $th->getFile() . ':' . $th->getLine();
+                Log::error('Staff Update Failed: ' . $th->getMessage(), [ 'trace' => $th->getTraceAsString() ]);
                 return $data;
             }
 
@@ -468,7 +473,7 @@ class StaffController extends Controller
 
         if ($last) {
             $lastSerial = (int) substr($last->approved_id, -4);
-            $newSerial = $lastSerial + 1;
+            $newSerial  = $lastSerial + 1;
         } else {
             $newSerial = 1;
         }
@@ -481,7 +486,7 @@ class StaffController extends Controller
 
     private function generateStaffId($date_of_birth, $district_id)
     {
-        $datePart = \Carbon\Carbon::parse($date_of_birth)->format('ymd');
+        $datePart     = \Carbon\Carbon::parse($date_of_birth)->format('ymd');
         $districtPart = str_pad($district_id ?? 0, 2, '0', STR_PAD_LEFT);
 
         $last = Staff::whereNotNull('staff_id')
@@ -491,7 +496,7 @@ class StaffController extends Controller
 
         if ($last && $last->staff_id) {
             $lastSerial = (int) substr($last->staff_id, -4);
-            $newSerial = $lastSerial + 1;
+            $newSerial  = $lastSerial + 1;
         } else {
             $newSerial = 1;
         }
@@ -534,7 +539,7 @@ class StaffController extends Controller
             );
 
             $staff->approved_id = $approvedId;
-            $staff->is_staff = 1;
+            $staff->is_staff    = 1;
 
             $user = $staff->user;
             if ($user) {
