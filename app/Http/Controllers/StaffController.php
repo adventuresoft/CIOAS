@@ -14,7 +14,6 @@ use App\Models\Division;
 use App\Models\House;
 use App\Models\Mouza;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
-use App\Models\People;
 use App\Models\Staff;
 use App\Models\Religion;
 use App\Models\Road;
@@ -44,16 +43,16 @@ class StaffController extends Controller
 
     public function searchUser($system_id)
     {
-        $user = User::with('people', 'familyInfo')->where('system_id', $system_id)->first();
+        $user = User::with('staff')->where('system_id', $system_id)->first();
 
         if ($user) {
             $data['status'] = true;
-            $data['message'] = "People information loaded.";
+            $data['message'] = "Staff information loaded.";
             $data['user'] = $user;
             return response()->json($data, 200);
         } else {
             $data['status'] = false;
-            $data['message'] = "People not found.";
+            $data['message'] = "Staff not found.";
             $data['user'] = $user;
             return response()->json($data, 500);
         }
@@ -67,7 +66,7 @@ class StaffController extends Controller
     public function index()
     {
         $query = User::with([
-            'people',
+            'staff',
             'professionalInfos',
             'addressInfo.presentWard',
             'addressInfo.presentDistrict',
@@ -96,7 +95,7 @@ class StaffController extends Controller
     {
         $data['subMenu'] = 'approvedList';
         $query = User::with([
-            'people',
+            'staff',
             'professionalInfos',
             'addressInfo.presentDistrict',
             'addressInfo.presentThana',
@@ -105,7 +104,7 @@ class StaffController extends Controller
             'addressInfo.presentWard',
             'addressInfo.presentRoad',
             'addressInfo.presentHouse',
-        ])->whereHas('people', function ($q) {
+        ])->whereHas('staff', function ($q) {
             $q->whereNotNull('approved_id');
         })->whereHas('staff', function ($q) {
             $q->where('is_staff', 1);
@@ -163,12 +162,14 @@ class StaffController extends Controller
         $result = DB::transaction(function () use ($request) {
             try {
                 $user = new User();
-                $user->role_id = 0; // 5 => User Role
+                $user->role_id = 0;
                 $user->institute_id = Auth::user()->institute_id ?? '';
 
                 $user->name = $request->name;
                 $user->email = $request->email;
                 $user->mobile = $request->mobile;
+                $user->birth_certificate = $request->birth_certificate;
+                $user->nid = $request->nid;
                 $user->status = $request->status ?? true;
                 $user->created_by = Auth::id();
                 $user->password = Hash::make('12345678');
@@ -177,42 +178,38 @@ class StaffController extends Controller
 
                 if ($image) {
                     $user->image = $this->uploadFile($image, 'uploads/users/', 'avatar_');
-
                 }
+
                 if ($user->save()) {
-                    $people = new People();
-                    $people->user_id = $user->id;
-                    $people->bn_name = $request->bn_name;
-                    $people->date_of_birth = $request->date_of_birth;
-                    $people->birth_place = $request->birth_place;
-                    $people->district_id = $request->district_id;
-                    $people->country_id = $request->country_id;
-                    $people->gender = $request->gender;
-                    $people->religion_id = $request->religion;
-                    $people->blood_group = $request->blood_group;
-                    if ($people->save()) {
-                        $staff = Staff::firstOrNew(['user_id' => $user->id]);
-                        $staff->is_staff = 2;
-                        if (empty($staff->staff_id)) {
-                            $staff->staff_id = $this->generateStaffId(
-                                $people->date_of_birth,
-                                $people->district_id
-                            );
-                        }
-                        $staff->save();
+                    $staff = Staff::firstOrNew(['user_id' => $user->id]);
+                    $staff->bn_name = $request->bn_name;
+                    $staff->date_of_birth = $request->date_of_birth;
+                    $staff->birth_place = $request->birth_place;
+                    $staff->district_id = $request->district_id;
+                    $staff->country_id = $request->country_id;
+                    $staff->gender = $request->gender;
+                    $staff->religion_id = $request->religion;
+                    $staff->blood_group = $request->blood_group;
+                    $staff->is_staff = 2;
 
+                    if (empty($staff->staff_id)) {
+                        $staff->staff_id = $this->generateStaffId(
+                            $staff->date_of_birth,
+                            $staff->district_id
+                        );
+                    }
 
+                    if ($staff->save()) {
                         $data['status'] = true;
-                        $data['message'] = "People saved successfully.";
+                        $data['message'] = "Staff saved successfully.";
                         $data['user'] = $user;
-                        $data['people'] = $people;
+                        $data['staff'] = $staff;
                         $data['code'] = 200;
-                        $data['redirect_url'] = route('staff.family', $people->user_id);
+                        $data['redirect_url'] = route('staff.family', $user->id);
                         return $data;
                     } else {
                         $data['status'] = false;
-                        $data['message'] = "People save failed! Please try again...";
-                        $data['people'] = $people;
+                        $data['message'] = "Staff save failed! Please try again...";
                         $data['code'] = 500;
                         return $data;
                     }
@@ -232,7 +229,6 @@ class StaffController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\People  $people
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -275,7 +271,9 @@ class StaffController extends Controller
         }
 
         $institute = $user->institute;
-        $data['people'] = People::where('user_id', $id)->first();
+        $data['staff'] = Staff::where('user_id', $id)->first();
+        // Keep backward compat alias
+        $data['people'] = $data['staff'];
 
         $data['religions'] = Religion::where('status', true)->get();
         $data['villages'] = [];
@@ -320,7 +318,6 @@ class StaffController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\People  $people
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -332,7 +329,7 @@ class StaffController extends Controller
         $data['religions'] = Religion::where('status', true)->get();
         $data['districts'] = District::where('status', true)->orderBy('name')->get();
         $data['countries'] = Country::orderBy('name')->get();
-        $data['user'] = $user = User::with('people')->find($id);
+        $data['user'] = $user = User::with('staff')->find($id);
 
         if (!$user) {
             return redirect()->route('staff.index')->with('error', 'User not found.');
@@ -350,7 +347,6 @@ class StaffController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\People  $people
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $userID)
@@ -397,34 +393,32 @@ class StaffController extends Controller
                 $user->image = $this->uploadFile($image, 'uploads/users/', 'avatar_');
             }
 
-
             try {
                 $user->save();
-                $people = People::firstOrNew(['user_id' => $userID]);
-                $people->bn_name = $request->bn_name;
-                $people->date_of_birth = $request->date_of_birth;
-                $people->birth_place = $request->birth_place;
-                $people->district_id = $request->district_id;
-                $people->country_id = $request->country_id;
-                $people->gender = $request->gender;
-                $people->religion_id = $request->religion;
-                $people->blood_group = $request->blood_group;
                 $staff = Staff::firstOrNew(['user_id' => $userID]);
+                $staff->bn_name = $request->bn_name;
+                $staff->date_of_birth = $request->date_of_birth;
+                $staff->birth_place = $request->birth_place;
+                $staff->district_id = $request->district_id;
+                $staff->country_id = $request->country_id;
+                $staff->gender = $request->gender;
+                $staff->religion_id = $request->religion;
+                $staff->blood_group = $request->blood_group;
                 $staff->is_staff = ($staff->is_staff ?? 2) == 2 ? 2 : 1;
+
                 if ($staff->is_staff == 2 && empty($staff->staff_id)) {
                     $staff->staff_id = $this->generateStaffId(
-                        $people->date_of_birth,
-                        $people->district_id
+                        $staff->date_of_birth,
+                        $staff->district_id
                     );
                 }
 
                 try {
-                    $people->save();
                     $staff->save();
                     $data['status'] = true;
-                    $data['message'] = "People updated successfully.";
+                    $data['message'] = "Staff updated successfully.";
                     $data['user'] = $user;
-                    $data['people'] = $people;
+                    $data['staff'] = $staff;
                     $data['code'] = 200;
                     $data['redirect_url'] = route('staff.family', $userID);
                     return $data;
@@ -452,18 +446,14 @@ class StaffController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\People  $people
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(People $people)
+    public function destroy($id)
     {
         //
     }
 
     private function generateApprovedId($date_of_birth, $district_id)
     {
-
         // DOB থেকে YYMMDD
         $datePart = Carbon::parse($date_of_birth)->format('ymd');
 
@@ -471,7 +461,7 @@ class StaffController extends Controller
         $districtPart = str_pad($district_id, 2, '0', STR_PAD_LEFT);
 
         // একই district + DOB এর last serial বের করা
-        $last = People::where('district_id', $district_id)
+        $last = Staff::where('district_id', $district_id)
             ->whereNotNull('approved_id')
             ->orderBy('id', 'desc')
             ->first();
@@ -494,10 +484,9 @@ class StaffController extends Controller
         $datePart = \Carbon\Carbon::parse($date_of_birth)->format('ymd');
         $districtPart = str_pad($district_id ?? 0, 2, '0', STR_PAD_LEFT);
 
-        $last = \App\Models\Staff::whereNotNull('staffs.staff_id')
-            ->join('people', 'people.user_id', '=', 'staffs.user_id')
-            ->where('people.district_id', $district_id)
-            ->orderBy('staffs.id', 'desc')
+        $last = Staff::whereNotNull('staff_id')
+            ->where('district_id', $district_id)
+            ->orderBy('id', 'desc')
             ->first();
 
         if ($last && $last->staff_id) {
@@ -522,35 +511,41 @@ class StaffController extends Controller
         DB::beginTransaction();
 
         try {
-            $people = People::findOrFail($id);
-            if (!empty($people->approved_id)) {
+            $staff = Staff::where('user_id', $id)->firstOrFail();
+
+            if (!empty($staff->approved_id)) {
                 DB::commit();
                 return redirect()->route('staffapprovedlist')
                     ->with('success', 'Already approved.');
             }
 
-            $district_id = $people->district_id
-                ?? ($people->user->addressInfo->permanent_district_id ?? null)
-                ?? ($people->user->addressInfo->present_district_id ?? null);
+            $district_id = $staff->district_id
+                ?? ($staff->user->addressInfo->permanent_district_id ?? null)
+                ?? ($staff->user->addressInfo->present_district_id ?? null);
 
-            if (!$people->date_of_birth || !$district_id) {
+            if (!$staff->date_of_birth || !$district_id) {
                 DB::rollBack();
                 return redirect()->back()->with('error', 'DOB or District missing');
             }
 
             $approvedId = $this->generateApprovedId(
-                $people->date_of_birth,
+                $staff->date_of_birth,
                 $district_id
             );
 
-            $people->approved_id = $approvedId;
+            $staff->approved_id = $approvedId;
+            $staff->is_staff = 1;
 
-            if (empty($people->user->institute_id) && !empty(Auth::user()->institute_id)) {
-                $people->user->institute_id = Auth::user()->institute_id;
-                $people->user->save();
+            $user = $staff->user;
+            if ($user) {
+                if (empty($user->institute_id) && !empty(Auth::user()->institute_id)) {
+                    $user->institute_id = Auth::user()->institute_id;
+                }
+                $user->status = 1; // Set to 1 when staff is approved
+                $user->save();
             }
 
-            $people->save();
+            $staff->save();
 
             DB::commit();
 

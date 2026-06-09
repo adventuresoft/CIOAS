@@ -73,10 +73,10 @@ class StaffFreedomFighterInfoController extends Controller
                         'commander_name' => $request->is_freedom_fighter ? $request->commander_name : null
                     ]);
 
-                    $people = \App\Models\People::where('user_id', $request->user_id)->first();
-                    if ($people && $people->is_staff == 2) {
-                        $people->is_staff = 1;
-                        $people->save();
+                    $staff = \App\Models\Staff::where('user_id', $request->user_id)->first();
+                    if ($staff && $staff->is_staff == 2) {
+                        $staff->is_staff = 1;
+                        $staff->save();
                     }
 
                     $data['status'] = true;
@@ -130,10 +130,10 @@ class StaffFreedomFighterInfoController extends Controller
                     'july_fighter_id' => $request->is_july_fighter ? $request->july_fighter_id : null,
                 ]);
 
-                $people = \App\Models\People::where('user_id', $request->user_id)->first();
-                if ($people && $people->is_staff == 2) {
-                    $people->is_staff = 1;
-                    $people->save();
+                $staff = \App\Models\Staff::where('user_id', $request->user_id)->first();
+                if ($staff && $staff->is_staff == 2) {
+                    $staff->is_staff = 1;
+                    $staff->save();
                 }
 
                 $data['status'] = true;
