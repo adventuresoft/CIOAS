@@ -39,11 +39,14 @@
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset('plugins') }}/summernote/summernote-bs4.min.css">
 
+    <link rel="stylesheet" href="{{ asset('assets') }}/style/cioas.css">
+
+
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('plugins') }}/select2/css/select2.min.css">
     <link rel="stylesheet" href="{{ asset('plugins') }}/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 
-     {{-- data table --}}
+    {{-- data table --}}
     <link rel="stylesheet" href="//cdn.datatables.net/2.3.6/css/dataTables.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.6/css/dataTables.bootstrap5.css">
     <style>
@@ -62,36 +65,110 @@
         }
 
         /* Bootstrap 4 to 5 Spacing and Utility Compatibility Bridge */
-        .mr-1 { margin-right: 0.25rem !important; }
-        .mr-2 { margin-right: 0.5rem !important; }
-        .mr-3 { margin-right: 1rem !important; }
-        .mr-4 { margin-right: 1.5rem !important; }
-        .mr-5 { margin-right: 3rem !important; }
-        .mr-auto { margin-right: auto !important; }
+        .mr-1 {
+            margin-right: 0.25rem !important;
+        }
 
-        .ml-1 { margin-left: 0.25rem !important; }
-        .ml-2 { margin-left: 0.5rem !important; }
-        .ml-3 { margin-left: 1rem !important; }
-        .ml-4 { margin-left: 1.5rem !important; }
-        .ml-5 { margin-left: 3rem !important; }
-        .ml-auto { margin-left: auto !important; }
+        .mr-2 {
+            margin-right: 0.5rem !important;
+        }
 
-        .pr-1 { padding-right: 0.25rem !important; }
-        .pr-2 { padding-right: 0.5rem !important; }
-        .pr-3 { padding-right: 1rem !important; }
-        .pr-4 { padding-right: 1.5rem !important; }
-        .pr-5 { padding-right: 3rem !important; }
+        .mr-3 {
+            margin-right: 1rem !important;
+        }
 
-        .pl-1 { padding-left: 0.25rem !important; }
-        .pl-2 { padding-left: 0.5rem !important; }
-        .pl-3 { padding-left: 1rem !important; }
-        .pl-4 { padding-left: 1.5rem !important; }
-        .pl-5 { padding-left: 3rem !important; }
+        .mr-4 {
+            margin-right: 1.5rem !important;
+        }
 
-        .float-left { float: left !important; }
-        .float-right { float: right !important; }
-        .text-right { text-align: right !important; }
-        .text-left { text-align: left !important; }
+        .mr-5 {
+            margin-right: 3rem !important;
+        }
+
+        .mr-auto {
+            margin-right: auto !important;
+        }
+
+        .ml-1 {
+            margin-left: 0.25rem !important;
+        }
+
+        .ml-2 {
+            margin-left: 0.5rem !important;
+        }
+
+        .ml-3 {
+            margin-left: 1rem !important;
+        }
+
+        .ml-4 {
+            margin-left: 1.5rem !important;
+        }
+
+        .ml-5 {
+            margin-left: 3rem !important;
+        }
+
+        .ml-auto {
+            margin-left: auto !important;
+        }
+
+        .pr-1 {
+            padding-right: 0.25rem !important;
+        }
+
+        .pr-2 {
+            padding-right: 0.5rem !important;
+        }
+
+        .pr-3 {
+            padding-right: 1rem !important;
+        }
+
+        .pr-4 {
+            padding-right: 1.5rem !important;
+        }
+
+        .pr-5 {
+            padding-right: 3rem !important;
+        }
+
+        .pl-1 {
+            padding-left: 0.25rem !important;
+        }
+
+        .pl-2 {
+            padding-left: 0.5rem !important;
+        }
+
+        .pl-3 {
+            padding-left: 1rem !important;
+        }
+
+        .pl-4 {
+            padding-left: 1.5rem !important;
+        }
+
+        .pl-5 {
+            padding-left: 3rem !important;
+        }
+
+        .float-left {
+            float: left !important;
+        }
+
+        .float-right {
+            float: right !important;
+        }
+
+        .text-right {
+            text-align: right !important;
+        }
+
+        .text-left {
+            text-align: left !important;
+        }
+
         .custom-select {
             display: inline-block;
             width: 100%;
@@ -107,7 +184,7 @@
             appearance: none;
         }
 
-        .nav-sidebar .nav-item > .nav-link {
+        .nav-sidebar .nav-item>.nav-link {
             display: flex;
             align-items: center;
         }
@@ -232,6 +309,9 @@
 
     <script>
         $(document).ready(function() {
+
+            $('.select2').select2();
+
             $(document).on('submit', '#FormSubmit', function(e) {
                 e.preventDefault();
                 let thisForm = $(this);
@@ -275,7 +355,7 @@
                 var deleteUrl = $(this).find(".deleteUrl").val();
                 var redirectUrl = $(this).find(".redirect-url").val();
 
-                
+
                 $("#toast-container").show();
                 toastr.success(
                     "<br /><button type='button' id='confirmationRevertNo' class='btn clear'>No</button><br /><button type='button' id='confirmationRevertYes' class='btn clear'>Yes</button>",
@@ -328,9 +408,11 @@
 
             // Map Bootstrap 4 data attributes to Bootstrap 5
             function mapBS4toBS5(context) {
-                let selectors = ['toggle', 'target', 'dismiss', 'slide', 'slide-to', 'parent', 'reference', 'offset', 'spy', 'ride', 'content', 'trigger', 'placement'];
-                selectors.forEach(function (attr) {
-                    $(context).find('[data-' + attr + ']').each(function () {
+                let selectors = ['toggle', 'target', 'dismiss', 'slide', 'slide-to', 'parent', 'reference',
+                    'offset', 'spy', 'ride', 'content', 'trigger', 'placement'
+                ];
+                selectors.forEach(function(attr) {
+                    $(context).find('[data-' + attr + ']').each(function() {
                         let $el = $(this);
                         let val = $el.attr('data-' + attr);
                         if (!$el.attr('data-bs-' + attr)) {
@@ -344,7 +426,7 @@
             mapBS4toBS5(document);
 
             // Handle dynamically added content (e.g. AJAX or modals)
-            $(document).on('DOMNodeInserted', function (e) {
+            $(document).on('DOMNodeInserted', function(e) {
                 mapBS4toBS5(e.target);
             });
         })

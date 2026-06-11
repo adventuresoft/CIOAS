@@ -104,13 +104,14 @@
 
                 @if (institute_permissions())
                     {{-- Institute Settings --}}
-                    <li class="nav-item
-                                                                            @if (
-                                                                                $subMenu == 'InstituteCreate' ||
-                                                                                $subMenu == 'InstituteType' ||
-                                                                                $subMenu == 'InstituteCategory' ||
-                                                                                $subMenu == 'InstituteList'
-                                                                            ) menu-open @endif">
+                    <li
+                        class="nav-item
+                                                                                                                        @if (
+                                                                                                                            $subMenu == 'InstituteCreate' ||
+                                                                                                                            $subMenu == 'InstituteType' ||
+                                                                                                                            $subMenu == 'InstituteCategory' ||
+                                                                                                                            $subMenu == 'InstituteList'
+                                                                                                                        ) menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'Institute') active @endif ">
                             <i class="nav-icon fas fa-university"></i>
                             <p>
@@ -295,16 +296,16 @@
                         has_module_access('trade_license')
                     )
                     <li class="nav-item
-                                                                      @if (
-                                                                        $subMenu == 'OrganizationCreate' ||
-                                                                        $subMenu == 'OrganizationList' ||
-                                                                        $subMenu == 'OrganizationShow' ||
-                                                                        $subMenu == 'RegistrationFees' ||
-                                                                        $subMenu == 'RenewFees' ||
-                                                                        $subMenu == 'TradeLicense' ||
-                                                                        $subMenu == 'GetTradeLicense'
-                                                                    ) menu-open @endif
-                                                                      ">
+                                                                                                                  @if (
+                                                                                                                    $subMenu == 'OrganizationCreate' ||
+                                                                                                                    $subMenu == 'OrganizationList' ||
+                                                                                                                    $subMenu == 'OrganizationShow' ||
+                                                                                                                    $subMenu == 'RegistrationFees' ||
+                                                                                                                    $subMenu == 'RenewFees' ||
+                                                                                                                    $subMenu == 'TradeLicense' ||
+                                                                                                                    $subMenu == 'GetTradeLicense'
+                                                                                                                ) menu-open @endif
+                                                                                                                  ">
                         <a href="#" class="nav-link @if ($mainMenu == 'Organization') active @endif ">
                             <i class="nav-icon fas fa-briefcase"></i>
                             <p>
@@ -374,8 +375,8 @@
                 {{-- License --}}
                 @if (has_module_access('license') || has_module_access('licenses'))
                     <li class="nav-item
-                                                                      @if ($subMenu == 'LicenseCreate' || $subMenu == 'LicenseList' || $subMenu == 'LicenseShow' || $subMenu == 'LicenseEdit') menu-open @endif
-                                                                      ">
+                                                                                                                  @if ($subMenu == 'LicenseCreate' || $subMenu == 'LicenseList' || $subMenu == 'LicenseShow' || $subMenu == 'LicenseEdit') menu-open @endif
+                                                                                                                  ">
                         <a href="#" class="nav-link @if ($mainMenu == 'License') active @endif ">
                             <i class="nav-icon fas fa-id-card"></i>
                             <p>
@@ -412,7 +413,7 @@
                 @if (has_module_access('hotel-restaurant') || has_module_access('hotel_restaurant'))
                     <li
                         class="nav-item
-                                                                         @if ($subMenu == 'HotelRestaurant' || $subMenu == 'HotelRestaurantist') menu-open @endif">
+                                                                                                                     @if ($subMenu == 'HotelRestaurant' || $subMenu == 'HotelRestaurantist') menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'HotelRestaurant') active @endif ">
                             <i class="nav-icon fas fa-briefcase"></i>
                             <p>
@@ -443,6 +444,97 @@
                         </ul>
                     </li>
                 @endif
+
+                {{-- Mis Case --}}
+                {{-- @if (has_module_access('miscase') || has_module_access('miscases')) --}}
+                <li
+                    class="nav-item
+                                                                         @if ($subMenu == 'MisCase' || $subMenu == 'MisCaseList') menu-open @endif">
+                    <a href="#" class="nav-link @if ($mainMenu == 'MisCase') active @endif ">
+                        <i class="nav-icon fas fa-briefcase"></i>
+                        <p>
+                            Mis Case
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        {{-- @if (has_sub_module_access('miscase', 'create') || has_sub_module_access('miscases',
+                        'create')) --}}
+                        <li class="nav-item">
+                            <a href="{{ route('miscase.create') }}"
+                                class="nav-link @if ($subMenu == 'MisCaseCreate') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create</p>
+                            </a>
+                        </li>
+                        {{-- @endif --}}
+
+                        {{-- @if (has_sub_module_access('miscase', 'read') || has_sub_module_access('miscases', 'read'))
+                        --}}
+                        <li class="nav-item">
+                            <a href="{{ route('miscase.index') }}"
+                                class="nav-link @if ($subMenu == 'MisCaseList') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Mis Case List</p>
+                            </a>
+                        </li>
+                        {{-- @endif --}}
+                    </ul>
+                </li>
+                {{-- @endif --}}
+
+
+                <li
+                    class="nav-item
+                                                                         @if ($subMenu == 'CaseOrder' || $subMenu == 'CaseOrderList' || $subMenu == 'CaseOrderCreate' || $subMenu == 'CaseDateEdit' || $subMenu == 'HearingNotice') menu-open @endif">
+                    <a href="#" class="nav-link @if ($mainMenu == 'CaseOrder') active @endif ">
+                        <i class="nav-icon fas fa-briefcase"></i>
+                        <p>
+                            Case Order
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        {{-- @if (has_sub_module_access('miscase', 'create') || has_sub_module_access('miscases',
+                        'create')) --}}
+
+                        <li class="nav-item">
+                            <a href="{{ route('caseorder.index') }}"
+                                class="nav-link @if ($subMenu == 'CaseOrderList') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>All Case Order</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('caseorder.create') }}"
+                                class="nav-link @if ($subMenu == 'CaseOrderCreate') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>New Case Order</p>
+                            </a>
+                        </li>
+                        {{-- @endif --}}
+
+                        {{-- @if (has_sub_module_access('miscase', 'read') || has_sub_module_access('miscases', 'read'))
+                        --}}
+                        <li class="nav-item">
+                            <a href="{{ route('caseorder.dateEditList') }}"
+                                class="nav-link @if ($subMenu == 'CaseDateEdit') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Case Date Edit</p>
+                            </a>
+                        </li>
+                        {{-- @endif --}}
+
+                        <li class="nav-item">
+                            <a href="{{ route('caseorder.hearingNotice') }}"
+                                class="nav-link @if ($subMenu == 'HearingNotice') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Hearing Notice</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
 
             </ul>
