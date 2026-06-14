@@ -145,6 +145,9 @@ use App\Http\Controllers\Backend\MisCaseController;
 
 use App\Http\Controllers\Backend\CaseOrderController;
 
+use App\Http\Controllers\Backend\PersonGunLicenseController;
+use App\Http\Controllers\Backend\OrgGunLicenseController;
+
 // DepartmentController
 use App\Http\Controllers\Departments\DepartmentController;
 use App\Http\Controllers\Departments\DepartmentSectionController;
@@ -522,6 +525,34 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('caseorder/{mis_case_id}/register', [CaseOrderController::class, 'register'])->name('caseorder.register');
     Route::resource('caseorder', CaseOrderController::class);
 
+    // Gun License
+    Route::prefix('gun-license')->name('gun-license.')->group(function () {
+        Route::prefix('person')->name('person.')->group(function () {
+            Route::get('/', [PersonGunLicenseController::class, 'index'])->name('index');
+            Route::get('create', [PersonGunLicenseController::class, 'createApplication'])->name('create');
+            Route::post('store', [PersonGunLicenseController::class, 'storeApplication'])->name('store');
+            Route::get('{id}/verification', [PersonGunLicenseController::class, 'createVerification'])->name('verification.create');
+            Route::post('{id}/verification', [PersonGunLicenseController::class, 'storeVerification'])->name('verification.store');
+            Route::get('{id}/interview', [PersonGunLicenseController::class, 'createInterview'])->name('interview.create');
+            Route::post('{id}/interview', [PersonGunLicenseController::class, 'storeInterview'])->name('interview.store');
+            Route::post('{id}/approve', [PersonGunLicenseController::class, 'approve'])->name('approve');
+            Route::post('{id}/reject', [PersonGunLicenseController::class, 'reject'])->name('reject');
+            Route::get('{id}', [PersonGunLicenseController::class, 'show'])->name('show');
+        });
+
+        Route::prefix('organization')->name('org.')->group(function () {
+            Route::get('/', [OrgGunLicenseController::class, 'index'])->name('index');
+            Route::get('create', [OrgGunLicenseController::class, 'createApplication'])->name('create');
+            Route::post('store', [OrgGunLicenseController::class, 'storeApplication'])->name('store');
+            Route::get('{id}/verification', [OrgGunLicenseController::class, 'createVerification'])->name('verification.create');
+            Route::post('{id}/verification', [OrgGunLicenseController::class, 'storeVerification'])->name('verification.store');
+            Route::get('{id}/interview', [OrgGunLicenseController::class, 'createInterview'])->name('interview.create');
+            Route::post('{id}/interview', [OrgGunLicenseController::class, 'storeInterview'])->name('interview.store');
+            Route::post('{id}/approve', [OrgGunLicenseController::class, 'approve'])->name('approve');
+            Route::post('{id}/reject', [OrgGunLicenseController::class, 'reject'])->name('reject');
+            Route::get('{id}', [OrgGunLicenseController::class, 'show'])->name('show');
+        });
+    });
     Route::resource('chairman', ChairmanController::class);
 
     Route::post('/fromupdate', [ChairmanController::class, 'fromupdate'])->name('chairman.fromupdate');

@@ -445,6 +445,32 @@
                     </li>
                 @endif
 
+                {{-- Gun License --}}
+                <li class="nav-item @if (isset($mainMenu) && $mainMenu == 'GunLicense') menu-open @endif">
+                    <a href="#" class="nav-link @if (isset($mainMenu) && $mainMenu == 'GunLicense') active @endif ">
+                        <i class="nav-icon fas fa-shield-alt"></i>
+                        <p>
+                            Gun License
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('gun-license.person.index') }}"
+                                class="nav-link @if (isset($subMenu) && $subMenu == 'PersonGunLicense') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Person License List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('gun-license.org.index') }}"
+                                class="nav-link @if (isset($subMenu) && $subMenu == 'OrgGunLicense') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Organization License List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 {{-- Mis Case --}}
                 {{-- @if (has_module_access('miscase') || has_module_access('miscases')) --}}
                 <li

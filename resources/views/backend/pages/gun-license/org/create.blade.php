@@ -1,0 +1,331 @@
+@extends('backend.master', ['mainMenu' => 'GunLicense', 'subMenu' => 'OrgGunLicense'])
+
+@push('style')
+<style>
+    /* Premium Smart Form Design System */
+    .card-body label:not(.form-check-label) {
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #475569;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .card-body .form-control:not(.custom-file-input) {
+        border-radius: 8px !important;
+        border: 1px solid #cbd5e1 !important;
+        height: 40px !important;
+        font-size: 0.9rem !important;
+        color: #1e293b !important;
+        background-color: #ffffff;
+        box-shadow: none !important;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .card-body .form-group.row {
+        margin-bottom: 28px !important;
+    }
+
+    .card-body .form-control:focus:not(.custom-file-input) {
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+        background-color: #ffffff !important;
+    }
+
+    .section-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #1e293b;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 8px;
+        margin-top: 24px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .section-title i {
+        color: #2563eb;
+    }
+</style>
+@endpush
+
+@section('title', 'Create Organization Gun License')
+@section('content')
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Create Organization Gun License</h1>
+            </div>
+            <div class="col-sm-6 text-right">
+                <a href="{{ route('gun-license.org.index') }}" class="btn btn-default">Back</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Organization Application Form</h3>
+                    </div>
+                    <form class="form-horizontal" id="orgApplicationForm" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="card-body">
+                            
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h5 class="section-title"><i class="fas fa-building"></i> Corporate Details</h5>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="org_name">Organization/Bank Name <span class="text-danger">*</span></label>
+                                    <input type="text" name="org_name" class="form-control" id="org_name" required placeholder="Enter bank or company name">
+                                    <small class="text-danger error org_name_error"></small>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="operation_start_date">Operation Start Date</label>
+                                    <input type="date" name="operation_start_date" class="form-control" id="operation_start_date">
+                                    <small class="text-danger error operation_start_date_error"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label for="org_address">Organization Address</label>
+                                    <textarea name="org_address" class="form-control" id="org_address" rows="2" style="height: auto !important;" placeholder="Enter complete office address"></textarea>
+                                    <small class="text-danger error org_address_error"></small>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h5 class="section-title"><i class="fas fa-shield-alt"></i> Security & Operations</h5>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="vault_limit">Vault Limit</label>
+                                    <input type="text" name="vault_limit" class="form-control" id="vault_limit" placeholder="Vault limit in BDT">
+                                    <small class="text-danger error vault_limit_error"></small>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="vehicle_count">Cash-Carrying Vehicle Count</label>
+                                    <input type="number" name="vehicle_count" class="form-control" id="vehicle_count" value="0" min="0">
+                                    <small class="text-danger error vehicle_count_error"></small>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="bangladesh_bank_permission">Bangladesh Bank Permission <span class="text-danger">*</span></label>
+                                    <select name="bangladesh_bank_permission" class="form-control" id="bangladesh_bank_permission" required>
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                    <small class="text-danger error bangladesh_bank_permission_error"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label for="current_security_description">Current Security Description</label>
+                                    <textarea name="current_security_description" class="form-control" id="current_security_description" rows="2" style="height: auto !important;" placeholder="Description of current security setup"></textarea>
+                                    <small class="text-danger error current_security_description_error"></small>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h5 class="section-title"><i class="fas fa-users"></i> Management & Tax</h5>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="owner_or_ceo_details">Owner or CEO Details</label>
+                                    <textarea name="owner_or_ceo_details" class="form-control" id="owner_or_ceo_details" rows="2" style="height: auto !important;" placeholder="CEO / Board of Directors information"></textarea>
+                                    <small class="text-danger error owner_or_ceo_details_error"></small>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="organogram_manpower_details">Organogram Manpower Details</label>
+                                    <textarea name="organogram_manpower_details" class="form-control" id="organogram_manpower_details" rows="2" style="height: auto !important;" placeholder="Organogram structure details"></textarea>
+                                    <small class="text-danger error organogram_manpower_details_error"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="tax_details">Tax Details (TIN/VAT)</label>
+                                    <textarea name="tax_details" class="form-control" id="tax_details" rows="2" style="height: auto !important;" placeholder="Enter TIN number & compliance notes"></textarea>
+                                    <small class="text-danger error tax_details_error"></small>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="rental_agreement_details">Premises Rental / Lease Details</label>
+                                    <textarea name="rental_agreement_details" class="form-control" id="rental_agreement_details" rows="2" style="height: auto !important;" placeholder="Lease duration, owner details if applicable"></textarea>
+                                    <small class="text-danger error rental_agreement_details_error"></small>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h5 class="section-title"><i class="fas fa-crosshairs"></i> Weapon Requirements</h5>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="weapon_count_requested">Weapon Count Requested</label>
+                                    <input type="number" name="weapon_count_requested" class="form-control" id="weapon_count_requested" value="1" min="1">
+                                    <small class="text-danger error weapon_count_requested_error"></small>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="weapon_nature_requested">Nature of Weapon Requested <span class="text-danger">*</span></label>
+                                    <select name="weapon_nature_requested" class="form-control" id="weapon_nature_requested" required>
+                                        <option value="">Select Gun Type</option>
+                                        <option value="Shotgun">Shotgun (শটগান / দোতালা-একতালা বন্দুক)</option>
+                                        <option value="Pistol">Pistol (পিস্তল)</option>
+                                        <option value="Revolver">Revolver (রিভলভার)</option>
+                                        <option value="Rifle">Rifle (রাইফেল)</option>
+                                    </select>
+                                    <small class="text-danger error weapon_nature_requested_error"></small>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="justification_of_necessity">Justification of Necessity</label>
+                                    <input type="text" name="justification_of_necessity" class="form-control" id="justification_of_necessity" placeholder="Reason for requiring arms">
+                                    <small class="text-danger error justification_of_necessity_error"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label for="existing_weapons_details">Existing Weapons Details (If Any)</label>
+                                    <textarea name="existing_weapons_details" class="form-control" id="existing_weapons_details" rows="2" style="height: auto !important;" placeholder="Details of weapons currently owned under other licenses"></textarea>
+                                    <small class="text-danger error existing_weapons_details_error"></small>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h5 class="section-title"><i class="fas fa-user-shield"></i> Designated Guard Details</h5>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="guard_name">Guard Name <span class="text-danger">*</span></label>
+                                    <input type="text" name="guard_name" class="form-control" id="guard_name" required placeholder="Enter guard full name">
+                                    <small class="text-danger error guard_name_error"></small>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="guard_father_name">Guard Father's Name</label>
+                                    <input type="text" name="guard_father_name" class="form-control" id="guard_father_name" placeholder="Guard's father's name">
+                                    <small class="text-danger error guard_father_name_error"></small>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="guard_mother_name">Guard Mother's Name</label>
+                                    <input type="text" name="guard_mother_name" class="form-control" id="guard_mother_name" placeholder="Guard's mother's name">
+                                    <small class="text-danger error guard_mother_name_error"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="guard_present_address">Guard Present Address</label>
+                                    <textarea name="guard_present_address" class="form-control" id="guard_present_address" rows="2" style="height: auto !important;" placeholder="Guard present address"></textarea>
+                                    <small class="text-danger error guard_present_address_error"></small>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="guard_permanent_address">Guard Permanent Address</label>
+                                    <textarea name="guard_permanent_address" class="form-control" id="guard_permanent_address" rows="2" style="height: auto !important;" placeholder="Guard permanent address"></textarea>
+                                    <small class="text-danger error guard_permanent_address_error"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <label for="guard_age">Guard Age</label>
+                                    <input type="number" name="guard_age" class="form-control" id="guard_age" placeholder="Age in years">
+                                    <small class="text-danger error guard_age_error"></small>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="guard_education">Guard Education</label>
+                                    <input type="text" name="guard_education" class="form-control" id="guard_education" placeholder="e.g. SSC / HSC">
+                                    <small class="text-danger error guard_education_error"></small>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="guard_nid_number">Guard NID Number</label>
+                                    <input type="text" name="guard_nid_number" class="form-control" id="guard_nid_number" placeholder="NID Card number">
+                                    <small class="text-danger error guard_nid_number_error"></small>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="guard_training_certificate_status">Guard Training Status <span class="text-danger">*</span></label>
+                                    <select name="guard_training_certificate_status" class="form-control" id="guard_training_certificate_status" required>
+                                        <option value="1">Certified / Trained (প্রশিক্ষিত)</option>
+                                        <option value="0">Untrained (অপ্রশিক্ষিত)</option>
+                                    </select>
+                                    <small class="text-danger error guard_training_certificate_status_error"></small>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-info float-right">Submit Application</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@endsection
+
+@push('script')
+<script>
+    $(document).ready(function() {
+        $("#orgApplicationForm").on('submit', function(e) {
+            e.preventDefault();
+            let thisForm = $(this);
+            $(".error").text(''); // reset errors
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('gun-license.org.store') }}",
+                data: new FormData(this),
+                dataType: "json",
+                contentType: false,
+                cache: false,
+                processData: false,
+                beforeSend: function() {
+                    thisForm.find('button[type="submit"]').prop("disabled", true);
+                },
+                success: function(response) {
+                    thisForm.find('button[type="submit"]').prop("disabled", false);
+                    toastr.success(response.message);
+                    setTimeout(() => {
+                        location.href = response.redirect_url;
+                    }, 2000);
+                },
+                error: function(xhr, status, error) {
+                    thisForm.find('button[type="submit"]').prop("disabled", false);
+                    var responseText = jQuery.parseJSON(xhr.responseText);
+                    toastr.error(responseText.message || "An error occurred.");
+                    
+                    if (responseText.errors) {
+                        $.each(responseText.errors, function(key, val) {
+                            thisForm.find("." + key + "_error").text(val[0]);
+                        });
+                    }
+                }
+            });
+        });
+    });
+</script>
+@endpush
