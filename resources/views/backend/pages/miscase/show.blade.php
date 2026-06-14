@@ -282,7 +282,8 @@
                 <div class="mc-card-header">
                     <h3 class="mc-card-title"><i class="fas fa-folder-open"></i> Case Information</h3>
                     <div style="display:flex; gap:8px;">
-                        <a href="{{ route('miscase.print', $miscase->id) }}" target="_blank" class="btn btn-info btn-sm text-white font-weight-bold">
+                        <a href="{{ route('miscase.print', $miscase->id) }}" target="_blank"
+                            class="btn btn-info btn-sm text-white font-weight-bold">
                             <i class="fas fa-print"></i> কেস হিস্ট্রি প্রিন্ট (প্যাড)
                         </a>
                         @if ($miscase->status !== 'closed')
@@ -322,7 +323,8 @@
 
                     @if ($miscase->case_details)
                         <div class="mt-4">
-                            <label class="text-muted font-weight-bold" style="font-size:12px;text-transform:uppercase;">বিস্তারিত</label>
+                            <label class="text-muted font-weight-bold"
+                                style="font-size:12px;text-transform:uppercase;">বিস্তারিত</label>
                             <div class="p-3 bg-light rounded text-dark" style="font-size:14px;white-space:pre-line;">
                                 {{ $miscase->case_details }}
                             </div>
@@ -331,7 +333,8 @@
 
                     @if ($miscase->rejection_reason)
                         <div class="mt-3">
-                            <label class="text-danger font-weight-bold" style="font-size:12px;text-transform:uppercase;">নিস্পত্তি না হওয়ার কারণ</label>
+                            <label class="text-danger font-weight-bold"
+                                style="font-size:12px;text-transform:uppercase;">নিস্পত্তি না হওয়ার কারণ</label>
                             <div class="p-3 bg-light rounded text-danger" style="font-size:14px;white-space:pre-line;">
                                 {{ $miscase->rejection_reason }}
                             </div>
@@ -348,7 +351,8 @@
                 <div class="mc-card-body">
                     <div class="row">
                         <div class="col-md-6 mb-4 mb-md-0">
-                            <h5 class="mb-3 font-weight-bold text-dark"><i class="fas fa-chevron-circle-right text-success mr-1"></i> Plaintiffs (বাদী)</h5>
+                            <h5 class="mb-3 font-weight-bold text-dark"><i
+                                    class="fas fa-chevron-circle-right text-success mr-1"></i> Plaintiffs (বাদী)</h5>
                             @forelse ($plaintiffs as $party)
                                 <div class="party-card">
                                     <strong>{{ $party['name'] ?? '-' }}</strong>
@@ -362,7 +366,8 @@
                             @endforelse
                         </div>
                         <div class="col-md-6">
-                            <h5 class="mb-3 font-weight-bold text-dark"><i class="fas fa-chevron-circle-right text-danger mr-1"></i> Defendants (বিবাদী)</h5>
+                            <h5 class="mb-3 font-weight-bold text-dark"><i
+                                    class="fas fa-chevron-circle-right text-danger mr-1"></i> Defendants (বিবাদী)</h5>
                             @forelse ($defendants as $party)
                                 <div class="party-card">
                                     <strong>{{ $party['name'] ?? '-' }}</strong>
@@ -404,7 +409,7 @@
                             <tbody>
                                 @forelse ($locationRows as $row)
                                     <tr>
-                                        <td><span class="badge badge-light border">{{ $row['record'] ?? '-' }}</span></td>
+                                        <td>{{ $row['record'] ?? '-' }}</td>
                                         <td>{{ $locationNames['districts'][$row['district_id'] ?? null] ?? '-' }}</td>
                                         <td>{{ $locationNames['thanas'][$row['thana_id'] ?? null] ?? '-' }}</td>
                                         <td>{{ $locationNames['mouzas'][$row['mouza_id'] ?? null] ?? '-' }}</td>
@@ -433,12 +438,16 @@
                 </div>
                 <div class="mc-card-body">
                     <div class="mb-4">
-                        <label class="text-muted font-weight-bold" style="font-size:12px;text-transform:uppercase;">Notes</label>
-                        <p class="p-3 bg-light rounded text-dark" style="font-size:14px;">{{ $notesText ?: 'No notes added.' }}</p>
+                        <label class="text-muted font-weight-bold"
+                            style="font-size:12px;text-transform:uppercase;">Notes</label>
+                        <p class="p-3 bg-light rounded text-dark" style="font-size:14px;">
+                            {{ $notesText ?: 'No notes added.' }}
+                        </p>
                     </div>
 
                     <div>
-                        <label class="text-muted font-weight-bold" style="font-size:12px;text-transform:uppercase;">Attached Documents</label>
+                        <label class="text-muted font-weight-bold" style="font-size:12px;text-transform:uppercase;">Attached
+                            Documents</label>
                         <div class="attachment-container">
                             @if (!empty($miscase->files))
                                 @foreach ($miscase->files as $file)
@@ -453,7 +462,8 @@
                                             <i class="fas fa-file-alt attachment-icon"></i>
                                             <div class="attachment-details">
                                                 <span class="attachment-name" title="{{ $fileName }}">{{ $fileName }}</span>
-                                                <span class="attachment-action"><i class="fas fa-external-link-alt"></i> View File</span>
+                                                <span class="attachment-action"><i class="fas fa-external-link-alt"></i> View
+                                                    File</span>
                                             </div>
                                         </a>
                                     @endif

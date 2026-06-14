@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Institute;
 
 class CaseOrder extends Model
 {
@@ -12,13 +13,20 @@ class CaseOrder extends Model
     protected $fillable = [
         'mis_case_id',
         'status',
+        'memorial_no',
         'next_hearing_date',
         'next_hearing_time',
         'command_type',
+        'command_start_date',
+        'command_till_date',
+        'command_end_date',
         'command_text',
+        'order_law',
+        'form_number',
         'command_yes_note',
         'command_yes_file',
         'command_no_file',
+        'files',
         'side_note',
         'order_by',
         'hearing_no',
@@ -27,7 +35,11 @@ class CaseOrder extends Model
 
     protected $casts = [
         'next_hearing_date' => 'date',
-        'date_changed'      => 'boolean',
+        'command_start_date' => 'date',
+        'command_till_date' => 'date',
+        'command_end_date' => 'date',
+        'date_changed' => 'boolean',
+        'files' => 'array',
     ];
 
     /**
@@ -57,7 +69,7 @@ class CaseOrder extends Model
         if ($this->status === '0') {
             return 'Pending';
         }
-        return $this->status ?: 'Pending';
+        return ucfirst($this->status ?: 'Pending');
     }
 
     /**
@@ -65,16 +77,17 @@ class CaseOrder extends Model
      */
     public function getStatusClassAttribute()
     {
-        if ($this->status === '1' || $this->status === 'হয়েছে' || $this->status === 'হмеется') {
+        $status = strtolower($this->status);
+        if (in_array($status, ['1', 'হয়েছে', 'হмеется', 'approved'])) {
             return 'approved';
         }
-        if ($this->status === '0' || $this->status === 'হয়নি') {
+        if (in_array($status, ['0', 'হয়নি', 'pending'])) {
             return 'pending';
         }
-        if ($this->status === 'মুলতবি') {
+        if ($status === 'মুলতবি') {
             return 'postponed';
         }
-        return 'pending';
+        return $status ?: 'pending';
     }
 
     /**
@@ -96,5 +109,12 @@ class CaseOrder extends Model
         }
         return $this->command_type;
     }
+
+
+    public function institute()
+    {
+        return $this->belongsTo(Institute::class, 'institute_id');
+    }
+
 }
 

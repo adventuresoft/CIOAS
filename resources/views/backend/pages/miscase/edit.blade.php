@@ -4,7 +4,7 @@
 
 @section('content')
 @php
-    $caseNoValue = sprintf('CASE%05d', $miscase->id);
+    $caseNoValue = $miscase->case_no;
     $formAction = route('miscase.update', $miscase->id);
     $pageTitle = 'Edit Mis Case';
     $submitText = 'Update Case';
@@ -375,6 +375,24 @@
                                         <option value="rejected" @selected(old('status', $miscase->status ?? '') == 'rejected')>Rejected</option>
                                     </select>
                                     <small class="text-danger error status_error"></small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="md-field">
+                                    <label for="header_one">Header One</label>
+                                    <input type="text" name="header_one" id="header_one"
+                                        class="form-control md-control"
+                                        value="{{ old('header_one', $miscase->header_one ?? '') }}">
+                                    <small class="text-danger error header_one_error"></small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="md-field">
+                                    <label for="header_two">Header Two</label>
+                                    <input type="text" name="header_two" id="header_two"
+                                        class="form-control md-control"
+                                        value="{{ old('header_two', $miscase->header_two ?? '') }}">
+                                    <small class="text-danger error header_two_error"></small>
                                 </div>
                             </div>
                             <div class="col-md-12">

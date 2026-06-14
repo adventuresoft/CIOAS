@@ -514,6 +514,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
 
     // Case order
+    Route::get('caseorder/{id}/print-notice', [CaseOrderController::class, 'printNotice'])->name('caseorder.printNotice');
+    Route::get('caseorder/{id}/print-order', [CaseOrderController::class, 'printOrder'])->name('caseorder.printOrder');
     Route::get('caseorder-hearing-notice', [CaseOrderController::class, 'hearingNotice'])->name('caseorder.hearingNotice');
     Route::get('caseorder-date-edit', [CaseOrderController::class, 'dateEditList'])->name('caseorder.dateEditList');
     Route::post('caseorder/{id}/add-order', [CaseOrderController::class, 'addOrder'])->name('caseorder.addOrder');

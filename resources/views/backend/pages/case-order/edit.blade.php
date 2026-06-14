@@ -163,17 +163,52 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="md-label">পরবর্তী শুনানির তারিখ <span class="text-danger">*</span></label>
-                                    <input type="date" name="next_hearing_date" class="md-input" required
-                                        value="{{ old('next_hearing_date', $caseOrder->next_hearing_date ? $caseOrder->next_hearing_date->format('Y-m-d') : '') }}">
-                                    @error('next_hearing_date')
-                                        <small class="text-danger">{{ $message }}</small>
+                                    <label class="md-label">স্মারক নম্বর (Memorial Number)</label>
+                                    <input type="text" name="memorial_no" class="md-input @error('memorial_no') is-invalid @enderror"
+                                        value="{{ old('memorial_no', $caseOrder->memorial_no) }}" placeholder="স্মারক নম্বর লিখুন">
+                                    @error('memorial_no')
+                                        <span class="text-danger small">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="md-label">সময় (HH:MM)</label>
-                                    <input type="time" name="next_hearing_time" class="md-input"
+                                    <label class="md-label">পরবর্তী শুনানির তারিখ <span class="text-danger">*</span></label>
+                                    <input type="date" name="next_hearing_date" class="md-input @error('next_hearing_date') is-invalid @enderror" required
+                                        value="{{ old('next_hearing_date', $caseOrder->next_hearing_date ? $caseOrder->next_hearing_date->format('Y-m-d') : '') }}">
+                                    @error('next_hearing_date')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="md-label">সময় (HH:MM)</label>
+                                    <input type="time" name="next_hearing_time" class="md-input @error('next_hearing_time') is-invalid @enderror"
                                         value="{{ old('next_hearing_time', $caseOrder->next_hearing_time ?? '') }}">
+                                    @error('next_hearing_time')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="md-label">Command Start-date (আদেশের শুরুর তারিখ)</label>
+                                    <input type="date" name="command_start_date" class="md-input @error('command_start_date') is-invalid @enderror"
+                                        value="{{ old('command_start_date', $caseOrder->command_start_date ? $caseOrder->command_start_date->format('Y-m-d') : '') }}">
+                                    @error('command_start_date')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="md-label">Command Till-date (আদেশের মেয়াদকালীন তারিখ)</label>
+                                    <input type="date" name="command_till_date" class="md-input @error('command_till_date') is-invalid @enderror"
+                                        value="{{ old('command_till_date', $caseOrder->command_till_date ? $caseOrder->command_till_date->format('Y-m-d') : '') }}">
+                                    @error('command_till_date')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="md-label">Command End-date (আদেশের সমাপ্তির তারিখ)</label>
+                                    <input type="date" name="command_end_date" class="md-input @error('command_end_date') is-invalid @enderror"
+                                        value="{{ old('command_end_date', $caseOrder->command_end_date ? $caseOrder->command_end_date->format('Y-m-d') : '') }}">
+                                    @error('command_end_date')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>

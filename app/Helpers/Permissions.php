@@ -37,8 +37,10 @@ if (!function_exists('get_current_module')) {
         if (str_contains($routeName, 'vehicle') || str_contains($uri, 'vehicle')) {
             return 'vehicles';
         }
-        if (str_contains($routeName, 'road') || str_contains($routeName, 'bridge') || str_contains($routeName, 'market') || 
-            str_contains($uri, 'road') || str_contains($uri, 'bridge') || str_contains($uri, 'market')) {
+        if (
+            str_contains($routeName, 'road') || str_contains($routeName, 'bridge') || str_contains($routeName, 'market') ||
+            str_contains($uri, 'road') || str_contains($uri, 'bridge') || str_contains($uri, 'market')
+        ) {
             return 'roads';
         }
         if (str_contains($routeName, 'marriage') || str_contains($uri, 'marriage')) {
@@ -68,7 +70,7 @@ if (!function_exists('is_superadmin')) {
             return false;
         }
         $user = Auth::user();
-        return $user->role_id == 1 || $user->role_id == 2 || $user->role_id == 4 || $user->hasRole(['Admin', 'DC', 'Developer']);
+        return $user->hasRole(['Admin', 'Developer']);
     }
 }
 
@@ -168,8 +170,8 @@ if (!function_exists('access_management_permission')) {
     function access_management_permission()
     {
         return is_superadmin() || (Auth::check() && (
-            Auth::user()->can('roles.read') || 
-            Auth::user()->can('permissions.read') || 
+            Auth::user()->can('roles.read') ||
+            Auth::user()->can('permissions.read') ||
             Auth::user()->can('users.read')
         ));
     }
@@ -186,13 +188,13 @@ if (!function_exists('has_module_access')) {
         }
         $moduleSnake = str_replace('-', '_', $module);
         $moduleKebab = str_replace('_', '-', $module);
-        
-        return Auth::user()->can("$module.read") || 
-               Auth::user()->can("$moduleSnake.read") || 
-               Auth::user()->can("$moduleKebab.read") || 
-               Auth::user()->can("$module.create") || 
-               Auth::user()->can("$moduleSnake.create") || 
-               Auth::user()->can("$moduleKebab.create");
+
+        return Auth::user()->can("$module.read") ||
+            Auth::user()->can("$moduleSnake.read") ||
+            Auth::user()->can("$moduleKebab.read") ||
+            Auth::user()->can("$module.create") ||
+            Auth::user()->can("$moduleSnake.create") ||
+            Auth::user()->can("$moduleKebab.create");
     }
 }
 
@@ -207,10 +209,10 @@ if (!function_exists('has_sub_module_access')) {
         }
         $moduleSnake = str_replace('-', '_', $module);
         $moduleKebab = str_replace('_', '-', $module);
-        
-        return Auth::user()->can("$module.$action") || 
-               Auth::user()->can("$moduleSnake.$action") || 
-               Auth::user()->can("$moduleKebab.$action");
+
+        return Auth::user()->can("$module.$action") ||
+            Auth::user()->can("$moduleSnake.$action") ||
+            Auth::user()->can("$moduleKebab.$action");
     }
 }
 

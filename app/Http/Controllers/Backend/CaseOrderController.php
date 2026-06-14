@@ -7,9 +7,11 @@ use App\Models\CaseOrder;
 use App\Models\MisCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Traits\FileUploadTrait;
 
 class CaseOrderController extends Controller
 {
+    use FileUploadTrait;
     /**
      * All Case Order — সকল CaseOrder রেকর্ড দেখাবে।
      */
@@ -50,14 +52,22 @@ class CaseOrderController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'mis_case_id'       => 'required|exists:mis_cases,id',
-            'next_hearing_date' => 'nullable|date',
-            'next_hearing_time' => 'nullable|string',
-            'status'            => 'nullable|string',
-            'command_type'      => 'nullable|string|max:255',
-            'command_text'      => 'nullable|string',
-            'command_yes_note'  => 'nullable|string',
-            'side_note'         => 'nullable|string',
+            'mis_case_id'        => 'required|exists:mis_cases,id',
+            'memorial_no'        => 'nullable|string|max:255',
+            'next_hearing_date'  => 'nullable|date',
+            'next_hearing_time'  => 'nullable|string',
+            'status'             => 'nullable|string',
+            'command_type'       => 'nullable|string|max:255',
+            'command_start_date' => 'nullable|date',
+            'command_till_date'  => 'nullable|date',
+            'command_end_date'   => 'nullable|date',
+            'command_text'       => 'nullable|string',
+            'order_law'          => 'nullable|string',
+            'form_number'        => 'nullable|string',
+            'command_yes_note'   => 'nullable|string',
+            'side_note'          => 'nullable|string',
+            'documents'          => 'nullable|array',
+            'documents.*'        => 'nullable|file|max:5120',
         ]);
 
         if ($validator->fails()) {
@@ -77,17 +87,28 @@ class CaseOrderController extends Controller
         $maxHearing = CaseOrder::where('mis_case_id', $misCaseId)->max('hearing_no') ?? 0;
 
         $caseOrder = new CaseOrder();
-        $caseOrder->mis_case_id       = $misCaseId;
-        $caseOrder->next_hearing_date = $request->input('next_hearing_date');
-        $caseOrder->next_hearing_time = $request->input('next_hearing_time');
-        $caseOrder->status            = $request->input('status', '0');
-        $caseOrder->command_type      = $request->input('command_type');
-        $caseOrder->command_text      = $request->input('command_text');
-        $caseOrder->command_yes_note  = $request->input('command_yes_note');
-        $caseOrder->side_note         = $request->input('side_note');
-        $caseOrder->hearing_no        = $maxHearing + 1;
-        $caseOrder->date_changed      = false;
-        $caseOrder->order_by          = auth()->id();
+        $caseOrder->mis_case_id        = $misCaseId;
+        $caseOrder->memorial_no        = $request->input('memorial_no');
+        $caseOrder->next_hearing_date  = $request->input('next_hearing_date');
+        $caseOrder->next_hearing_time  = $request->input('next_hearing_time');
+        $caseOrder->status             = $request->input('status', '0');
+        $caseOrder->command_type       = $request->input('command_type');
+        $caseOrder->command_start_date = $request->input('command_start_date');
+        $caseOrder->command_till_date  = $request->input('command_till_date');
+        $caseOrder->command_end_date   = $request->input('command_end_date');
+        $caseOrder->command_text       = $request->input('command_text');
+        $caseOrder->order_law          = $request->input('order_law');
+        $caseOrder->command_yes_note   = $request->input('command_yes_note');
+        $caseOrder->side_note          = $request->input('side_note');
+        $caseOrder->hearing_no         = $maxHearing + 1;
+        $caseOrder->date_changed       = false;
+        $caseOrder->order_by           = auth()->id();
+
+        $uploadedFiles = $this->storeUploadedFiles($request);
+        if (!empty($uploadedFiles)) {
+            $caseOrder->files = $uploadedFiles;
+        }
+
         $caseOrder->save();
 
         // MisCase-এর next_hearing_date আপডেট
@@ -150,15 +171,19 @@ class CaseOrderController extends Controller
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
-            'next_hearing_date' => 'required|date',
-            'next_hearing_time' => 'nullable|string',
+            'next_hearing_date'  => 'required|date',
+            'next_hearing_time'  => 'nullable|string',
+            'memorial_no'        => 'nullable|string|max:255',
+            'command_start_date' => 'nullable|date',
+            'command_till_date'  => 'nullable|date',
+            'command_end_date'   => 'nullable|date',
         ]);
 
         if ($validator->fails()) {
             if ($request->ajax()) {
                 return response()->json([
                     'status'  => false,
-                    'message' => 'সঠিক তারিখ প্রদান করুন।',
+                    'message' => 'সঠিক তারিখ ও তথ্য প্রদান করুন।',
                     'errors'  => $validator->errors(),
                 ], 422);
             }
@@ -166,9 +191,13 @@ class CaseOrderController extends Controller
         }
 
         $caseOrder = CaseOrder::findOrFail($id);
-        $caseOrder->next_hearing_date = $request->input('next_hearing_date');
-        $caseOrder->next_hearing_time = $request->input('next_hearing_time');
-        $caseOrder->date_changed      = true;
+        $caseOrder->next_hearing_date  = $request->input('next_hearing_date');
+        $caseOrder->next_hearing_time  = $request->input('next_hearing_time');
+        $caseOrder->memorial_no        = $request->input('memorial_no');
+        $caseOrder->command_start_date = $request->input('command_start_date');
+        $caseOrder->command_till_date  = $request->input('command_till_date');
+        $caseOrder->command_end_date   = $request->input('command_end_date');
+        $caseOrder->date_changed       = true;
         $caseOrder->save();
 
         // MisCase sync
@@ -221,13 +250,21 @@ class CaseOrderController extends Controller
     public function addOrder(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
-            'next_hearing_date' => 'nullable|date',
-            'next_hearing_time' => 'nullable|string',
-            'status'            => 'nullable|string',
-            'command_type'      => 'nullable|string|max:255',
-            'command_text'      => 'nullable|string',
-            'command_yes_note'  => 'nullable|string',
-            'side_note'         => 'nullable|string',
+            'memorial_no'        => 'nullable|string|max:255',
+            'next_hearing_date'  => 'nullable|date',
+            'next_hearing_time'  => 'nullable|string',
+            'status'             => 'nullable|string',
+            'command_type'       => 'nullable|string|max:255',
+            'command_start_date' => 'nullable|date',
+            'command_till_date'  => 'nullable|date',
+            'command_end_date'   => 'nullable|date',
+            'command_text'       => 'nullable|string',
+            'order_law'          => 'nullable|string',
+            'form_number'        => 'nullable|string',
+            'command_yes_note'   => 'nullable|string',
+            'side_note'          => 'nullable|string',
+            'documents'          => 'nullable|array',
+            'documents.*'        => 'nullable|file|max:5120',
         ]);
 
         if ($validator->fails()) {
@@ -246,17 +283,29 @@ class CaseOrderController extends Controller
         $maxHearing = CaseOrder::where('mis_case_id', $id)->max('hearing_no') ?? 0;
 
         $caseOrder = new CaseOrder();
-        $caseOrder->mis_case_id       = $id;
-        $caseOrder->next_hearing_date = $request->input('next_hearing_date');
-        $caseOrder->next_hearing_time = $request->input('next_hearing_time');
-        $caseOrder->status            = $request->input('status', '0');
-        $caseOrder->command_type      = $request->input('command_type');
-        $caseOrder->command_text      = $request->input('command_text');
-        $caseOrder->command_yes_note  = $request->input('command_yes_note');
-        $caseOrder->side_note         = $request->input('side_note');
-        $caseOrder->hearing_no        = $maxHearing + 1;
-        $caseOrder->date_changed      = false;
-        $caseOrder->order_by          = auth()->id();
+        $caseOrder->mis_case_id        = $id;
+        $caseOrder->memorial_no        = $request->input('memorial_no');
+        $caseOrder->next_hearing_date  = $request->input('next_hearing_date');
+        $caseOrder->next_hearing_time  = $request->input('next_hearing_time');
+        $caseOrder->status             = $request->input('status', '0');
+        $caseOrder->command_type       = $request->input('command_type');
+        $caseOrder->command_start_date = $request->input('command_start_date');
+        $caseOrder->command_till_date  = $request->input('command_till_date');
+        $caseOrder->command_end_date   = $request->input('command_end_date');
+        $caseOrder->command_text       = $request->input('command_text');
+        $caseOrder->order_law          = $request->input('order_law');
+        $caseOrder->form_number        = $request->input('form_number');
+        $caseOrder->command_yes_note   = $request->input('command_yes_note');
+        $caseOrder->side_note          = $request->input('side_note');
+        $caseOrder->hearing_no         = $maxHearing + 1;
+        $caseOrder->date_changed       = false;
+        $caseOrder->order_by           = auth()->id();
+
+        $uploadedFiles = $this->storeUploadedFiles($request);
+        if (!empty($uploadedFiles)) {
+            $caseOrder->files = $uploadedFiles;
+        }
+
         $caseOrder->save();
 
         // MisCase sync
@@ -272,6 +321,54 @@ class CaseOrderController extends Controller
         }
 
         return redirect()->route('caseorder.show', $id)->with('success', 'নতুন Order সফলভাবে যোগ হয়েছে।');
+    }
+
+    /**
+     * Print Case Order Notice
+     */
+    public function printNotice(string $id)
+    {
+        $caseOrder = CaseOrder::with('creator')->findOrFail($id);
+        $misCase   = $caseOrder->misCase;
+
+        $locationRows  = is_array($misCase->land_info) ? $misCase->land_info : [];
+        $districtIds   = collect($locationRows)->pluck('district_id')->filter()->unique();
+        $thanaIds      = collect($locationRows)->pluck('thana_id')->filter()->unique();
+        $mouzaIds      = collect($locationRows)->pluck('mouza_id')->filter()->unique();
+        $locationNames = [
+            'districts' => \App\Models\District::whereIn('id', $districtIds)->pluck('name', 'id'),
+            'thanas'    => \App\Models\Thana::whereIn('id', $thanaIds)->pluck('name', 'id'),
+            'mouzas'    => \App\Models\Mouza::whereIn('id', $mouzaIds)->pluck('name', 'id'),
+        ];
+
+        return view('backend.pages.case-order.print-notice', compact('caseOrder', 'misCase', 'locationNames'));
+    }
+
+    /**
+     * Print Case Order Sheet
+     */
+    public function printOrder(string $id)
+    {
+        $caseOrder = CaseOrder::with('creator')->findOrFail($id);
+        $misCase   = $caseOrder->misCase;
+
+        // Fetch all chronological case orders for this misCase
+        $allCaseOrders = CaseOrder::with('creator.department', 'creator.section')
+            ->where('mis_case_id', $misCase->id)
+            ->orderBy('hearing_no', 'asc')
+            ->get();
+
+        $locationRows  = is_array($misCase->land_info) ? $misCase->land_info : [];
+        $districtIds   = collect($locationRows)->pluck('district_id')->filter()->unique();
+        $thanaIds      = collect($locationRows)->pluck('thana_id')->filter()->unique();
+        $mouzaIds      = collect($locationRows)->pluck('mouza_id')->filter()->unique();
+        $locationNames = [
+            'districts' => \App\Models\District::whereIn('id', $districtIds)->pluck('name', 'id'),
+            'thanas'    => \App\Models\Thana::whereIn('id', $thanaIds)->pluck('name', 'id'),
+            'mouzas'    => \App\Models\Mouza::whereIn('id', $mouzaIds)->pluck('name', 'id'),
+        ];
+
+        return view('backend.pages.case-order.print-order', compact('caseOrder', 'misCase', 'allCaseOrders', 'locationNames'));
     }
 
     /**
@@ -310,5 +407,27 @@ class CaseOrderController extends Controller
         }
 
         $misCase->save();
+    }
+
+    private function storeUploadedFiles(Request $request): array
+    {
+        if (!$request->hasFile('documents')) {
+            return [];
+        }
+
+        $files = [];
+        foreach ($request->file('documents') as $document) {
+            if (!$document) {
+                continue;
+            }
+
+            $files[] = [
+                'name'        => $document->getClientOriginalName(),
+                'path'        => $this->uploadFile($document, 'uploads/case-order/', 'caseorder_doc_'),
+                'uploaded_at' => now()->toDateTimeString(),
+            ];
+        }
+
+        return $files;
     }
 }

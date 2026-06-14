@@ -95,9 +95,13 @@
             display: inline-block; padding: 3px 10px; border-radius: 999px;
             font-size: 12px; font-weight: 700;
         }
-        .status-pill.হয়নি, .status-pill.pending  { background: #fef9c3; color: #854d0e; }
-        .status-pill.হмеется, .status-pill.হবে, .status-pill.হিয়েছে, .status-pill.হয়েছে, .status-pill.approved { background: #dcfce7; color: #166534; }
-        .status-pill.মুলতবি, .status-pill.postponed { background: #fee2e2; color: #991b1b; }
+        .status-pill.হয়নি, .status-pill.pending  { background: #fef9c3; color: #854d0e; text-transform: capitalize; }
+        .status-pill.হмеется, .status-pill.হবে, .status-pill.হিয়েছে, .status-pill.হয়েছে, .status-pill.approved { background: #dcfce7; color: #166534; text-transform: capitalize; }
+        .status-pill.মুলতবি, .status-pill.postponed { background: #fee2e2; color: #991b1b; text-transform: capitalize; }
+        .status-pill.draft { background: #e2e8f0; color: #334155; text-transform: capitalize; }
+        .status-pill.running { background: #dbeafe; color: #1e40af; text-transform: capitalize; }
+        .status-pill.closed { background: #f3f4f6; color: #374151; text-transform: capitalize; }
+        .status-pill.rejected { background: #fee2e2; color: #991b1b; text-transform: capitalize; }
 
         .action-row { display: flex; gap: 8px; align-items: center; }
         .action-btn {
@@ -174,6 +178,14 @@
                                                 <span class="timeline-meta">
                                                     {{ $order->created_at ? $order->created_at->format('d/m/Y H:i') : '' }}
                                                 </span>
+                                                @if($order->command_type == 'yes')
+                                                    <a href="{{ route('caseorder.printOrder', $order->id) }}" target="_blank" class="action-btn btn-clock ml-2" style="background:#3b82f6; color:#fff;">
+                                                        <i class="fas fa-print"></i> আদেশপত্র প্রিন্ট
+                                                    </a>
+                                                @endif
+                                                <a href="{{ route('caseorder.printNotice', $order->id) }}" target="_blank" class="action-btn btn-clock ml-2" style="background:#10b981; color:#fff;">
+                                                    <i class="fas fa-print"></i> কেস অর্ডার বিবরণ (নোটিশ প্রিন্ট)
+                                                </a>
                                             </div>
                                         </div>
                                         <div class="timeline-grid">
@@ -189,16 +201,73 @@
                                                 <label>Command</label>
                                                 <span>{{ $order->command_type_label ?? '—' }}</span>
                                             </div>
+                                            @if ($order->memorial_no)
+                                                <div class="tg-item">
+                                                    <label>স্মারক নম্বর</label>
+                                                    <span>{{ $order->memorial_no }}</span>
+                                                </div>
+                                            @endif
+                                            @if ($order->command_start_date)
+                                                <div class="tg-item">
+                                                    <label>আদেশের শুরুর তারিখ</label>
+                                                    <span>{{ $order->command_start_date->format('d/m/Y') }}</span>
+                                                </div>
+                                            @endif
+                                            @if ($order->command_till_date)
+                                                <div class="tg-item">
+                                                    <label>আদেশের মেয়াদকালীন তারিখ</label>
+                                                    <span>{{ $order->command_till_date->format('d/m/Y') }}</span>
+                                                </div>
+                                            @endif
+                                            @if ($order->command_end_date)
+                                                <div class="tg-item">
+                                                    <label>আদেশের সমাপ্তির তারিখ</label>
+                                                    <span>{{ $order->command_end_date->format('d/m/Y') }}</span>
+                                                </div>
+                                            @endif
                                             @if ($order->command_text)
                                                 <div class="tg-item" style="grid-column: span 2;">
                                                     <label>Command Text</label>
                                                     <span>{{ $order->command_text }}</span>
                                                 </div>
                                             @endif
+                                            @if ($order->order_law)
+                                                <div class="tg-item" style="grid-column: span 2;">
+                                                    <label>Order Law</label>
+                                                    <span>{{ $order->order_law }}</span>
+                                                </div>
+                                            @endif
+                                            @if ($order->form_number)
+                                                <div class="tg-item" style="grid-column: span 2;">
+                                                    <label>Form Number</label>
+                                                    <span>{{ $order->form_number }}</span>
+                                                </div>
+                                            @endif
                                             @if ($order->side_note)
                                                 <div class="tg-item" style="grid-column: span 2;">
                                                     <label>Side Note</label>
                                                     <span>{{ $order->side_note }}</span>
+                                                </div>
+                                            @endif
+                                            @if (!empty($order->files))
+                                                <div class="tg-item" style="grid-column: span 2;">
+                                                    <label>সংযুক্ত নথিপত্র</label>
+                                                    <div class="attachment-list" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px;">
+                                                        @foreach ($order->files as $file)
+                                                            @php
+                                                                $filePath = is_array($file) ? $file['path'] ?? '' : $file;
+                                                                $fileName = is_array($file) ? $file['name'] ?? basename($filePath) : basename($filePath);
+                                                            @endphp
+                                                            @if ($filePath)
+                                                                <div class="attachment-chip" style="display: inline-flex; align-items: center; gap: 6px; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 999px; padding: 4px 10px; font-size: 12px;">
+                                                                    <i class="fas fa-file-alt" style="color: #1e40af;"></i>
+                                                                    <a href="{{ asset($filePath) }}" target="_blank" style="color: #1e293b; text-decoration: none; font-weight: 600;">
+                                                                        {{ $fileName }}
+                                                                    </a>
+                                                                </div>
+                                                            @endif
+                                                        @endforeach
+                                                    </div>
                                                 </div>
                                             @endif
                                             @if ($order->creator)

@@ -118,9 +118,13 @@
             display: inline-block; padding: 3px 10px; border-radius: 999px;
             font-size: 12px; font-weight: 700;
         }
-        .status-pill.হয়নি, .status-pill.pending  { background: #fef9c3; color: #854d0e; }
-        .status-pill.হмеется, .status-pill.হয়েছে, .status-pill.approved { background: #dcfce7; color: #166534; }
-        .status-pill.মুলতবি, .status-pill.postponed { background: #fee2e2; color: #991b1b; }
+        .status-pill.হয়নি, .status-pill.pending  { background: #fef9c3; color: #854d0e; text-transform: capitalize; }
+        .status-pill.হмеется, .status-pill.হয়েছে, .status-pill.approved { background: #dcfce7; color: #166534; text-transform: capitalize; }
+        .status-pill.মুলতবি, .status-pill.postponed { background: #fee2e2; color: #991b1b; text-transform: capitalize; }
+        .status-pill.draft { background: #e2e8f0; color: #334155; text-transform: capitalize; }
+        .status-pill.running { background: #dbeafe; color: #1e40af; text-transform: capitalize; }
+        .status-pill.closed { background: #f3f4f6; color: #374151; text-transform: capitalize; }
+        .status-pill.rejected { background: #fee2e2; color: #991b1b; text-transform: capitalize; }
     </style>
 @endpush
 
@@ -190,6 +194,14 @@
                             <label>বিবাদী</label>
                             <span>{{ !empty($misCase->defendants) ? ($misCase->defendants[0]['name'] ?? '—') : '—' }}</span>
                         </div>
+                        <div class="info-item">
+                            <label>মিসকেস রুজুর তারিখ</label>
+                            <span>{{ $misCase->case_date ? $misCase->case_date->format('d/m/Y') : '—' }}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>মিসকেস অবস্থা</label>
+                            <span>{{ ucfirst($misCase->status ?? '—') }}</span>
+                        </div>
                     </div>
 
                     <form action="{{ route('caseorder.addOrder', $misCase->id) }}" method="POST">
@@ -201,9 +213,26 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
+                                    @php
+                                        $latestMemorialNo = '';
+                                        if (isset($caseOrders) && $caseOrders->count() > 0) {
+                                            $latestOrderWithMemorial = $caseOrders->firstWhere('memorial_no', '!=', null);
+                                            if ($latestOrderWithMemorial) {
+                                                $latestMemorialNo = $latestOrderWithMemorial->memorial_no;
+                                            }
+                                        }
+                                    @endphp
+                                    <label class="md-label">স্মারক নম্বর (Memorial Number)</label>
+                                    <input type="text" name="memorial_no" class="md-input @error('memorial_no') is-invalid @enderror"
+                                        value="{{ old('memorial_no', $latestMemorialNo) }}" placeholder="স্মারক নম্বর লিখুন">
+                                    @error('memorial_no')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
                                     <label class="md-label">পরবর্তী শুনানির তারিখ <span class="text-danger">*</span></label>
-                                    <input type="date" name="next_hearing_date" class="md-input @error('next_hearing_date') is-invalid @enderror" required
-                                        value="{{ old('next_hearing_date', $misCase->next_hearing_date ? $misCase->next_hearing_date->format('Y-m-d') : date('Y-m-d')) }}">
+                                    <input type="date" name="next_hearing_date" class="md-input @error('next_hearing_date') is-invalid @enderror"
+                                        value="{{ old('next_hearing_date') }}">
                                     @error('next_hearing_date')
                                         <span class="text-danger small">{{ $message }}</span>
                                     @enderror
@@ -219,8 +248,12 @@
                                 <div class="col-md-6 mb-3">
                                     <label class="md-label">স্ট্যাটাস <span class="text-danger">*</span></label>
                                     <select name="status" class="md-input md-select @error('status') is-invalid @enderror" required>
-                                        <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Pending</option>
-                                        <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Approved</option>
+                                        <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                        <option value="approved" {{ old('status') == 'approved' ? 'selected' : '' }}>Approved</option>
+                                        <option value="draft" @selected(old('status', 'draft') == 'draft')>Draft</option>
+                                        <option value="running" @selected(old('status') == 'running')>Running</option>
+                                        <option value="closed" @selected(old('status') == 'closed')>Closed</option>
+                                        <option value="rejected" @selected(old('status') == 'rejected')>Rejected</option>
                                     </select>
                                     @error('status')
                                         <span class="text-danger small">{{ $message }}</span>
@@ -237,11 +270,58 @@
                                         <span class="text-danger small">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-6 mb-3 command-field">
+                                    <label class="md-label">Command Start-date (আদেশের শুরুর তারিখ)</label>
+                                    <input type="date" name="command_start_date" class="md-input @error('command_start_date') is-invalid @enderror"
+                                        value="{{ old('command_start_date') }}">
+                                    @error('command_start_date')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3 command-field">
+                                    <label class="md-label">Command Till-date (আদেশের মেয়াদকালীন তারিখ)</label>
+                                    <input type="date" name="command_till_date" class="md-input @error('command_till_date') is-invalid @enderror"
+                                        value="{{ old('command_till_date') }}">
+                                    @error('command_till_date')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3 command-field">
+                                    <label class="md-label">Command End-date (আদেশের সমাপ্তির তারিখ)</label>
+                                    <input type="date" name="command_end_date" class="md-input @error('command_end_date') is-invalid @enderror"
+                                        value="{{ old('command_end_date') }}">
+                                    @error('command_end_date')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-12 mb-3">
                                     <label class="md-label">Command Text</label>
                                     <textarea name="command_text" class="md-input @error('command_text') is-invalid @enderror" rows="3"
                                         placeholder="Command Details">{{ old('command_text') }}</textarea>
                                     @error('command_text')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3 command-field">
+                                    <label class="md-label">Order Law</label>
+                                    <input type="text" name="order_law" class="md-input @error('order_law') is-invalid @enderror"
+                                        value="{{ old('order_law') }}" placeholder="Order Law">
+                                    @error('order_law')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3 command-field">
+                                    <label class="md-label">Form Number</label>
+                                    <input type="text" name="form_number" class="md-input @error('form_number') is-invalid @enderror"
+                                        value="{{ old('form_number') }}" placeholder="Form Number">
+                                    @error('form_number')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="md-label">নথিপত্র (Documents)</label>
+                                    <input type="file" name="documents[]" class="md-input @error('documents') is-invalid @enderror" multiple style="padding: 8px;">
+                                    @error('documents')
                                         <span class="text-danger small">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -288,9 +368,19 @@
                                                 শুনানি নং: {{ sprintf('H%05d', $order->id) }}
                                                 <span class="status-pill {{ $order->status_class }}">{{ $order->status_label }}</span>
                                             </div>
-                                            <span class="timeline-meta">
-                                                {{ $order->created_at ? $order->created_at->format('d/m/Y H:i') : '' }}
-                                            </span>
+                                            <div class="action-row" style="display: flex; gap: 8px; align-items: center;">
+                                                <span class="timeline-meta">
+                                                    {{ $order->created_at ? $order->created_at->format('d/m/Y H:i') : '' }}
+                                                </span>
+                                                @if($order->command_type == 'yes')
+                                                    <a href="{{ route('caseorder.printOrder', $order->id) }}" target="_blank" class="action-btn ml-2" style="background:#3b82f6; color:#fff; display: inline-flex; align-items: center; justify-content: center; padding: 5px 12px; border-radius: 7px; font-size: 12px; font-weight: 600; text-decoration: none; gap: 4px;">
+                                                        <i class="fas fa-print"></i> আদেশপত্র প্রিন্ট
+                                                    </a>
+                                                @endif
+                                                <a href="{{ route('caseorder.printNotice', $order->id) }}" target="_blank" class="action-btn ml-2" style="background:#10b981; color:#fff; display: inline-flex; align-items: center; justify-content: center; padding: 5px 12px; border-radius: 7px; font-size: 12px; font-weight: 600; text-decoration: none; gap: 4px;">
+                                                    <i class="fas fa-print"></i> কেস অর্ডার বিবরণ (নোটিশ প্রিন্ট)
+                                                </a>
+                                            </div>
                                         </div>
                                         <div class="timeline-grid">
                                             <div class="tg-item">
@@ -305,16 +395,73 @@
                                                 <label>Command</label>
                                                 <span>{{ $order->command_type_label ?? '—' }}</span>
                                             </div>
+                                            @if ($order->memorial_no)
+                                                <div class="tg-item">
+                                                    <label>স্মারক নম্বর</label>
+                                                    <span>{{ $order->memorial_no }}</span>
+                                                </div>
+                                            @endif
+                                            @if ($order->command_start_date)
+                                                <div class="tg-item">
+                                                    <label>আদেশের শুরুর তারিখ</label>
+                                                    <span>{{ $order->command_start_date->format('d/m/Y') }}</span>
+                                                </div>
+                                            @endif
+                                            @if ($order->command_till_date)
+                                                <div class="tg-item">
+                                                    <label>আদেশের মেয়াদকালীন তারিখ</label>
+                                                    <span>{{ $order->command_till_date->format('d/m/Y') }}</span>
+                                                </div>
+                                            @endif
+                                            @if ($order->command_end_date)
+                                                <div class="tg-item">
+                                                    <label>আদেশের সমাপ্তির তারিখ</label>
+                                                    <span>{{ $order->command_end_date->format('d/m/Y') }}</span>
+                                                </div>
+                                            @endif
                                             @if ($order->command_text)
                                                 <div class="tg-item" style="grid-column: span 2;">
                                                     <label>Command Text</label>
                                                     <span>{{ $order->command_text }}</span>
                                                 </div>
                                             @endif
+                                            @if ($order->order_law)
+                                                <div class="tg-item" style="grid-column: span 2;">
+                                                    <label>Order Law</label>
+                                                    <span>{{ $order->order_law }}</span>
+                                                </div>
+                                            @endif
+                                            @if ($order->form_number)
+                                                <div class="tg-item" style="grid-column: span 2;">
+                                                    <label>Form Number</label>
+                                                    <span>{{ $order->form_number }}</span>
+                                                </div>
+                                            @endif
                                             @if ($order->side_note)
                                                 <div class="tg-item" style="grid-column: span 2;">
                                                     <label>Side Note</label>
                                                     <span>{{ $order->side_note }}</span>
+                                                </div>
+                                            @endif
+                                            @if (!empty($order->files))
+                                                <div class="tg-item" style="grid-column: span 2;">
+                                                    <label>সংযুক্ত নথিপত্র</label>
+                                                    <div class="attachment-list" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px;">
+                                                        @foreach ($order->files as $file)
+                                                            @php
+                                                                $filePath = is_array($file) ? $file['path'] ?? '' : $file;
+                                                                $fileName = is_array($file) ? $file['name'] ?? basename($filePath) : basename($filePath);
+                                                            @endphp
+                                                            @if ($filePath)
+                                                                <div class="attachment-chip" style="display: inline-flex; align-items: center; gap: 6px; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 999px; padding: 4px 10px; font-size: 12px;">
+                                                                    <i class="fas fa-file-alt" style="color: #1e40af;"></i>
+                                                                    <a href="{{ asset($filePath) }}" target="_blank" style="color: #1e293b; text-decoration: none; font-weight: 600;">
+                                                                        {{ $fileName }}
+                                                                    </a>
+                                                                </div>
+                                                            @endif
+                                                        @endforeach
+                                                    </div>
                                                 </div>
                                             @endif
                                             @if ($order->creator)
@@ -343,3 +490,25 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        function toggleCommandFields() {
+            var val = $('select[name="command_type"]').val();
+            if (val === 'yes') {
+                $('.command-field').slideDown();
+            } else {
+                $('.command-field').slideUp();
+            }
+        }
+
+        $('select[name="command_type"]').on('change', function() {
+            toggleCommandFields();
+        });
+
+        // Initialize on load
+        toggleCommandFields();
+    });
+</script>
+@endpush

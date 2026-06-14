@@ -97,7 +97,7 @@
                 <div class="card-body">
                     <div class="row">
                         <!-- Left Side: Basic Profile Information -->
-                        <div class="col-md-12">
+                        <div class="col-md-8">
                             <div class="row">
                                 <div class="col-md-6 form-group mb-4">
                                     <label class="form-label-premium" for="name">Full Name</label>
@@ -249,6 +249,67 @@
                         </div>
 
                         <!-- Right Side: Security Identity & Account Status -->
+                        <div class="col-md-4 border-left pl-md-4">
+                            <!-- Security Identity -->
+                            <div class="mb-4">
+                                <h5 class="font-weight-bold text-dark mb-3">
+                                    <i class="fas fa-shield-alt text-secondary mr-1"></i> Security Identity
+                                </h5>
+
+                                <div class="form-group mb-3">
+                                    <label class="form-label-premium" for="user_type">User Type</label>
+                                    <select name="user_type" id="user_type"
+                                        class="form-control form-control-premium @error('user_type') is-invalid @enderror"
+                                        required>
+                                        <option value="">Select User Type</option>
+                                        <option value="staff" {{ old('user_type', $user->user_type) == 'staff' ? 'selected' : '' }}>Employee</option>
+                                        <option value="admin" {{ old('user_type', $user->user_type) == 'admin' ? 'selected' : '' }}>Admin</option>
+                                    </select>
+                                    <br>
+                                    <label class="form-label-premium" for="role_id">Primary Security Role</label>
+                                    <select name="role_id" id="role_id"
+                                        class="form-control form-control-premium @error('role_id') is-invalid @enderror"
+                                        required>
+                                        <option value="" disabled>Select a Role</option>
+                                        @foreach($roles as $role)
+                                            <option value="{{ $role->id }}" {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
+                                                {{ $role->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <small class="text-muted mt-2 d-block">
+                                        Users inherit all capabilities assigned to their chosen role. Direct overrides are
+                                        disabled for simplicity.
+                                    </small>
+                                    @error('role_id')
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <!-- Account Status -->
+                            <div class="mb-4">
+                                <label class="form-label-premium">Account Status</label>
+
+                                <div class="form-check pl-0">
+                                    <label class="status-radio-label text-success">
+                                        <input type="radio" name="status" value="1" {{ old('status', $user->status) == '1' ? 'checked' : '' }}
+                                            style="width: 18px; height: 18px; cursor: pointer;">
+                                        Verified / Active
+                                    </label>
+                                </div>
+
+                                <div class="form-check pl-0">
+                                    <label class="status-radio-label text-warning">
+                                        <input type="radio" name="status" value="0" {{ old('status', $user->status) == '0' ? 'checked' : '' }}
+                                            style="width: 18px; height: 18px; cursor: pointer;">
+                                        Pending Review
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>

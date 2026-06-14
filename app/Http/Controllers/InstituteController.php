@@ -129,6 +129,7 @@ class InstituteController extends Controller
             'activation_time' => 'required',
             'division' => 'required|exists:divisions,id',
             'district' => 'required|exists:districts,id',
+            'thana' => 'nullable|exists:thanas,id',
             'institute_type' => 'required|exists:institute_types,id',
             'union' => 'nullable',
             'pourashava' => 'nullable',
@@ -159,7 +160,9 @@ class InstituteController extends Controller
             $institute->union_id = $request->union ?? null;
             $institute->pourashava_id = $request->pourashava ?? null;
             $institute->city_corporation_id = $request->city_corporation ?? null;
+            $institute->division_id = $request->division ?? null;
             $institute->district_id = $request->district ?? null;
+            $institute->thana_id = $request->thana ?? null;
             $institute->activation_time = $request->activation_time;
 
             try {
@@ -192,7 +195,11 @@ class InstituteController extends Controller
      */
     public function show($id)
     {
-        return view('backend.pages.institute.show');
+        $institute = Institute::with([
+            'category', 'type', 'division', 'district', 'thana', 'union', 'pourashava', 'cityCorporation', 'superUser'
+        ])->findOrFail($id);
+
+        return view('backend.pages.institute.show', compact('institute'));
     }
 
     /**
@@ -205,6 +212,8 @@ class InstituteController extends Controller
     {
         $data['institute'] = Institute::find($id);
         $data['institute_categories'] = InstituteCategory::where('status', true)->get();
+        $data['institute_types'] = InstituteType::where('status', true)->get();
+        $data['divisions'] = Division::where('status', true)->get();
         return view('backend.pages.institute.edit', $data);
     }
 
@@ -236,6 +245,10 @@ class InstituteController extends Controller
             $institute->institute_category_id = $request->institute_category;
             $institute->institute_subcategory_id = $request->institute_subcategory_id;
             $institute->activation_time = $request->activation_time;
+            $institute->division_id = $request->division ?? null;
+            $institute->district_id = $request->district ?? null;
+            $institute->thana_id = $request->thana ?? null;
+            $institute->institute_type_id = $request->institute_type ?? $institute->institute_type_id;
 
             try {
                 $institute->save();
