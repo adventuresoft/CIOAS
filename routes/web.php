@@ -552,6 +552,19 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
             Route::post('{id}/reject', [OrgGunLicenseController::class, 'reject'])->name('reject');
             Route::get('{id}', [OrgGunLicenseController::class, 'show'])->name('show');
         });
+
+        Route::prefix('other-organization')->name('other-org.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Backend\OtherOrgGunLicenseController::class, 'index'])->name('index');
+            Route::get('create', [\App\Http\Controllers\Backend\OtherOrgGunLicenseController::class, 'createApplication'])->name('create');
+            Route::post('store', [\App\Http\Controllers\Backend\OtherOrgGunLicenseController::class, 'storeApplication'])->name('store');
+            Route::get('{id}/verification', [\App\Http\Controllers\Backend\OtherOrgGunLicenseController::class, 'createVerification'])->name('verification.create');
+            Route::post('{id}/verification', [\App\Http\Controllers\Backend\OtherOrgGunLicenseController::class, 'storeVerification'])->name('verification.store');
+            Route::get('{id}/interview', [\App\Http\Controllers\Backend\OtherOrgGunLicenseController::class, 'createInterview'])->name('interview.create');
+            Route::post('{id}/interview', [\App\Http\Controllers\Backend\OtherOrgGunLicenseController::class, 'storeInterview'])->name('interview.store');
+            Route::post('{id}/approve', [\App\Http\Controllers\Backend\OtherOrgGunLicenseController::class, 'approve'])->name('approve');
+            Route::post('{id}/reject', [\App\Http\Controllers\Backend\OtherOrgGunLicenseController::class, 'reject'])->name('reject');
+            Route::get('{id}', [\App\Http\Controllers\Backend\OtherOrgGunLicenseController::class, 'show'])->name('show');
+        });
     });
     Route::resource('chairman', ChairmanController::class);
 

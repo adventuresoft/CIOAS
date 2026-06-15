@@ -59,10 +59,10 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Create Organization Gun License</h1>
+                <h1>ব্যাংক/আর্থিক প্রতিষ্ঠানের ক্ষেত্রে আগ্নেয়াস্ত্রের আবেদনপত্র</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="{{ route('gun-license.org.index') }}" class="btn btn-default">Back</a>
+                <a href="{{ route('gun-license.org.index') }}" class="btn btn-default">ফিরে যান</a>
             </div>
         </div>
     </div>
@@ -74,7 +74,7 @@
             <div class="col-md-12">
                 <div class="card card-info">
                     <div class="card-header">
-                        <h3 class="card-title">Organization Application Form</h3>
+                        <h3 class="card-title">আবেদনপত্র (পরিশিষ্ট-৬)</h3>
                     </div>
                     <form class="form-horizontal" id="orgApplicationForm" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -82,18 +82,18 @@
                             
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <h5 class="section-title"><i class="fas fa-building"></i> Corporate Details</h5>
+                                    <h5 class="section-title"><i class="fas fa-building"></i> প্রতিষ্ঠানের বিবরণ</h5>
                                 </div>
                             </div>
                             
                             <div class="form-group row">
                                 <div class="col-sm-6">
-                                    <label for="org_name">Organization/Bank Name <span class="text-danger">*</span></label>
-                                    <input type="text" name="org_name" class="form-control" id="org_name" required placeholder="Enter bank or company name">
+                                    <label for="org_name">প্রতিষ্ঠানের নাম <span class="text-danger">*</span></label>
+                                    <input type="text" name="org_name" class="form-control" id="org_name" required placeholder="প্রতিষ্ঠানের নাম">
                                     <small class="text-danger error org_name_error"></small>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label for="operation_start_date">Operation Start Date</label>
+                                    <label for="operation_start_date">প্রতিষ্ঠান চালু হবার/কার্যক্রম শুরু করার তারিখ</label>
                                     <input type="date" name="operation_start_date" class="form-control" id="operation_start_date">
                                     <small class="text-danger error operation_start_date_error"></small>
                                 </div>
@@ -101,34 +101,47 @@
 
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <label for="org_address">Organization Address</label>
-                                    <textarea name="org_address" class="form-control" id="org_address" rows="2" style="height: auto !important;" placeholder="Enter complete office address"></textarea>
+                                    <label for="org_address">প্রতিষ্ঠানের ঠিকানা</label>
+                                    <textarea name="org_address" class="form-control" id="org_address" rows="2" style="height: auto !important;" placeholder="প্রতিষ্ঠানের ঠিকানা"></textarea>
                                     <small class="text-danger error org_address_error"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="phone">মোবাইল নম্বর <span class="text-danger">*</span></label>
+                                    <input type="text" name="phone" class="form-control" id="phone" required placeholder="মোবাইল নম্বর">
+                                    <small class="text-danger error phone_error"></small>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="email">ইমেইল</label>
+                                    <input type="email" name="email" class="form-control" id="email" placeholder="ইমেইল এড্রেস">
+                                    <small class="text-danger error email_error"></small>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <h5 class="section-title"><i class="fas fa-shield-alt"></i> Security & Operations</h5>
+                                    <h5 class="section-title"><i class="fas fa-shield-alt"></i> নিরাপত্তা ও কার্যক্রম</h5>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-sm-4">
-                                    <label for="vault_limit">Vault Limit</label>
-                                    <input type="text" name="vault_limit" class="form-control" id="vault_limit" placeholder="Vault limit in BDT">
+                                    <label for="vault_limit">প্রতিষ্ঠানের সিন্দুক সীমা</label>
+                                    <input type="text" name="vault_limit" class="form-control" id="vault_limit" placeholder="সিন্দুক সীমা">
                                     <small class="text-danger error vault_limit_error"></small>
                                 </div>
                                 <div class="col-sm-4">
-                                    <label for="vehicle_count">Cash-Carrying Vehicle Count</label>
+                                    <label for="vehicle_count">প্রতিষ্ঠানের অর্থ পরিবহনের জন্য গাড়ীর সংখ্যা</label>
                                     <input type="number" name="vehicle_count" class="form-control" id="vehicle_count" value="0" min="0">
                                     <small class="text-danger error vehicle_count_error"></small>
                                 </div>
                                 <div class="col-sm-4">
-                                    <label for="bangladesh_bank_permission">Bangladesh Bank Permission <span class="text-danger">*</span></label>
+                                    <label for="bangladesh_bank_permission">ব্যাংক শাখা/আর্থিক প্রতিষ্ঠান খোলার জন্য বাংলাদেশ ব্যাংকের অনুমতি পত্র রয়েছে কিনা <span class="text-danger">*</span></label>
                                     <select name="bangladesh_bank_permission" class="form-control" id="bangladesh_bank_permission" required>
-                                        <option value="0">No</option>
-                                        <option value="1">Yes</option>
+                                        <option value="0">না</option>
+                                        <option value="1">হ্যাঁ</option>
                                     </select>
                                     <small class="text-danger error bangladesh_bank_permission_error"></small>
                                 </div>
@@ -136,140 +149,140 @@
 
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <label for="current_security_description">Current Security Description</label>
-                                    <textarea name="current_security_description" class="form-control" id="current_security_description" rows="2" style="height: auto !important;" placeholder="Description of current security setup"></textarea>
+                                    <label for="current_security_description">বর্তমানে কিভাবে নিরাপত্তা রক্ষা করা হচ্ছে</label>
+                                    <textarea name="current_security_description" class="form-control" id="current_security_description" rows="2" style="height: auto !important;" placeholder="বর্তমান নিরাপত্তা ব্যবস্থার বিবরণ"></textarea>
                                     <small class="text-danger error current_security_description_error"></small>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <h5 class="section-title"><i class="fas fa-users"></i> Management & Tax</h5>
+                                    <h5 class="section-title"><i class="fas fa-users"></i> ব্যবস্থাপনা ও আয়কর</h5>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-sm-6">
-                                    <label for="owner_or_ceo_details">Owner or CEO Details</label>
-                                    <textarea name="owner_or_ceo_details" class="form-control" id="owner_or_ceo_details" rows="2" style="height: auto !important;" placeholder="CEO / Board of Directors information"></textarea>
+                                    <label for="owner_or_ceo_details">প্রতিষ্ঠানের মালিক/নির্বাহী প্রধানের নাম, বর্তমান ঠিকানা ও স্থায়ী ঠিকানা</label>
+                                    <textarea name="owner_or_ceo_details" class="form-control" id="owner_or_ceo_details" rows="2" style="height: auto !important;" placeholder="প্রধান নির্বাহীর বিস্তারিত তথ্য"></textarea>
                                     <small class="text-danger error owner_or_ceo_details_error"></small>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label for="organogram_manpower_details">Organogram Manpower Details</label>
-                                    <textarea name="organogram_manpower_details" class="form-control" id="organogram_manpower_details" rows="2" style="height: auto !important;" placeholder="Organogram structure details"></textarea>
+                                    <label for="organogram_manpower_details">প্রতিষ্ঠানের জনবল/অর্গানোগ্রাম</label>
+                                    <textarea name="organogram_manpower_details" class="form-control" id="organogram_manpower_details" rows="2" style="height: auto !important;" placeholder="জনবল এবং অর্গানোগ্রাম এর বিস্তারিত"></textarea>
                                     <small class="text-danger error organogram_manpower_details_error"></small>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-sm-6">
-                                    <label for="tax_details">Tax Details (TIN/VAT)</label>
-                                    <textarea name="tax_details" class="form-control" id="tax_details" rows="2" style="height: auto !important;" placeholder="Enter TIN number & compliance notes"></textarea>
+                                    <label for="tax_details">আয়কর সংক্রান্ত তথ্যাদির বিস্তারিত বিবরণ</label>
+                                    <textarea name="tax_details" class="form-control" id="tax_details" rows="2" style="height: auto !important;" placeholder="টিআইএন (TIN) ও আয়কর সংক্রান্ত তথ্য"></textarea>
                                     <small class="text-danger error tax_details_error"></small>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label for="rental_agreement_details">Premises Rental / Lease Details</label>
-                                    <textarea name="rental_agreement_details" class="form-control" id="rental_agreement_details" rows="2" style="height: auto !important;" placeholder="Lease duration, owner details if applicable"></textarea>
+                                    <label for="rental_agreement_details">ভাড়াকৃত বাড়ির ক্ষেত্রে বাড়ি ভাড়ার চুক্তি পত্র</label>
+                                    <textarea name="rental_agreement_details" class="form-control" id="rental_agreement_details" rows="2" style="height: auto !important;" placeholder="বাড়ি ভাড়ার চুক্তির বিস্তারিত"></textarea>
                                     <small class="text-danger error rental_agreement_details_error"></small>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <h5 class="section-title"><i class="fas fa-crosshairs"></i> Weapon Requirements</h5>
+                                    <h5 class="section-title"><i class="fas fa-crosshairs"></i> আগ্নেয়াস্ত্রের প্রয়োজনীয়তা</h5>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-sm-4">
-                                    <label for="weapon_count_requested">Weapon Count Requested</label>
+                                    <label for="weapon_count_requested">প্রার্থীত আগ্নেয়াস্ত্রের সংখ্যা</label>
                                     <input type="number" name="weapon_count_requested" class="form-control" id="weapon_count_requested" value="1" min="1">
                                     <small class="text-danger error weapon_count_requested_error"></small>
                                 </div>
                                 <div class="col-sm-4">
-                                    <label for="weapon_nature_requested">Nature of Weapon Requested <span class="text-danger">*</span></label>
+                                    <label for="weapon_nature_requested">প্রার্থীত আগ্নেয়াস্ত্রের প্রকৃতি <span class="text-danger">*</span></label>
                                     <select name="weapon_nature_requested" class="form-control" id="weapon_nature_requested" required>
-                                        <option value="">Select Gun Type</option>
-                                        <option value="Shotgun">Shotgun (শটগান / দোতালা-একতালা বন্দুক)</option>
-                                        <option value="Pistol">Pistol (পিস্তল)</option>
-                                        <option value="Revolver">Revolver (রিভলভার)</option>
-                                        <option value="Rifle">Rifle (রাইফেল)</option>
+                                        <option value="">সিলেক্ট করুন</option>
+                                        <option value="Shotgun">শটগান (Shotgun)</option>
+                                        <option value="Pistol">পিস্তল (Pistol)</option>
+                                        <option value="Revolver">রিভলভার (Revolver)</option>
+                                        <option value="Rifle">রাইফেল (Rifle)</option>
                                     </select>
                                     <small class="text-danger error weapon_nature_requested_error"></small>
                                 </div>
                                 <div class="col-sm-4">
-                                    <label for="justification_of_necessity">Justification of Necessity</label>
-                                    <input type="text" name="justification_of_necessity" class="form-control" id="justification_of_necessity" placeholder="Reason for requiring arms">
+                                    <label for="justification_of_necessity">প্রার্থীত আগ্নেয়াস্ত্রের প্রয়োজনীয়তার যৌক্তিকতা</label>
+                                    <input type="text" name="justification_of_necessity" class="form-control" id="justification_of_necessity" placeholder="আগ্নেয়াস্ত্রের প্রয়োজনীয়তা">
                                     <small class="text-danger error justification_of_necessity_error"></small>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <label for="existing_weapons_details">Existing Weapons Details (If Any)</label>
-                                    <textarea name="existing_weapons_details" class="form-control" id="existing_weapons_details" rows="2" style="height: auto !important;" placeholder="Details of weapons currently owned under other licenses"></textarea>
+                                    <label for="existing_weapons_details">বর্তমানে প্রতিষ্ঠানে যে সকল আগ্নেয়াস্ত্র আছে তার বিবরণ</label>
+                                    <textarea name="existing_weapons_details" class="form-control" id="existing_weapons_details" rows="2" style="height: auto !important;" placeholder="পূর্বে নেওয়া আগ্নেয়াস্ত্রের বিবরণ (যদি থাকে)"></textarea>
                                     <small class="text-danger error existing_weapons_details_error"></small>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <h5 class="section-title"><i class="fas fa-user-shield"></i> Designated Guard Details</h5>
+                                    <h5 class="section-title"><i class="fas fa-user-shield"></i> গার্ডের জীবন বৃত্তান্ত</h5>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-sm-4">
-                                    <label for="guard_name">Guard Name <span class="text-danger">*</span></label>
-                                    <input type="text" name="guard_name" class="form-control" id="guard_name" required placeholder="Enter guard full name">
+                                    <label for="guard_name">গার্ডের নাম <span class="text-danger">*</span></label>
+                                    <input type="text" name="guard_name" class="form-control" id="guard_name" required placeholder="গার্ডের নাম">
                                     <small class="text-danger error guard_name_error"></small>
                                 </div>
                                 <div class="col-sm-4">
-                                    <label for="guard_father_name">Guard Father's Name</label>
-                                    <input type="text" name="guard_father_name" class="form-control" id="guard_father_name" placeholder="Guard's father's name">
+                                    <label for="guard_father_name">গার্ডের পিতার নাম</label>
+                                    <input type="text" name="guard_father_name" class="form-control" id="guard_father_name" placeholder="গার্ডের পিতার নাম">
                                     <small class="text-danger error guard_father_name_error"></small>
                                 </div>
                                 <div class="col-sm-4">
-                                    <label for="guard_mother_name">Guard Mother's Name</label>
-                                    <input type="text" name="guard_mother_name" class="form-control" id="guard_mother_name" placeholder="Guard's mother's name">
+                                    <label for="guard_mother_name">গার্ডের মাতার নাম</label>
+                                    <input type="text" name="guard_mother_name" class="form-control" id="guard_mother_name" placeholder="গার্ডের মাতার নাম">
                                     <small class="text-danger error guard_mother_name_error"></small>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-sm-6">
-                                    <label for="guard_present_address">Guard Present Address</label>
-                                    <textarea name="guard_present_address" class="form-control" id="guard_present_address" rows="2" style="height: auto !important;" placeholder="Guard present address"></textarea>
+                                    <label for="guard_present_address">বর্তমান ঠিকানা</label>
+                                    <textarea name="guard_present_address" class="form-control" id="guard_present_address" rows="2" style="height: auto !important;" placeholder="গার্ডের বর্তমান ঠিকানা"></textarea>
                                     <small class="text-danger error guard_present_address_error"></small>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label for="guard_permanent_address">Guard Permanent Address</label>
-                                    <textarea name="guard_permanent_address" class="form-control" id="guard_permanent_address" rows="2" style="height: auto !important;" placeholder="Guard permanent address"></textarea>
+                                    <label for="guard_permanent_address">স্থায়ী ঠিকানা</label>
+                                    <textarea name="guard_permanent_address" class="form-control" id="guard_permanent_address" rows="2" style="height: auto !important;" placeholder="গার্ডের স্থায়ী ঠিকানা"></textarea>
                                     <small class="text-danger error guard_permanent_address_error"></small>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-sm-3">
-                                    <label for="guard_age">Guard Age</label>
-                                    <input type="number" name="guard_age" class="form-control" id="guard_age" placeholder="Age in years">
+                                    <label for="guard_age">বয়স</label>
+                                    <input type="number" name="guard_age" class="form-control" id="guard_age" placeholder="বয়স">
                                     <small class="text-danger error guard_age_error"></small>
                                 </div>
                                 <div class="col-sm-3">
-                                    <label for="guard_education">Guard Education</label>
-                                    <input type="text" name="guard_education" class="form-control" id="guard_education" placeholder="e.g. SSC / HSC">
+                                    <label for="guard_education">শিক্ষাগত যোগ্যতা</label>
+                                    <input type="text" name="guard_education" class="form-control" id="guard_education" placeholder="যেমন: এসএসসি / এইচএসসি">
                                     <small class="text-danger error guard_education_error"></small>
                                 </div>
                                 <div class="col-sm-3">
-                                    <label for="guard_nid_number">Guard NID Number</label>
-                                    <input type="text" name="guard_nid_number" class="form-control" id="guard_nid_number" placeholder="NID Card number">
+                                    <label for="guard_nid_number">জাতীয় পরিচিতি নম্বর</label>
+                                    <input type="text" name="guard_nid_number" class="form-control" id="guard_nid_number" placeholder="NID নম্বর">
                                     <small class="text-danger error guard_nid_number_error"></small>
                                 </div>
                                 <div class="col-sm-3">
-                                    <label for="guard_training_certificate_status">Guard Training Status <span class="text-danger">*</span></label>
+                                    <label for="guard_training_certificate_status">প্রশিক্ষণপ্রাপ্ত কিনা <span class="text-danger">*</span></label>
                                     <select name="guard_training_certificate_status" class="form-control" id="guard_training_certificate_status" required>
-                                        <option value="1">Certified / Trained (প্রশিক্ষিত)</option>
-                                        <option value="0">Untrained (অপ্রশিক্ষিত)</option>
+                                        <option value="1">হ্যাঁ</option>
+                                        <option value="0">না</option>
                                     </select>
                                     <small class="text-danger error guard_training_certificate_status_error"></small>
                                 </div>
@@ -277,7 +290,7 @@
 
                         </div>
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-info float-right">Submit Application</button>
+                            <button type="submit" class="btn btn-info float-right">আবেদন জমা দিন</button>
                         </div>
                     </form>
                 </div>

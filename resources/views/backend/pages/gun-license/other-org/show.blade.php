@@ -1,6 +1,6 @@
-@extends('backend.master', ['mainMenu' => 'GunLicense', 'subMenu' => 'OrgGunLicense'])
+@extends('backend.master', ['mainMenu' => 'GunLicense', 'subMenu' => 'OtherOrgGunLicense'])
 
-@section('title', 'View Organization Gun License Application')
+@section('title', 'View Other Organization Gun License Application')
 
 @push('style')
     <style>
@@ -43,10 +43,10 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Organization Application Details</h1>
+                    <h1>Other Organization Application Details</h1>
                 </div>
                 <div class="col-sm-6 text-right">
-                    <a href="{{ route('gun-license.org.index') }}" class="btn btn-default"><i class="fas fa-arrow-left"></i>
+                    <a href="{{ route('gun-license.other-org.index') }}" class="btn btn-default"><i class="fas fa-arrow-left"></i>
                         Back to List</a>
                 </div>
             </div>
@@ -56,14 +56,21 @@
     <section class="content">
         <div class="container-fluid">
             <div class="card card-info">
-                <div class="card-header">
+                <div class="card-header no-print">
                     <h3 class="card-title">Tracking ID:** {{ $application->tracking_no }}</h3>
-                    <div class="card-tools">
+                    <div class="card-tools d-flex align-items-center" style="gap: 15px;">
                         <span class="badge p-2" style="font-size: 14px;">Status:
                             <strong>{{ $application->status }}</strong></span>
+                        <button class="btn btn-sm btn-primary" onclick="window.print()"><i class="fas fa-print"></i> প্রিন্ট করুন</button>
                     </div>
                 </div>
                 <div class="card-body">
+                    <x-print-view>
+                        <x-slot name="header">
+                            <h2 style="font-size: 20px; font-weight: bold; margin: 0; padding-bottom: 5px;">অন্যান্য প্রতিষ্ঠানের লাইসেন্স আবেদন</h2>
+                            <p style="margin: 0; font-size: 14px;">ট্র্যাকিং নম্বর: {{ $application->tracking_no }}</p>
+                            <p style="margin: 0; font-size: 14px;">আবেদনের তারিখ: {{ $application->created_at->format('d/m/Y') }}</p>
+                        </x-slot>
 
                     <!-- 1. Org details -->
                     <h5 class="section-title"><i class="fas fa-university"></i> প্রতিষ্ঠানের বিবরণ</h5>
@@ -71,6 +78,10 @@
                         <tr>
                             <th>প্রতিষ্ঠানের নাম</th>
                             <td><strong>{{ $application->org_name }}</strong></td>
+                        </tr>
+                        <tr>
+                            <th>প্রতিষ্ঠানের ধরণ</th>
+                            <td>{{ $application->org_type ?? 'N/A' }}</td>
                         </tr>
                         <tr>
                             <th>মোবাইল নম্বর</th>
@@ -85,18 +96,6 @@
                             <td>{{ $application->operation_start_date ?? 'N/A' }}</td>
                         </tr>
                         <tr>
-                            <th>সিন্দুক সীমা</th>
-                            <td>{{ $application->vault_limit ?? 'N/A' }}</td>
-                        </tr>
-                        <tr>
-                            <th>অর্থ পরিবহনের গাড়ীর সংখ্যা</th>
-                            <td>{{ $application->vehicle_count }} টি</td>
-                        </tr>
-                        <tr>
-                            <th>বাংলাদেশ ব্যাংকের অনুমতি পত্র</th>
-                            <td>{{ $application->bangladesh_bank_permission ? 'হ্যাঁ' : 'না' }}</td>
-                        </tr>
-                        <tr>
                             <th>মালিক/নির্বাহী প্রধানের বিবরণ</th>
                             <td>{{ $application->owner_or_ceo_details ?? 'N/A' }}</td>
                         </tr>
@@ -105,16 +104,24 @@
                             <td>{{ $application->organogram_manpower_details ?? 'N/A' }}</td>
                         </tr>
                         <tr>
-                            <th>আয়কর সংক্রান্ত তথ্যাদি</th>
-                            <td>{{ $application->tax_details ?? 'N/A' }}</td>
+                            <th>টিআইএন (TIN)</th>
+                            <td>{{ $application->tin_no ?? 'N/A' }}</td>
                         </tr>
                         <tr>
-                            <th>বর্তমান নিরাপত্তা ব্যবস্থার বিবরণ</th>
-                            <td>{{ $application->current_security_description ?? 'N/A' }}</td>
+                            <th>পরিশোধিত মূলধনের পরিমাণ</th>
+                            <td>{{ $application->paid_up_capital ?? 'N/A' }}</td>
                         </tr>
                         <tr>
-                            <th>বাড়ি ভাড়ার চুক্তি পত্রের বিবরণ</th>
-                            <td>{{ $application->rental_agreement_details ?? 'N/A' }}</td>
+                            <th>পূর্ববর্তী ৩ কর বছরের আয়করের বিবরণ</th>
+                            <td>{{ $application->tax_history ?? 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <th>আগ্নেয়াস্ত্র নিরাপদ হেফাজতে সংরক্ষণ করার ব্যবস্থা</th>
+                            <td>{{ $application->safe_custody_details ?? 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <th>আগ্নেয়াস্ত্র প্রশিক্ষণ প্রাপ্ত নিয়োগকৃত গার্ডের সংখ্যা</th>
+                            <td>{{ $application->trained_guard_count ?? '0' }}</td>
                         </tr>
                         <tr>
                             <th>প্রার্থীত আগ্নেয়াস্ত্রের সংখ্যা ও প্রকৃতি</th>
@@ -128,6 +135,23 @@
                         <tr>
                             <th>পূর্বে নেওয়া আগ্নেয়াস্ত্রের বিবরণ</th>
                             <td>{{ $application->existing_weapons_details ?? 'None' }}</td>
+                        </tr>
+                        <tr>
+                            <th>ডকুমেন্টস</th>
+                            <td>
+                                @if($application->has_trade_license_mou_aou)
+                                    <a href="{{ asset('storage/' . $application->has_trade_license_mou_aou) }}" target="_blank" class="btn btn-sm btn-info">ট্রেড লাইসেন্স/MOU</a>
+                                @endif
+                                @if($application->rental_agreement_details)
+                                    <a href="{{ asset('storage/' . $application->rental_agreement_details) }}" target="_blank" class="btn btn-sm btn-info">বাড়ি ভাড়ার চুক্তি</a>
+                                @endif
+                                @if($application->police_report_for_guard)
+                                    <a href="{{ asset('storage/' . $application->police_report_for_guard) }}" target="_blank" class="btn btn-sm btn-info">গার্ডের পুলিশ প্রতিবেদন</a>
+                                @endif
+                                @if($application->guard_cv)
+                                    <a href="{{ asset('storage/' . $application->guard_cv) }}" target="_blank" class="btn btn-sm btn-info">গার্ডের সিভি</a>
+                                @endif
+                            </td>
                         </tr>
                     </table>
 
@@ -309,17 +333,17 @@
                             filled out yet.
                         </div>
                     @endif
-
+                    </x-print-view>
                 </div>
-                <div class="card-footer text-right">
+                <div class="card-footer text-right no-print">
                     @if(in_array($application->status, ['Submitted', 'Verified', 'Interviewed']))
                         <div class="d-inline-flex" style="gap: 10px;">
-                            <form action="{{ route('gun-license.org.approve', $application->id) }}" method="POST"
+                            <form action="{{ route('gun-license.other-org.approve', $application->id) }}" method="POST"
                                 onsubmit="return confirm('Are you sure you want to approve this application?');">
                                 @csrf
                                 <button type="submit" class="btn btn-success"><i class="fas fa-check-circle"></i> অনুমোদন</button>
                             </form>
-                            <form action="{{ route('gun-license.org.reject', $application->id) }}" method="POST"
+                            <form action="{{ route('gun-license.other-org.reject', $application->id) }}" method="POST"
                                 onsubmit="return confirm('Are you sure you want to reject this application?');">
                                 @csrf
                                 <button type="submit" class="btn btn-danger"><i class="fas fa-times-circle"></i> প্রত্যাখ্যান</button>

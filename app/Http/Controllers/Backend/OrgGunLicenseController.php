@@ -11,6 +11,7 @@ use App\Models\OrgGunInterview;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class OrgGunLicenseController extends Controller
 {
@@ -30,6 +31,8 @@ class OrgGunLicenseController extends Controller
         $validator = Validator::make($request->all(), [
             // Org fields
             'org_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'email' => 'nullable|email|max:255',
             'org_address' => 'nullable|string',
             'operation_start_date' => 'nullable|date',
             'vault_limit' => 'nullable|string|max:255',
@@ -83,8 +86,11 @@ class OrgGunLicenseController extends Controller
         DB::beginTransaction();
         try {
             $application = OrgGunApplication::create([
+                'institute_id' => Auth::user()->institute_id ?? 0,
                 'tracking_no' => $trackingNo,
                 'org_name' => $request->org_name,
+                'phone' => $request->phone,
+                'email' => $request->email,
                 'org_address' => $request->org_address,
                 'operation_start_date' => $request->operation_start_date,
                 'vault_limit' => $request->vault_limit,

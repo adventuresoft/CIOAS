@@ -1,4 +1,4 @@
-@extends('backend.master', ['mainMenu' => 'GunLicense', 'subMenu' => 'OrgGunLicense'])
+@extends('backend.master', ['mainMenu' => 'GunLicense', 'subMenu' => 'OtherOrgGunLicense'])
 
 @push('style')
 <style>
@@ -62,7 +62,7 @@
                 <h1>পুলিশ ভেরিফিকেশন প্রতিবেদন (পরিশিষ্ট-৭)</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="{{ route('gun-license.org.index') }}" class="btn btn-default">ফিরে যান</a>
+                <a href="{{ route('gun-license.other-org.index') }}" class="btn btn-default">ফিরে যান</a>
             </div>
         </div>
     </div>
@@ -96,7 +96,7 @@
                                     <small class="text-danger error weapon_necessity_approved_error"></small>
                                 </div>
                                 <div class="col-sm-4">
-                                    <label for="vault_limit_verified">সিন্দুক সীমা কত এবং আবেদনে বর্ণিত পরিমাণ সঠিক কিনা <span class="text-danger">*</span></label>
+                                    <label for="vault_limit_verified">সিন্দুক সীমা/নিরাপদ হেফাজতের ব্যবস্থা সঠিক কিনা <span class="text-danger">*</span></label>
                                     <select name="vault_limit_verified" class="form-control" id="vault_limit_verified" required>
                                         <option value="1" {{ isset($application->verification) && $application->verification->vault_limit_verified ? 'selected' : '' }}>সঠিক</option>
                                         <option value="0" {{ isset($application->verification) && !$application->verification->vault_limit_verified ? 'selected' : '' }}>সঠিক নয়</option>
@@ -216,7 +216,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "{{ route('gun-license.org.verification.store', $application->id) }}",
+                url: "{{ route('gun-license.other-org.verification.store', $application->id) }}",
                 data: thisForm.serialize(),
                 dataType: "json",
                 beforeSend: function() {

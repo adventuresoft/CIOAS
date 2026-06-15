@@ -469,6 +469,13 @@
                                 <p>Organization License List</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('gun-license.other-org.index') }}"
+                                class="nav-link @if (isset($subMenu) && $subMenu == 'OtherOrgGunLicense') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Other Org. License List</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 {{-- Mis Case --}}

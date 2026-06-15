@@ -10,8 +10,11 @@ class OrgGunApplication extends Model
     use HasFactory;
 
     protected $fillable = [
+        'institute_id',
         'tracking_no',
         'org_name',
+        'phone',
+        'email',
         'org_address',
         'operation_start_date',
         'vault_limit',

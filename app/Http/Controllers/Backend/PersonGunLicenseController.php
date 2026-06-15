@@ -10,6 +10,7 @@ use App\Models\PersonGunInterview;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class PersonGunLicenseController extends Controller
 {
@@ -26,16 +27,55 @@ class PersonGunLicenseController extends Controller
 
     public function storeApplication(Request $request)
     {
+        if ($request->has('age_at_application')) {
+            $bnDigits = ["১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯", "০"];
+            $enDigits = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+            $convertedAge = str_replace($bnDigits, $enDigits, $request->age_at_application);
+            $request->merge(['age_at_application' => $convertedAge]);
+        }
+
         $validator = Validator::make($request->all(), [
+            'district_magistrate' => 'nullable|string|max:255',
+            'application_class' => 'nullable|string|max:255',
             'applicant_name' => 'required|string|max:255',
-            'father_name' => 'nullable|string|max:255',
+            'applicant_name_en' => 'nullable|string|max:255',
+            'nid_no' => 'nullable|string|max:255',
+            'dob' => 'nullable|date',
+            'gender' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'email' => 'nullable|email|max:255',
+            'age_at_application' => 'nullable|integer|min:0',
             'mother_name' => 'nullable|string|max:255',
+            'mother_profession' => 'nullable|string|max:255',
+            'father_name' => 'nullable|string|max:255',
+            'father_profession' => 'nullable|string|max:255',
+            'marital_status' => 'nullable|string|max:255',
+            'spouse_name' => 'nullable|string|max:255',
+            'spouse_profession' => 'nullable|string|max:255',
+            'nationality' => 'nullable|string|max:255',
+            'religion' => 'nullable|string|max:255',
             'present_address' => 'nullable|string',
             'permanent_address' => 'nullable|string',
+            'education_qualification' => 'nullable|string|max:255',
             'profession_details' => 'nullable|string',
-            'weapon_details' => 'required|string', // dropdown value selected by user
+            'profession_address' => 'nullable|string',
             'annual_income' => 'nullable|string|max:255',
             'income_source' => 'nullable|string|max:255',
+            'tin_no' => 'nullable|string|max:255',
+            'tax_history_details' => 'nullable|string',
+            'is_govt_employee' => 'required|boolean',
+            'cadre_service_name' => 'nullable|string|max:255',
+            'designation' => 'nullable|string|max:255',
+            'pay_grade_salary' => 'nullable|string|max:255',
+            'workplace_address' => 'nullable|string',
+            'duty_free_import' => 'nullable|string|max:255',
+            'license_cancelled_before' => 'required|boolean',
+            'cancelled_weapon_type' => 'nullable|string|max:255',
+            'cancellation_reason' => 'nullable|string',
+            'weapon_details' => 'required|string',
+            'necessity_reason' => 'nullable|string',
+            'affidavit_attached' => 'required|boolean',
+            'heir_deed_attached' => 'required|boolean',
         ]);
 
         if ($validator->fails()) {
@@ -62,16 +102,49 @@ class PersonGunLicenseController extends Controller
         $trackingNo = 'PG-' . $datePart . '-' . str_pad($newSerial, 5, '0', STR_PAD_LEFT);
 
         $application = PersonGunApplication::create([
+            'institute_id' => Auth::user()->institute_id ?? 0,
             'tracking_no' => $trackingNo,
+            'district_magistrate' => $request->district_magistrate,
+            'application_class' => $request->application_class,
             'applicant_name' => $request->applicant_name,
-            'father_name' => $request->father_name,
+            'applicant_name_en' => $request->applicant_name_en,
+            'nid_no' => $request->nid_no,
+            'dob' => $request->dob,
+            'gender' => $request->gender,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'age_at_application' => $request->age_at_application,
             'mother_name' => $request->mother_name,
+            'mother_profession' => $request->mother_profession,
+            'father_name' => $request->father_name,
+            'father_profession' => $request->father_profession,
+            'marital_status' => $request->marital_status,
+            'spouse_name' => $request->spouse_name,
+            'spouse_profession' => $request->spouse_profession,
+            'nationality' => $request->nationality,
+            'religion' => $request->religion,
             'present_address' => $request->present_address,
             'permanent_address' => $request->permanent_address,
+            'education_qualification' => $request->education_qualification,
             'profession_details' => $request->profession_details,
-            'weapon_details' => $request->weapon_details,
+            'profession_address' => $request->profession_address,
             'annual_income' => $request->annual_income,
             'income_source' => $request->income_source,
+            'tin_no' => $request->tin_no,
+            'tax_history_details' => $request->tax_history_details,
+            'is_govt_employee' => $request->is_govt_employee,
+            'cadre_service_name' => $request->cadre_service_name,
+            'designation' => $request->designation,
+            'pay_grade_salary' => $request->pay_grade_salary,
+            'workplace_address' => $request->workplace_address,
+            'duty_free_import' => $request->duty_free_import,
+            'license_cancelled_before' => $request->license_cancelled_before,
+            'cancelled_weapon_type' => $request->cancelled_weapon_type,
+            'cancellation_reason' => $request->cancellation_reason,
+            'weapon_details' => $request->weapon_details,
+            'necessity_reason' => $request->necessity_reason,
+            'affidavit_attached' => $request->affidavit_attached,
+            'heir_deed_attached' => $request->heir_deed_attached,
             'status' => 'Submitted'
         ]);
 
@@ -172,8 +245,8 @@ class PersonGunLicenseController extends Controller
         $application = PersonGunApplication::findOrFail($applicationId);
 
         $validator = Validator::make($request->all(), [
-            'age' => 'required|integer|min:1',
-            'education' => 'required|string|max:255',
+            'age' => 'nullable|integer|min:1',
+            'education' => 'nullable|string|max:255',
             'physical_mental_fitness' => 'required|boolean',
             'weapon_handling_knowledge' => 'required|boolean',
             'gun_law_knowledge' => 'required|boolean',

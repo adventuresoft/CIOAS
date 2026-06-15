@@ -1,4 +1,4 @@
-@extends('backend.master', ['mainMenu' => 'GunLicense', 'subMenu' => 'OrgGunLicense'])
+@extends('backend.master', ['mainMenu' => 'GunLicense', 'subMenu' => 'OtherOrgGunLicense'])
 
 @push('style')
     <style>
@@ -53,7 +53,7 @@
     </style>
 @endpush
 
-@section('title', 'Organization Guard Interview (Appendix-8)')
+@section('title', 'Other Organization Guard Interview (Appendix-8)')
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
@@ -62,7 +62,7 @@
                     <h1>সাক্ষাৎকার গ্রহণের ফরম (পরিশিষ্ট-৫)</h1>
                 </div>
                 <div class="col-sm-6 text-right">
-                    <a href="{{ route('gun-license.org.index') }}" class="btn btn-default">ফিরে যান</a>
+                    <a href="{{ route('gun-license.other-org.index') }}" class="btn btn-default">ফিরে যান</a>
                 </div>
             </div>
         </div>
@@ -198,7 +198,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('gun-license.org.interview.store', $application->id) }}",
+                    url: "{{ route('gun-license.other-org.interview.store', $application->id) }}",
                     data: thisForm.serialize(),
                     dataType: "json",
                     beforeSend: function () {

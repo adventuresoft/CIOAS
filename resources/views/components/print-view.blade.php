@@ -8,13 +8,13 @@
     .print-pad-container {
         background: #ffffff;
         color: #1e293b;
-        max-width: 210mm; /* A4 width */
+        max-width: 100%; /* A4 width */
         margin: 20px auto;
         padding: 10mm 10mm;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         border-radius: 8px;
         position: relative;
-        font-family: 'Source Sans Pro', 'Kalpurush', sans-serif;
+        font-family: 'Source Sans Pro', 'Inter', sans-serif;
     }
 
     .pad-header {

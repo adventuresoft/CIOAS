@@ -67,16 +67,16 @@
 </style>
 @endpush
 
-@section('title', 'Person Police Verification (Appendix-4)')
+@section('title', 'পুলিশ ভেরিফিকেশন')
 @section('content')
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Police Verification Form (Appendix-4)</h1>
+                <h1>পুলিশ ভেরিফিকেশন ফর্ম</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="{{ route('gun-license.person.index') }}" class="btn btn-default">Back</a>
+                <a href="{{ route('gun-license.person.index') }}" class="btn btn-default">ফিরে যান</a>
             </div>
         </div>
     </div>
@@ -88,7 +88,7 @@
             <div class="col-md-12">
                 <div class="card card-info">
                     <div class="card-header">
-                        <h3 class="card-title">Verification for Application: {{ $application->tracking_no }} ({{ $application->applicant_name }})</h3>
+                        <h3 class="card-title">আবেদনের ভেরিফিকেশন: {{ $application->tracking_no }} ({{ $application->applicant_name }})</h3>
                     </div>
                     <form class="form-horizontal" id="verificationForm" method="POST">
                         @csrf
@@ -96,54 +96,54 @@
                             
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <h5 class="section-title"><i class="fas fa-gavel"></i> Criminal Record Checks</h5>
+                                    <h5 class="section-title"><i class="fas fa-gavel"></i> ৯. ফৌজদারি মামলা সংক্রান্ত তথ্য</h5>
                                 </div>
                             </div>
                             
                             <div class="form-group row">
-                                <div class="col-sm-4">
-                                    <label for="has_criminal_record">Has Criminal Record? <span class="text-danger">*</span></label>
+                                <div class="col-sm-6">
+                                    <label for="has_criminal_record">ক) চার্জশিটভুক্ত আসামি বা খ) কোনো মামলায় সাজাপ্রাপ্ত/খালাসপ্রাপ্ত কিনা? <span class="text-danger">*</span></label>
                                     <select name="has_criminal_record" class="form-control" id="has_criminal_record" required>
-                                        <option value="0" {{ isset($application->verification) && !$application->verification->has_criminal_record ? 'selected' : '' }}>No</option>
-                                        <option value="1" {{ isset($application->verification) && $application->verification->has_criminal_record ? 'selected' : '' }}>Yes</option>
+                                        <option value="0" {{ isset($application->verification) && !$application->verification->has_criminal_record ? 'selected' : '' }}>না</option>
+                                        <option value="1" {{ isset($application->verification) && $application->verification->has_criminal_record ? 'selected' : '' }}>হ্যাঁ</option>
                                     </select>
                                     <small class="text-danger error has_criminal_record_error"></small>
                                 </div>
-                                <div class="col-sm-8">
-                                    <label for="criminal_case_details">Criminal Case Details (If Yes)</label>
-                                    <input type="text" name="criminal_case_details" class="form-control" id="criminal_case_details" value="{{ $application->verification->criminal_case_details ?? '' }}" placeholder="Enter case details if applicable">
+                                <div class="col-sm-6">
+                                    <label for="criminal_case_details">ফৌজদারি মামলার বিবরণ (যদি থাকে)</label>
+                                    <input type="text" name="criminal_case_details" class="form-control" id="criminal_case_details" value="{{ $application->verification->criminal_case_details ?? '' }}" placeholder="মামলার বিবরণ এবং বর্তমান অবস্থা লিখুন">
                                     <small class="text-danger error criminal_case_details_error"></small>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <h5 class="section-title"><i class="fas fa-shield-alt"></i> Security & Practical Checks</h5>
+                                    <h5 class="section-title"><i class="fas fa-shield-alt"></i> নিরাপত্তা ও ব্যবহারিক জ্ঞান সংক্রান্ত যাচাই</h5>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-sm-4">
-                                    <label for="social_discipline_issue">Social Discipline / Peace Issue? <span class="text-danger">*</span></label>
+                                    <label for="social_discipline_issue">১০. অভ্যাসবশতভাবে সামাজিক শান্তি শৃঙ্খলা ভঙ্গের সাথে জড়িত কিনা? <span class="text-danger">*</span></label>
                                     <select name="social_discipline_issue" class="form-control" id="social_discipline_issue" required>
-                                        <option value="0" {{ isset($application->verification) && !$application->verification->social_discipline_issue ? 'selected' : '' }}>No / Satisfactory</option>
-                                        <option value="1" {{ isset($application->verification) && $application->verification->social_discipline_issue ? 'selected' : '' }}>Yes / Adverse</option>
+                                        <option value="0" {{ isset($application->verification) && !$application->verification->social_discipline_issue ? 'selected' : '' }}>না (সন্তোষজনক)</option>
+                                        <option value="1" {{ isset($application->verification) && $application->verification->social_discipline_issue ? 'selected' : '' }}>হ্যাঁ (প্রতিকূল)</option>
                                     </select>
                                     <small class="text-danger error social_discipline_issue_error"></small>
                                 </div>
                                 <div class="col-sm-4">
-                                    <label for="practical_knowledge">Practical Knowledge of Weapons? <span class="text-danger">*</span></label>
+                                    <label for="practical_knowledge">১১. অস্ত্র পরিচালনা ও রক্ষণাবেক্ষণের ব্যবহারিক জ্ঞান আছে কিনা? <span class="text-danger">*</span></label>
                                     <select name="practical_knowledge" class="form-control" id="practical_knowledge" required>
-                                        <option value="1" {{ isset($application->verification) && $application->verification->practical_knowledge ? 'selected' : '' }}>Yes (আছে)</option>
-                                        <option value="0" {{ isset($application->verification) && !$application->verification->practical_knowledge ? 'selected' : '' }}>No (নেই)</option>
+                                        <option value="1" {{ isset($application->verification) && $application->verification->practical_knowledge ? 'selected' : '' }}>হ্যাঁ (আছে)</option>
+                                        <option value="0" {{ isset($application->verification) && !$application->verification->practical_knowledge ? 'selected' : '' }}>না (নেই)</option>
                                     </select>
                                     <small class="text-danger error practical_knowledge_error"></small>
                                 </div>
                                 <div class="col-sm-4">
-                                    <label for="certificate_verification_status">Certificate Verification Status <span class="text-danger">*</span></label>
+                                    <label for="certificate_verification_status">১৩. সংযুক্ত সকল সার্টিফিকেটের সঠিকতা যাচাই সংক্রান্ত প্রত্যয়ন <span class="text-danger">*</span></label>
                                     <select name="certificate_verification_status" class="form-control" id="certificate_verification_status" required>
-                                        <option value="1" {{ isset($application->verification) && $application->verification->certificate_verification_status ? 'selected' : '' }}>Verified / Correct</option>
-                                        <option value="0" {{ isset($application->verification) && !$application->verification->certificate_verification_status ? 'selected' : '' }}>Unverified / False</option>
+                                        <option value="1" {{ isset($application->verification) && $application->verification->certificate_verification_status ? 'selected' : '' }}>যাচাইকৃত / সঠিক</option>
+                                        <option value="0" {{ isset($application->verification) && !$application->verification->certificate_verification_status ? 'selected' : '' }}>অযাচাইকৃত / অসত্য</option>
                                     </select>
                                     <small class="text-danger error certificate_verification_status_error"></small>
                                 </div>
@@ -151,39 +151,39 @@
 
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <label for="life_threat_justification">Life Threat Justification / Necessity <span class="text-danger">*</span></label>
-                                    <textarea name="life_threat_justification" class="form-control" id="life_threat_justification" rows="3" style="height: auto !important;" required placeholder="Describe threat justifications">{{ $application->verification->life_threat_justification ?? '' }}</textarea>
+                                    <label for="life_threat_justification">১২. জীবননাশঙ্কা এবং আগ্নেয়াস্ত্রের প্রয়োজনীয়তার বিবরণ <span class="text-danger">*</span></label>
+                                    <textarea name="life_threat_justification" class="form-control" id="life_threat_justification" rows="3" style="height: auto !important;" required placeholder="জীবননাশের আশঙ্কা এবং আগ্নেয়াস্ত্র লাইসেন্সের প্রয়োজনীয়তার বিস্তারিত বিবরণ ও প্রত্যয়ন লিখুন">{{ $application->verification->life_threat_justification ?? '' }}</textarea>
                                     <small class="text-danger error life_threat_justification_error"></small>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <h5 class="section-title"><i class="fas fa-comments"></i> Police Official Comments</h5>
+                                    <h5 class="section-title"><i class="fas fa-comments"></i> সংশ্লিষ্ট কর্মকর্তাদের মন্তব্য ও স্বাক্ষর</h5>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-sm-4">
-                                    <label for="adverse_info">Adverse Information (if any)</label>
-                                    <textarea name="adverse_info" class="form-control" id="adverse_info" rows="2" style="height: auto !important;" placeholder="Specify any negative factors">{{ $application->verification->adverse_info ?? '' }}</textarea>
+                                    <label for="adverse_info">১৪. বিবিধ (আবেদনকারী সম্পর্কে বিরূপ তথ্য আছে কিনা)</label>
+                                    <textarea name="adverse_info" class="form-control" id="adverse_info" rows="2" style="height: auto !important;" placeholder="কোনো বিরূপ বা প্রতিকূল তথ্য থাকলে তা এখানে লিখুন">{{ $application->verification->adverse_info ?? '' }}</textarea>
                                     <small class="text-danger error adverse_info_error"></small>
                                 </div>
                                 <div class="col-sm-4">
-                                    <label for="oc_comments">Officer In-Charge (OC) Comments</label>
-                                    <textarea name="oc_comments" class="form-control" id="oc_comments" rows="2" style="height: auto !important;" placeholder="OC report details">{{ $application->verification->oc_comments ?? '' }}</textarea>
+                                    <label for="oc_comments">১৫. অফিসার ইনচার্জ (OC) এর সার্বিক মন্তব্য ও স্বাক্ষর</label>
+                                    <textarea name="oc_comments" class="form-control" id="oc_comments" rows="2" style="height: auto !important;" placeholder="অফিসার ইনচার্জ এর সার্বিক মন্তব্য লিখুন">{{ $application->verification->oc_comments ?? '' }}</textarea>
                                     <small class="text-danger error oc_comments_error"></small>
                                 </div>
                                 <div class="col-sm-4">
-                                    <label for="sp_dsb_comments">SP / DSB Office Comments</label>
-                                    <textarea name="sp_dsb_comments" class="form-control" id="sp_dsb_comments" rows="2" style="height: auto !important;" placeholder="SP DSB review and signature notes">{{ $application->verification->sp_dsb_comments ?? '' }}</textarea>
+                                    <label for="sp_dsb_comments">১৬. সংশ্লিষ্ট পুলিশ সুপার, জেলা বিশেষ শাখা (SP / DSB) এর মন্তব্য ও স্বাক্ষর</label>
+                                    <textarea name="sp_dsb_comments" class="form-control" id="sp_dsb_comments" rows="2" style="height: auto !important;" placeholder="পুলিশ সুপার, জেলা বিশেষ শাখা এর মন্তব্য লিখুন">{{ $application->verification->sp_dsb_comments ?? '' }}</textarea>
                                     <small class="text-danger error sp_dsb_comments_error"></small>
                                 </div>
                             </div>
 
                         </div>
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-info float-right">Save Verification Details</button>
+                            <button type="submit" class="btn btn-info float-right">ভেরিফিকেশন তথ্য সংরক্ষণ করুন</button>
                         </div>
                     </form>
                 </div>
