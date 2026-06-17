@@ -9,7 +9,7 @@
     <title>CIOAS | @yield('title')</title>
 
 
-    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/images/favicon.png') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.png') }}">
 
     <!-- Google Fonts: Inter, Open Sans, Source Sans Pro -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
