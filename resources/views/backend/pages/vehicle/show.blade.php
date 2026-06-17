@@ -275,11 +275,11 @@
             <img src="{{ asset('images/dhaka.png') }}" alt="City Logo">
             <div class="union-header">
                 <h5 class="mb-0">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার</h5>
-                <div class="union-title-bn">{{ $headerUnion?->bn_name ?? '' }}</div>
-                <div class="union-title-en">{{ $headerUnion?->name ?? '' }}</div>
+                <div class="union-title-bn">{{ $headerDistrict?->bn_name ?? '' }}</div>
+                <div class="union-title-en">{{ $headerDistrict?->name ?? '' }}</div>
                 <p class="union-address">
-                    থানাঃ {{ $headerThana?->bn_name ?? $headerThana?->name ?? '' }},
                     জেলাঃ {{ $headerDistrict?->bn_name ?? $headerDistrict?->name ?? '' }},
+                    বিভাগঃ {{ $headerDistrict?->Division?->bn_name ?? $headerDistrict?->Division?->name ?? '' }},
                     বাংলাদেশ।
                 </p>
             </div>
@@ -295,6 +295,7 @@
         <div class="two-columns">
             <div class="col">
                 <div class="info-row"><span class="info-label">Vehicle ID :</span><span class="info-value">#{{ $vehicle->id }}</span></div>
+                <div class="info-row"><span class="info-label">Registration No :</span><span class="info-value">{{ $vehicle->registration_no ?? '--' }}</span></div>
                 <div class="info-row"><span class="info-label">Vehicle Type :</span><span class="info-value">{{ $vehicle->vehicle_type ?? '--' }}</span></div>
                 <div class="info-row"><span class="info-label">Vehicle Category :</span><span class="info-value">{{ $vehicle->vehicle_category ?? '--' }}</span></div>
                 <div class="info-row"><span class="info-label">Vehicle Model :</span><span class="info-value">{{ $vehicle->vehicle_model ?? '--' }}</span></div>
@@ -316,40 +317,146 @@
             </div>
         </div>
 
-        <div class="section-header">Owner Info</div>
+        <div class="section-header">Certificates & Attachments</div>
+        <div class="two-columns">
+            <div class="col">
+                <div class="info-row"><span class="info-label">RC Attachment :</span><span class="info-value">{!! $vehicle->rc_attachment ? '<a href="'.asset('storage/'.$vehicle->rc_attachment).'" target="_blank">View RC</a>' : '--' !!}</span></div>
+                <div class="info-row"><span class="info-label">RC Issue Date :</span><span class="info-value">{{ $vehicle->rc_issue_date ?? '--' }}</span></div>
+                <div class="info-row"><span class="info-label">RC Validity Date :</span><span class="info-value">{{ $vehicle->rc_validity_date ?? '--' }}</span></div>
+                <br>
+                <div class="info-row"><span class="info-label">RP Attachment :</span><span class="info-value">{!! $vehicle->rp_attachment ? '<a href="'.asset('storage/'.$vehicle->rp_attachment).'" target="_blank">View RP</a>' : '--' !!}</span></div>
+                <div class="info-row"><span class="info-label">RP Issue Date :</span><span class="info-value">{{ $vehicle->rp_issue_date ?? '--' }}</span></div>
+                <div class="info-row"><span class="info-label">RP Validity Date :</span><span class="info-value">{{ $vehicle->rp_validity_date ?? '--' }}</span></div>
+            </div>
+            <div class="col">
+                <div class="info-row"><span class="info-label">TT Attachment :</span><span class="info-value">{!! $vehicle->tt_attachment ? '<a href="'.asset('storage/'.$vehicle->tt_attachment).'" target="_blank">View TT</a>' : '--' !!}</span></div>
+                <div class="info-row"><span class="info-label">TT Issue Date :</span><span class="info-value">{{ $vehicle->tt_issue_date ?? '--' }}</span></div>
+                <div class="info-row"><span class="info-label">TT Validity Date :</span><span class="info-value">{{ $vehicle->tt_validity_date ?? '--' }}</span></div>
+                <br>
+                <div class="info-row"><span class="info-label">IN Attachment :</span><span class="info-value">{!! $vehicle->in_attachment ? '<a href="'.asset('storage/'.$vehicle->in_attachment).'" target="_blank">View IN</a>' : '--' !!}</span></div>
+                <div class="info-row"><span class="info-label">IN Issue Date :</span><span class="info-value">{{ $vehicle->in_issue_date ?? '--' }}</span></div>
+                <div class="info-row"><span class="info-label">IN Validity Date :</span><span class="info-value">{{ $vehicle->in_validity_date ?? '--' }}</span></div>
+            </div>
+        </div>
 
-        @if($vehicle->ownership_type === 'personal')
-            @if($ownerUser)
-                <div class="photo-badge">
-                    <div class="photo-box">
-                        <img src="{{ $ownerUser->image ? asset($ownerUser->image) : asset('public/no-image-found.jpeg') }}" alt="Owner Photo" onerror="this.src='{{ asset('public/no-image-found.jpeg') }}'">
-                    </div>
-                    <div class="id-info-columns">
-                        <div class="id-info-item"><span>Name (Bangla) :</span> {{ $ownerUser->people?->bn_name ?? '-' }}</div>
-                        <div class="id-info-item"><span>Name (English) :</span> {{ $ownerUser->name ?? '-' }}</div>
-                        <div class="id-info-item"><span>NID :</span> {{ $ownerUser->nid ?? '-' }}</div>
-                        <div class="id-info-item"><span>ID :</span> {{ $ownerUser->system_id ?? $ownerUser->id ?? '-' }}</div>
-                        <div class="id-info-item"><span>Phone :</span> {{ $ownerUser->mobile ?? '-' }}</div>
-                        <div class="id-info-item"><span>Email :</span> {{ $ownerUser->email ?? '-' }}</div>
+        @php
+            $assignedDriver = null;
+            if ($vehicle->driver_registration_no) {
+                $staff = \App\Models\Staff::where('staff_id', $vehicle->driver_registration_no)->with('user')->first();
+                if ($staff && $staff->user) {
+                    $assignedDriver = $staff->user;
+                } else {
+                    $assignedDriver = \App\Models\User::where('system_id', $vehicle->driver_registration_no)->first();
+                }
+            }
+        @endphp
+        <div class="section-header">Assigned Driver</div>
+        <div class="two-columns">
+            <div class="col">
+                <div class="info-row"><span class="info-label">Registration No / System ID :</span><span class="info-value">{{ $vehicle->driver_registration_no ?? '--' }}</span></div>
+            </div>
+            <div class="col">
+                <div class="info-row"><span class="info-label">Driver Name :</span><span class="info-value">{{ $assignedDriver ? $assignedDriver->name : '--' }}</span></div>
+                <div class="info-row"><span class="info-label">Driver Phone :</span><span class="info-value">{{ $assignedDriver ? $assignedDriver->mobile : '--' }}</span></div>
+            </div>
+        </div>
 
-                    </div>
-                </div>
+        <div class="section-header">Routes Allocated</div>
+        <table class="table table-bordered table-sm" style="margin-top: 10px; margin-bottom: 20px;">
+            <thead class="bg-light">
+                <tr>
+                    <th style="width: 50px;">Sl.</th>
+                    <th>From Point</th>
+                    <th>Middle Point</th>
+                    <th>End Point</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if($vehicle->routes && $vehicle->routes->count() > 0)
+                    @foreach($vehicle->routes as $index => $route)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $route->from_point }}</td>
+                        <td>{{ $route->middle_point ?? '--' }}</td>
+                        <td>{{ $route->end_point }}</td>
+                    </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="4" class="text-center">No routes allocated</td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
 
-                <div class="info-row"><span class="info-label">Owner ID (Input) :</span><span class="info-value">{{ $vehicle->owner_id ?? '--' }}</span></div>
-                <div class="info-row"><span class="info-label">Father Name :</span><span class="info-value">{{ $ownerUser->familyInfo?->father_name ?? '-' }}</span></div>
-                <div class="info-row"><span class="info-label">Mother Name :</span><span class="info-value">{{ $ownerUser->familyInfo?->mother_name ?? '-' }}</span></div>
-                <div class="info-row"><span class="info-label">Present Address :</span><span class="info-value">{{ $presentAddress ?: '-' }}</span></div>
-                <div class="info-row"><span class="info-label">Permanent Address :</span><span class="info-value">{{ $permanentAddress ?: '-' }}</span></div>
-            @else
-                <div class="info-row"><span class="info-label">Owner ID :</span><span class="info-value">{{ $vehicle->owner_id ?? '--' }}</span></div>
-                <div class="alert alert-warning mb-0">Owner details were not found for this ID.</div>
-            @endif
-        @else
-            <div class="info-row"><span class="info-label">Owner ID :</span><span class="info-value">{{ $vehicle->owner_id ?? '--' }}</span></div>
-            <div class="info-row"><span class="info-label">Institutional Name :</span><span class="info-value">{{ $vehicle->institutional_name ?? '--' }}</span></div>
-            <div class="info-row"><span class="info-label">Trade License :</span><span class="info-value">{{ $vehicle->trade_license ?? '--' }}</span></div>
-            <div class="info-row"><span class="info-label">Institutional Address :</span><span class="info-value">{{ $vehicle->institutional_address ?? '--' }}</span></div>
-        @endif
+        <div class="section-header mt-4">Repairing History</div>
+        <table class="table table-bordered table-sm" style="margin-top: 10px; margin-bottom: 20px;">
+            <thead class="bg-light">
+                <tr>
+                    <th style="width: 50px;">Sl.</th>
+                    <th>Date</th>
+                    <th>Workshop</th>
+                    <th>Repair Type</th>
+                    <th>Spare Parts</th>
+                    <th>Cost</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if($vehicle->repairings && $vehicle->repairings->count() > 0)
+                    @foreach($vehicle->repairings as $index => $repair)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $repair->repair_date ? \Carbon\Carbon::parse($repair->repair_date)->format('d-m-Y') : '--' }}</td>
+                        <td>{{ $repair->workshop_name ?? '--' }}</td>
+                        <td>{{ $repair->repair_type ?? '--' }}</td>
+                        <td>{{ $repair->spare_parts ?? '--' }}</td>
+                        <td>{{ $repair->cost ?? '--' }}</td>
+                        <td>{{ $repair->remarks ?? '--' }}</td>
+                    </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="7" class="text-center">No repairing history found</td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
+
+        <div class="section-header mt-4">Fuel History</div>
+        <table class="table table-bordered table-sm" style="margin-top: 10px; margin-bottom: 20px;">
+            <thead class="bg-light">
+                <tr>
+                    <th style="width: 50px;">Sl.</th>
+                    <th>Date</th>
+                    <th>Pump Name</th>
+                    <th>Fuel Type</th>
+                    <th>Quantity</th>
+                    <th>Total Cost</th>
+                    <th>Odometer Reading</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if($vehicle->fuels && $vehicle->fuels->count() > 0)
+                    @foreach($vehicle->fuels as $index => $fuel)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $fuel->fuel_date ? \Carbon\Carbon::parse($fuel->fuel_date)->format('d-m-Y') : '--' }}</td>
+                        <td>{{ $fuel->pump_name ?? '--' }}</td>
+                        <td>{{ $fuel->fuel_type ?? '--' }}</td>
+                        <td>{{ $fuel->quantity ?? '--' }}</td>
+                        <td>{{ $fuel->total_cost ?? '--' }}</td>
+                        <td>{{ $fuel->odometer_reading ?? '--' }}</td>
+                    </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="7" class="text-center">No fuel history found</td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
+
 
         <div class="action-row no-print">
             <div>

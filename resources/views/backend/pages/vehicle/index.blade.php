@@ -88,6 +88,7 @@
                               <thead>
                                 <tr>
                                     <th>Sl.</th>
+                                    <th>Registration No</th>
                                     <th>Vehicle Name</th>
                                     <th>Type</th>
                                     <th>Category</th>
@@ -101,6 +102,7 @@
                                     @foreach ($vehicles as $key => $vehicle)
                                         <tr>
                                             <td>{{ ++$key }}</td>
+                                            <td>{{ $vehicle->registration_no ?? '--' }}</td>
                                             <td>{{ $vehicle->vehicle_model ?? '--' }}</td>
                                             <td>{{ $vehicle->vehicle_type ?? '--' }}</td>
                                             <td>{{ $vehicle->vehicle_category ?? '--' }}</td>

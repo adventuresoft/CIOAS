@@ -102,6 +102,10 @@ use App\Http\Controllers\HouseController;
 use App\Http\Controllers\HouseOwnershipController;
 use App\Http\Controllers\InstituteCategoryController;
 use App\Http\Controllers\InstituteController;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\WorkOrderController;
+use App\Http\Controllers\Inventory\QuotationController;
+use App\Http\Controllers\VendorController;
 use App\Http\Controllers\InstitutionalAdminController;
 use App\Http\Controllers\InstituteTypeController;
 use App\Http\Controllers\LandController;
@@ -634,6 +638,61 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
     Route::resource('hotelRestaurant-ownership', HotelRestaurantOwnershipController::class);
 
+    Route::controller(InventoryController::class)->prefix('inventory')->name('inventory.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::get('/requisition/add-new', 'create')->name('requisition.create');
+        Route::get('/requisition/list', 'index')->name('requisition.index');
+        Route::get('/requisition/approve-list', 'approveList')->name('requisition.approve_list');
+        Route::post('/requisition/approve', 'approveRequisition')->name('requisition.approve');
+        Route::get('/receive', 'receive')->name('receive');
+        Route::post('/receive', 'receiveStore')->name('receive.store');
+        Route::get('/stock', 'stock')->name('stock');
+        Route::get('/distribution', 'distribution')->name('distribution');
+        Route::post('/distribution', 'distributionStore')->name('distribution.store');
+        Route::post('/', 'store')->name('store');
+        Route::post('/approve-reject', 'approveReject')->name('approve_reject');
+        Route::get('/section/{step}', 'section')->whereNumber('step')->name('section');
+        Route::get('/{id}/edit', 'edit')->whereNumber('id')->name('edit');
+        Route::get('/{id}', 'show')->whereNumber('id')->name('show');
+        Route::delete('/{id}', 'destroy')->whereNumber('id')->name('destroy');
+    });
+
+    Route::controller(QuotationController::class)->prefix('inventory/quotation')->name('inventory.quotation.')->group(function () {
+        Route::get('/list', 'index')->name('index');
+        Route::get('/add-new', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/show/{id}', 'show')->name('show');
+    });
+
+    Route::controller(WorkOrderController::class)->prefix('inventory/work-order')->name('inventory.work-order.')->group(function () {
+        Route::get('/list', 'index')->name('index');
+        Route::get('/add-new', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/approve-list', 'approveList')->name('approve_list');
+        Route::get('/approve-list/{id}', 'approveShow')->whereNumber('id')->name('approve_show');
+        Route::post('/approve-list/update', 'updateApproved')->name('update_approved');
+        Route::post('/approve', 'approveWorkOrder')->name('approve');
+        Route::post('/{id}/assign-vendor', 'assignVendor')->whereNumber('id')->name('assign_vendor');
+        Route::get('/{id}', 'show')->whereNumber('id')->name('show');
+        Route::delete('/{id}', 'destroy')->whereNumber('id')->name('destroy');
+    });
+
+    Route::controller(\App\Http\Controllers\InventoryVendorController::class)->prefix('inventory/vendors')->name('inventory.vendors.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/assigned', 'assigned')->name('assigned');
+        Route::get('/assigned/{id}', 'assignedShow')->whereNumber('id')->name('assigned_show');
+        Route::get('/{id}', 'show')->whereNumber('id')->name('show');
+    });
+
+    Route::controller(\App\Http\Controllers\PurchaseOrderController::class)->prefix('inventory/purchase-orders')->name('inventory.purchase_orders.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{id}/create', 'create')->whereNumber('id')->name('create');
+        Route::post('/{id}', 'store')->whereNumber('id')->name('store');
+    });
+
     Route::get('organizations', function () {
         return redirect()->route('organization.index');
     });
@@ -700,7 +759,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('vehicle/fees/setup/{id}/edit', [VehicleController::class, 'vehicleFeesEdit'])->name('vehicle.fees.edit');
     Route::post('vehicle/fees/setup/{id}/update', [VehicleController::class, 'updateVehicleFees'])->name('vehicle.fees.update');
     Route::post('vehicle/fees/setup', [VehicleController::class, 'storeVehicleFees'])->name('vehicle.fees.vehicle.store');
+    Route::get('vehicle/api/details/{id}', [VehicleController::class, 'getDetails'])->name('vehicle.api.details');
+    Route::get('vehicle/api/driver-info', [VehicleController::class, 'getDriverInfo'])->name('vehicle.api.driver_info');
     Route::resource('vehicle', VehicleController::class);
+    Route::resource('vehicle-repairing', \App\Http\Controllers\VehicleRepairingController::class)->names('vehicle.repairing');
+    Route::resource('vehicle-fuel', \App\Http\Controllers\VehicleFuelController::class)->names('vehicle.fuel');
     Route::resource('market', MarketController::class);
     Route::resource('bridge', BridgeController::class);
     Route::resource('road', RoadController::class);

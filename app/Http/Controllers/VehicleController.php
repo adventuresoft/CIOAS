@@ -47,11 +47,7 @@ class VehicleController extends Controller
             'vehicle_model' => 'required|max:191',
             'make_year' => 'required|integer|min:1900|max:2099',
             'make_company' => 'required|max:191',
-            'ownership_type' => 'required|in:personal,institutional',
-            'owner_id' => 'nullable|required_if:ownership_type,personal|max:191',
-            'institutional_name' => 'nullable|required_if:ownership_type,institutional|max:191',
-            'trade_license' => 'nullable|required_if:ownership_type,institutional|max:191',
-            'institutional_address' => 'nullable|required_if:ownership_type,institutional|max:500',
+            'ownership_type' => 'required|in:own,rental',
             'price' => 'nullable|numeric|min:0',
             'engine_number' => 'nullable|max:191',
             'chassis_number' => 'nullable|max:191',
@@ -62,6 +58,24 @@ class VehicleController extends Controller
             'width' => 'nullable|max:191',
             'tyre_size' => 'nullable|max:191',
             'color' => 'nullable|max:191',
+            'registration_no' => 'required|max:191',
+            'driver_registration_no' => 'nullable|max:191',
+            'rc_attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'rp_attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'tt_attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'in_attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'rc_issue_date' => 'nullable|date',
+            'rc_validity_date' => 'nullable|date',
+            'rp_issue_date' => 'nullable|date',
+            'rp_validity_date' => 'nullable|date',
+            'tt_issue_date' => 'nullable|date',
+            'tt_validity_date' => 'nullable|date',
+            'in_issue_date' => 'nullable|date',
+            'in_validity_date' => 'nullable|date',
+            'routes' => 'nullable|array',
+            'routes.*.from_point' => 'required_with:routes|string',
+            'routes.*.middle_point' => 'nullable|string',
+            'routes.*.end_point' => 'required_with:routes|string',
         ]);
 
         if ($validate->fails()) {
@@ -72,16 +86,6 @@ class VehicleController extends Controller
         }
 
         try {
-            $isInstitutional = $request->ownership_type === 'institutional';
-            $ownerUser = $isInstitutional ? null : $this->resolveOwnerUser($request->owner_id);
-
-            if (! $isInstitutional && ! $ownerUser) {
-                $data['status'] = false;
-                $data['message'] = "Invalid Owner ID. No matching user found.";
-                $data['errors'] = ['owner_id' => ['No matching user found for the provided Owner ID.']];
-                return response(json_encode($data, JSON_PRETTY_PRINT), 422)->header('Content-Type', 'application/json');
-            }
-
             $payload = [
                 'vehicle_type' => $request->vehicle_type,
                 'vehicle_category' => $request->vehicle_category,
@@ -89,11 +93,11 @@ class VehicleController extends Controller
                 'make_year' => $request->make_year,
                 'make_company' => $request->make_company,
                 'ownership_type' => $request->ownership_type,
-                'owner_id' => $isInstitutional ? null : $request->owner_id,
-                'owner_name' => $isInstitutional ? $request->institutional_name : ($ownerUser->name ?? null),
-                'institutional_name' => $isInstitutional ? $request->institutional_name : null,
-                'trade_license' => $isInstitutional ? $request->trade_license : null,
-                'institutional_address' => $isInstitutional ? $request->institutional_address : null,
+                'owner_id' => null,
+                'owner_name' => null,
+                'institutional_name' => null,
+                'trade_license' => null,
+                'institutional_address' => null,
                 'price' => $request->price,
                 'engine_number' => $request->engine_number,
                 'chassis_number' => $request->chassis_number,
@@ -104,7 +108,25 @@ class VehicleController extends Controller
                 'width' => $request->width,
                 'tyre_size' => $request->tyre_size,
                 'color' => $request->color,
+                'registration_no' => $request->registration_no,
+                'driver_registration_no' => $request->driver_registration_no,
+                'rc_issue_date' => $request->rc_issue_date,
+                'rc_validity_date' => $request->rc_validity_date,
+                'rp_issue_date' => $request->rp_issue_date,
+                'rp_validity_date' => $request->rp_validity_date,
+                'tt_issue_date' => $request->tt_issue_date,
+                'tt_validity_date' => $request->tt_validity_date,
+                'in_issue_date' => $request->in_issue_date,
+                'in_validity_date' => $request->in_validity_date,
             ];
+
+            $fileFields = ['rc_attachment', 'rp_attachment', 'tt_attachment', 'in_attachment'];
+            foreach ($fileFields as $field) {
+                if ($request->hasFile($field)) {
+                    $payload[$field] = $request->file($field)->store('vehicles', 'public');
+                }
+            }
+
 
             $vehicle = new Vehicle();
             $columns = Schema::getColumnListing($vehicle->getTable());
@@ -116,6 +138,19 @@ class VehicleController extends Controller
             }
 
             if ($vehicle->save()) {
+                if ($request->has('routes') && is_array($request->routes)) {
+                    foreach ($request->routes as $routeData) {
+                        if (!empty($routeData['from_point']) && !empty($routeData['end_point'])) {
+                            \App\Models\VehicleRoute::create([
+                                'vehicle_id' => $vehicle->id,
+                                'from_point' => $routeData['from_point'],
+                                'middle_point' => $routeData['middle_point'] ?? null,
+                                'end_point' => $routeData['end_point'],
+                            ]);
+                        }
+                    }
+                }
+
                 $data['status'] = true;
                 $data['message'] = "Vehicle Saved Successfully!";
                 $data['redirect_url'] = route('vehicle.index');
@@ -141,18 +176,8 @@ class VehicleController extends Controller
      */
     public function show($id)
     {
-        $vehicle = Vehicle::findOrFail($id);
-        $ownerUser = $vehicle->ownership_type === 'personal'
-            ? $this->resolveOwnerUser($vehicle->owner_id)
-            : null;
-
-        $ownerOrganization = $vehicle->ownership_type === 'institutional'
-            ? $this->resolveOwnerOrganization($vehicle->owner_id, $vehicle->institutional_name)
-            : null;
-
+        $vehicle = Vehicle::with(['routes', 'repairings', 'fuels'])->findOrFail($id);
         $data['vehicle'] = $vehicle;
-        $data['ownerUser'] = $ownerUser;
-        $data['ownerOrganization'] = $ownerOrganization;
 
         return view('backend.pages.vehicle.show', $data);
     }
@@ -184,11 +209,7 @@ class VehicleController extends Controller
             'vehicle_model' => 'required|max:191',
             'make_year' => 'required|integer|min:1900|max:2099',
             'make_company' => 'required|max:191',
-            'ownership_type' => 'required|in:personal,institutional',
-            'owner_id' => 'nullable|required_if:ownership_type,personal|max:191',
-            'institutional_name' => 'nullable|required_if:ownership_type,institutional|max:191',
-            'trade_license' => 'nullable|required_if:ownership_type,institutional|max:191',
-            'institutional_address' => 'nullable|required_if:ownership_type,institutional|max:500',
+            'ownership_type' => 'required|in:own,rental',
             'price' => 'nullable|numeric|min:0',
             'engine_number' => 'nullable|max:191',
             'chassis_number' => 'nullable|max:191',
@@ -199,6 +220,24 @@ class VehicleController extends Controller
             'width' => 'nullable|max:191',
             'tyre_size' => 'nullable|max:191',
             'color' => 'nullable|max:191',
+            'registration_no' => 'required|max:191',
+            'driver_registration_no' => 'nullable|max:191',
+            'rc_attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'rp_attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'tt_attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'in_attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'rc_issue_date' => 'nullable|date',
+            'rc_validity_date' => 'nullable|date',
+            'rp_issue_date' => 'nullable|date',
+            'rp_validity_date' => 'nullable|date',
+            'tt_issue_date' => 'nullable|date',
+            'tt_validity_date' => 'nullable|date',
+            'in_issue_date' => 'nullable|date',
+            'in_validity_date' => 'nullable|date',
+            'routes' => 'nullable|array',
+            'routes.*.from_point' => 'required_with:routes|string',
+            'routes.*.middle_point' => 'nullable|string',
+            'routes.*.end_point' => 'required_with:routes|string',
         ]);
 
         if ($validate->fails()) {
@@ -209,16 +248,6 @@ class VehicleController extends Controller
         }
 
         try {
-            $isInstitutional = $request->ownership_type === 'institutional';
-            $ownerUser = $isInstitutional ? null : $this->resolveOwnerUser($request->owner_id);
-
-            if (! $isInstitutional && ! $ownerUser) {
-                $data['status'] = false;
-                $data['message'] = "Invalid Owner ID. No matching user found.";
-                $data['errors'] = ['owner_id' => ['No matching user found for the provided Owner ID.']];
-                return response(json_encode($data, JSON_PRETTY_PRINT), 422)->header('Content-Type', 'application/json');
-            }
-
             $payload = [
                 'vehicle_type' => $request->vehicle_type,
                 'vehicle_category' => $request->vehicle_category,
@@ -226,11 +255,11 @@ class VehicleController extends Controller
                 'make_year' => $request->make_year,
                 'make_company' => $request->make_company,
                 'ownership_type' => $request->ownership_type,
-                'owner_id' => $isInstitutional ? null : $request->owner_id,
-                'owner_name' => $isInstitutional ? $request->institutional_name : ($ownerUser->name ?? null),
-                'institutional_name' => $isInstitutional ? $request->institutional_name : null,
-                'trade_license' => $isInstitutional ? $request->trade_license : null,
-                'institutional_address' => $isInstitutional ? $request->institutional_address : null,
+                'owner_id' => null,
+                'owner_name' => null,
+                'institutional_name' => null,
+                'trade_license' => null,
+                'institutional_address' => null,
                 'price' => $request->price,
                 'engine_number' => $request->engine_number,
                 'chassis_number' => $request->chassis_number,
@@ -241,9 +270,26 @@ class VehicleController extends Controller
                 'width' => $request->width,
                 'tyre_size' => $request->tyre_size,
                 'color' => $request->color,
+                'registration_no' => $request->registration_no,
+                'driver_registration_no' => $request->driver_registration_no,
+                'rc_issue_date' => $request->rc_issue_date,
+                'rc_validity_date' => $request->rc_validity_date,
+                'rp_issue_date' => $request->rp_issue_date,
+                'rp_validity_date' => $request->rp_validity_date,
+                'tt_issue_date' => $request->tt_issue_date,
+                'tt_validity_date' => $request->tt_validity_date,
+                'in_issue_date' => $request->in_issue_date,
+                'in_validity_date' => $request->in_validity_date,
             ];
 
-            $columns = Schema::getColumnListing($vehicle->getTable());
+            $fileFields = ['rc_attachment', 'rp_attachment', 'tt_attachment', 'in_attachment'];
+            foreach ($fileFields as $field) {
+                if ($request->hasFile($field)) {
+                    $payload[$field] = $request->file($field)->store('vehicles', 'public');
+                }
+            }
+
+            $columns = \Illuminate\Support\Facades\Schema::getColumnListing($vehicle->getTable());
 
             foreach ($payload as $key => $value) {
                 if (in_array($key, $columns, true)) {
@@ -252,6 +298,20 @@ class VehicleController extends Controller
             }
 
             if ($vehicle->save()) {
+                if ($request->has('routes') && is_array($request->routes)) {
+                    \App\Models\VehicleRoute::where('vehicle_id', $vehicle->id)->delete();
+                    foreach ($request->routes as $routeData) {
+                        if (!empty($routeData['from_point']) && !empty($routeData['end_point'])) {
+                            \App\Models\VehicleRoute::create([
+                                'vehicle_id' => $vehicle->id,
+                                'from_point' => $routeData['from_point'],
+                                'middle_point' => $routeData['middle_point'] ?? null,
+                                'end_point' => $routeData['end_point'],
+                            ]);
+                        }
+                    }
+                }
+
                 $data['status'] = true;
                 $data['message'] = "Vehicle Updated Successfully!";
                 $data['redirect_url'] = route('vehicle.index');
@@ -636,6 +696,36 @@ class VehicleController extends Controller
         return $options;
     }
 
+    public function getDriverInfo(Request $request)
+    {
+        $driverId = $request->input('driver_id');
+        if (!$driverId) {
+            return response()->json(['status' => false, 'message' => 'No ID provided']);
+        }
+
+        // Search Staff first
+        $staff = \App\Models\Staff::where('staff_id', $driverId)->with('user')->first();
+        if ($staff && $staff->user) {
+            return response()->json([
+                'status' => true,
+                'name' => $staff->user->name,
+                'phone' => $staff->user->mobile,
+            ]);
+        }
+
+        // Fallback to User system_id
+        $driver = \App\Models\User::where('system_id', $driverId)->first();
+        if ($driver) {
+            return response()->json([
+                'status' => true,
+                'name' => $driver->name,
+                'phone' => $driver->mobile,
+            ]);
+        }
+
+        return response()->json(['status' => false, 'message' => 'Driver not found']);
+    }
+
     private function vehicleTypeCategoryMap(): array
     {
         return [
@@ -650,5 +740,37 @@ class VehicleController extends Controller
                 'Gorur Gari - গরুর গাড়ি',
             ],
         ];
+    }
+
+    public function getDetails($id)
+    {
+        $vehicle = Vehicle::find($id);
+        if (!$vehicle) {
+            return response()->json(['status' => false, 'message' => 'Vehicle not found'], 404);
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'id' => $vehicle->id,
+                'registration_no' => $vehicle->registration_no,
+                'vehicle_type' => $vehicle->vehicle_type,
+                'vehicle_category' => $vehicle->vehicle_category,
+                'vehicle_model' => $vehicle->vehicle_model,
+                'engine_number' => $vehicle->engine_number,
+                'chassis_number' => $vehicle->chassis_number,
+                'tyre_number' => $vehicle->tyre_number,
+                'hp_cc' => $vehicle->hp_cc,
+                'seat_capacity' => $vehicle->seat_capacity,
+                'make_year' => $vehicle->make_year,
+                'make_company' => $vehicle->make_company,
+                'price' => $vehicle->price ? number_format((float) $vehicle->price, 2) : null,
+                'height' => $vehicle->height,
+                'width' => $vehicle->width,
+                'tyre_size' => $vehicle->tyre_size,
+                'color' => $vehicle->color,
+                'ownership_type' => $vehicle->ownership_type ? ucfirst($vehicle->ownership_type) : null,
+            ]
+        ]);
     }
 }
