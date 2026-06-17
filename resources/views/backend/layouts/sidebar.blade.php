@@ -527,7 +527,7 @@
                     <a href="#" class="nav-link @if ($mainMenu == 'MisCase') active @endif ">
                         <i class="nav-icon fas fa-briefcase"></i>
                         <p>
-                            Mis Case
+                            Missed Case
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -549,7 +549,7 @@
                             <a href="{{ route('miscase.index') }}"
                                 class="nav-link @if ($subMenu == 'MisCaseList') active @endif">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Mis Case List</p>
+                                <p>Missed Case List</p>
                             </a>
                         </li>
                         {{-- @endif --}}

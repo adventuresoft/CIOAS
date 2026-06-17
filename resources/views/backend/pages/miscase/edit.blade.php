@@ -1,12 +1,12 @@
 @extends('backend.master', ['mainMenu' => 'MisCase', 'subMenu' => 'MisCaseList'])
 
-@section('title', 'Edit Mis Case')
+@section('title', 'Edit Missed Case')
 
 @section('content')
 @php
     $caseNoValue = $miscase->case_no;
     $formAction = route('miscase.update', $miscase->id);
-    $pageTitle = 'Edit Mis Case';
+    $pageTitle = 'Edit Missed Case';
     $submitText = 'Update Case';
     $notesValue = old('notes', $miscase->notes ?? '');
     $notesText = is_array($notesValue) ? $notesValue['notes'] ?? '' : $notesValue;
@@ -277,7 +277,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('miscase.index') }}">Mis Case</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('miscase.index') }}">Missed Case</a></li>
                     <li class="breadcrumb-item active">Edit</li>
                 </ol>
             </div>

@@ -186,17 +186,17 @@
     </style>
 @endpush
 
-@section('title', 'Mis Case')
+@section('title', 'Missed Case')
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Mis Case List</h1>
+                    <h1>Missed Case List</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item active">Mis Case</li>
+                        <li class="breadcrumb-item active">Missed Case</li>
                     </ol>
                 </div>
             </div>

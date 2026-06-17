@@ -63,11 +63,11 @@ class MisCaseController extends Controller
         if ($request->ajax()) {
             return response()->json([
                 'status' => true,
-                'message' => 'Mis case created successfully.',
+                'message' => 'Missed case created successfully.',
             ], 200);
         }
 
-        return redirect()->route('miscase.index')->with('success', 'Mis case created successfully');
+        return redirect()->route('miscase.index')->with('success', 'Missed case created successfully');
     }
 
     /**
@@ -154,11 +154,11 @@ class MisCaseController extends Controller
         if ($request->ajax()) {
             return response()->json([
                 'status' => true,
-                'message' => 'Mis case updated successfully.',
+                'message' => 'Missed case updated successfully.',
             ], 200);
         }
 
-        return redirect()->route('miscase.index')->with('success', 'Mis case updated successfully');
+        return redirect()->route('miscase.index')->with('success', 'Missed case updated successfully');
     }
 
 
@@ -198,11 +198,11 @@ class MisCaseController extends Controller
         if (request()->ajax()) {
             return response()->json([
                 'status' => true,
-                'message' => 'Mis case deleted successfully.',
+                'message' => 'Missed case deleted successfully.',
             ], 200);
         }
 
-        return redirect()->route('miscase.index')->with('success', 'Mis case deleted successfully');
+        return redirect()->route('miscase.index')->with('success', 'Missed case deleted successfully');
     }
 
     private function rules(): array

@@ -1,13 +1,13 @@
 @extends('backend.master', ['mainMenu' => 'MisCase', 'subMenu' => 'MisCaseCreate'])
 
-@section('title', 'Create Mis Case')
+@section('title', 'Create Missed Case')
 
 @section('content')
     @php
         $nextId = (\App\Models\MisCase::max('id') ?? 0) + 1;
         $caseNoValue = sprintf('%04d', $nextId) . '(XI)/' . date('Y');
         $formAction = route('miscase.store');
-        $pageTitle = 'Create Mis Case';
+        $pageTitle = 'Create Missed Case';
         $submitText = 'Save Case';
         $notesValue = old('notes', '');
         $notesText = is_array($notesValue) ? $notesValue['notes'] ?? '' : $notesValue;
@@ -268,7 +268,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('miscase.index') }}">Mis Case</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('miscase.index') }}">Missed Case</a></li>
                         <li class="breadcrumb-item active">Create</li>
                     </ol>
                 </div>

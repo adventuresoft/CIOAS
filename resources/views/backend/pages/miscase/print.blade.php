@@ -1,6 +1,6 @@
 @extends('backend.master', ['mainMenu' => 'MisCase', 'subMenu' => 'MisCaseList'])
 
-@section('title', 'Mis Case History Pad')
+@section('title', 'Missed Case History Pad')
 
 @section('content')
 <x-print-view title="মিসকেস শুনানির ইতিহাস ও নথি">

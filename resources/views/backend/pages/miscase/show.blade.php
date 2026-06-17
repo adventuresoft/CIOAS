@@ -1,6 +1,6 @@
 @extends('backend.master', ['mainMenu' => 'MisCase', 'subMenu' => 'MisCaseList'])
 
-@section('title', 'Mis Case Details')
+@section('title', 'Missed Case Details')
 
 @push('style')
     <style>
@@ -231,11 +231,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Mis Case Details</h1>
+                    <h1>Missed Case Details</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('miscase.index') }}">Mis Case</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('miscase.index') }}">Missed Case</a></li>
                         <li class="breadcrumb-item active">Details</li>
                     </ol>
                 </div>
