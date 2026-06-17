@@ -86,7 +86,17 @@
                         </tr>
                         <tr>
                             <th>সিন্দুক সীমা</th>
-                            <td>{{ $application->vault_limit ?? 'N/A' }}</td>
+                            <td>
+                                @if($application->vault_limit == 'up_to_1_crore')
+                                    সর্বোচ্চ ১ কোটি টাকা
+                                @elseif($application->vault_limit == '1_to_5_crore')
+                                    ১ কোটি টাকার উর্ধ্বে কিন্তু ৫ কোটি টাকার নিম্মে
+                                @elseif($application->vault_limit == 'above_5_crore')
+                                    ৫ কোটি টাকার উর্ধ্বে
+                                @else
+                                    {{ $application->vault_limit ?? 'N/A' }}
+                                @endif
+                            </td>
                         </tr>
                         <tr>
                             <th>অর্থ পরিবহনের গাড়ীর সংখ্যা</th>
@@ -114,7 +124,19 @@
                         </tr>
                         <tr>
                             <th>বাড়ি ভাড়ার চুক্তি পত্রের বিবরণ</th>
-                            <td>{{ $application->rental_agreement_details ?? 'N/A' }}</td>
+                            <td>
+                                @if($application->rental_agreement_details)
+                                    @if(filter_var($application->rental_agreement_details, FILTER_VALIDATE_URL) || \Illuminate\Support\Str::startsWith($application->rental_agreement_details, 'uploads/'))
+                                        <a href="{{ asset($application->rental_agreement_details) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-file-pdf"></i> ফাইলটি দেখুন
+                                        </a>
+                                    @else
+                                        {{ $application->rental_agreement_details }}
+                                    @endif
+                                @else
+                                    N/A
+                                @endif
+                            </td>
                         </tr>
                         <tr>
                             <th>প্রার্থীত আগ্নেয়াস্ত্রের সংখ্যা ও প্রকৃতি</th>
@@ -134,7 +156,8 @@
                     <!-- 2. Guard Details -->
                     <h5 class="section-title"><i class="fas fa-user-shield"></i> গার্ডের বিবরণ</h5>
                     @if($application->guardDetails->count() > 0)
-                        @foreach($application->guardDetails as $guard)
+                        @foreach($application->guardDetails as $index => $guard)
+                            <h6 class="font-weight-bold text-secondary mt-3 mb-2"><i class="fas fa-user"></i> গার্ড #{{ $index + 1 }}</h6>
                             <table class="table table-bordered details-table mb-4">
                                 <tr>
                                     <th>গার্ডের নাম</th>

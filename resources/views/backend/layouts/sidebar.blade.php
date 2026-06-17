@@ -456,24 +456,17 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('gun-license.person.index') }}"
-                                class="nav-link @if (isset($subMenu) && $subMenu == 'PersonGunLicense') active @endif">
+                            <a href="{{ route('gun-license.create') }}"
+                                class="nav-link @if (isset($subMenu) && $subMenu == 'GunLicenseCreate') active @endif">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Person License List</p>
+                                <p>আবেদন করুন</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('gun-license.org.index') }}"
-                                class="nav-link @if (isset($subMenu) && $subMenu == 'OrgGunLicense') active @endif">
+                            <a href="{{ route('gun-license.index') }}"
+                                class="nav-link @if (isset($subMenu) && $subMenu == 'GunLicenseList') active @endif">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Organization License List</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('gun-license.other-org.index') }}"
-                                class="nav-link @if (isset($subMenu) && $subMenu == 'OtherOrgGunLicense') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Other Org. License List</p>
+                                <p>আবেদন তালিকা</p>
                             </a>
                         </li>
                     </ul>

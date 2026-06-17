@@ -140,16 +140,36 @@
                             <th>ডকুমেন্টস</th>
                             <td>
                                 @if($application->has_trade_license_mou_aou)
-                                    <a href="{{ asset('storage/' . $application->has_trade_license_mou_aou) }}" target="_blank" class="btn btn-sm btn-info">ট্রেড লাইসেন্স/MOU</a>
+                                    @php
+                                        $tradeLicensePath = \Illuminate\Support\Str::startsWith($application->has_trade_license_mou_aou, 'uploads/') 
+                                            ? asset($application->has_trade_license_mou_aou) 
+                                            : asset('storage/' . $application->has_trade_license_mou_aou);
+                                    @endphp
+                                    <a href="{{ $tradeLicensePath }}" target="_blank" class="btn btn-sm btn-info">ট্রেড লাইসেন্স/MOU</a>
                                 @endif
                                 @if($application->rental_agreement_details)
-                                    <a href="{{ asset('storage/' . $application->rental_agreement_details) }}" target="_blank" class="btn btn-sm btn-info">বাড়ি ভাড়ার চুক্তি</a>
+                                    @php
+                                        $rentalAgreementPath = \Illuminate\Support\Str::startsWith($application->rental_agreement_details, 'uploads/') 
+                                            ? asset($application->rental_agreement_details) 
+                                            : asset('storage/' . $application->rental_agreement_details);
+                                    @endphp
+                                    <a href="{{ $rentalAgreementPath }}" target="_blank" class="btn btn-sm btn-info">বাড়ি ভাড়ার চুক্তি</a>
                                 @endif
                                 @if($application->police_report_for_guard)
-                                    <a href="{{ asset('storage/' . $application->police_report_for_guard) }}" target="_blank" class="btn btn-sm btn-info">গার্ডের পুলিশ প্রতিবেদন</a>
+                                    @php
+                                        $policeReportPath = \Illuminate\Support\Str::startsWith($application->police_report_for_guard, 'uploads/') 
+                                            ? asset($application->police_report_for_guard) 
+                                            : asset('storage/' . $application->police_report_for_guard);
+                                    @endphp
+                                    <a href="{{ $policeReportPath }}" target="_blank" class="btn btn-sm btn-info">গার্ডের পুলিশ প্রতিবেদন</a>
                                 @endif
                                 @if($application->guard_cv)
-                                    <a href="{{ asset('storage/' . $application->guard_cv) }}" target="_blank" class="btn btn-sm btn-info">গার্ডের সিভি</a>
+                                    @php
+                                        $guardCvPath = \Illuminate\Support\Str::startsWith($application->guard_cv, 'uploads/') 
+                                            ? asset($application->guard_cv) 
+                                            : asset('storage/' . $application->guard_cv);
+                                    @endphp
+                                    <a href="{{ $guardCvPath }}" target="_blank" class="btn btn-sm btn-info">গার্ডের সিভি</a>
                                 @endif
                             </td>
                         </tr>
@@ -158,7 +178,8 @@
                     <!-- 2. Guard Details -->
                     <h5 class="section-title"><i class="fas fa-user-shield"></i> গার্ডের বিবরণ</h5>
                     @if($application->guardDetails->count() > 0)
-                        @foreach($application->guardDetails as $guard)
+                        @foreach($application->guardDetails as $index => $guard)
+                            <h6 class="font-weight-bold text-secondary mt-3 mb-2"><i class="fas fa-user"></i> গার্ড #{{ $index + 1 }}</h6>
                             <table class="table table-bordered details-table mb-4">
                                 <tr>
                                     <th>গার্ডের নাম</th>
@@ -191,6 +212,23 @@
                                             <span class="badge badge-success">প্রশিক্ষিত</span>
                                         @else
                                             <span class="badge badge-warning">অপ্রশিক্ষিত</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>গার্ডের অনুকূলে পুলিশ প্রতিবেদন</th>
+                                    <td>
+                                        @if($guard->police_report_for_guard)
+                                            @php
+                                                $guardPoliceReportPath = \Illuminate\Support\Str::startsWith($guard->police_report_for_guard, 'uploads/') 
+                                                    ? asset($guard->police_report_for_guard) 
+                                                    : asset('storage/' . $guard->police_report_for_guard);
+                                            @endphp
+                                            <a href="{{ $guardPoliceReportPath }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-file-pdf"></i> ফাইলটি দেখুন
+                                            </a>
+                                        @else
+                                            <span class="text-muted">সংযুক্ত নেই</span>
                                         @endif
                                     </td>
                                 </tr>
@@ -282,51 +320,39 @@
 
                     <!-- 4. Magistrate Interview Details -->
                     <h5 class="section-title"><i class="fas fa-microphone"></i> সাক্ষাৎকার গ্রহণ (পরিশিষ্ট-৫)</h5>
-                    @if($application->interviews->count() > 0)
-                        @foreach($application->interviews as $interview)
-                            <table class="table table-bordered details-table">
-                                <tr>
-                                    <th>গার্ডের নাম</th>
-                                    <td>{{ optional($interview->guardDetail)->guard_name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>শারীরিক ও মানসিক সক্ষমতা</th>
-                                    <td>
-                                        @if($interview->guard_physical_mental_capability)
-                                            উপযুক্ত
-                                        @else
-                                            অনুপযুক্ত
-                                        @endif
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>অস্ত্র পরিচালনা জ্ঞান</th>
-                                    <td>{{ $interview->guard_weapon_knowledge ? 'সন্তোষজনক' : 'অসন্তোষজনক' }}</td>
-                                </tr>
-                                <tr>
-                                    <th>সামাজিক মর্যাদা/আচরণ</th>
-                                    <td>{{ $interview->guard_behavior_satisfactory ? 'সন্তোষজনক' : 'অসন্তোষজনক' }}</td>
-                                </tr>
-                                <tr>
-                                    <th>সেইফ কাস্টডি</th>
-                                    <td>
-                                        @if($interview->safe_custody_capability)
-                                            হ্যাঁ (আছে)
-                                        @else
-                                            না (নেই)
-                                        @endif
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>পুলিশ প্রতিবেদনের সারমর্ম</th>
-                                    <td>{{ $interview->police_report_comments ?? 'N/A' }}</td>
-                                </tr>
-                                <tr>
-                                    <th>কর্মকর্তার মন্তব্য/সুপারিশ</th>
-                                    <td><strong>{{ $interview->magistrate_final_comments ?? 'N/A' }}</strong></td>
-                                </tr>
-                            </table>
-                        @endforeach
+                    @if($application->interview)
+                        <table class="table table-bordered details-table">
+                            <tr>
+                                <th>গার্ডের নাম</th>
+                                <td>{{ $application->interview->guard_name }}</td>
+                            </tr>
+                            <tr>
+                                <th>শারীরিক ও মানসিক সক্ষমতা</th>
+                                <td>
+                                    @if($application->interview->physical_mental_fitness)
+                                        উপযুক্ত
+                                    @else
+                                        অনুপযুক্ত
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>অস্ত্র পরিচালনা জ্ঞান</th>
+                                <td>{{ $application->interview->weapon_handling_knowledge ? 'সন্তোষজনক' : 'অসন্তোষজনক' }}</td>
+                            </tr>
+                            <tr>
+                                <th>সামাজিক মর্যাদা/আচরণ</th>
+                                <td>{{ $application->interview->behavior_satisfactory ? 'সন্তোষজনক' : 'অসন্তোষজনক' }}</td>
+                            </tr>
+                            <tr>
+                                <th>পুলিশ প্রতিবেদনের সারমর্ম</th>
+                                <td>{{ $application->interview->police_report_comments ?? 'N/A' }}</td>
+                            </tr>
+                            <tr>
+                                <th>কর্মকর্তার মন্তব্য/সুপারিশ</th>
+                                <td><strong>{{ $application->interview->magistrate_final_comments ?? 'N/A' }}</strong></td>
+                            </tr>
+                        </table>
                     @else
                         <div class="alert alert-warning">
                             <i class="fas fa-exclamation-triangle"></i> Guard Interview Assessment (Appendix-8) has not been

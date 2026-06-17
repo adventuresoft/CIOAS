@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\OtherOrgGunApplication;
 use App\Models\OtherOrgGunVerification;
 use App\Models\OtherOrgGunInterview;
+use App\Models\OtherOrgGunGuardDetail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -16,7 +17,7 @@ class OtherOrgGunLicenseController extends Controller
 {
     public function index()
     {
-        $applications = OtherOrgGunApplication::with(['verification', 'interview'])->latest()->paginate(10);
+        $applications = OtherOrgGunApplication::with(['verification', 'interview', 'guardDetails'])->latest()->paginate(10);
         return view('backend.pages.gun-license.other-org.index', compact('applications'));
     }
 
@@ -34,24 +35,39 @@ class OtherOrgGunLicenseController extends Controller
             'org_address' => 'nullable|string',
             'operation_start_date' => 'nullable|date',
             'organogram_manpower_details' => 'nullable|string',
-            'has_trade_license_mou_aou' => 'nullable|string',
+            'has_trade_license_mou_aou' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
             'owner_or_ceo_details' => 'nullable|string',
-            'rental_agreement_details' => 'nullable|string',
+            'rental_agreement_details' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
             'tin_no' => 'nullable|string|max:255',
             'tax_history' => 'nullable|string',
             'paid_up_capital' => 'nullable|string|max:255',
             'existing_weapons_details' => 'nullable|string',
             'safe_custody_details' => 'nullable|string',
             'trained_guard_count' => 'nullable|integer|min:0',
-            'police_report_for_guard' => 'nullable|string',
-            'guard_cv' => 'nullable|string',
+
+            // Guards array fields
+            'guards' => 'required|array|min:1',
+            'guards.*.guard_name' => 'required|string|max:255',
+            'guards.*.guard_father_name' => 'nullable|string|max:255',
+            'guards.*.guard_mother_name' => 'nullable|string|max:255',
+            'guards.*.guard_present_address' => 'nullable|string',
+            'guards.*.guard_permanent_address' => 'nullable|string',
+            'guards.*.guard_age' => 'nullable|integer|min:1',
+            'guards.*.guard_education' => 'nullable|string|max:255',
+            'guards.*.guard_nid_number' => 'nullable|string|max:255',
+            'guards.*.guard_training_certificate_status' => 'required|boolean',
+            'guards.*.police_report_for_guard' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+        ], [], [
+            'guards.*.guard_name' => 'গার্ডের নাম',
+            'guards.*.guard_training_certificate_status' => 'প্রশিক্ষণপ্রাপ্ত কিনা',
+            'guards.*.police_report_for_guard' => 'গার্ডের অনুকূলে পুলিশ প্রতিবেদন',
         ]);
 
         if ($validator->fails()) {
             if ($request->ajax()) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Validation error',
+                    'message' => 'আবেদনপত্র পূরণে কিছু ভুল রয়েছে। অনুগ্রহ করে চেক করুন।',
                     'errors' => $validator->errors()
                 ], 400);
             }
@@ -61,8 +77,6 @@ class OtherOrgGunLicenseController extends Controller
         // Handle File Uploads for documents
         $has_trade_license = $this->handleFileUpload($request, 'has_trade_license_mou_aou', 'other-org/documents');
         $rental_agreement = $this->handleFileUpload($request, 'rental_agreement_details', 'other-org/documents');
-        $police_report = $this->handleFileUpload($request, 'police_report_for_guard', 'other-org/documents');
-        $guard_cv = $this->handleFileUpload($request, 'guard_cv', 'other-org/documents');
 
         // Generate tracking number
         $datePart = Carbon::now()->format('Ymd');
@@ -97,10 +111,37 @@ class OtherOrgGunLicenseController extends Controller
                 'existing_weapons_details' => $request->existing_weapons_details,
                 'safe_custody_details' => $request->safe_custody_details,
                 'trained_guard_count' => $request->trained_guard_count ?? 0,
-                'police_report_for_guard' => $police_report,
-                'guard_cv' => $guard_cv,
+                'police_report_for_guard' => null,
+                'guard_cv' => null,
                 'status' => 'Submitted'
             ]);
+
+            // Save dynamic guards
+            if ($request->has('guards') && is_array($request->guards)) {
+                foreach ($request->guards as $index => $guardData) {
+                    $guard_police_report_path = null;
+                    if ($request->hasFile("guards.{$index}.police_report_for_guard")) {
+                        $file = $request->file("guards.{$index}.police_report_for_guard");
+                        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                        $file->move(public_path('uploads/other-org/documents'), $filename);
+                        $guard_police_report_path = 'uploads/other-org/documents/' . $filename;
+                    }
+
+                    OtherOrgGunGuardDetail::create([
+                        'other_org_gun_application_id' => $application->id,
+                        'guard_name' => $guardData['guard_name'],
+                        'father_name' => $guardData['guard_father_name'] ?? null,
+                        'mother_name' => $guardData['guard_mother_name'] ?? null,
+                        'present_address' => $guardData['guard_present_address'] ?? null,
+                        'permanent_address' => $guardData['guard_permanent_address'] ?? null,
+                        'age' => $guardData['guard_age'] ?? null,
+                        'education' => $guardData['guard_education'] ?? null,
+                        'nid_number' => $guardData['guard_nid_number'] ?? null,
+                        'training_certificate_status' => $guardData['guard_training_certificate_status'],
+                        'police_report_for_guard' => $guard_police_report_path,
+                    ]);
+                }
+            }
 
             DB::commit();
 
@@ -108,11 +149,11 @@ class OtherOrgGunLicenseController extends Controller
                 return response()->json([
                     'status' => true,
                     'message' => 'Application submitted successfully! Tracking No: ' . $trackingNo,
-                    'redirect_url' => route('gun-license.other-org.index')
+                    'redirect_url' => route('gun-license.index')
                 ], 200);
             }
 
-            return redirect()->route('gun-license.other-org.index')->with('success', 'Application submitted successfully! Tracking No: ' . $trackingNo);
+            return redirect()->route('gun-license.index')->with('success', 'Application submitted successfully! Tracking No: ' . $trackingNo);
         } catch (\Exception $e) {
             DB::rollBack();
             if ($request->ajax()) {
@@ -206,11 +247,11 @@ class OtherOrgGunLicenseController extends Controller
                 return response()->json([
                     'status' => true,
                     'message' => 'Verification details saved successfully!',
-                    'redirect_url' => route('gun-license.other-org.index')
+                    'redirect_url' => route('gun-license.index')
                 ], 200);
             }
 
-            return redirect()->route('gun-license.other-org.index')->with('success', 'Verification details saved successfully!');
+            return redirect()->route('gun-license.index')->with('success', 'Verification details saved successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
             if ($request->ajax()) {
@@ -282,11 +323,11 @@ class OtherOrgGunLicenseController extends Controller
                 return response()->json([
                     'status' => true,
                     'message' => 'Interview details saved successfully!',
-                    'redirect_url' => route('gun-license.other-org.index')
+                    'redirect_url' => route('gun-license.index')
                 ], 200);
             }
 
-            return redirect()->route('gun-license.other-org.index')->with('success', 'Interview details saved successfully!');
+            return redirect()->route('gun-license.index')->with('success', 'Interview details saved successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
             if ($request->ajax()) {

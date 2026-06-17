@@ -71,7 +71,11 @@
                             </td>
                             <td>
                                 @if($app->guardDetails->count() > 0)
-                                    {{ $app->guardDetails->first()->guard_name }}<br>
+                                    {{ $app->guardDetails->first()->guard_name }}
+                                    @if($app->guardDetails->count() > 1)
+                                        <span class="badge badge-secondary" title="Total {{ $app->guardDetails->count() }} guards">+{{ $app->guardDetails->count() - 1 }} more</span>
+                                    @endif
+                                    <br>
                                     <small class="text-muted">NID: {{ $app->guardDetails->first()->nid_number ?? 'N/A' }}</small>
                                 @else
                                     <span class="text-danger">No guard defined</span>

@@ -35,40 +35,83 @@ class OrgGunLicenseController extends Controller
             'email' => 'nullable|email|max:255',
             'org_address' => 'nullable|string',
             'operation_start_date' => 'nullable|date',
-            'vault_limit' => 'nullable|string|max:255',
+            'vault_limit' => 'required|string|in:সর্বোচ্চ ১ কোটি টাকা,১ কোটি টাকার উর্ধ্বে কিন্তু ৫ কোটি টাকার নিম্মে,৫ কোটি টাকার উর্ধ্বে,up_to_1_crore,1_to_5_crore,above_5_crore',
             'vehicle_count' => 'nullable|integer|min:0',
             'owner_or_ceo_details' => 'nullable|string',
             'organogram_manpower_details' => 'nullable|string',
             'bangladesh_bank_permission' => 'required|boolean',
             'tax_details' => 'nullable|string',
             'current_security_description' => 'nullable|string',
-            'rental_agreement_details' => 'nullable|string',
-            'weapon_count_requested' => 'nullable|integer|min:0',
+            'rental_agreement_details' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120',
+            'weapon_count_requested' => 'required|integer|min:1',
             'weapon_nature_requested' => 'required|string|max:255', // selected gun type dropdown
             'justification_of_necessity' => 'nullable|string',
             'existing_weapons_details' => 'nullable|string',
 
-            // Guard fields
-            'guard_name' => 'required|string|max:255',
-            'guard_father_name' => 'nullable|string|max:255',
-            'guard_mother_name' => 'nullable|string|max:255',
-            'guard_present_address' => 'nullable|string',
-            'guard_permanent_address' => 'nullable|string',
-            'guard_age' => 'nullable|integer|min:1',
-            'guard_education' => 'nullable|string|max:255',
-            'guard_nid_number' => 'nullable|string|max:255',
-            'guard_training_certificate_status' => 'required|boolean',
+            // Guards array fields
+            'guards' => 'required|array|min:1',
+            'guards.*.guard_name' => 'required|string|max:255',
+            'guards.*.guard_father_name' => 'nullable|string|max:255',
+            'guards.*.guard_mother_name' => 'nullable|string|max:255',
+            'guards.*.guard_present_address' => 'nullable|string',
+            'guards.*.guard_permanent_address' => 'nullable|string',
+            'guards.*.guard_age' => 'nullable|integer|min:1',
+            'guards.*.guard_education' => 'nullable|string|max:255',
+            'guards.*.guard_nid_number' => 'nullable|string|max:255',
+            'guards.*.guard_training_certificate_status' => 'required|boolean',
+        ], [], [
+            'vault_limit' => 'সিন্দুক সীমা',
+            'rental_agreement_details' => 'বাড়ি ভাড়ার চুক্তি পত্র',
+            'weapon_count_requested' => 'প্রার্থীত আগ্নেয়াস্ত্রের সংখ্যা',
+            'guards.*.guard_name' => 'গার্ডের নাম',
+            'guards.*.guard_training_certificate_status' => 'প্রশিক্ষণপ্রাপ্ত কিনা'
         ]);
 
         if ($validator->fails()) {
             if ($request->ajax()) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Validation error',
+                    'message' => 'আবেদনপত্র পূরণে কিছু ভুল রয়েছে। অনুগ্রহ করে চেক করুন।',
                     'errors' => $validator->errors()
                 ], 400);
             }
             return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Additional business logic validation for weapon count based on vault limit
+        $vaultLimit = $request->vault_limit;
+        $weaponCount = (int) $request->weapon_count_requested;
+        $maxWeapons = 4;
+        
+        if ($vaultLimit === 'সর্বোচ্চ ১ কোটি টাকা' || $vaultLimit === 'up_to_1_crore') {
+            $maxWeapons = 2;
+        } elseif ($vaultLimit === '১ কোটি টাকার উর্ধ্বে কিন্তু ৫ কোটি টাকার নিম্মে' || $vaultLimit === '1_to_5_crore') {
+            $maxWeapons = 3;
+        } elseif ($vaultLimit === '৫ কোটি টাকার উর্ধ্বে' || $vaultLimit === 'above_5_crore') {
+            $maxWeapons = 4;
+        }
+
+        if ($weaponCount > $maxWeapons) {
+            $errorMsg = [
+                'weapon_count_requested' => ["সিন্দুক সীমা অনুযায়ী প্রার্থীত আগ্নেয়াস্ত্রের সংখ্যা সর্বোচ্চ {$maxWeapons} টি হতে পারে।"]
+            ];
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation error',
+                    'errors' => $errorMsg
+                ], 400);
+            }
+            return redirect()->back()->withErrors($errorMsg)->withInput();
+        }
+
+        // Handle file upload
+        $rental_agreement_path = null;
+        if ($request->hasFile('rental_agreement_details')) {
+            $file = $request->file('rental_agreement_details');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/rental_agreements'), $filename);
+            $rental_agreement_path = 'uploads/rental_agreements/' . $filename;
         }
 
         // Generate tracking number
@@ -100,7 +143,7 @@ class OrgGunLicenseController extends Controller
                 'bangladesh_bank_permission' => $request->bangladesh_bank_permission,
                 'tax_details' => $request->tax_details,
                 'current_security_description' => $request->current_security_description,
-                'rental_agreement_details' => $request->rental_agreement_details,
+                'rental_agreement_details' => $rental_agreement_path,
                 'weapon_count_requested' => $request->weapon_count_requested ?? 0,
                 'weapon_nature_requested' => $request->weapon_nature_requested,
                 'justification_of_necessity' => $request->justification_of_necessity,
@@ -108,18 +151,22 @@ class OrgGunLicenseController extends Controller
                 'status' => 'Submitted'
             ]);
 
-            OrgGunGuardDetail::create([
-                'org_gun_application_id' => $application->id,
-                'guard_name' => $request->guard_name,
-                'father_name' => $request->guard_father_name,
-                'mother_name' => $request->guard_mother_name,
-                'present_address' => $request->guard_present_address,
-                'permanent_address' => $request->guard_permanent_address,
-                'age' => $request->guard_age,
-                'education' => $request->guard_education,
-                'nid_number' => $request->guard_nid_number,
-                'training_certificate_status' => $request->guard_training_certificate_status,
-            ]);
+            if ($request->has('guards') && is_array($request->guards)) {
+                foreach ($request->guards as $guardData) {
+                    OrgGunGuardDetail::create([
+                        'org_gun_application_id' => $application->id,
+                        'guard_name' => $guardData['guard_name'],
+                        'father_name' => $guardData['guard_father_name'] ?? null,
+                        'mother_name' => $guardData['guard_mother_name'] ?? null,
+                        'present_address' => $guardData['guard_present_address'] ?? null,
+                        'permanent_address' => $guardData['guard_permanent_address'] ?? null,
+                        'age' => $guardData['guard_age'] ?? null,
+                        'education' => $guardData['guard_education'] ?? null,
+                        'nid_number' => $guardData['guard_nid_number'] ?? null,
+                        'training_certificate_status' => $guardData['guard_training_certificate_status'],
+                    ]);
+                }
+            }
 
             DB::commit();
 
@@ -127,13 +174,16 @@ class OrgGunLicenseController extends Controller
                 return response()->json([
                     'status' => true,
                     'message' => 'Organization application submitted successfully! Tracking No: ' . $trackingNo,
-                    'redirect_url' => route('gun-license.org.index')
+                    'redirect_url' => route('gun-license.index')
                 ], 200);
             }
 
-            return redirect()->route('gun-license.org.index')->with('success', 'Organization application submitted successfully! Tracking No: ' . $trackingNo);
+            return redirect()->route('gun-license.index')->with('success', 'Organization application submitted successfully! Tracking No: ' . $trackingNo);
         } catch (\Exception $e) {
             DB::rollBack();
+            if ($rental_agreement_path && file_exists(public_path($rental_agreement_path))) {
+                @unlink(public_path($rental_agreement_path));
+            }
             if ($request->ajax()) {
                 return response()->json([
                     'status' => false,
@@ -207,11 +257,11 @@ class OrgGunLicenseController extends Controller
                 return response()->json([
                     'status' => true,
                     'message' => 'Verification details saved successfully!',
-                    'redirect_url' => route('gun-license.org.index')
+                    'redirect_url' => route('gun-license.index')
                 ], 200);
             }
 
-            return redirect()->route('gun-license.org.index')->with('success', 'Verification details saved successfully!');
+            return redirect()->route('gun-license.index')->with('success', 'Verification details saved successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
             if ($request->ajax()) {
@@ -290,11 +340,11 @@ class OrgGunLicenseController extends Controller
                 return response()->json([
                     'status' => true,
                     'message' => 'Interview details saved successfully!',
-                    'redirect_url' => route('gun-license.org.index')
+                    'redirect_url' => route('gun-license.index')
                 ], 200);
             }
 
-            return redirect()->route('gun-license.org.index')->with('success', 'Interview details saved successfully!');
+            return redirect()->route('gun-license.index')->with('success', 'Interview details saved successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
             if ($request->ajax()) {
@@ -311,14 +361,14 @@ class OrgGunLicenseController extends Controller
     {
         $application = OrgGunApplication::findOrFail($id);
         $application->update(['status' => 'Approved']);
-        return redirect()->route('gun-license.org.index')->with('success', 'Application ' . $application->tracking_no . ' has been approved.');
+        return redirect()->route('gun-license.index')->with('success', 'Application ' . $application->tracking_no . ' has been approved.');
     }
 
     public function reject($id)
     {
         $application = OrgGunApplication::findOrFail($id);
         $application->update(['status' => 'Rejected']);
-        return redirect()->route('gun-license.org.index')->with('success', 'Application ' . $application->tracking_no . ' has been rejected.');
+        return redirect()->route('gun-license.index')->with('success', 'Application ' . $application->tracking_no . ' has been rejected.');
     }
 
     public function show($id)

@@ -62,7 +62,7 @@
                     <h1>সাক্ষাৎকার গ্রহণের ফরম (পরিশিষ্ট-৫)</h1>
                 </div>
                 <div class="col-sm-6 text-right">
-                    <a href="{{ route('gun-license.other-org.index') }}" class="btn btn-default">ফিরে যান</a>
+                    <a href="{{ route('gun-license.index') }}" class="btn btn-default">ফিরে যান</a>
                 </div>
             </div>
         </div>

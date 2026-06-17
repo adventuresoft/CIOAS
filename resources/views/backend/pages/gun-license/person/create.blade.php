@@ -99,6 +99,7 @@
                                         <option value="সাধারণ">সাধারণ</option>
                                         <option value="বিশেষাধিকারযুক্ত">বিশেষাধিকারযুক্ত</option>
                                         <option value="ওয়ারিশসূত্রে">ওয়ারিশসূত্রে</option>
+                                        <option value="শ্যুটার">শ্যুটার</option>
                                     </select>
                                     <small class="text-danger error application_class_error"></small>
                                 </div>
@@ -394,19 +395,21 @@
                             </div>
 
                             <div class="form-group row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <label for="weapon_details">চাহিত আগ্নেয়াস্ত্রের ধরণ <span class="text-danger">*</span></label>
                                     <select name="weapon_details" class="form-control" id="weapon_details" required>
                                         <option value="">সিলেক্ট করুন</option>
-                                        <option value="Shotgun">শটগান</option>
-                                        <option value="Pistol">পিস্তল</option>
-                                        <option value="Revolver">রিভলভার</option>
-                                        <option value="Rifle">রাইফেল</option>
-                                        <option value="Other">অন্যান্য</option>
+                                        <option value="পিস্তল /রিভলবার">পিস্তল /রিভলবার</option>
+                                        <option value="বন্দুক/শটগান/রাইফেল">বন্দুক/শটগান/রাইফেল</option>
                                     </select>
                                     <small class="text-danger error weapon_details_error"></small>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
+                                    <label for="weapon_count">আগ্নেয়াস্ত্র সংখ্যা <span class="text-danger">*</span></label>
+                                    <input type="number" name="weapon_count" class="form-control" id="weapon_count" value="1" min="1" required>
+                                    <small class="text-danger error weapon_count_error"></small>
+                                </div>
+                                <div class="col-sm-4">
                                     <label>লাইসেন্সের ধরণ</label>
                                     <input type="text" class="form-control" value="ব্যক্তিগত" readonly style="background-color: #e2e8f0 !important;">
                                 </div>
@@ -453,6 +456,32 @@
 @push('script')
 <script>
     $(document).ready(function() {
+        // Dynamic weapon count max validation based on application class
+        function updateWeaponCountMax() {
+            let appClass = $('#application_class').val();
+            let weaponCountInput = $('#weapon_count');
+            let maxWeapons = (appClass === 'শ্যুটার') ? 3 : 1;
+            
+            weaponCountInput.attr('max', maxWeapons);
+            
+            let val = parseInt(weaponCountInput.val()) || 0;
+            if (val > maxWeapons) {
+                weaponCountInput.val(maxWeapons);
+                toastr.warning("এই আবেদনের শ্রেণীর জন্য সর্বোচ্চ " + maxWeapons + " টি আগ্নেয়াস্ত্রের আবেদন করা যাবে।");
+            }
+        }
+        
+        $('#application_class').on('change', function() {
+            updateWeaponCountMax();
+        });
+
+        $('#weapon_count').on('input change keyup', function() {
+            updateWeaponCountMax();
+        });
+
+        // Initialize once
+        updateWeaponCountMax();
+
         // Toggle Spouse Details
         $('#marital_status').on('change', function() {
             if ($(this).val() === 'বিবাহিত') {
@@ -487,6 +516,18 @@
             e.preventDefault();
             let thisForm = $(this);
             $(".error").text(''); // reset errors
+            $('.form-control').removeClass('is-invalid');
+
+            // Frontend validation for weapon count limit
+            let appClass = $('#application_class').val();
+            let weapons = parseInt($('#weapon_count').val()) || 0;
+            let maxAllowed = (appClass === 'শ্যুটার') ? 3 : 1;
+
+            if (weapons > maxAllowed) {
+                toastr.error("আবেদনের শ্রেণী অনুযায়ী আগ্নেয়াস্ত্র সংখ্যা সর্বোচ্চ " + maxAllowed + " টি হতে পারে।");
+                $('#weapon_count').addClass('is-invalid');
+                return false;
+            }
 
             $.ajax({
                 type: "POST",
@@ -514,6 +555,7 @@
                     if (responseText.errors) {
                         $.each(responseText.errors, function(key, val) {
                             thisForm.find("." + key + "_error").text(val[0]);
+                            thisForm.find('[name="' + key + '"]').addClass('is-invalid');
                         });
                     }
                 }

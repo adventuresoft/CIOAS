@@ -527,6 +527,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
     // Gun License
     Route::prefix('gun-license')->name('gun-license.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Backend\GunLicenseController::class, 'index'])->name('index');
+        Route::get('apply', [\App\Http\Controllers\Backend\GunLicenseController::class, 'create'])->name('create');
+
         Route::prefix('person')->name('person.')->group(function () {
             Route::get('/', [PersonGunLicenseController::class, 'index'])->name('index');
             Route::get('create', [PersonGunLicenseController::class, 'createApplication'])->name('create');

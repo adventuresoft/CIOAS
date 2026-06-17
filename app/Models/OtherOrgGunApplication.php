@@ -42,4 +42,9 @@ class OtherOrgGunApplication extends Model
     {
         return $this->hasOne(OtherOrgGunInterview::class, 'other_org_gun_application_id');
     }
+
+    public function guardDetails()
+    {
+        return $this->hasMany(OtherOrgGunGuardDetail::class, 'other_org_gun_application_id');
+    }
 }

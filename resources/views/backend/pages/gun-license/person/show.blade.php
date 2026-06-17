@@ -281,6 +281,10 @@
                                 <td><span class="badge badge-dark p-2">{{ $application->weapon_details }}</span></td>
                             </tr>
                             <tr>
+                                <th>আগ্নেয়াস্ত্র সংখ্যা</th>
+                                <td>{{ $application->weapon_count ?? 1 }} টি</td>
+                            </tr>
+                            <tr>
                                 <th>প্রয়োজনের কারণ</th>
                                 <td>{{ $application->necessity_reason ?? 'N/A' }}</td>
                             </tr>

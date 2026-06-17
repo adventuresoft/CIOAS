@@ -50,6 +50,7 @@ class PersonGunApplication extends Model
         'cancelled_weapon_type',
         'cancellation_reason',
         'weapon_details',
+        'weapon_count',
         'necessity_reason',
         'affidavit_attached',
         'heir_deed_attached',

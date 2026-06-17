@@ -73,6 +73,7 @@ class PersonGunLicenseController extends Controller
             'cancelled_weapon_type' => 'nullable|string|max:255',
             'cancellation_reason' => 'nullable|string',
             'weapon_details' => 'required|string',
+            'weapon_count' => 'required|integer|min:1',
             'necessity_reason' => 'nullable|string',
             'affidavit_attached' => 'required|boolean',
             'heir_deed_attached' => 'required|boolean',
@@ -87,6 +88,25 @@ class PersonGunLicenseController extends Controller
                 ], 400);
             }
             return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Validate weapon limit based on application class
+        $appClass = $request->application_class;
+        $weaponCount = (int) $request->weapon_count;
+        $maxAllowed = ($appClass === 'শ্যুটার') ? 3 : 1;
+
+        if ($weaponCount > $maxAllowed) {
+            $errorMsg = [
+                'weapon_count' => ["আগ্নেয়াস্ত্র সংখ্যা সর্বোচ্চ {$maxAllowed} টি হতে পারে।"]
+            ];
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation error',
+                    'errors' => $errorMsg
+                ], 400);
+            }
+            return redirect()->back()->withErrors($errorMsg)->withInput();
         }
 
         // Generate tracking number
@@ -142,6 +162,7 @@ class PersonGunLicenseController extends Controller
             'cancelled_weapon_type' => $request->cancelled_weapon_type,
             'cancellation_reason' => $request->cancellation_reason,
             'weapon_details' => $request->weapon_details,
+            'weapon_count' => $request->weapon_count ?? 1,
             'necessity_reason' => $request->necessity_reason,
             'affidavit_attached' => $request->affidavit_attached,
             'heir_deed_attached' => $request->heir_deed_attached,
@@ -152,11 +173,11 @@ class PersonGunLicenseController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Application submitted successfully! Tracking No: ' . $trackingNo,
-                'redirect_url' => route('gun-license.person.index')
+                'redirect_url' => route('gun-license.index')
             ], 200);
         }
 
-        return redirect()->route('gun-license.person.index')->with('success', 'Application submitted successfully! Tracking No: ' . $trackingNo);
+        return redirect()->route('gun-license.index')->with('success', 'Application submitted successfully! Tracking No: ' . $trackingNo);
     }
 
     public function createVerification($applicationId)
@@ -217,11 +238,11 @@ class PersonGunLicenseController extends Controller
                 return response()->json([
                     'status' => true,
                     'message' => 'Verification details saved successfully!',
-                    'redirect_url' => route('gun-license.person.index')
+                    'redirect_url' => route('gun-license.index')
                 ], 200);
             }
 
-            return redirect()->route('gun-license.person.index')->with('success', 'Verification details saved successfully!');
+            return redirect()->route('gun-license.index')->with('success', 'Verification details saved successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
             if ($request->ajax()) {
@@ -294,11 +315,11 @@ class PersonGunLicenseController extends Controller
                 return response()->json([
                     'status' => true,
                     'message' => 'Interview details saved successfully!',
-                    'redirect_url' => route('gun-license.person.index')
+                    'redirect_url' => route('gun-license.index')
                 ], 200);
             }
 
-            return redirect()->route('gun-license.person.index')->with('success', 'Interview details saved successfully!');
+            return redirect()->route('gun-license.index')->with('success', 'Interview details saved successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
             if ($request->ajax()) {
@@ -315,14 +336,14 @@ class PersonGunLicenseController extends Controller
     {
         $application = PersonGunApplication::findOrFail($id);
         $application->update(['status' => 'Approved']);
-        return redirect()->route('gun-license.person.index')->with('success', 'Application ' . $application->tracking_no . ' has been approved.');
+        return redirect()->route('gun-license.index')->with('success', 'Application ' . $application->tracking_no . ' has been approved.');
     }
 
     public function reject($id)
     {
         $application = PersonGunApplication::findOrFail($id);
         $application->update(['status' => 'Rejected']);
-        return redirect()->route('gun-license.person.index')->with('success', 'Application ' . $application->tracking_no . ' has been rejected.');
+        return redirect()->route('gun-license.index')->with('success', 'Application ' . $application->tracking_no . ' has been rejected.');
     }
 
     public function show($id)
