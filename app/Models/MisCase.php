@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\institute;
+use App\Models\Institute;
 
 class MisCase extends Model
 {
@@ -74,6 +74,6 @@ class MisCase extends Model
 
     public function institue()
     {
-        return $this->belongsTo(institute::class, 'institute_id');
+        return $this->belongsTo(Institute::class, 'institute_id');
     }
 }
