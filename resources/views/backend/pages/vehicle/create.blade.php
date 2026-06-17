@@ -158,6 +158,12 @@
                                             <h6 class="vehicle-info-panel-title">Primary Vehicle Details</h6>
 
                                             <div class="form-group">
+                                                <label for="registration_no">Registration No</label>
+                                                <input type="text" class="form-control" name="registration_no" id="registration_no" placeholder="Enter Registration No">
+                                                <span class="error registration_no-error text-danger"></span>
+                                            </div>
+
+                                            <div class="form-group">
                                                 <label for="vehicle_type">Vehicle Type</label>
                                                 <select required class="form-control select2" name="vehicle_type" id="vehicle_type">
                                                     <option value="">Select Vehicle Type</option>
@@ -209,49 +215,137 @@
                                 <div class="col-sm-9">
                                     <select required class="form-control select2" name="ownership_type" id="ownership_type">
                                         <option value="">Select Ownership Type</option>
-                                        <option value="personal">Personal</option>
-                                        <option value="institutional">Institutional</option>
+                                        <option value="own">Own</option>
+                                        <option value="rental">Rental</option>
                                     </select>
                                     <span class="error ownership_type-error text-danger"></span>
                                 </div>
                             </div>
 
-                            <div id="personal-owner-field" class="d-none">
-                                <div class="form-group row">
-                                    <label for="owner_id" class="col-sm-2 col-form-label">Owner ID</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="owner_id" placeholder="Owner ID (User ID / System ID)" class="form-control" id="owner_id">
-                                        <small class="text-muted">Personal ownership-এর ক্ষেত্রে এই ID থেকে user details দেখানো হবে view page-এ।</small>
-                                        <span class="error owner_id-error text-danger"></span>
+
+                            <hr>
+                            <h5 class="text-info mb-3"><i class="fas fa-file-contract"></i> Certificates & Attachments</h5>
+                            <div class="vehicle-info-layout">
+                                <div class="row">
+                                    <!-- RC -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="vehicle-info-panel">
+                                            <h6 class="vehicle-info-panel-title">RC (Registration Certificate)</h6>
+                                            <div class="form-group">
+                                                <label>Attachment Upload</label>
+                                                <input type="file" class="form-control" name="rc_attachment">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Issue Date</label>
+                                                <input type="date" class="form-control" name="rc_issue_date">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Validity Date</label>
+                                                <input type="date" class="form-control" name="rc_validity_date">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- RP -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="vehicle-info-panel">
+                                            <h6 class="vehicle-info-panel-title">RP (Road Permit)</h6>
+                                            <div class="form-group">
+                                                <label>Attachment Upload</label>
+                                                <input type="file" class="form-control" name="rp_attachment">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Issue Date</label>
+                                                <input type="date" class="form-control" name="rp_issue_date">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Validity Date</label>
+                                                <input type="date" class="form-control" name="rp_validity_date">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- TT -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="vehicle-info-panel">
+                                            <h6 class="vehicle-info-panel-title">TT (Tax Token)</h6>
+                                            <div class="form-group">
+                                                <label>Attachment Upload</label>
+                                                <input type="file" class="form-control" name="tt_attachment">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Issue Date</label>
+                                                <input type="date" class="form-control" name="tt_issue_date">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Validity Date</label>
+                                                <input type="date" class="form-control" name="tt_validity_date">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- IN -->
+                                    <div class="col-md-6 mb-3">
+                                        <div class="vehicle-info-panel">
+                                            <h6 class="vehicle-info-panel-title">IN (Insurance)</h6>
+                                            <div class="form-group">
+                                                <label>Attachment Upload</label>
+                                                <input type="file" class="form-control" name="in_attachment">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Issue Date</label>
+                                                <input type="date" class="form-control" name="in_issue_date">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Validity Date</label>
+                                                <input type="date" class="form-control" name="in_validity_date">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div id="institutional-fields" class="d-none">
-                                <div class="form-group row">
-                                    <label for="institutional_name" class="col-sm-2 col-form-label">Institutional Name</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="institutional_name" class="form-control" id="institutional_name" placeholder="Institutional Name">
-                                        <span class="error institutional_name-error text-danger"></span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="trade_license" class="col-sm-2 col-form-label">Trade License</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="trade_license" class="form-control" id="trade_license" placeholder="Trade License">
-                                        <span class="error trade_license-error text-danger"></span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="institutional_address" class="col-sm-2 col-form-label">Institutional Address</label>
-                                    <div class="col-sm-9">
-                                        <textarea name="institutional_address" class="form-control" id="institutional_address" rows="3" placeholder="Institutional Address"></textarea>
-                                        <span class="error institutional_address-error text-danger"></span>
+                            <hr>
+                            <h5 class="text-info mb-3"><i class="fas fa-id-card"></i> Assign Driver</h5>
+                            <div class="vehicle-info-layout">
+                                <div class="vehicle-info-panel">
+                                    <div class="form-group">
+                                        <label for="driver_registration_no">Registration Number (Driver ID/Staff ID/System ID)</label>
+                                        <input type="text" name="driver_registration_no" value="{{ $vehicle->driver_registration_no ?? '' }}" class="form-control" id="driver_registration_no" placeholder="Enter Registration Number">
+                                        <div id="driver_info_display" class="mt-2 text-primary" style="display: none; font-weight: 500;">
+                                            <i class="fas fa-user-check"></i> Driver Found: <span id="driver_name_display"></span> (<span id="driver_phone_display"></span>)
+                                        </div>
+                                        <div id="driver_info_error" class="mt-2 text-danger" style="display: none; font-weight: 500;">
+                                            <i class="fas fa-times-circle"></i> Driver not found
+                                        </div>
+                                        <span class="error driver_registration_no-error text-danger"></span>
                                     </div>
                                 </div>
                             </div>
+
+                            <hr>
+                            <h5 class="text-info mb-3"><i class="fas fa-route"></i> Allocate to Route</h5>
+                            <div class="vehicle-info-layout">
+                                <div class="vehicle-info-panel">
+                                    <table class="table table-bordered" id="routeTable">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th>Route (From Point)</th>
+                                                <th>Route (Middle Point)</th>
+                                                <th>Route (End Point)</th>
+                                                <th style="width: 100px;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="routeBody">
+                                            <tr>
+                                                <td><input type="text" name="routes[0][from_point]" class="form-control" placeholder="From Point" required></td>
+                                                <td><input type="text" name="routes[0][middle_point]" class="form-control" placeholder="Middle Point"></td>
+                                                <td><input type="text" name="routes[0][end_point]" class="form-control" placeholder="End Point" required></td>
+                                                <td><button type="button" class="btn btn-danger btn-sm remove-route"><i class="fas fa-trash"></i></button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button type="button" class="btn btn-success btn-sm mt-2" id="addRouteBtn"><i class="fas fa-plus"></i> Add More Route</button>
+                                </div>
+                            </div>
+
 
                         </div>
 
@@ -277,11 +371,27 @@ $(document).ready(function () {
     $(".select2").select2();
 
     const vehicleData = {
-        "Auto": [
-            "Rickshaw - রিকশা",
-            "Van - ভ্যান / ভ্যানগাড়ি"
+        "Heavy Passenger Vehicle": [
+            "Bus - বাস",
+            "Mini Bus - মিনি বাস"
         ],
-        "Manual": [
+        "Light Passenger Vehicle": [
+            "Micro Bus - মাইক্রোবাস",
+            "Private Car - প্রাইভেট কার",
+            "Jeep / SUV - জিপ / এসইউভি"
+        ],
+        "Cargo / Freight Vehicle": [
+            "Truck - ট্রাক",
+            "Covered Van - কাভার্ড ভ্যান",
+            "Pick-up - পিক-আপ"
+        ],
+        "Two & Three Wheeler": [
+            "Motorcycle - মোটরসাইকেল",
+            "Scooter - স্কুটার",
+            "CNG Auto Rickshaw - সিএনজি অটোরিকশা",
+            "Easy Bike - ইজিবাইক"
+        ],
+        "Non-Motorized / Manual": [
             "Rickshaw - রিকশা",
             "Van - ভ্যান / ভ্যানগাড়ি",
             "Thela Gari - ঠেলাগাড়ি",
@@ -304,26 +414,7 @@ $(document).ready(function () {
         select.trigger("change");
     }
 
-    function toggleOwnershipFields() {
-        const isPersonal = $ownershipType.val() === "personal";
-        const isInstitutional = $ownershipType.val() === "institutional";
-        const personalField = $("#owner_id");
-        const institutionalFields = $("#institutional_name, #trade_license, #institutional_address");
 
-        $("#personal-owner-field").toggleClass("d-none", !isPersonal);
-        personalField.prop("required", isPersonal);
-
-        $("#institutional-fields").toggleClass("d-none", !isInstitutional);
-        institutionalFields.prop("required", isInstitutional);
-
-        if (!isPersonal) {
-            personalField.val("");
-        }
-
-        if (!isInstitutional) {
-            institutionalFields.val("");
-        }
-    }
 
     populateSelect($type, Object.keys(vehicleData), "Select Vehicle Type");
     populateSelect($category, [], "Select Vehicle Category");
@@ -334,8 +425,7 @@ $(document).ready(function () {
         populateSelect($category, categories, "Select Vehicle Category");
     });
 
-    $ownershipType.on("change", toggleOwnershipFields);
-    toggleOwnershipFields();
+
 
     $("#vehicleForm").on("submit", function (e) {
         e.preventDefault();
@@ -379,6 +469,74 @@ $(document).ready(function () {
             }
         });
     });
+
+    let routeIndex = 1;
+    $('#addRouteBtn').click(function() {
+        let html = `
+            <tr>
+                <td><input type="text" name="routes[${routeIndex}][from_point]" class="form-control" placeholder="From Point" required></td>
+                <td><input type="text" name="routes[${routeIndex}][middle_point]" class="form-control" placeholder="Middle Point"></td>
+                <td><input type="text" name="routes[${routeIndex}][end_point]" class="form-control" placeholder="End Point" required></td>
+                <td><button type="button" class="btn btn-danger btn-sm remove-route"><i class="fas fa-trash"></i></button></td>
+            </tr>
+        `;
+        $('#routeBody').append(html);
+        routeIndex++;
+    });
+
+    $(document).on("click", ".remove-route", function() {
+        if ($("#routeBody tr").length > 1) {
+            $(this).closest("tr").remove();
+        } else {
+            toastr.warning("At least one route is required.");
+        }
+    });
 });
+
+    const driverInput = $('#driver_registration_no');
+    const driverInfoDisplay = $('#driver_info_display');
+    const driverInfoError = $('#driver_info_error');
+    const driverNameDisplay = $('#driver_name_display');
+    const driverPhoneDisplay = $('#driver_phone_display');
+
+    function fetchDriverInfo() {
+        const driverId = driverInput.val();
+        if (driverId.length > 0) {
+            $.ajax({
+                url: "{{ route('vehicle.api.driver_info') }}",
+                type: "GET",
+                data: { driver_id: driverId },
+                success: function(response) {
+                    if (response.status) {
+                        driverNameDisplay.text(response.name);
+                        driverPhoneDisplay.text(response.phone || 'No Phone');
+                        driverInfoDisplay.show();
+                        driverInfoError.hide();
+                    } else {
+                        driverInfoDisplay.hide();
+                        driverInfoError.show();
+                    }
+                },
+                error: function() {
+                    driverInfoDisplay.hide();
+                    driverInfoError.hide();
+                }
+            });
+        } else {
+            driverInfoDisplay.hide();
+            driverInfoError.hide();
+        }
+    }
+
+    driverInput.on('input', function() {
+        clearTimeout(window.driverTimeout);
+        window.driverTimeout = setTimeout(fetchDriverInfo, 500);
+    });
+
+    // Run once on load if there's a value
+    if (driverInput.val() !== '') {
+        fetchDriverInfo();
+    }
+    
 </script>
 @endpush
