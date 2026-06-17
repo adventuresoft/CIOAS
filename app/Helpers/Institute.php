@@ -95,26 +95,35 @@ if (!function_exists('user_institute_name')) {
 
 if (!function_exists('bnValue')) {
 
-    function bnValue($value){
-        $enValueList=[ "", ":","/","-",".","0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-        $bnValueList=[ "", ":","/","-",".","০","১","২","৩","৪","৫","৬","৭","৮","৯","এ","বি","সি","ডি","ই","এফ","জি","এইচ","আই","জে","কে","এল","এম","এন","ও","পি","কিউ","আর","এস","টি","ইউ","ভি","ডাব্লিউ","এক্স","ওয়াই","জেড","এ","বি","সি","ডি","ই","এফ","জি","এইচ","আই","জে","কে","এল","এম","এন","ও","পি","কিউ","আর","এস","টি","ইউ","ভি","ডাব্লিউ","এক্স","ওয়াই","জেড"];
-        $converted_value=str_replace($enValueList,$bnValueList,$value);
+    function bnValue($value)
+    {
+        $enValueList = ["", ":", "/", "-", ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+        $bnValueList = ["", ":", "/", "-", ".", "০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯", "এ", "বি", "সি", "ডি", "ই", "এফ", "জি", "এইচ", "আই", "জে", "কে", "এল", "এম", "এন", "ও", "পি", "কিউ", "আর", "এস", "টি", "ইউ", "ভি", "ডাব্লিউ", "এক্স", "ওয়াই", "জেড", "এ", "বি", "সি", "ডি", "ই", "এফ", "জি", "এইচ", "আই", "জে", "কে", "এল", "এম", "এন", "ও", "পি", "কিউ", "আর", "এস", "টি", "ইউ", "ভি", "ডাব্লিউ", "এক্স", "ওয়াই", "জেড"];
+        $converted_value = str_replace($enValueList, $bnValueList, $value);
         return $converted_value;
     }
-    
+
 }
 
 if (!function_exists('currencyFormat')) {
 
-    function currencyFormat($value){
-        if($value){
-            $result = number_format((float)($value ?? 0), 2, '.', '');
+    function currencyFormat($value)
+    {
+        if ($value) {
+            $result = number_format((float) ($value ?? 0), 2, '.', '');
         } else {
             $result = '';
         }
         return $result;
     }
-    
+
+}
+
+function bnDate($date)
+{
+    if (!$date)
+        return '—';
+    return bnNum($date->format('d/m/Y')) . ' খ্রি.';
 }
 
 

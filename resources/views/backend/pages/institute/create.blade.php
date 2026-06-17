@@ -105,6 +105,16 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <label for="thana" class="col-sm-2 col-form-label">Thana / Upazila</label>
+                                    <div class="col-sm-9">
+                                        <select disabled class="form-control select2" name="thana" id="thana">
+                                            <option value="">Select Thana</option>
+                                        </select>
+                                        <small class="error thana-error text-danger"></small>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label for="institute_type" class="col-sm-2 col-form-label">Institute Type <span
                                             class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
                                     <div class="col-sm-9">
@@ -206,8 +216,36 @@
 
         $(document).on('change', '#district', function(e) {
             e.preventDefault();
-            let district = $(this).val();
-            if (district) {
+            let districtId = $(this).val();
+            let thana = $('#thana');
+            if (districtId) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('/get-thanas-by-district') }}/" + districtId,
+                    beforeSend: function() {
+                        thana.prop("disabled", true);
+                        $('#institute_type').prop("disabled", true);
+                    },
+                    success: function(response) {
+                        thana.html(response);
+                        thana.prop("disabled", false);
+                        $('#institute_type').prop("disabled", true);
+                    },
+                    error: function(xhr, status, error) {
+                        thana.prop("disabled", true);
+                        $('#institute_type').prop("disabled", true);
+                    }
+                });
+            } else {
+                thana.html('<option value="">Select Thana</option>').prop("disabled", true);
+                $('#institute_type').prop("disabled", true);
+            }
+        })
+
+        $(document).on('change', '#thana', function(e) {
+            e.preventDefault();
+            let thana_id = $(this).val();
+            if (thana_id) {
                 $('#institute_type').prop("disabled", false);
             } else {
                 $('#institute_type').prop("disabled", true);

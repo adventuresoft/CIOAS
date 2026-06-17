@@ -10,7 +10,12 @@ class Institute extends Model
     use HasFactory;
     public static $snakeAttributes = false;
     protected $table = 'institutes';
-    protected $fillable = ['institute_category_id', 'institute_subcategory_id', 'institute_type_id', 'union_id', 'pourashava_id', 'city_corporation_id', 'district_id', 'activation_time',  'created_at', 'updated_at'];
+    protected $fillable = [
+        'institute_category_id', 'institute_subcategory_id', 'institute_type_id',
+        'union_id', 'pourashava_id', 'city_corporation_id',
+        'division_id', 'district_id', 'thana_id',
+        'activation_time', 'created_at', 'updated_at'
+    ];
 
     public function category()
     {
@@ -20,6 +25,21 @@ class Institute extends Model
     public function type()
     {
       return $this->belongsTo(InstituteType::class, 'institute_type_id', 'id');
+    }
+
+    public function division()
+    {
+      return $this->belongsTo(Division::class, 'division_id', 'id');
+    }
+
+    public function district()
+    {
+      return $this->belongsTo(District::class, 'district_id', 'id');
+    }
+
+    public function thana()
+    {
+      return $this->belongsTo(Thana::class, 'thana_id', 'id');
     }
 
     public function union()
@@ -37,16 +57,9 @@ class Institute extends Model
       return $this->belongsTo(CityCorporation::class, 'city_corporation_id', 'id');
     }
 
-    public function district()
-    {
-      return $this->belongsTo(District::class, 'district_id', 'id');
-    }
-
     public function superUser()
     {
       return $this->hasOne(User::class, 'institute_id', 'id');
     }
-
-   
 
 }

@@ -12,20 +12,14 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next) {
-            $this->guardSuperadmin();
-            return $next($request);
-        });
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware(function ($request, $next) {
+    //         $this->guardSuperadmin();
+    //         return $next($request);
+    //     });
+    // }
 
-    protected function guardSuperadmin()
-    {
-        if (!is_superadmin()) {
-            abort(403, 'Unauthorized access.');
-        }
-    }
 
     public function index(Request $request)
     {
@@ -127,11 +121,30 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
         $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'user_type' => 'required|in:admin,staff',
+            'mobile' => 'required|string',
+            'password' => 'nullable|min:6|confirmed',
+            'institute_id' => 'required',
             'role_id' => 'required',
+            'department_id' => 'nullable|integer',
+            'section_id' => 'nullable|integer',
             'status' => 'required|in:0,1'
         ]);
 
         try {
+
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->mobile = $request->mobile;
+            if ($request->filled('password')) {
+                $user->password = Hash::make($request->password);
+            }
+            $user->institute_id = $request->institute_id;
+            $user->department_id = $request->department_id;
+            $user->section_id = $request->section_id;
+            $user->user_type = $request->user_type;
 
             $user->role_id = $request->role_id;
             $user->status = $request->status;

@@ -1,0 +1,379 @@
+<?php
+
+namespace App\Http\Controllers\Backend;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\OrgGunApplication;
+use App\Models\OrgGunGuardDetail;
+use App\Models\OrgGunVerification;
+use App\Models\OrgGunInterview;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
+class OrgGunLicenseController extends Controller
+{
+    public function index()
+    {
+        $applications = OrgGunApplication::with(['guardDetails', 'verification', 'interviews'])->latest()->paginate(10);
+        return view('backend.pages.gun-license.org.index', compact('applications'));
+    }
+
+    public function createApplication()
+    {
+        return view('backend.pages.gun-license.org.create');
+    }
+
+    public function storeApplication(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            // Org fields
+            'org_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'email' => 'nullable|email|max:255',
+            'org_address' => 'nullable|string',
+            'operation_start_date' => 'nullable|date',
+            'vault_limit' => 'required|string|in:সর্বোচ্চ ১ কোটি টাকা,১ কোটি টাকার উর্ধ্বে কিন্তু ৫ কোটি টাকার নিম্মে,৫ কোটি টাকার উর্ধ্বে,up_to_1_crore,1_to_5_crore,above_5_crore',
+            'vehicle_count' => 'nullable|integer|min:0',
+            'owner_or_ceo_details' => 'nullable|string',
+            'organogram_manpower_details' => 'nullable|string',
+            'bangladesh_bank_permission' => 'required|boolean',
+            'tax_details' => 'nullable|string',
+            'current_security_description' => 'nullable|string',
+            'rental_agreement_details' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120',
+            'weapon_count_requested' => 'required|integer|min:1',
+            'weapon_nature_requested' => 'required|string|max:255', // selected gun type dropdown
+            'justification_of_necessity' => 'nullable|string',
+            'existing_weapons_details' => 'nullable|string',
+
+            // Guards array fields
+            'guards' => 'required|array|min:1',
+            'guards.*.guard_name' => 'required|string|max:255',
+            'guards.*.guard_father_name' => 'nullable|string|max:255',
+            'guards.*.guard_mother_name' => 'nullable|string|max:255',
+            'guards.*.guard_present_address' => 'nullable|string',
+            'guards.*.guard_permanent_address' => 'nullable|string',
+            'guards.*.guard_age' => 'nullable|integer|min:1',
+            'guards.*.guard_education' => 'nullable|string|max:255',
+            'guards.*.guard_nid_number' => 'nullable|string|max:255',
+            'guards.*.guard_training_certificate_status' => 'required|boolean',
+        ], [], [
+            'vault_limit' => 'সিন্দুক সীমা',
+            'rental_agreement_details' => 'বাড়ি ভাড়ার চুক্তি পত্র',
+            'weapon_count_requested' => 'প্রার্থীত আগ্নেয়াস্ত্রের সংখ্যা',
+            'guards.*.guard_name' => 'গার্ডের নাম',
+            'guards.*.guard_training_certificate_status' => 'প্রশিক্ষণপ্রাপ্ত কিনা'
+        ]);
+
+        if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'আবেদনপত্র পূরণে কিছু ভুল রয়েছে। অনুগ্রহ করে চেক করুন।',
+                    'errors' => $validator->errors()
+                ], 400);
+            }
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Additional business logic validation for weapon count based on vault limit
+        $vaultLimit = $request->vault_limit;
+        $weaponCount = (int) $request->weapon_count_requested;
+        $maxWeapons = 4;
+        
+        if ($vaultLimit === 'সর্বোচ্চ ১ কোটি টাকা' || $vaultLimit === 'up_to_1_crore') {
+            $maxWeapons = 2;
+        } elseif ($vaultLimit === '১ কোটি টাকার উর্ধ্বে কিন্তু ৫ কোটি টাকার নিম্মে' || $vaultLimit === '1_to_5_crore') {
+            $maxWeapons = 3;
+        } elseif ($vaultLimit === '৫ কোটি টাকার উর্ধ্বে' || $vaultLimit === 'above_5_crore') {
+            $maxWeapons = 4;
+        }
+
+        if ($weaponCount > $maxWeapons) {
+            $errorMsg = [
+                'weapon_count_requested' => ["সিন্দুক সীমা অনুযায়ী প্রার্থীত আগ্নেয়াস্ত্রের সংখ্যা সর্বোচ্চ {$maxWeapons} টি হতে পারে।"]
+            ];
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation error',
+                    'errors' => $errorMsg
+                ], 400);
+            }
+            return redirect()->back()->withErrors($errorMsg)->withInput();
+        }
+
+        // Handle file upload
+        $rental_agreement_path = null;
+        if ($request->hasFile('rental_agreement_details')) {
+            $file = $request->file('rental_agreement_details');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/rental_agreements'), $filename);
+            $rental_agreement_path = 'uploads/rental_agreements/' . $filename;
+        }
+
+        // Generate tracking number
+        $datePart = Carbon::now()->format('Ymd');
+        $last = OrgGunApplication::whereDate('created_at', Carbon::today())
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $newSerial = 1;
+        if ($last && preg_match('/-(\d+)$/', $last->tracking_no, $matches)) {
+            $newSerial = ((int)$matches[1]) + 1;
+        }
+        $trackingNo = 'OG-' . $datePart . '-' . str_pad($newSerial, 5, '0', STR_PAD_LEFT);
+
+        DB::beginTransaction();
+        try {
+            $application = OrgGunApplication::create([
+                'institute_id' => Auth::user()->institute_id ?? 0,
+                'tracking_no' => $trackingNo,
+                'org_name' => $request->org_name,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'org_address' => $request->org_address,
+                'operation_start_date' => $request->operation_start_date,
+                'vault_limit' => $request->vault_limit,
+                'vehicle_count' => $request->vehicle_count ?? 0,
+                'owner_or_ceo_details' => $request->owner_or_ceo_details,
+                'organogram_manpower_details' => $request->organogram_manpower_details,
+                'bangladesh_bank_permission' => $request->bangladesh_bank_permission,
+                'tax_details' => $request->tax_details,
+                'current_security_description' => $request->current_security_description,
+                'rental_agreement_details' => $rental_agreement_path,
+                'weapon_count_requested' => $request->weapon_count_requested ?? 0,
+                'weapon_nature_requested' => $request->weapon_nature_requested,
+                'justification_of_necessity' => $request->justification_of_necessity,
+                'existing_weapons_details' => $request->existing_weapons_details,
+                'status' => 'Submitted'
+            ]);
+
+            if ($request->has('guards') && is_array($request->guards)) {
+                foreach ($request->guards as $guardData) {
+                    OrgGunGuardDetail::create([
+                        'org_gun_application_id' => $application->id,
+                        'guard_name' => $guardData['guard_name'],
+                        'father_name' => $guardData['guard_father_name'] ?? null,
+                        'mother_name' => $guardData['guard_mother_name'] ?? null,
+                        'present_address' => $guardData['guard_present_address'] ?? null,
+                        'permanent_address' => $guardData['guard_permanent_address'] ?? null,
+                        'age' => $guardData['guard_age'] ?? null,
+                        'education' => $guardData['guard_education'] ?? null,
+                        'nid_number' => $guardData['guard_nid_number'] ?? null,
+                        'training_certificate_status' => $guardData['guard_training_certificate_status'],
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Organization application submitted successfully! Tracking No: ' . $trackingNo,
+                    'redirect_url' => route('gun-license.index')
+                ], 200);
+            }
+
+            return redirect()->route('gun-license.index')->with('success', 'Organization application submitted successfully! Tracking No: ' . $trackingNo);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            if ($rental_agreement_path && file_exists(public_path($rental_agreement_path))) {
+                @unlink(public_path($rental_agreement_path));
+            }
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Failed to save application: ' . $e->getMessage()
+                ], 500);
+            }
+            return redirect()->back()->with('error', 'Failed to save application: ' . $e->getMessage())->withInput();
+        }
+    }
+
+    public function createVerification($applicationId)
+    {
+        $application = OrgGunApplication::with(['guardDetails', 'verification'])->findOrFail($applicationId);
+        return view('backend.pages.gun-license.org.verification', compact('application'));
+    }
+
+    public function storeVerification(Request $request, $applicationId)
+    {
+        $application = OrgGunApplication::findOrFail($applicationId);
+
+        $validator = Validator::make($request->all(), [
+            'weapon_necessity_approved' => 'required|boolean',
+            'existing_weapons_verified' => 'nullable|string',
+            'vault_limit_verified' => 'required|boolean',
+            'guard_has_criminal_record' => 'required|boolean',
+            'guard_case_details' => 'nullable|string',
+            'guard_social_discipline_issue' => 'required|boolean',
+            'guard_existing_license' => 'required|boolean',
+            'guard_practical_knowledge' => 'required|boolean',
+            'certificate_verification_status' => 'required|boolean',
+            'adverse_info' => 'nullable|string',
+            'oc_comments' => 'nullable|string',
+            'sp_dsb_comments' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation error',
+                    'errors' => $validator->errors()
+                ], 400);
+            }
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        DB::beginTransaction();
+        try {
+            OrgGunVerification::updateOrCreate(
+                ['org_gun_application_id' => $applicationId],
+                [
+                    'weapon_necessity_approved' => $request->weapon_necessity_approved,
+                    'existing_weapons_verified' => $request->existing_weapons_verified,
+                    'vault_limit_verified' => $request->vault_limit_verified,
+                    'guard_has_criminal_record' => $request->guard_has_criminal_record,
+                    'guard_case_details' => $request->guard_case_details,
+                    'guard_social_discipline_issue' => $request->guard_social_discipline_issue,
+                    'guard_existing_license' => $request->guard_existing_license,
+                    'guard_practical_knowledge' => $request->guard_practical_knowledge,
+                    'certificate_verification_status' => $request->certificate_verification_status,
+                    'adverse_info' => $request->adverse_info,
+                    'oc_comments' => $request->oc_comments,
+                    'sp_dsb_comments' => $request->sp_dsb_comments,
+                ]
+            );
+
+            $application->update(['status' => 'Verified']);
+            DB::commit();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Verification details saved successfully!',
+                    'redirect_url' => route('gun-license.index')
+                ], 200);
+            }
+
+            return redirect()->route('gun-license.index')->with('success', 'Verification details saved successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Failed to save verification: ' . $e->getMessage()
+                ], 500);
+            }
+            return redirect()->back()->with('error', 'Failed to save verification: ' . $e->getMessage())->withInput();
+        }
+    }
+
+    public function createInterview($applicationId)
+    {
+        $application = OrgGunApplication::with(['guardDetails', 'interviews'])->findOrFail($applicationId);
+        // We'll get the first guard for interview purposes
+        $guard = $application->guardDetails->first();
+        if (!$guard) {
+            return redirect()->back()->with('error', 'No guard detail found for this application to interview.');
+        }
+
+        // Get existing interview if any
+        $interview = OrgGunInterview::where('org_gun_application_id', $applicationId)
+            ->where('org_gun_guard_detail_id', $guard->id)
+            ->first();
+
+        return view('backend.pages.gun-license.org.interview', compact('application', 'guard', 'interview'));
+    }
+
+    public function storeInterview(Request $request, $applicationId)
+    {
+        $application = OrgGunApplication::findOrFail($applicationId);
+        $guard = OrgGunGuardDetail::where('org_gun_application_id', $applicationId)->firstOrFail();
+
+        $validator = Validator::make($request->all(), [
+            'guard_physical_mental_capability' => 'required|boolean',
+            'guard_weapon_knowledge' => 'required|boolean',
+            'guard_behavior_satisfactory' => 'required|boolean',
+            'safe_custody_capability' => 'required|boolean',
+            'police_report_comments' => 'nullable|string',
+            'magistrate_final_comments' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation error',
+                    'errors' => $validator->errors()
+                ], 400);
+            }
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        DB::beginTransaction();
+        try {
+            OrgGunInterview::updateOrCreate(
+                [
+                    'org_gun_application_id' => $applicationId,
+                    'org_gun_guard_detail_id' => $guard->id
+                ],
+                [
+                    'guard_physical_mental_capability' => $request->guard_physical_mental_capability,
+                    'guard_weapon_knowledge' => $request->guard_weapon_knowledge,
+                    'guard_behavior_satisfactory' => $request->guard_behavior_satisfactory,
+                    'safe_custody_capability' => $request->safe_custody_capability,
+                    'police_report_comments' => $request->police_report_comments,
+                    'magistrate_final_comments' => $request->magistrate_final_comments,
+                ]
+            );
+
+            $application->update(['status' => 'Interviewed']);
+            DB::commit();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Interview details saved successfully!',
+                    'redirect_url' => route('gun-license.index')
+                ], 200);
+            }
+
+            return redirect()->route('gun-license.index')->with('success', 'Interview details saved successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Failed to save interview: ' . $e->getMessage()
+                ], 500);
+            }
+            return redirect()->back()->with('error', 'Failed to save interview: ' . $e->getMessage())->withInput();
+        }
+    }
+
+    public function approve($id)
+    {
+        $application = OrgGunApplication::findOrFail($id);
+        $application->update(['status' => 'Approved']);
+        return redirect()->route('gun-license.index')->with('success', 'Application ' . $application->tracking_no . ' has been approved.');
+    }
+
+    public function reject($id)
+    {
+        $application = OrgGunApplication::findOrFail($id);
+        $application->update(['status' => 'Rejected']);
+        return redirect()->route('gun-license.index')->with('success', 'Application ' . $application->tracking_no . ' has been rejected.');
+    }
+
+    public function show($id)
+    {
+        $application = OrgGunApplication::with(['guardDetails', 'verification', 'interviews'])->findOrFail($id);
+        return view('backend.pages.gun-license.org.show', compact('application'));
+    }
+}

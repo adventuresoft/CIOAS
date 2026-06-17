@@ -1,0 +1,30 @@
+@font-face {
+    font-family: 'kalpurush';
+    src: url('../bangla-font/kalpurush%20ANSI.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Kalpurush';
+    src: url('../bangla-font/kalpurush%20ANSI.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.nav-sidebar {
+    padding-bottom: 100px;
+}
+
+body,
+input,
+button,
+select,
+optgroup,
+textarea {
+    font-family: 'Inter', 'Open Sans', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+.print-pad-container * {
+    font-family: 'Inter', 'Open Sans', 'Segoe UI', 'Helvetica Neue', Arial, 'kalpurush', 'Kalpurush', sans-serif !important;
+}

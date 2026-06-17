@@ -1,0 +1,514 @@
+@extends('backend.master', ['mainMenu' => 'CaseOrder', 'subMenu' => 'CaseOrderCreate'])
+
+@push('style')
+    <style>
+        .co-page {
+            --co-primary: #1e40af;
+            --co-primary-dark: #1e3a8a;
+            --co-line: #e2e8f0;
+            --co-ink: #1e293b;
+            --co-muted: #64748b;
+            background: linear-gradient(135deg, rgba(30, 64, 175, .07), rgba(245, 158, 11, .05)), #f8fafc;
+            min-height: calc(100vh - 120px);
+            padding-bottom: 40px;
+        }
+
+        .co-hero {
+            display: flex; justify-content: space-between; align-items: center;
+            background: linear-gradient(135deg, #1e40af, #1e3a8a);
+            color: #fff; border-radius: 10px; padding: 22px 28px;
+            box-shadow: 0 12px 30px rgba(30, 64, 175, .25); margin-bottom: 24px;
+        }
+        .co-hero h1 { font-size: 22px; font-weight: 700; margin: 0; }
+        .co-hero p { color: rgba(255,255,255,.8); margin: 4px 0 0; font-size: 13px; }
+        .co-hero-icon {
+            width: 52px; height: 52px; display: grid; place-items: center;
+            border-radius: 10px; background: rgba(255,255,255,.2); font-size: 22px;
+        }
+
+        .co-card {
+            background: #fff; border: 1px solid var(--co-line);
+            border-radius: 10px; box-shadow: 0 8px 24px rgba(15,23,42,.07); overflow: hidden;
+            margin-bottom: 24px;
+        }
+        .co-card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 20px; border-bottom: 1px solid var(--co-line);
+            background: linear-gradient(180deg,#fff,#f8fbff);
+        }
+        .co-card-title {
+            font-size: 16px; font-weight: 700; color: var(--co-ink);
+            display: flex; align-items: center; gap: 8px; margin: 0;
+        }
+        .co-card-title i { color: var(--co-primary); }
+        .co-card-body { padding: 28px; }
+
+        .info-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px; margin-bottom: 24px; padding: 16px;
+            background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px;
+        }
+        .info-item label { font-size: 11px; font-weight: 700; color: var(--co-muted); text-transform: uppercase; display: block; margin-bottom: 3px; }
+        .info-item span { font-size: 14px; color: var(--co-ink); font-weight: 600; }
+
+        .form-section { margin-bottom: 24px; }
+        .form-section-title {
+            font-size: 14px; font-weight: 700; color: var(--co-primary);
+            margin-bottom: 14px; padding-bottom: 8px;
+            border-bottom: 2px solid #bfdbfe;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .md-label { font-size: 13px; font-weight: 700; color: var(--co-muted); margin-bottom: 6px; display: block; }
+        .md-input {
+            border: 1px solid var(--co-line); border-radius: 8px; padding: 10px 14px;
+            width: 100%; font-size: 14px; transition: all .2s;
+        }
+        .md-input:focus {
+            border-color: var(--co-primary); outline: none;
+            box-shadow: 0 0 0 3px rgba(30,64,175,.12);
+        }
+        .md-select { appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 12px center; background-size: 16px; padding-right: 36px; }
+
+        .action-bar {
+            display: flex; justify-content: flex-end; gap: 10px; padding-top: 16px;
+            border-top: 1px solid var(--co-line); margin-top: 8px;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative; padding-left: 30px;
+        }
+        .timeline::before {
+            content: ''; position: absolute; left: 11px; top: 0; bottom: 0;
+            width: 2px; background: linear-gradient(to bottom, #1e40af, #e2e8f0);
+            border-radius: 2px;
+        }
+        .timeline-item { position: relative; margin-bottom: 24px; }
+        .timeline-dot {
+            position: absolute; left: -30px; top: 10px;
+            width: 22px; height: 22px; border-radius: 50%;
+            background: #1e40af; color: #fff; font-size: 10px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 0 4px rgba(30,64,175,.15);
+        }
+        .timeline-card {
+            background: #f8fafc; border: 1px solid #e2e8f0;
+            border-radius: 10px; padding: 16px 18px;
+            transition: box-shadow .2s;
+        }
+        .timeline-card:hover { box-shadow: 0 4px 16px rgba(30,64,175,.1); }
+        .timeline-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 10px; flex-wrap: wrap; gap: 8px;
+        }
+        .timeline-title {
+            font-size: 14px; font-weight: 700; color: var(--co-ink);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .timeline-meta { font-size: 12px; color: var(--co-muted); }
+        .timeline-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px; margin-top: 10px;
+        }
+        .tg-item label { font-size: 11px; font-weight: 700; color: var(--co-muted); text-transform: uppercase; display: block; }
+        .tg-item span { font-size: 13px; color: var(--co-ink); }
+
+        .status-pill {
+            display: inline-block; padding: 3px 10px; border-radius: 999px;
+            font-size: 12px; font-weight: 700;
+        }
+        .status-pill.হয়নি, .status-pill.pending  { background: #fef9c3; color: #854d0e; text-transform: capitalize; }
+        .status-pill.হмеется, .status-pill.হয়েছে, .status-pill.approved { background: #dcfce7; color: #166534; text-transform: capitalize; }
+        .status-pill.মুলতবি, .status-pill.postponed { background: #fee2e2; color: #991b1b; text-transform: capitalize; }
+        .status-pill.draft { background: #e2e8f0; color: #334155; text-transform: capitalize; }
+        .status-pill.running { background: #dbeafe; color: #1e40af; text-transform: capitalize; }
+        .status-pill.closed { background: #f3f4f6; color: #374151; text-transform: capitalize; }
+        .status-pill.rejected { background: #fee2e2; color: #991b1b; text-transform: capitalize; }
+    </style>
+@endpush
+
+@section('title', 'কেস অর্ডার নথিভুক্ত করুন')
+@section('content')
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6"><h1>কেস অর্ডার নথিভুক্ত করুন</h1></div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{ route('caseorder.index') }}">Case Order</a></li>
+                        <li class="breadcrumb-item active">কেস অর্ডার নথিভুক্ত করুন</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content co-page">
+        <div class="container-fluid" style="max-width: 900px;">
+
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show mb-3">
+                    <i class="fas fa-exclamation-triangle mr-2"></i> তথ্য যাচাই ব্যর্থ হয়েছে। অনুগ্রহ করে ফর্মটি পুনরায় চেক করুন।
+                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                </div>
+            @endif
+
+            <div class="mb-4">
+                <h3><i class="fas fa-gavel mr-2"></i> কেস অর্ডার নথিভুক্ত করুন</h3>
+                <p class="text-muted">
+                    কেস নং: <strong>{{ $misCase->case_no ?? 'N/A' }}</strong>
+                    &nbsp;|&nbsp; পরবর্তী শুনানি নং: #{{ $caseOrders->count() + 1 }}
+                </p>
+            </div>
+
+            <div class="co-card">
+                <div class="co-card-header">
+                    <h3 class="co-card-title"><i class="fas fa-edit"></i> নতুন শুনানির বিবরণ এন্ট্রি করুন</h3>
+                    <div>
+                        <a href="{{ route('miscase.show', $misCase->id) }}" class="btn btn-info btn-sm mr-2 text-white" style="font-weight:700;">
+                            <i class="fas fa-eye"></i> মিসকেস বিবরণ
+                        </a>
+                        <a href="{{ route('caseorder.create') }}" class="btn btn-light btn-sm">
+                            <i class="fas fa-arrow-left"></i> ফিরে যান
+                        </a>
+                    </div>
+                </div>
+                <div class="co-card-body">
+
+                    {{-- Case info details --}}
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>কেস নম্বর</label>
+                            <span>{{ $misCase->case_no ?? 'N/A' }}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>মামলার ধরণ</label>
+                            <span>{{ $misCase->case_type_label ?? '—' }}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>বাদী</label>
+                            <span>{{ !empty($misCase->plaintiffs) ? ($misCase->plaintiffs[0]['name'] ?? '—') : '—' }}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>বিবাদী</label>
+                            <span>{{ !empty($misCase->defendants) ? ($misCase->defendants[0]['name'] ?? '—') : '—' }}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>মিসকেস রুজুর তারিখ</label>
+                            <span>{{ $misCase->case_date ? $misCase->case_date->format('d/m/Y') : '—' }}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>মিসকেস অবস্থা</label>
+                            <span>{{ ucfirst($misCase->status ?? '—') }}</span>
+                        </div>
+                    </div>
+
+                    <form action="{{ route('caseorder.addOrder', $misCase->id) }}" method="POST">
+                        @csrf
+
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="fas fa-balance-scale"></i> অর্ডারের তথ্য
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    @php
+                                        $latestMemorialNo = '';
+                                        if (isset($caseOrders) && $caseOrders->count() > 0) {
+                                            $latestOrderWithMemorial = $caseOrders->firstWhere('memorial_no', '!=', null);
+                                            if ($latestOrderWithMemorial) {
+                                                $latestMemorialNo = $latestOrderWithMemorial->memorial_no;
+                                            }
+                                        }
+                                    @endphp
+                                    <label class="md-label">স্মারক নম্বর (Memorial Number)</label>
+                                    <input type="text" name="memorial_no" class="md-input @error('memorial_no') is-invalid @enderror"
+                                        value="{{ old('memorial_no', $latestMemorialNo) }}" placeholder="স্মারক নম্বর লিখুন">
+                                    @error('memorial_no')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="md-label">পরবর্তী শুনানির তারিখ <span class="text-danger">*</span></label>
+                                    <input type="date" name="next_hearing_date" class="md-input @error('next_hearing_date') is-invalid @enderror"
+                                        value="{{ old('next_hearing_date') }}">
+                                    @error('next_hearing_date')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="md-label">সময় (HH:MM)</label>
+                                    <input type="time" name="next_hearing_time" class="md-input @error('next_hearing_time') is-invalid @enderror"
+                                        value="{{ old('next_hearing_time') }}">
+                                    @error('next_hearing_time')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="md-label">স্ট্যাটাস <span class="text-danger">*</span></label>
+                                    <select name="status" class="md-input md-select @error('status') is-invalid @enderror" required>
+                                        <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                        <option value="approved" {{ old('status') == 'approved' ? 'selected' : '' }}>Approved</option>
+                                        <option value="draft" @selected(old('status', 'draft') == 'draft')>Draft</option>
+                                        <option value="running" @selected(old('status') == 'running')>Running</option>
+                                        <option value="closed" @selected(old('status') == 'closed')>Closed</option>
+                                        <option value="rejected" @selected(old('status') == 'rejected')>Rejected</option>
+                                    </select>
+                                    @error('status')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="md-label">Command</label>
+                                    <select name="command_type" class="md-input md-select @error('command_type') is-invalid @enderror">
+                                        <option value="" {{ old('command_type') == '' ? 'selected' : '' }}>-- Select --</option>
+                                        <option value="yes" {{ old('command_type') == 'yes' ? 'selected' : '' }}>Yes</option>
+                                        <option value="no" {{ old('command_type') == 'no' ? 'selected' : '' }}>No</option>
+                                    </select>
+                                    @error('command_type')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3 command-field">
+                                    <label class="md-label">Command Start-date (আদেশের শুরুর তারিখ)</label>
+                                    <input type="date" name="command_start_date" class="md-input @error('command_start_date') is-invalid @enderror"
+                                        value="{{ old('command_start_date') }}">
+                                    @error('command_start_date')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3 command-field">
+                                    <label class="md-label">Command Till-date (আদেশের মেয়াদকালীন তারিখ)</label>
+                                    <input type="date" name="command_till_date" class="md-input @error('command_till_date') is-invalid @enderror"
+                                        value="{{ old('command_till_date') }}">
+                                    @error('command_till_date')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3 command-field">
+                                    <label class="md-label">Command End-date (আদেশের সমাপ্তির তারিখ)</label>
+                                    <input type="date" name="command_end_date" class="md-input @error('command_end_date') is-invalid @enderror"
+                                        value="{{ old('command_end_date') }}">
+                                    @error('command_end_date')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label class="md-label">Command Text</label>
+                                    <textarea name="command_text" class="md-input @error('command_text') is-invalid @enderror" rows="3"
+                                        placeholder="Command Details">{{ old('command_text') }}</textarea>
+                                    @error('command_text')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3 command-field">
+                                    <label class="md-label">Order Law</label>
+                                    <input type="text" name="order_law" class="md-input @error('order_law') is-invalid @enderror"
+                                        value="{{ old('order_law') }}" placeholder="Order Law">
+                                    @error('order_law')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3 command-field">
+                                    <label class="md-label">Form Number</label>
+                                    <input type="text" name="form_number" class="md-input @error('form_number') is-invalid @enderror"
+                                        value="{{ old('form_number') }}" placeholder="Form Number">
+                                    @error('form_number')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="md-label">নথিপত্র (Documents)</label>
+                                    <input type="file" name="documents[]" class="md-input @error('documents') is-invalid @enderror" multiple style="padding: 8px;">
+                                    @error('documents')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <label class="md-label">Side Note</label>
+                                    <textarea name="side_note" class="md-input @error('side_note') is-invalid @enderror" rows="2"
+                                        placeholder="Side Note">{{ old('side_note') }}</textarea>
+                                    @error('side_note')
+                                        <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-bar">
+                            <a href="{{ route('caseorder.create') }}" class="btn btn-light">
+                                <i class="fas fa-times"></i> বাতিল
+                            </a>
+                            <button type="submit" class="btn btn-primary" style="font-weight:700;">
+                                <i class="fas fa-save"></i> সংরক্ষণ করুন
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {{-- Previous History timeline --}}
+            @if ($caseOrders->count() > 0)
+                <div class="co-card">
+                    <div class="co-card-header">
+                        <h3 class="co-card-title"><i class="fas fa-history"></i> পূর্ববর্তী শুনানির ইতিহাস</h3>
+                        <span class="badge badge-secondary px-3 py-2">মোট: {{ $caseOrders->count() }}</span>
+                    </div>
+                    <div class="co-card-body">
+                        <div class="timeline">
+                            @foreach ($caseOrders as $order)
+                                <div class="timeline-item">
+                                    <div class="timeline-dot">{{ sprintf('H%05d', $order->id) }}</div>
+                                    <div class="timeline-card">
+                                        <div class="timeline-header">
+                                            <div class="timeline-title">
+                                                <i class="fas fa-gavel" style="color:#1e40af;"></i>
+                                                শুনানি নং: {{ sprintf('H%05d', $order->id) }}
+                                                <span class="status-pill {{ $order->status_class }}">{{ $order->status_label }}</span>
+                                            </div>
+                                            <div class="action-row" style="display: flex; gap: 8px; align-items: center;">
+                                                <span class="timeline-meta">
+                                                    {{ $order->created_at ? $order->created_at->format('d/m/Y H:i') : '' }}
+                                                </span>
+                                                @if($order->command_type == 'yes')
+                                                    <a href="{{ route('caseorder.printOrder', $order->id) }}" target="_blank" class="action-btn ml-2" style="background:#3b82f6; color:#fff; display: inline-flex; align-items: center; justify-content: center; padding: 5px 12px; border-radius: 7px; font-size: 12px; font-weight: 600; text-decoration: none; gap: 4px;">
+                                                        <i class="fas fa-print"></i> আদেশপত্র প্রিন্ট
+                                                    </a>
+                                                @endif
+                                                <a href="{{ route('caseorder.printNotice', $order->id) }}" target="_blank" class="action-btn ml-2" style="background:#10b981; color:#fff; display: inline-flex; align-items: center; justify-content: center; padding: 5px 12px; border-radius: 7px; font-size: 12px; font-weight: 600; text-decoration: none; gap: 4px;">
+                                                    <i class="fas fa-print"></i> কেস অর্ডার বিবরণ (নোটিশ প্রিন্ট)
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="timeline-grid">
+                                            <div class="tg-item">
+                                                <label>পরবর্তী শুনানি</label>
+                                                <span>{{ $order->next_hearing_date ? $order->next_hearing_date->format('d/m/Y') : '—' }}</span>
+                                            </div>
+                                            <div class="tg-item">
+                                                <label>সময়</label>
+                                                <span>{{ $order->next_hearing_time ?? '—' }}</span>
+                                            </div>
+                                            <div class="tg-item">
+                                                <label>Command</label>
+                                                <span>{{ $order->command_type_label ?? '—' }}</span>
+                                            </div>
+                                            @if ($order->memorial_no)
+                                                <div class="tg-item">
+                                                    <label>স্মারক নম্বর</label>
+                                                    <span>{{ $order->memorial_no }}</span>
+                                                </div>
+                                            @endif
+                                            @if ($order->command_start_date)
+                                                <div class="tg-item">
+                                                    <label>আদেশের শুরুর তারিখ</label>
+                                                    <span>{{ $order->command_start_date->format('d/m/Y') }}</span>
+                                                </div>
+                                            @endif
+                                            @if ($order->command_till_date)
+                                                <div class="tg-item">
+                                                    <label>আদেশের মেয়াদকালীন তারিখ</label>
+                                                    <span>{{ $order->command_till_date->format('d/m/Y') }}</span>
+                                                </div>
+                                            @endif
+                                            @if ($order->command_end_date)
+                                                <div class="tg-item">
+                                                    <label>আদেশের সমাপ্তির তারিখ</label>
+                                                    <span>{{ $order->command_end_date->format('d/m/Y') }}</span>
+                                                </div>
+                                            @endif
+                                            @if ($order->command_text)
+                                                <div class="tg-item" style="grid-column: span 2;">
+                                                    <label>Command Text</label>
+                                                    <span>{{ $order->command_text }}</span>
+                                                </div>
+                                            @endif
+                                            @if ($order->order_law)
+                                                <div class="tg-item" style="grid-column: span 2;">
+                                                    <label>Order Law</label>
+                                                    <span>{{ $order->order_law }}</span>
+                                                </div>
+                                            @endif
+                                            @if ($order->form_number)
+                                                <div class="tg-item" style="grid-column: span 2;">
+                                                    <label>Form Number</label>
+                                                    <span>{{ $order->form_number }}</span>
+                                                </div>
+                                            @endif
+                                            @if ($order->side_note)
+                                                <div class="tg-item" style="grid-column: span 2;">
+                                                    <label>Side Note</label>
+                                                    <span>{{ $order->side_note }}</span>
+                                                </div>
+                                            @endif
+                                            @if (!empty($order->files))
+                                                <div class="tg-item" style="grid-column: span 2;">
+                                                    <label>সংযুক্ত নথিপত্র</label>
+                                                    <div class="attachment-list" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px;">
+                                                        @foreach ($order->files as $file)
+                                                            @php
+                                                                $filePath = is_array($file) ? $file['path'] ?? '' : $file;
+                                                                $fileName = is_array($file) ? $file['name'] ?? basename($filePath) : basename($filePath);
+                                                            @endphp
+                                                            @if ($filePath)
+                                                                <div class="attachment-chip" style="display: inline-flex; align-items: center; gap: 6px; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 999px; padding: 4px 10px; font-size: 12px;">
+                                                                    <i class="fas fa-file-alt" style="color: #1e40af;"></i>
+                                                                    <a href="{{ asset($filePath) }}" target="_blank" style="color: #1e293b; text-decoration: none; font-weight: 600;">
+                                                                        {{ $fileName }}
+                                                                    </a>
+                                                                </div>
+                                                            @endif
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            @endif
+                                            @if ($order->creator)
+                                                <div class="tg-item" style="grid-column: span 2;">
+                                                    <label>সাবমিট করেছেন</label>
+                                                    <span>
+                                                        {{ $order->creator->name }}
+                                                        @if ($order->creator->department || $order->creator->section)
+                                                            ({{ $order->creator->department->name ?? '' }}
+                                                            @if ($order->creator->section)
+                                                                - {{ $order->creator->section->name ?? '' }}
+                                                            @endif)
+                                                        @endif
+                                                    </span>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+        </div>
+    </section>
+@endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        function toggleCommandFields() {
+            var val = $('select[name="command_type"]').val();
+            if (val === 'yes') {
+                $('.command-field').slideDown();
+            } else {
+                $('.command-field').slideUp();
+            }
+        }
+
+        $('select[name="command_type"]').on('change', function() {
+            toggleCommandFields();
+        });
+
+        // Initialize on load
+        toggleCommandFields();
+    });
+</script>
+@endpush
