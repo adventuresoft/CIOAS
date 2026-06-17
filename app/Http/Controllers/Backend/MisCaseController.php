@@ -269,7 +269,7 @@ class MisCaseController extends Controller
         $miscase->case_type = $request->input('case_type');
         $miscase->case_category = $request->input('case_category');
         $miscase->case_fee = $request->input('case_fee') ?: 0;
-        $miscase->case_reason = $request->input('case_reason') ?: 0;
+        $miscase->case_reason = $request->input('case_reason');
         $miscase->case_details = $request->input('case_details');
         $miscase->rejection_reason = $request->input('rejection_reason');
         $miscase->next_hearing_date = $request->input('next_hearing_date');

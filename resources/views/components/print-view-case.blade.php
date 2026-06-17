@@ -16,7 +16,7 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         border-radius: 8px;
         position: relative;
-        font-family: 'Source Sans Pro', 'Kalpurush', sans-serif;
+         font-family: 'Inter', 'Open Sans', 'Segoe UI', 'Helvetica Neue','Kalpurush', Arial, sans-serif !important;
     }
 
     .pad-header {

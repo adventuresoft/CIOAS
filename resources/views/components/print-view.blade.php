@@ -14,10 +14,10 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         border-radius: 8px;
         position: relative;
-        font-family: 'Source Sans Pro', 'Inter', sans-serif;
+        font-family: 'Inter', 'Open Sans', 'Segoe UI', 'Helvetica Neue', Arial, 'kalpurush', 'Kalpurush', sans-serif !important;
     }
 
-    .pad-header {
+    .pad-header {   
         display: flex;
         justify-content: space-between;
         align-items: center;

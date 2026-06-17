@@ -134,5 +134,5 @@
                 @endif
             </div>
         </div>
-        </x-print-view>
+        </x-print-view-case>
 @endsection
