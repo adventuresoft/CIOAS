@@ -62,7 +62,7 @@
                     <h1>জেলা ম্যাজিস্ট্রেট কর্তৃক আবেদনকারীর সাক্ষাৎকার গ্রহণের ফরম</h1>
                 </div>
                 <div class="col-sm-6 text-right">
-                    <a href="{{ route('gun-license.person.index') }}" class="btn btn-default">ফিরে যান</a>
+                    <a href="{{ route('gun-license.index') }}" class="btn btn-default">ফিরে যান</a>
                 </div>
             </div>
         </div>

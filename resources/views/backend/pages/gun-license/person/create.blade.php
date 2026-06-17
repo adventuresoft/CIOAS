@@ -62,7 +62,7 @@
                 <h1>Create Person Gun License</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="{{ route('gun-license.person.index') }}" class="btn btn-default">Back</a>
+                <a href="{{ route('gun-license.index') }}" class="btn btn-default">Back</a>
             </div>
         </div>
     </div>

@@ -76,7 +76,7 @@
                 <h1>পুলিশ ভেরিফিকেশন ফর্ম</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="{{ route('gun-license.person.index') }}" class="btn btn-default">ফিরে যান</a>
+                <a href="{{ route('gun-license.index') }}" class="btn btn-default">ফিরে যান</a>
             </div>
         </div>
     </div>

@@ -62,7 +62,7 @@
                 <h1>ব্যাংক/আর্থিক প্রতিষ্ঠানের ক্ষেত্রে আগ্নেয়াস্ত্রের আবেদনপত্র</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="{{ route('gun-license.other-org.index') }}" class="btn btn-default">ফিরে যান</a>
+                <a href="{{ route('gun-license.index') }}" class="btn btn-default">ফিরে যান</a>
             </div>
         </div>
     </div>

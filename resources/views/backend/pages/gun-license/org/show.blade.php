@@ -46,7 +46,7 @@
                     <h1>Organization Application Details</h1>
                 </div>
                 <div class="col-sm-6 text-right">
-                    <a href="{{ route('gun-license.org.index') }}" class="btn btn-default"><i class="fas fa-arrow-left"></i>
+                    <a href="{{ route('gun-license.index') }}" class="btn btn-default"><i class="fas fa-arrow-left"></i>
                         Back to List</a>
                 </div>
             </div>
