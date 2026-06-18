@@ -5,18 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Mouza extends Model
+class Upazila extends Model
 {
     use HasFactory;
 
     public static $snakeAttributes = false;
-    protected $table = 'mouzas';
-    protected $fillable = ['name', 'bn_name', 'url', 'status', 'upazila_id', 'district_id', 'record', 'code', 'order'];
-
-    public function upazila()
-    {
-        return $this->belongsTo(Upazila::class, 'upazila_id', 'id');
-    }
+    protected $table = 'upazilas';
+    protected $fillable = ['name', 'bn_name', 'code', 'status', 'district_id'];
 
     public function district()
     {

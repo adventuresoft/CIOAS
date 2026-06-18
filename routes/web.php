@@ -51,6 +51,10 @@ use App\Http\Controllers\BasicSettings\VehicleSubCategoryController;
 use App\Http\Controllers\BasicSettings\VehicleTypeController;
 use App\Http\Controllers\BasicSettings\VillageAreaController;
 use App\Http\Controllers\BasicSettings\VillageController;
+use App\Http\Controllers\BasicSettings\DistrictController as BasicDistrictController;
+use App\Http\Controllers\BasicSettings\ThanaController as BasicThanaController;
+use App\Http\Controllers\BasicSettings\MouzaController as BasicMouzaController;
+use App\Http\Controllers\BasicSettings\UpazilaController as BasicUpazilaController;
 use App\Http\Controllers\BasicSettings\LicenseTypeController;
 use App\Http\Controllers\UnionController as BasicUnionController;
 use App\Http\Controllers\BridgeController;
@@ -127,6 +131,7 @@ use App\Http\Controllers\Tax\TaxController;
 use App\Http\Controllers\Tax\TaxRateController;
 use App\Http\Controllers\Tax\TaxYearController;
 use App\Http\Controllers\ThanaController;
+use App\Http\Controllers\UpazilaController;
 use App\Http\Controllers\UnionController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\ChairmanController;
@@ -254,6 +259,7 @@ Route::post('/backend/load-project-type-content', [ProjectTypeController::class,
 // Find Dependencies
 Route::get('/get-districts-by-division/{divisionID}', [DistrictController::class, 'districtsByDivision']);
 Route::get('/get-thanas-by-district/{districtID}', [ThanaController::class, 'thanasByDistrict']);
+Route::get('/get-upazilas-by-district/{districtID}', [UpazilaController::class, 'upazilasByDistrict']);
 Route::get('/get-pourashava-by-district/{districtID}', [PourashavaController::class, 'pourashavaByDistrict']);
 Route::get('/get-postOffice-by-thana/{thanaID}', [PostOfficeController::class, 'postOfficeByThana']);
 Route::get('/get-word-by-union/{unionID}', [UnionWardController::class, 'wordByUnion']);
@@ -419,6 +425,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::prefix('basic-settings')->name('basic-settings.')->group(function () {
         Route::resource('village-area', VillageAreaController::class);
         Route::resource('village', VillageController::class);
+        Route::resource('district', BasicDistrictController::class);
+        Route::resource('thana', BasicThanaController::class);
+        Route::resource('mouza', BasicMouzaController::class);
+        Route::resource('upazila', BasicUpazilaController::class);
         Route::resource('union', BasicUnionController::class);
         Route::resource('union-ward', UnionWardController::class);
         Route::resource('reserve-ward', ReserveWardController::class);

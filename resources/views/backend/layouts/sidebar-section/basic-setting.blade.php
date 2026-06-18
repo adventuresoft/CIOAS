@@ -39,6 +39,10 @@
                 $subMenu == 'VillageArea' ||
                 $subMenu == 'Union' ||
                 $subMenu == 'LicenseType' ||
+                $subMenu == 'District' ||
+                $subMenu == 'Thana' ||
+                $subMenu == 'Mouza' ||
+                $subMenu == 'Upazila' ||
                 $subMenu == 'Year') menu-open @endif
         ">
     <a href="#" class="nav-link {{ $mainMenu == 'Basic' ? 'active' : '' }}">
@@ -405,6 +409,46 @@
                 class="nav-link {{ $subMenu == 'Village' ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Village</p>
+            </a>
+        </li>
+        @endif
+
+        @if (has_module_access('district'))
+        <li class="nav-item">
+            <a href="{{ route('basic-settings.district.index') }}"
+                class="nav-link {{ $subMenu == 'District' ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>District</p>
+            </a>
+        </li>
+        @endif
+
+        @if (has_module_access('thana'))
+        <li class="nav-item">
+            <a href="{{ route('basic-settings.thana.index') }}"
+                class="nav-link {{ $subMenu == 'Thana' ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Thana</p>
+            </a>
+        </li>
+        @endif
+
+        @if (has_module_access('mouza'))
+        <li class="nav-item">
+            <a href="{{ route('basic-settings.mouza.index') }}"
+                class="nav-link {{ $subMenu == 'Mouza' ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Mouza</p>
+            </a>
+        </li>
+        @endif
+
+        @if (has_module_access('upazila'))
+        <li class="nav-item">
+            <a href="{{ route('basic-settings.upazila.index') }}"
+                class="nav-link {{ $subMenu == 'Upazila' ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Upazila/Circle</p>
             </a>
         </li>
         @endif
