@@ -24,6 +24,10 @@
                         <td>{{ $upazila->district->name ?? '' }}</td>
                     </tr>
                     <tr>
+                        <th>Record</th>
+                        <td>{{ $upazila->record }}</td>
+                    </tr>
+                    <tr>
                         <th>Code</th>
                         <td>{{ $upazila->code }}</td>
                     </tr>

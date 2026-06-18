@@ -11,7 +11,11 @@ class UpazilaController extends Controller
     {
         $html = '<option value="">Select ' . ($request->id ? ucfirst($request->id) : '') . ' Upazila/Circle</option>';
 
-        $upazilas = Upazila::where('district_id', $id)->get();
+        $query = Upazila::where('district_id', $id);
+        if ($request->has('record') && $request->record !== '') {
+            $query->where('record', $request->record);
+        }
+        $upazilas = $query->get();
 
         if (count($upazilas)) {
             foreach ($upazilas as $upazila) {

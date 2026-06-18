@@ -40,6 +40,21 @@
                             <div class="card-body">
 
                                 <div class="form-group row">
+                                    <label for="record" class="col-sm-2 col-form-label">Record <span
+                                            class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select required class="form-control select2" name="record" id="record">
+                                            <option value="">Select Record</option>
+                                            <option value="CS">CS</option>
+                                            <option value="SA">SA</option>
+                                            <option value="RS">RS</option>
+                                            <option value="City/BRS">City/BRS</option>
+                                        </select>
+                                        <small class="text-danger error record_error"></small>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label for="district_id" class="col-sm-2 col-form-label">District <span
                                             class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
                                     <div class="col-sm-9">
@@ -63,21 +78,6 @@
                                             <option value="">Select Upazila/Circle</option>
                                         </select>
                                         <small class="text-danger error upazila_id_error"></small>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="record" class="col-sm-2 col-form-label">Record <span
-                                            class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="record" id="record">
-                                            <option value="">Select Record</option>
-                                            <option value="CS">CS</option>
-                                            <option value="SA">SA</option>
-                                            <option value="RS">RS</option>
-                                            <option value="City/BRS">City/BRS</option>
-                                        </select>
-                                        <small class="text-danger error record_error"></small>
                                     </div>
                                 </div>
 
@@ -158,14 +158,15 @@
         $(document).ready(function() {
             $(".select2").select2();
             
-            // Dynamic upazilas loading based on district select
-            $(document).on('change', '#district_id', function(e) {
-                e.preventDefault();
-                let districtID = $(this).val();
-                if (districtID) {
+            // Dynamic upazilas loading based on district and record select
+            function loadUpazilas() {
+                let districtID = $('#district_id').val();
+                let recordVal = $('#record').val();
+                
+                if (districtID && recordVal) {
                     $.ajax({
                         type: "GET",
-                        url: "{{ url('/get-upazilas-by-district') }}/" + districtID,
+                        url: "{{ url('/get-upazilas-by-district') }}/" + districtID + "?record=" + encodeURIComponent(recordVal),
                         beforeSend: function() {
                             console.log("Loading upazilas");
                         },
@@ -179,6 +180,11 @@
                 } else {
                     $("#upazila_id").html('<option value="">Select Upazila/Circle</option>');
                 }
+            }
+
+            $(document).on('change', '#district_id, #record', function(e) {
+                e.preventDefault();
+                loadUpazilas();
             });
 
             $("#mouzaForm").on('submit', function(e) {

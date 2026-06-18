@@ -51,6 +51,7 @@ class UpazilaController extends Controller
                 'bn_name'     => 'required|max:255',
                 'district_id' => 'required|exists:districts,id',
                 'code'        => 'nullable|max:255',
+                'record'      => 'nullable|in:CS,SA,RS,City/BRS',
                 'status'      => 'required|in:0,1',
             ]);
 
@@ -66,6 +67,7 @@ class UpazilaController extends Controller
             $upazila->bn_name     = $request->bn_name;
             $upazila->district_id = $request->district_id;
             $upazila->code        = $request->code;
+            $upazila->record      = $request->record;
             $upazila->status      = $request->status;
             
             $upazila->save();
@@ -122,6 +124,7 @@ class UpazilaController extends Controller
                 'bn_name'     => 'required|max:255',
                 'district_id' => 'required|exists:districts,id',
                 'code'        => 'nullable|max:255',
+                'record'      => 'nullable|in:CS,SA,RS,City/BRS',
                 'status'      => 'required|in:0,1',
             ]);
 
@@ -139,6 +142,7 @@ class UpazilaController extends Controller
                 $upazila->bn_name     = $request->bn_name;
                 $upazila->district_id = $request->district_id;
                 $upazila->code        = $request->code;
+                $upazila->record      = $request->record;
                 $upazila->status      = $request->status;
 
                 if ($upazila->save()) {

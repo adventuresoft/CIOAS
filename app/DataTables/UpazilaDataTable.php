@@ -63,6 +63,7 @@ class UpazilaDataTable extends DataTable
             Column::make('name')->title('Upazila Name'),
             Column::make('bn_name')->title('Bengali Name'),
             Column::make('district')->title('District')->name('district.name'),
+            Column::make('record')->title('Record'),
             Column::make('code')->title('Code'),
             Column::make('status')->title('Status')->addClass('text-center'),
             Column::computed('action')

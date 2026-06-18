@@ -11,7 +11,7 @@ class Upazila extends Model
 
     public static $snakeAttributes = false;
     protected $table = 'upazilas';
-    protected $fillable = ['name', 'bn_name', 'code', 'status', 'district_id'];
+    protected $fillable = ['name', 'bn_name', 'code', 'status', 'district_id', 'record'];
 
     public function district()
     {
