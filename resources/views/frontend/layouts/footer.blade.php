@@ -3,7 +3,7 @@
         <!-- Left side -->
         <p class="mb-2 md:mb-0">
             © 2024 All rights reserved by
-            <span class="font-medium">UPMS</span>
+            <span class="font-medium">CIOAS</span>
         </p>
 
         <!-- Right side -->

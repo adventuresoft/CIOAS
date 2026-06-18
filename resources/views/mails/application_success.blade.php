@@ -14,6 +14,6 @@
 
     <span>--</span>
     <p>Regards</p>
-    <p>Website: <a href="{{route('home')}}"> UPMS</a>  </p>
+    <p>Website: <a href="{{route('home')}}"> CIOAS</a>  </p>
 </body>
 </html>

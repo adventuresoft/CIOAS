@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>UPMS | {{$title  ?? ''}}</title>
+    <title>CIOAS | {{$title  ?? ''}}</title>
 
     <!-- Google Fonts: Inter, Open Sans, Source Sans Pro -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
