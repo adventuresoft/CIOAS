@@ -320,6 +320,7 @@
                                 </div>
                             </div>
 
+                            <div id="routeAllocationSection" style="display: none;">
                             <hr>
                             <h5 class="text-info mb-3"><i class="fas fa-route"></i> Allocate to Route</h5>
                             <div class="vehicle-info-layout">
@@ -344,6 +345,7 @@
                                     </table>
                                     <button type="button" class="btn btn-success btn-sm mt-2" id="addRouteBtn"><i class="fas fa-plus"></i> Add More Route</button>
                                 </div>
+                            </div>
                             </div>
 
 
@@ -423,6 +425,15 @@ $(document).ready(function () {
         const selectedType = $(this).val();
         const categories = selectedType ? vehicleData[selectedType] : [];
         populateSelect($category, categories, "Select Vehicle Category");
+    });
+
+    // Toggle Route Allocation Section based on vehicle type
+    $type.on("change", function () {
+        if ($(this).val() === "Heavy Passenger Vehicle") {
+            $("#routeAllocationSection").slideDown();
+        } else {
+            $("#routeAllocationSection").slideUp();
+        }
     });
 
 

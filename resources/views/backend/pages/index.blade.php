@@ -113,6 +113,65 @@
                 <!-- ./col -->
 
 
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{$vehicles}}</h3>
+                            <p>Total Vehicle</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <a class="link-light small-box-footer" href="{{route('vehicle.index')}}">View All Vehicles</a>
+                    </div>
+                </div>
+                <!-- ./col -->
+
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3>{{$mis_cases}}</h3>
+                            <p>Total Mis case</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-folder-open"></i>
+                        </div>
+                        <a class="link-light small-box-footer" href="{{route('miscase.index')}}">View All Mis Cases</a>
+                    </div>
+                </div>
+                <!-- ./col -->
+
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3>{{$case_orders}}</h3>
+                            <p>Total Case Order</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-gavel"></i>
+                        </div>
+                        <a class="link-light small-box-footer" href="{{route('caseorder.index')}}">View All Case Orders</a>
+                    </div>
+                </div>
+                <!-- ./col -->
+
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-primary">
+                        <div class="inner">
+                            <h3>{{$gun_licenses}}</h3>
+                            <p>Total Gun License</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-crosshairs"></i>
+                        </div>
+                        <a class="link-light small-box-footer" href="{{route('gun-license.index')}}">View All Gun Licenses</a>
+                    </div>
+                </div>
+                <!-- ./col -->
 
             </div>
             <!-- /.row -->

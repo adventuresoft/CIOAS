@@ -7,7 +7,7 @@
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="{{ route('home') }}" class="h1"><b>UPMS</b></a>
+                <a href="{{ route('home') }}" class="h1"><b>CIOAS</b></a>
             </div>
             <div class="card-body">
                 <form id="registerForm" method="post">

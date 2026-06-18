@@ -21,6 +21,10 @@ class DashboardController extends Controller
         $data['hotel_restaurants'] = HotelRestaurant::count();
         $data['inquiries'] = Inquiry::count();
         $data['letters'] = ApplicationFrom::count();
+        $data['vehicles'] = \App\Models\Vehicle::count();
+        $data['case_orders'] = \App\Models\CaseOrder::count();
+        $data['mis_cases'] = \App\Models\MisCase::count();
+        $data['gun_licenses'] = \App\Models\PersonGunApplication::count() + \App\Models\OrgGunApplication::count() + \App\Models\OtherOrgGunApplication::count();
         
         // return response()->json($data, 200);
         return view('backend.pages.index', $data);

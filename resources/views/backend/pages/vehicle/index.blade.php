@@ -67,17 +67,7 @@
                                     <input type="text" id="search_type" class="form-control form-control-sm" placeholder="Vehicle Type">
                                 </div>
 
-                                <div class="col-md-2">
-                                    <input type="text" id="search_owner" class="form-control form-control-sm" placeholder="Owner ID/Name">
-                                </div>
 
-                                <div class="col-md-2">
-                                    <select id="search_ownership" class="form-control form-control-sm">
-                                        <option value="">All Ownership</option>
-                                        <option value="Personal">Personal</option>
-                                        <option value="Institutional">Institutional</option>
-                                    </select>
-                                </div>
 
                                 <div class="col-md-3">
                                     <input type="text" id="search_global" class="form-control form-control-sm" placeholder="Search">
@@ -93,7 +83,7 @@
                                     <th>Type</th>
                                     <th>Category</th>
                                     <th>Model</th>
-                                    <th>Owner Id & Name</th>
+
                                     <th>Action</th>
                                 </tr>
                               </thead>
@@ -107,16 +97,7 @@
                                             <td>{{ $vehicle->vehicle_type ?? '--' }}</td>
                                             <td>{{ $vehicle->vehicle_category ?? '--' }}</td>
                                             <td>{{ $vehicle->make_company ?? '--' }}{{ $vehicle->make_year ? ' (' . $vehicle->make_year . ')' : '' }}</td>
-                                            <td>
-                                                {{ $vehicle->owner_id ?? '--' }}
-                                                @php
-                                                    $ownerDisplayName = $vehicle->ownership_type === 'institutional'
-                                                        ? ($vehicle->institutional_name ?? $vehicle->owner_name)
-                                                        : $vehicle->owner_name;
-                                                @endphp
-                                                {{ $ownerDisplayName ? ' - ' . $ownerDisplayName : '' }}
-                                                <span class="d-none ownership-token">{{ ucfirst($vehicle->ownership_type ?? '') }}</span>
-                                            </td>
+
                                             <td>
                                                 <div class="table-action">
                                                     <a class="btn btn-sm btn-primary" href="{{ route('vehicle.edit', $vehicle->id) }}" title="Edit">
@@ -169,13 +150,7 @@
             table.column(2).search(this.value).draw();
         });
 
-        $('#search_owner').keyup(function() {
-            table.column(5).search(this.value).draw();
-        });
 
-        $('#search_ownership').change(function() {
-            table.column(5).search(this.value).draw();
-        });
 
         $('#search_global').keyup(function() {
             table.search(this.value).draw();

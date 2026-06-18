@@ -217,7 +217,7 @@
 
         <!-- Preloader -->
         {{-- <div class="preloader flex-column justify-content-center align-items-center"> --}}
-        {{-- <h3 class="animation__shake"><i class="fas fa-tachometer-alt"></i>UPMS</h3> --}}
+        {{-- <h3 class="animation__shake"><i class="fas fa-tachometer-alt"></i>CIOAS</h3> --}}
         {{-- <img class="animation__shake" src="{{ asset('backend')}}/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60"> --}}
         {{-- </div> --}}
 
