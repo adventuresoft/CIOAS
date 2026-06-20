@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\HotelRestaurant\HotelCategory;
 use App\Models\HotelRestaurant\HotelRestaurantOwnership;
-use App\Models\BasicSettings\OrganizationOwnershipType;
 use App\Models\BasicSettings\Village;
 use App\Models\Institute;
 use App\Models\District;
@@ -17,7 +16,6 @@ use App\Models\HotelRestaurant\HotelRestaurant;
 use App\Models\OwnerShipType;
 use App\Models\Organization\OrganizationOwnership;
 use App\Models\People\AddressInfo;
-use App\Models\UnionWard;
 use App\Models\Union;
 use App\Models\CityCorporation;
 use App\Models\Pourashava;
@@ -40,6 +38,8 @@ class HotelRestaurantController extends Controller
     public function index(Request $request)
     {
         // Return view for regular page load
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('backend.pages.hotel-restaurant.index');
     }
 
@@ -162,8 +162,8 @@ class HotelRestaurantController extends Controller
         // Load all lookup data for the form
         $data['types']           = OwnerShipType::where('status', true)->latest()->get();
         $data['categories']      = HotelCategory::where('status', true)->latest()->get();
-        $data['ownership_types'] = OrganizationOwnershipType::where('status', true)->latest()->get();
-        $data['wards']           = UnionWard::where('status', true)->get();
+
+
         $data['divisions']       = Division::where('status', true)->get();
         $data['post_officeses']  = PostOffice::latest()->get();
 
@@ -171,6 +171,8 @@ class HotelRestaurantController extends Controller
         $institute        = Institute::find(Auth::user()->institute_id);
         $data['villages'] = $institute ? Village::where('union_id', $institute->union_id)->get() : [];
 
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('backend.pages.hotel-restaurant.create', $data);
     }
 
@@ -373,6 +375,8 @@ class HotelRestaurantController extends Controller
 
 
 
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('backend.pages.hotel-restaurant.show', $data);
     }
 
@@ -395,8 +399,8 @@ class HotelRestaurantController extends Controller
         // Load all lookup data for the edit form
         $data['types']           = OwnerShipType::where('status', true)->latest()->get();
         $data['categories']      = HotelCategory::where('status', true)->latest()->get();
-        $data['ownership_types'] = OrganizationOwnershipType::where('status', true)->latest()->get();
-        $data['wards']           = UnionWard::where('status', true)->get();
+
+
         $data['divisions']       = Division::where('status', true)->get();
 
         // Load districts and thanas for primary address
@@ -489,6 +493,8 @@ class HotelRestaurantController extends Controller
 
         $institute = Institute::find(Auth::user()->institute_id);
 
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('backend.pages.hotel-restaurant.edit', $data);
     }
 

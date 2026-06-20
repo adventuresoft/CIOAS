@@ -13,7 +13,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         {{-- {{route('death.index')}} --}}
-                        <li class="breadcrumb-item"><a href="">Hotel Subcategory</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.hotel-subcategory.index', $subcategory->hotel_category_id) }}">Hotel Subcategory</a></li>
                         <li class="breadcrumb-item active">Create</li>
                     </ol>
                 </div>
@@ -40,25 +40,7 @@
                             @csrf
                             @method('put')
                             <div class="card-body">
-                                <div class="form-group row">
-                                    <label for="family_category_id" class="col-sm-2 col-form-label">Hotel Category <span
-                                            class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="hotel_category_id"
-                                            id="family_category_id">
-                                            <option value="">Hotel Category</option>
-                                            @if ($categories)
-                                                @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}"
-                                                        @if ($category->id == $subcategory->hotel_category_id) selected @endif>
-                                                        {{ $category->en_name }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        <small class="text-danger error family_category_id_error"></small>
-
-                                    </div>
-                                </div>
+                                <input type="hidden" name="hotel_category_id" value="{{ $subcategory->hotel_category_id }}">
                                 <div class="form-group row">
                                     <label for="en_name" class="col-sm-2 col-form-label">Subcategory <span
                                             class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
@@ -85,8 +67,7 @@
                             <!-- /.card-body -->
                             <div class="card-footer">
                                 <div class="form-group row">
-                                    {{-- {{route('death.index')}} --}}
-                                    <a href="{{ route('basic-settings.family-subcategory.index') }}"
+                                    <a href="{{ route('basic-settings.hotel-subcategory.index', $subcategory->hotel_category_id) }}"
                                         class="btn btn-default float-right">Cancel</a>
                                     <div class="col-sm-9">
                                         <button type="submit" class="btn btn-info">Update</button>
@@ -130,7 +111,7 @@
                         toastr.success(response.message);
                         setTimeout(function() {
                             location.href =
-                                "{{ route('basic-settings.hotel-subcategory.index') }}";
+                                "{{ route('basic-settings.hotel-subcategory.index', $subcategory->hotel_category_id) }}";
                         }, 2000)
                     },
                     error: function(xhr, status, error) {
@@ -146,3 +127,4 @@
         })
     </script>
 @endpush
+

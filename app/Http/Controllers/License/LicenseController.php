@@ -15,7 +15,6 @@ use App\Models\PostOffice;
 use App\Models\Pourashava;
 use App\Models\Thana;
 use App\Models\Union;
-use App\Models\UnionWard;
 use App\Models\BasicSettings\Village;
 use App\Traits\FileUploadTrait;
 use Carbon\Carbon;
@@ -41,12 +40,16 @@ class LicenseController extends Controller
     {
 
         $licenses = License::with('category', 'subcategory')->latest()->get();
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('backend.pages.license.index', compact('licenses'));
     }
 
     public function create()
     {
         $data = $this->formData();
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('backend.pages.license.create', $data);
     }
 
@@ -214,6 +217,8 @@ class LicenseController extends Controller
     public function show($id)
     {
         $license = License::with('category', 'subcategory', 'type')->findOrFail($id);
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('backend.pages.license.show', compact('license'));
     }
 
@@ -223,6 +228,8 @@ class LicenseController extends Controller
         $data = $this->formData($license);
         $data['license'] = $license;
 
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('backend.pages.license.edit', $data);
     }
 
@@ -260,7 +267,6 @@ class LicenseController extends Controller
     {
         $data['types'] = OwnerShipType::where('status', true)->latest()->get();
         $data['categories'] = LicenseCategory::where('status', true)->latest()->get();
-        $data['wards'] = UnionWard::where('status', true)->get();
         $data['divisions'] = Division::where('status', true)->get();
         $data['post_officeses'] = PostOffice::latest()->get();
 

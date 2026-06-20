@@ -13,7 +13,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         {{-- {{route('death.index')}} --}}
-                        <li class="breadcrumb-item"><a href="">Hotel Subcategory</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.hotel-subcategory.index', $category_id) }}">Hotel Subcategory</a></li>
                         <li class="breadcrumb-item active">View</li>
                     </ol>
                 </div>
@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="col-md-6 text-right">
                                     {{-- {{route('death.create')}} --}}
-                                    <a href="{{ route('basic-settings.hotel-subcategory.create') }}"
+                                    <a href="{{ route('basic-settings.hotel-subcategory.create', $category_id) }}"
                                         class="btn btn-primary">Create</a>
                                 </div>
 
@@ -150,7 +150,7 @@
                                         toastr.success(response.message);
                                         setTimeout(function() {
                                             location.href =
-                                                "{{ route('basic-settings.hotel-subcategory.index') }}";
+                                                "{{ route('basic-settings.hotel-subcategory.index', $category_id) }}";
                                         }, 2000)
                                     },
                                     error: function(xhr, status, error) {
@@ -181,3 +181,4 @@
         });
     </script>
 @endpush
+

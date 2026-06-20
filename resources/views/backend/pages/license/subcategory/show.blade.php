@@ -9,9 +9,10 @@
                 <p><strong>Category:</strong> {{ $subcategory->category->en_name ?? '' }}</p>
                 <p><strong>Name:</strong> {{ $subcategory->en_name }}</p>
                 <p><strong>Name Bangla:</strong> {{ $subcategory->bn_name }}</p>
-                <a href="{{ route('basic-settings.license-subcategory.index') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('basic-settings.license-subcategory.index', $subcategory->license_category_id) }}" class="btn btn-secondary">Back</a>
             </div>
         </div>
     </div>
 </section>
 @endsection
+

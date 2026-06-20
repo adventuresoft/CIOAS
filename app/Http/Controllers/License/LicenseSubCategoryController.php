@@ -10,16 +10,15 @@ use Illuminate\Support\Facades\Auth;
 
 class LicenseSubCategoryController extends Controller
 {
-    public function index()
+    public function index($category_id)
     {
-        $subcategories = LicenseSubCategory::with('category')->latest()->get();
-        return view('backend.pages.license.subcategory.index', compact('subcategories'));
+        $subcategories = LicenseSubCategory::with('category')->where('license_category_id', $category_id)->latest()->get();
+        return view('backend.pages.license.subcategory.index', compact('subcategories', 'category_id'));
     }
 
-    public function create()
+    public function create($category_id)
     {
-        $categories = LicenseCategory::where('status', true)->latest()->get();
-        return view('backend.pages.license.subcategory.create', compact('categories'));
+        return view('backend.pages.license.subcategory.create', compact('category_id'));
     }
 
     public function store(Request $request)

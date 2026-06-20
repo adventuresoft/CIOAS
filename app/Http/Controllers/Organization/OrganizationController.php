@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
 use App\Models\BasicSettings\OrganizationCategory;
-use App\Models\BasicSettings\OrganizationOwnershipType;
 use App\Models\BasicSettings\OrganizationWorkArea;
 use App\Models\BasicSettings\Village;
 use App\Models\Institute;
@@ -19,7 +18,6 @@ use App\Models\Organization\OrganizationOwnership;
 use App\Models\Road;
 use App\Models\People\AddressInfo;
 use App\Models\User;
-use App\Models\UnionWard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -161,6 +159,8 @@ class OrganizationController extends Controller
     public function index()
     {
         $data['organizations'] = Organization::with('category')->latest()->get();
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('backend.pages.organization.index', $data);
     }
 
@@ -169,8 +169,8 @@ class OrganizationController extends Controller
     {
         $data['types']           = OrganizationType::where('status', true)->latest()->get();
         $data['categories']      = OrganizationCategory::where('status', true)->latest()->get();
-        $data['ownership_types'] = OrganizationOwnershipType::where('status', true)->latest()->get();
-        $data['wards']           = UnionWard::where('status', true)->get();
+
+
         $data['roads']           = Road::where('institute_id', Auth::user()->institute_id)->get();
         $data['divisions']       = Division::where('status', true)->get();
         // dd($data['divisions']);
@@ -184,6 +184,8 @@ class OrganizationController extends Controller
             $data['villages'] = [];
         }
 
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('backend.pages.organization.create', $data);
     }
 
@@ -465,8 +467,8 @@ class OrganizationController extends Controller
             $data['areas']           = OrganizationWorkArea::where('organization_subcategory_id', $data['organization']->organization_subcategory_id)->where('status', true)->latest()->get();
             $data['types']           = OrganizationType::where('organization_category_id', $data['organization']->organization_category_id)->where('status', true)->latest()->get();
             $data['categories']      = OrganizationCategory::where('status', true)->latest()->get();
-            $data['ownership_types'] = OrganizationOwnershipType::where('status', true)->latest()->get();
-            $data['wards']           = UnionWard::where('status', true)->get();
+
+
             $data['roads']           = Road::where('institute_id', Auth::user()->institute_id)->get();
             // return response()->json($data, 200);
             $data['divisions']      = Division::where('status', true)->get();
@@ -479,7 +481,9 @@ class OrganizationController extends Controller
                 $data['villages'] = [];
             }
 
-            return view('backend.pages.organization.show', $data);
+            $data["wards"] = [];
+        $data["ownership_types"] = [];
+        return view('backend.pages.organization.show', $data);
         } else {
             return "Not found";
         }
@@ -492,8 +496,8 @@ class OrganizationController extends Controller
             $data['areas']           = OrganizationWorkArea::where('organization_subcategory_id', $data['organization']->organization_subcategory_id)->where('status', true)->latest()->get();
             $data['types']           = OrganizationType::where('organization_category_id', $data['organization']->organization_category_id)->where('status', true)->latest()->get();
             $data['categories']      = OrganizationCategory::where('status', true)->latest()->get();
-            $data['ownership_types'] = OrganizationOwnershipType::where('status', true)->latest()->get();
-            $data['wards']           = UnionWard::where('status', true)->get();
+
+
             $data['roads']           = Road::where('institute_id', Auth::user()->institute_id)->get();
             // return response()->json($data, 200);
             $data['divisions'] = Division::where('status', true)->get();
@@ -512,7 +516,9 @@ class OrganizationController extends Controller
                 $data['villages'] = [];
             }
 
-            return view('backend.pages.organization.edit', $data);
+            $data["wards"] = [];
+        $data["ownership_types"] = [];
+        return view('backend.pages.organization.edit', $data);
         } else {
             return "Not found";
         }

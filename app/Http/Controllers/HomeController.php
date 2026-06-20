@@ -13,7 +13,6 @@ use App\Models\District;
 use App\Models\Thana;
 use App\Models\PostOffice;
 use App\Models\BasicSettings\Village;
-use App\Models\UnionWard;
 use App\Models\OwnerShipType;
 use App\Models\License\LicenseCategory;
 use App\Models\License\LicenseSubCategory;
@@ -21,7 +20,6 @@ use App\Models\License\License;
 use App\Models\HotelRestaurant\HotelRestaurant;
 use App\Models\HotelRestaurant\HotelCategory;
 use App\Models\HotelRestaurant\HotelRestaurantOwnership;
-use App\Models\BasicSettings\OrganizationOwnershipType;
 use App\Models\PersonGunApplication;
 use App\Models\OrgGunApplication;
 use App\Models\OtherOrgGunApplication;
@@ -43,6 +41,8 @@ class HomeController extends Controller
         $data['total_pourashavas'] = Pourashava::count();
         $data['total_city_corporations'] = CityCorporation::count();
         
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('frontend.pages.index', $data);
     }
 
@@ -55,6 +55,8 @@ class HomeController extends Controller
         }
 
         $data['miscases'] = $query->orderBy('created_at', 'desc')->paginate(20);
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('frontend.pages.miscase_list', $data);
     }
 
@@ -85,17 +87,21 @@ class HomeController extends Controller
     {
         $data['types'] = OwnerShipType::where('status', true)->latest()->get();
         $data['categories'] = LicenseCategory::where('status', true)->latest()->get();
-        $data['wards'] = UnionWard::where('status', true)->get();
+
         $data['divisions'] = Division::where('status', true)->get();
         $data['post_officeses'] = PostOffice::latest()->get();
         $data['villages'] = Village::where('status', true)->get();
 
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('frontend.pages.license.create', $data);
     }
 
     public function licenseSuccess($application_id)
     {
         $data['application_id'] = $application_id;
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('frontend.pages.license.success', $data);
     }
 
@@ -255,18 +261,22 @@ class HomeController extends Controller
     {
         $data['types']           = OwnerShipType::where('status', true)->latest()->get();
         $data['categories']      = HotelCategory::where('status', true)->latest()->get();
-        $data['ownership_types'] = OrganizationOwnershipType::where('status', true)->latest()->get();
-        $data['wards']           = UnionWard::where('status', true)->get();
+
+
         $data['divisions']       = Division::where('status', true)->get();
         $data['post_officeses']  = PostOffice::latest()->get();
         $data['villages']        = Village::where('status', true)->get();
 
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('frontend.pages.hotel-restaurant.create', $data);
     }
 
     public function hotelRestaurantSuccess($application_id)
     {
         $data['application_id'] = $application_id;
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('frontend.pages.hotel-restaurant.success', $data);
     }
 
@@ -418,11 +428,15 @@ class HomeController extends Controller
 
     public function gunLicenseSelect()
     {
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('frontend.pages.gun-license.select-type');
     }
 
     public function personGunForm()
     {
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('frontend.pages.gun-license.person.create');
     }
 
@@ -430,6 +444,8 @@ class HomeController extends Controller
     {
         $data['application_id'] = $application_id;
         $data['title'] = 'ব্যক্তিগত আগ্নেয়াস্ত্র লাইসেন্স আবেদন সফল';
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('frontend.pages.gun-license.success', $data);
     }
 
@@ -575,6 +591,8 @@ class HomeController extends Controller
 
     public function orgGunForm()
     {
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('frontend.pages.gun-license.org.create');
     }
 
@@ -582,6 +600,8 @@ class HomeController extends Controller
     {
         $data['application_id'] = $application_id;
         $data['title'] = 'ব্যাংক/আর্থিক প্রতিষ্ঠান আগ্নেয়াস্ত্র লাইসেন্স আবেদন সফল';
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('frontend.pages.gun-license.success', $data);
     }
 
@@ -724,6 +744,8 @@ class HomeController extends Controller
 
     public function otherOrgGunForm()
     {
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('frontend.pages.gun-license.other-org.create');
     }
 
@@ -731,6 +753,8 @@ class HomeController extends Controller
     {
         $data['application_id'] = $application_id;
         $data['title'] = 'প্রতিষ্ঠান আগ্নেয়াস্ত্র লাইসেন্স আবেদন সফল';
+        $data["wards"] = [];
+        $data["ownership_types"] = [];
         return view('frontend.pages.gun-license.success', $data);
     }
 

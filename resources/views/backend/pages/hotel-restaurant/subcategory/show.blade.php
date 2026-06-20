@@ -13,7 +13,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         {{-- {{route('death.index')}} --}}
-                        <li class="breadcrumb-item"><a href="">Hotel Subcategory</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.hotel-subcategory.index', $subcategory->hotel_category_id) }}">Hotel Subcategory</a></li>
                         <li class="breadcrumb-item active">Create</li>
                     </ol>
                 </div>
@@ -85,6 +85,9 @@
                             </div>
                             <!-- /.card-body -->
 
+                            <div class="card-footer">
+                                <a href="{{ route('basic-settings.hotel-subcategory.index', $subcategory->hotel_category_id) }}" class="btn btn-default">Back</a>
+                            </div>
                             <!-- /.card-footer -->
                         </form>
                     </div>
@@ -105,3 +108,4 @@
         })
     </script>
 @endpush
+

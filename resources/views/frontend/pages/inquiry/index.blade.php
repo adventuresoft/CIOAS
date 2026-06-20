@@ -1,142 +1,202 @@
 @extends('frontend.master')
-
 @section('title', 'জিজ্ঞাসা আবেদন')
 
 @push('style')
-    <style>
-        .inquiry-form-card {
-            border-radius: 10px;
-            border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+<style>
+    /* Premium Smart Form Design System matching Bangladesh Gov Palette */
+    .gov-form-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border-top: 5px solid #006a4e;
+        overflow: hidden;
+    }
 
-        .file-upload-box {
-            border: 2px dashed #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+    .gov-header {
+        background: linear-gradient(135deg, #006a4e 0%, #00523b 100%);
+        color: #ffffff;
+        padding: 24px 30px;
+        border-bottom: 3px solid #f42a41;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
 
-        .file-upload-box:hover {
-            border-color: #0d6efd;
-            background: #f8f9fa;
-        }
+    .gov-header h2 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin: 0;
+        letter-spacing: 0.5px;
+    }
 
-        .file-upload-icon {
-            font-size: 40px;
-            color: #ffc107;
-            margin-bottom: 10px;
-        }
+    .gov-body {
+        padding: 35px;
+    }
 
-        .btn-submit-inquiry {
-            background-color: #007bff;
-            border-color: #007bff;
-            font-size: 18px;
-            font-weight: 500;
-            border-radius: 5px;
-        }
+    .gov-body label:not(.form-check-label) {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 8px;
+        display: block;
+    }
 
-        .btn-submit-inquiry:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    .gov-body .form-control {
+        border-radius: 8px !important;
+        border: 1px solid #cbd5e1 !important;
+        min-height: 44px !important;
+        font-size: 0.95rem !important;
+        color: #1e293b !important;
+        background-color: #ffffff;
+        box-shadow: none !important;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .gov-body .form-control:focus {
+        border-color: #006a4e !important;
+        box-shadow: 0 0 0 3px rgba(0, 106, 78, 0.15) !important;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 750;
+        color: #006a4e;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 8px;
+        margin-top: 35px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-title i {
+        color: #f42a41;
+    }
+
+    .btn-gov-submit {
+        background-color: #006a4e;
+        color: #ffffff;
+        font-weight: 600;
+        padding: 12px 30px;
+        border-radius: 8px;
+        border: none;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .btn-gov-submit:hover {
+        background-color: #00523b;
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(0, 82, 59, 0.2);
+    }
+
+    .btn-gov-cancel {
+        background-color: #f1f5f9;
+        color: #475569;
+        font-weight: 600;
+        padding: 12px 30px;
+        border-radius: 8px;
+        border: 1px solid #cbd5e1;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .btn-gov-cancel:hover {
+        background-color: #e2e8f0;
+        color: #1e293b;
+    }
+</style>
 @endpush
 
 @section('content')
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <div class="container">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h2 class="mb-0 d-flex align-items-center pb-3 text-2xl ">
-                            <i class="fas fa-desktop me-2"></i> জিজ্ঞাসা আবেদন
-                        </h2>
-                    </div>
-                </div>
-            </div><!-- /.container-fluid -->
-        </section>
-
-        <!-- Main content -->
-        <section class="content">
-            <div class="container">
-                <div class="card inquiry-form-card shadow-sm border-0">
-                    <div class="card-body p-4">
-
-                        @if(session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-
-                        <form action="{{ route('inquiry.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label class="form-label">জিজ্ঞাসার বিষয়: <span class="text-danger">*</span></label>
-                                    <input type="text" name="subject" class="form-control" placeholder="জিজ্ঞাসার বিষয়"
-                                        required>
-                                </div>
-                                <div class="col-md-8">
-                                    <label class="form-label">জিজ্ঞাসার বিস্তারিত:</label>
-                                    <textarea name="details" class="form-control" rows="1"
-                                        placeholder="জিজ্ঞাসার বিস্তারিত:"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label class="form-label">আবেদনকারীর নাম: <span class="text-danger">*</span></label>
-                                    <input type="text" name="applicant_name" class="form-control"
-                                        placeholder="আবেদনকারীর নাম" required>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">পিতার নাম:</label>
-                                    <input type="text" name="father_name" class="form-control" placeholder="পিতার নাম">
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">জাতীয় পরিচয়পত্র নম্বর:</label>
-                                    <input type="text" name="nid_number" class="form-control" placeholder="জাতীয় পরিচয়পত্র">
-                                </div>
-                            </div>
-
-                            <div class="row mb-4">
-                                <div class="col-md-4">
-                                    <label class="form-label">মোবাইল নম্বর: <span class="text-danger">*</span></label>
-                                    <input type="text" name="mobile_number" class="form-control" placeholder="মোবাইল"
-                                        required>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">ই-মেইল:</label>
-                                    <input type="email" name="email" class="form-control" placeholder="ই-মেইল">
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">ঠিকানা:</label>
-                                    <input type="text" name="address" class="form-control" placeholder="ঠিকানা">
-                                </div>
-                            </div>
-
-                            <div class="row mb-4">
-                                <div class="col-md-3">
-                                    <label class="form-label d-block text-center">প্রমাণ স্বরূপ কোনো ফাইল</label>
-                                    <div class="file-upload-box" onclick="document.getElementById('proof_file').click()">
-                                        <i class="fas fa-user-circle file-upload-icon text-warning"></i>
-                                        <div class="mt-2 text-muted fw-bold">ফাইল নির্বাচন করুন</div>
-                                        <input type="file" name="proof_file" id="proof_file" class="d-none">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary w-100 py-2 btn-submit-inquiry">
-                                <i class="fas fa-paper-plane me-2"></i> আবেদনটি নিশ্চিত করুন
-                            </button>
-                        </form>
-                    </div>
-                </div>
+<div class="container py-8">
+    <div class="gov-form-container">
+        <!-- Header -->
+        <div class="gov-header">
+            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white text-[#006a4e]">
+                <i class="fas fa-desktop text-2xl"></i>
             </div>
-        </section>
+            <div>
+                <h2>জিজ্ঞাসা আবেদন ফরম</h2>
+                <p class="text-xs text-green-100 mt-1">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার - কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম</p>
+            </div>
+        </div>
+
+        <!-- Form Body -->
+        <div class="gov-body">
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <form action="{{ route('inquiry.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                
+                <div class="row g-4 mb-4">
+                    <div class="col-md-4">
+                        <label for="subject">জিজ্ঞাসার বিষয় <span class="text-danger">*</span></label>
+                        <input type="text" required name="subject" placeholder="জিজ্ঞাসার বিষয়" class="form-control" id="subject">
+                    </div>
+                    <div class="col-md-8">
+                        <label for="details">জিজ্ঞাসার বিস্তারিত</label>
+                        <textarea name="details" placeholder="জিজ্ঞাসার বিস্তারিত" class="form-control" id="details" rows="1"></textarea>
+                    </div>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-md-4">
+                        <label for="applicant_name">আবেদনকারীর নাম <span class="text-danger">*</span></label>
+                        <input type="text" required name="applicant_name" placeholder="আবেদনকারীর নাম" class="form-control" id="applicant_name">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="father_name">পিতার নাম</label>
+                        <input type="text" name="father_name" placeholder="পিতার নাম" class="form-control" id="father_name">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="nid_number">জাতীয় পরিচয়পত্র নম্বর</label>
+                        <input type="text" name="nid_number" placeholder="জাতীয় পরিচয়পত্র নম্বর" class="form-control" id="nid_number">
+                    </div>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-md-4">
+                        <label for="mobile_number">মোবাইল নম্বর <span class="text-danger">*</span></label>
+                        <input type="text" required name="mobile_number" placeholder="মোবাইল নম্বর" class="form-control" id="mobile_number">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="email">ই-মেইল</label>
+                        <input type="email" name="email" placeholder="ই-মেইল" class="form-control" id="email">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="address">ঠিকানা</label>
+                        <input type="text" name="address" placeholder="ঠিকানা" class="form-control" id="address">
+                    </div>
+                </div>
+
+                <h5 class="section-title"><i class="fas fa-file-upload"></i> প্রমাণ স্বরূপ কোনো ফাইল</h5>
+                <div class="row align-items-center mb-4">
+                    <div class="col-md-12">
+                        <div class="custom-file">
+                            <input type="file" name="proof_file" class="custom-file-input" id="proof_file">
+                            <label class="custom-file-label" for="proof_file">Choose file...</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Buttons -->
+                <div class="d-flex justify-content-end gap-3 mt-5 border-t pt-4">
+                    <a href="{{ route('home') }}" class="btn btn-gov-cancel">বাতিল করুন</a>
+                    <button type="submit" class="btn btn-gov-submit">আবেদন সম্পন্ন করুন</button>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
 @endsection
+@push('script')
+<script>
+    
+</script>
+@endpush

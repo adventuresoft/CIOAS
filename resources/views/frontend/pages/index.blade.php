@@ -16,10 +16,10 @@
             </div>
 
             <div class="container mx-auto mt-12 max-w-5xl px-4">
-                <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+                <div class="flex flex-wrap justify-start gap-8">
                     
                     <!-- General License -->
-                    <article class="flex flex-col items-center p-8 bg-white rounded-xl shadow-lg border-t-4 border-[#006a4e] transition-transform hover:-translate-y-2 hover:shadow-xl">
+                    <article class="flex w-full md:w-[calc(33.333%-1.5rem)] flex-col items-center p-8 bg-white rounded-xl shadow-lg border-t-4 border-[#006a4e] transition-transform hover:-translate-y-2 hover:shadow-xl">
                         <div class="flex h-20 w-20 items-center justify-center rounded-full bg-[#e8f5e9] text-[#006a4e] mb-5">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -35,7 +35,7 @@
                     </article>
 
                     <!-- Hotel & Restaurant -->
-                    <article class="flex flex-col items-center p-8 bg-white rounded-xl shadow-lg border-t-4 border-[#006a4e] transition-transform hover:-translate-y-2 hover:shadow-xl">
+                    <article class="flex w-full md:w-[calc(33.333%-1.5rem)] flex-col items-center p-8 bg-white rounded-xl shadow-lg border-t-4 border-[#006a4e] transition-transform hover:-translate-y-2 hover:shadow-xl">
                         <div class="flex h-20 w-20 items-center justify-center rounded-full bg-[#e8f5e9] text-[#006a4e] mb-5">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -51,7 +51,7 @@
                     </article>
 
                     <!-- Gun License -->
-                    <article class="flex flex-col items-center p-8 bg-white rounded-xl shadow-lg border-t-4 border-[#006a4e] transition-transform hover:-translate-y-2 hover:shadow-xl">
+                    <article class="flex w-full md:w-[calc(33.333%-1.5rem)] flex-col items-center p-8 bg-white rounded-xl shadow-lg border-t-4 border-[#006a4e] transition-transform hover:-translate-y-2 hover:shadow-xl">
                         <div class="flex h-20 w-20 items-center justify-center rounded-full bg-[#e8f5e9] text-[#006a4e] mb-5">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
@@ -62,6 +62,22 @@
                             আগ্নেয়াস্ত্র লাইসেন্সের নতুন আবেদন বা নবায়ন।
                         </p>
                         <a href="{{ route('frontend.gun-license.select') }}" class="w-full text-center rounded-md bg-[#006a4e] px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-[#00523b] transition">
+                            আবেদন করুন
+                        </a>
+                    </article>
+
+                    <!-- Inquiry -->
+                    <article class="flex w-full md:w-[calc(33.333%-1.5rem)] flex-col items-center p-8 bg-white rounded-xl shadow-lg border-t-4 border-[#006a4e] transition-transform hover:-translate-y-2 hover:shadow-xl">
+                        <div class="flex h-20 w-20 items-center justify-center rounded-full bg-[#e8f5e9] text-[#006a4e] mb-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">জিজ্ঞাসা আবেদন</h3>
+                        <p class="text-center text-sm text-gray-600 mb-6 flex-grow">
+                            আপনার যেকোনো জিজ্ঞাসা বা অভিযোগ জানাতে আবেদন করুন।
+                        </p>
+                        <a href="{{ route('inquiry.index') }}" class="w-full text-center rounded-md bg-[#006a4e] px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-[#00523b] transition">
                             আবেদন করুন
                         </a>
                     </article>
