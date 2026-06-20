@@ -667,11 +667,11 @@
                         <i class="fas fa-home"></i>
                     </a>
                 </li>
-                <!-- <li>
-                    <a href="{{ url('/') }}">
-                        <i class="fas fa-info-circle"></i> আমাদের সম্পর্কে
+                <li>
+                    <a href="{{ route('frontend.miscase.index') }}">
+                        <i class="fas fa-gavel"></i> মিসকেস তালিকা
                     </a>
-                </li> -->
+                </li>
                 <li class="has-dropdown">
                     <a href="#">
                         <i class="fas fa-calendar-check"></i> অ্যাপয়েন্টমেন্ট
@@ -754,6 +754,9 @@
             <div class="gov-drawer-section">Navigation</div>
             <a href="{{ url('/') }}" class="gov-drawer-link">
                 <i class="fas fa-home"></i> হোম
+            </a>
+            <a href="{{ route('frontend.miscase.index') }}" class="gov-drawer-link">
+                <i class="fas fa-gavel"></i> মিসকেস তালিকা
             </a>
             <a href="{{ url('/') }}" class="gov-drawer-link">
                 <i class="fas fa-info-circle"></i> আমাদের সম্পর্কে

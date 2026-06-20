@@ -15,7 +15,7 @@ class Village extends Model
 
     public static $snakeAttributes = false;
     protected     $table           = 'villages';
-    protected     $fillable        = [ 'division_id', 'district_id', 'thana_id', 'union_id', 'en_name', 'bn_name', 'slug', 'status', 'created_by', 'updated_by' ];
+    protected     $fillable        = [ 'division_id', 'district_id', 'thana_id', 'union_id', 'city_id', 'pourashava_id', 'location_type', 'en_name', 'bn_name', 'slug', 'status', 'created_by', 'updated_by' ];
 
 
     public function division()

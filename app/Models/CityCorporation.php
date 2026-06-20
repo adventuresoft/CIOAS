@@ -9,7 +9,11 @@ class CityCorporation extends Model
 {
     use HasFactory;
 
-    public function District(){
+    public static $snakeAttributes = false;
+    protected $table = 'city_corporations';
+    protected $fillable = ['district_id', 'name', 'bn_name', 'slug', 'status'];
+
+    public function district(){
         return $this->belongsTo(District::class);
     }
 }

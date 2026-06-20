@@ -10,6 +10,8 @@ use App\Models\Institute;
 use App\Models\Road;
 use App\Models\Thana;
 use App\Models\Union;
+use App\Models\Pourashava;
+use App\Models\CityCorporation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -153,7 +155,6 @@ class VillageController extends Controller
             $village->created_by     = Auth::id();
 
             $village->save();
-            dd($village);
             $data['status']  = true;
             $data['message'] = "Village Saved Successfully!";
             return response(json_encode($data, JSON_PRETTY_PRINT), 200)->header('Content-Type', 'application/json');
@@ -191,6 +192,8 @@ class VillageController extends Controller
         $data['districts'] = District::latest()->get();
         $data['thanas']    = Thana::latest()->get();
         $data['unions']    = Union::latest()->get();
+        $data['pourashavas'] = Pourashava::latest()->get();
+        $data['cityCorporations'] = CityCorporation::latest()->get();
         return view('backend.pages.basic.village.edit', $data);
     }
 
@@ -205,12 +208,16 @@ class VillageController extends Controller
     {
         try {
             $validate = Validator::make($request->all(), [
-                'en_name'     => 'required',
-                'bn_name'     => 'required',
-                'division_id' => 'required',
-                'district_id' => 'required',
-                'thana_id'    => 'required',
-                'union_id'    => 'required',
+                'en_name'             => 'required',
+                'bn_name'             => 'required',
+                'division_id'         => 'required',
+                'district_id'         => 'required',
+                'thana_id'            => 'nullable|integer',
+                'union_id'            => 'nullable|integer',
+                'pourashava_id'       => 'nullable|integer',
+                'post_office_id'      => 'nullable|integer',
+                'city_corporation_id' => 'nullable|integer',
+                'location_type'       => 'required',
             ]);
 
             if ($validate->fails()) {
@@ -227,10 +234,14 @@ class VillageController extends Controller
                 $village->en_name = $request->en_name;
                 $village->bn_name = $request->bn_name;
 
-                $village->division_id = $request->division_id;
-                $village->district_id = $request->district_id;
-                $village->thana_id    = $request->thana_id;
-                $village->union_id    = $request->union_id;
+                $village->division_id    = $request->division_id;
+                $village->district_id    = $request->district_id;
+                $village->thana_id       = $request->thana_id;
+                $village->union_id       = $request->union_id ?? 0;
+                $village->pourashava_id  = $request->pourashava_id ?? 0;
+                $village->post_office_id = $request->post_office_id ?? 0;
+                $village->city_id        = $request->city_corporation_id ?? 0;
+                $village->location_type  = $request->location_type ?? 0;
 
                 $village->status     = $request->status ? $request->status : true;
                 $village->updated_by = Auth::id();

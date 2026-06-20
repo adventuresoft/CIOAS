@@ -2,6 +2,7 @@
 <li class="nav-item
         @if (
             $subMenu == 'CityCorporation' ||
+                $subMenu == 'Pourashava' ||
                 $subMenu == 'CityCorporationWard' ||
                 $subMenu == 'FamilyCategory' ||
                 $subMenu == 'FamilySubcategory' ||
@@ -60,6 +61,16 @@
                 class="nav-link {{ $subMenu == 'CityCorporation' ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>City Corporation</p>
+            </a>
+        </li>
+        @endif
+
+        @if (has_module_access('pourashava'))
+        <li class="nav-item">
+            <a href="{{ route('basic-settings.pourashava.index') }}"
+                class="nav-link {{ $subMenu == 'Pourashava' ? 'active' : '' }}">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Pourashava</p>
             </a>
         </li>
         @endif

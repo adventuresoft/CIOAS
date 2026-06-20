@@ -149,22 +149,7 @@
                                 </div>
 
 
-                                <div class="form-group row po_list d-none">
-                                    <label for="post_office_id" class="col-sm-2 col-form-label">Post Office<span
-                                            class="text-danger" data-toggle="tooltip">*</span></label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control select2" name="post_office_id" id="post_office_id">
-                                            <option value="">Post Office </option>
-                                            {{-- @if ($postOffices)
-                                                @foreach ($postOffices as $postOffice)
-                                                    <option value="{{ $postOffice->id }}">{{ $postOffice->name }}</option>
-                                                @endforeach
-                                            @endif --}}
-                                        </select>
-                                        <small class="text-danger error union_id_error"></small>
 
-                                    </div>
-                                </div>
 
                                 <div class="form-group row union_type d-none">
                                     <label for="union_id" class="col-sm-2 col-form-label">Union <span class="text-danger"
@@ -316,21 +301,23 @@
 
             console.log($(this).val());
 
-            $('.thana_list').removeClass('d-none');
-            $('.po_list').removeClass('d-none');
+
 
             if (val == 'city_type') {
                 $('.' + val).removeClass('d-none');
                 $('.union_type').addClass('d-none');
                 $('.pos_type').addClass('d-none');
+                $('.thana_list').addClass('d-none');
             } else if (val == 'union_type') {
                 $('.' + val).removeClass('d-none');
                 $('.city_type').addClass('d-none');
                 $('.pos_type').addClass('d-none');
+                $('.thana_list').removeClass('d-none');
             } else if (val == 'pos_type') {
                 $('.' + val).removeClass('d-none');
                 $('.city_type').addClass('d-none');
                 $('.union_type').addClass('d-none');
+                $('.thana_list').addClass('d-none');
             }
         })
 
@@ -382,33 +369,6 @@
                 thana_id.prop("disabled", true);
             }
 
-        })
-
-        $(document).on('change', '#thana_id', function(e) {
-            e.preventDefault();
-            let thana_id = $(this).val();
-            let postOffice_id = $('#post_office_id');
-            if (thana_id) {
-                $.ajax({
-                    type: "GET",
-                    url: "{{ url('/get-postOffice-by-thana') }}/" + thana_id,
-                    beforeSend: function() {
-                        postOffice_id.prop("disabled", true);
-                        console.log("Searcing Post Offices");
-                    },
-                    success: function(response) {
-                        postOffice_id.html(response)
-                        postOffice_id.prop("disabled", false);
-                    },
-                    error: function(xhr, status, error) {
-                        postOffice_id.prop("disabled", true);
-                        var responseText = jQuery.parseJSON(xhr.responseText);
-                        toastr.error(responseText.message);
-                    }
-                });
-            } else {
-                postOffice_id.prop("disabled", true);
-            }
         })
 
 

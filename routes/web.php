@@ -116,7 +116,7 @@ use App\Http\Controllers\LandController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MarketController;
 use App\Http\Controllers\MarriageController;
-use App\Http\Controllers\MouzaController;
+
 use App\Http\Controllers\Organization\OrganizationController;
 use App\Http\Controllers\Organization\TradeLicenseController;
 use App\Http\Controllers\Organization\OrganizationFeeController;
@@ -174,6 +174,30 @@ Route::post('/inquiry', [InquiryFormController::class, 'store'])->name('inquiry.
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/miscase-list', [HomeController::class, 'miscaseList'])->name('frontend.miscase.index');
+Route::get('/license-apply', [HomeController::class, 'licenseForm'])->name('frontend.license.create');
+Route::post('/license-apply/store', [HomeController::class, 'licenseStore'])->name('frontend.license.store');
+Route::get('/license-apply/success/{application_id}', [HomeController::class, 'licenseSuccess'])->name('frontend.license.success');
+
+// Public Hotel & Restaurant
+Route::get('/hotel-restaurant-apply', [HomeController::class, 'hotelRestaurantForm'])->name('frontend.hotel-restaurant.create');
+Route::post('/hotel-restaurant-apply/store', [HomeController::class, 'hotelRestaurantStore'])->name('frontend.hotel-restaurant.store');
+Route::get('/hotel-restaurant-apply/success/{application_id}', [HomeController::class, 'hotelRestaurantSuccess'])->name('frontend.hotel-restaurant.success');
+
+// Public Gun License
+Route::get('/gun-license-apply', [HomeController::class, 'gunLicenseSelect'])->name('frontend.gun-license.select');
+Route::get('/gun-license-apply/person', [HomeController::class, 'personGunForm'])->name('frontend.gun-license.person.create');
+Route::post('/gun-license-apply/person/store', [HomeController::class, 'personGunStore'])->name('frontend.gun-license.person.store');
+Route::get('/gun-license-apply/person/success/{application_id}', [HomeController::class, 'personGunSuccess'])->name('frontend.gun-license.person.success');
+
+Route::get('/gun-license-apply/org', [HomeController::class, 'orgGunForm'])->name('frontend.gun-license.org.create');
+Route::post('/gun-license-apply/org/store', [HomeController::class, 'orgGunStore'])->name('frontend.gun-license.org.store');
+Route::get('/gun-license-apply/org/success/{application_id}', [HomeController::class, 'orgGunSuccess'])->name('frontend.gun-license.org.success');
+
+Route::get('/gun-license-apply/other-org', [HomeController::class, 'otherOrgGunForm'])->name('frontend.gun-license.other-org.create');
+Route::post('/gun-license-apply/other-org/store', [HomeController::class, 'otherOrgGunStore'])->name('frontend.gun-license.other-org.store');
+Route::get('/gun-license-apply/other-org/success/{application_id}', [HomeController::class, 'otherOrgGunSuccess'])->name('frontend.gun-license.other-org.success');
+
 Route::get('/sms', function () {
     return view('frontend.pages.sms');
 });
@@ -268,7 +292,7 @@ Route::get('/get-city-corporation-by-district/{districtID}', [CityCorporationCon
 Route::get('/get-unions-by-thana/{thanaID}', [UnionController::class, 'unionsByThana']);
 Route::get('/get-villages-by-union/{unionID}', [VillageController::class, 'villagesByUnion']);
 Route::get('/get-villages-by-type/{ID}/{type}', [VillageController::class, 'villagesByUnion']);
-Route::get('/get-mouzas-by-thana/{thanaID}', [MouzaController::class, 'mouzasByThana']);
+Route::get('/get-mouzas-by-thana/{thanaID}', [BasicMouzaController::class, 'mouzasByThana']);
 Route::get('/get-areas-by-village/{villageID}', [VillageAreaController::class, 'areasByVillage']);
 Route::get('/get-houses-by-village-area/{areaID}', [HouseController::class, 'getHouseByArea']);
 Route::get('/search-user-by-system-id/{systemID}', [PeopleController::class, 'searchUser'])->name('user.searchBySystemID');
@@ -433,6 +457,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
         Route::resource('union-ward', UnionWardController::class);
         Route::resource('reserve-ward', ReserveWardController::class);
         Route::resource('city-corporation', CityCorporationController::class);
+        Route::resource('pourashava', PourashavaController::class);
         Route::resource('city-corporation-ward', CityCorporationWardController::class);
         Route::resource('road-category', RoadCategoryController::class);
         Route::resource('road-type', RoadTypeController::class);

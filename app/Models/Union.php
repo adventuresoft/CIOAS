@@ -11,7 +11,7 @@ class Union extends Model
 
     public static $snakeAttributes = false;
     protected $table = 'unions';
-    protected $fillable = ['name', 'bn_name', 'url', 'status', 'thana_id'];
+    protected $fillable = ['name', 'bn_name', 'url', 'status', 'thana_id', 'created_by'];
 
     public function thana()
     {

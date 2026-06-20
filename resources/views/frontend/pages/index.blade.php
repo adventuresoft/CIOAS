@@ -2,348 +2,137 @@
 
 @section('content')
 
-    <main>
-        <section class="bg-[#d3d9e4] pt-10 pb-8 md:pt-16 md:pb-10">
-            <div class="container mx-auto max-w-screen-xl px-4">
-                <div class="mx-auto max-w-5xl text-center">
-                    <h2 class="-mt-8 text-xl font-bold tracking-tight text-black sm:-mt-10 sm:text-2xl lg:text-3xl">
-                        কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম
-                    </h2>
-                    <p class="mx-auto mt-7 max-w-4xl text-base leading-relaxed text-black sm:mt-2 sm:text-lg md:text-xl">
-                        এই প্ল্যাটফর্মে আপনি আপনার প্রয়োজনীয় সেবাগুলো পেতে পারেন।
-                    </p>
-                </div>
-
-
-
-
-                <div class="mx-auto mt-8 max-w-5xl md:mt-10">
-                    <div class="grid grid-cols-1 gap-10 lg:grid-cols-4 lg:gap-10">
-                        <article class="mx-auto w-full max-w-[290px] text-center text-black">
-                            <div
-                                class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#0ea5d9] md:h-28 md:w-28">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    class="h-14 w-14 md:h-16 md:w-16" aria-hidden="true">
-                                    <path d="M7 3.5h8l3 3V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"
-                                        fill="#f4f4f5" />
-                                    <path d="M15 3.5v3h3" fill="#d4d4d8" />
-                                    <path d="M9 8h6M9 11h6M9 14h4" stroke="#b3b3b8" stroke-width="1.4"
-                                        stroke-linecap="round" />
-                                    <path d="m12.5 16.2 2.3 2.2 4.5-4.8" stroke="#10b981" stroke-width="1.9"
-                                        stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </div>
-                            <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">আবেদন ফরম</h3>
-                            <div class="mx-auto mt-3 h-px w-full max-w-[520px] bg-black/30"></div>
-                            <p class="mx-auto mt-1 max-w-sm text-sm leading-6 text-black md:text-base">
-                                আবেদন করতে ক্লিক করুন ।
-                            </p>
-                            <a href="{{ route('application.create') }}"
-                                class="mt-5 inline-flex items-center justify-center gap-1.5 rounded-md bg-[#2d88c7] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#1f75b3] md:text-base">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" class="h-6 w-6" aria-hidden="true">
-                                    <path d="M12 20h9" />
-                                    <path d="M16.5 3.5a2.1 2.1 0 1 1 3 3L8 18l-4 1 1-4 11.5-11.5Z" />
-                                </svg>
-                                আবেদন
-                            </a>
-                        </article>
-
-                        <article class="mx-auto w-full max-w-[290px] text-center text-black">
-                            <div
-                                class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#45caa2] md:h-28 md:w-28">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    class="h-14 w-14 md:h-16 md:w-16" aria-hidden="true">
-                                    <rect x="3" y="5" width="18" height="13" rx="1.5" fill="#f4f4f5" />
-                                    <path d="M6.5 8h10M6.5 11h10" stroke="#b3b3b8" stroke-width="1.4"
-                                        stroke-linecap="round" />
-                                    <path d="M6.5 14h5" stroke="#3b82f6" stroke-width="1.4" stroke-linecap="round" />
-                                    <circle cx="16.5" cy="14.5" r="3.5" fill="#fbbf24" />
-                                    <circle cx="16.5" cy="14.5" r="1.8" fill="#f59e0b" />
-                                    <path d="m15.2 17.4-.2 2.8 1.5-1 1.5 1-.2-2.8" fill="#ef4444" />
-                                </svg>
-                            </div>
-                            <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">সনদপত্র যাচাই</h3>
-                            <div class="mx-auto mt-3 h-px w-full max-w-[520px] bg-black/30"></div>
-                            <p class="mx-auto mt-1 max-w-sm text-sm leading-6 text-black md:text-base">
-                                সনদপত্র যাচাই করতে ক্লিক করুন ।
-                            </p>
-                            <a href="{{ route('certificate.verify') }}"
-                                class="mt-5 inline-flex items-center justify-center gap-1.5 rounded-md bg-[#2d88c7] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#1f75b3] md:text-base">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2.3" class="h-6 w-6" aria-hidden="true">
-                                    <circle cx="11" cy="11" r="6.5" />
-                                    <path d="m16 16 4.2 4.2" stroke-linecap="round" />
-                                </svg>
-                                যাচাই
-                            </a>
-                        </article>
-
-                        <article class="mx-auto w-full max-w-[290px] text-center text-black">
-                            <div
-                                class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#0ea5d9] md:h-28 md:w-28">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    class="h-14 w-14 md:h-16 md:w-16" aria-hidden="true">
-                                    <path d="M7 3.5h8l3 3V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"
-                                        fill="#f4f4f5" />
-                                    <path d="M15 3.5v3h3" fill="#d4d4d8" />
-                                    <path d="M9 8h6M9 11h6M9 14h4" stroke="#b3b3b8" stroke-width="1.4"
-                                        stroke-linecap="round" />
-                                    <path d="m12.5 16.2 2.3 2.2 4.5-4.8" stroke="#10b981" stroke-width="1.9"
-                                        stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </div>
-                            <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">লাইসেন্সের আবেদন</h3>
-                            <div class="mx-auto mt-3 h-px w-full max-w-[520px] bg-black/30"></div>
-                            <p class="mx-auto mt-1 max-w-sm text-sm leading-6 text-black md:text-base">
-                                ট্রেড লাইসেন্সের আবেদন করুন।
-                            </p>
-                            <a href="{{ route('application.create') }}"
-                                class="mt-5 inline-flex items-center justify-center gap-1.5 rounded-md bg-[#2d88c7] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#1f75b3] md:text-base">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" class="h-6 w-6" aria-hidden="true">
-                                    <path d="M12 20h9" />
-                                    <path d="M16.5 3.5a2.1 2.1 0 1 1 3 3L8 18l-4 1 1-4 11.5-11.5Z" />
-                                </svg>
-                                আবেদন
-                            </a>
-                        </article>
-
-
-
-                        <article class="mx-auto w-full max-w-[290px] text-center text-black">
-                            <div
-                                class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#45caa2] md:h-28 md:w-28">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    class="h-14 w-14 md:h-16 md:w-16" aria-hidden="true">
-                                    <rect x="3" y="5" width="18" height="13" rx="1.5" fill="#f4f4f5" />
-                                    <path d="M6.5 8h10M6.5 11h10" stroke="#b3b3b8" stroke-width="1.4"
-                                        stroke-linecap="round" />
-                                    <path d="M6.5 14h5" stroke="#3b82f6" stroke-width="1.4" stroke-linecap="round" />
-                                    <circle cx="16.5" cy="14.5" r="3.5" fill="#fbbf24" />
-                                    <circle cx="16.5" cy="14.5" r="1.8" fill="#f59e0b" />
-                                    <path d="m15.2 17.4-.2 2.8 1.5-1 1.5 1-.2-2.8" fill="#ef4444" />
-                                </svg>
-                            </div>
-                            <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">ট্রেড লাইসেন্স যাচাই</h3>
-                            <div class="mx-auto mt-3 h-px w-full max-w-[520px] bg-black/30"></div>
-                            <p class="mx-auto mt-1 max-w-sm text-sm leading-6 text-black md:text-base">
-                                লাইসেন্স যাচাই করতে ক্লিক করুন।
-                            </p>
-                            <a href="{{ route('certificate.verify') }}"
-                                class="mt-5 inline-flex items-center justify-center gap-1.5 rounded-md bg-[#2d88c7] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#1f75b3] md:text-base">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" class="h-6 w-6" aria-hidden="true">
-                                    <circle cx="11" cy="11" r="6.5" />
-                                    <path d="m16 16 4.2 4.2" stroke-linecap="round" />
-                                </svg>
-                                যাচাই
-                            </a>
-                        </article>
-
-                        <article class="mx-auto w-full max-w-[290px] text-center text-black">
-                            <div
-                                class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#27ae60] md:h-28 md:w-28">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    class="h-14 w-14 md:h-16 md:w-16" aria-hidden="true">
-                                    <path d="M7 3.5h8l3 3V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"
-                                        fill="#f4f4f5" />
-                                    <path d="M15 3.5v3h3" fill="#d4d4d8" />
-                                    <path d="M9 8h6M9 11h6M9 14h4" stroke="#b3b3b8" stroke-width="1.4"
-                                        stroke-linecap="round" />
-                                    <path d="m12.5 16.2 2.3 2.2 4.5-4.8" stroke="#e74c3c" stroke-width="1.9"
-                                        stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </div>
-                            <h3 class="mt-5 text-lg font-semibold leading-tight md:text-xl">জিজ্ঞাসা আবেদন</h3>
-                            <div class="mx-auto mt-3 h-px w-full max-w-[520px] bg-black/30"></div>
-                            <p class="mx-auto mt-1 max-w-sm text-sm leading-6 text-black md:text-base">
-                                আবেদন করতে ক্লিক করুন।
-                            </p>
-                            <a href="{{ route('inquiry.index') }}"
-                                class="mt-5 inline-flex items-center justify-center gap-1.5 rounded-md bg-[#2d88c7] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#1f75b3] md:text-base">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" class="h-6 w-6" aria-hidden="true">
-                                    <path d="M12 20h9" />
-                                    <path d="M16.5 3.5a2.1 2.1 0 1 1 3 3L8 18l-4 1 1-4 11.5-11.5Z" />
-                                </svg>
-                                আবেদন
-                            </a>
-                        </article>
-
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <section class="bg-[#efefef] py-12 md:py-16">
-            <h2
-                class="relative left-1/2 right-1/2 -mt-6 mb-8 -ml-[50vw] -mr-[50vw] w-screen bg-[#B0E0E6] py-3 text-center text-2xl font-bold tracking-tight text-black md:-mt-16 md:mb-10 md:text-3xl">
-                Reports
-            </h2>
-            <div class="container mx-auto max-w-6xl px-4">
-                <div class="grid grid-cols-1 justify-items-center gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-                    <div
-                        class="h-full w-full max-w-[280px] rounded-xl border border-[#d8dce8] bg-[#e8ebf0] px-6 py-8 text-center shadow-sm">
-                        <div class="mx-auto flex h-16 w-16 items-center justify-center text-[#4459c2]">
-                            <img src="{{ asset('images/union1.jpeg') }}" alt="মোট ইউনিয়ন"
-                                class="h-12 w-12 object-contain" />
-                        </div>
-                        <h3 class="mt-6 text-lg font-semibold tracking-tight text-[#4459c2] md:text-xl">মোট ইউনিয়ন</h3>
-                        <p class="mt-3 text-2xl font-semibold tracking-tight text-[#7fbc4e] md:text-3xl">4578</p>
-                    </div>
-
-                    <div
-                        class="h-full w-full max-w-[280px] rounded-xl border border-[#d8dce8] bg-[#e8ebf0] px-6 py-8 text-center shadow-sm">
-                        <div class="mx-auto flex h-16 w-16 items-center justify-center text-[#4459c2]">
-                            <img src="{{ asset('images/poroshova1.jpeg') }}" alt="মোট পৌরসভা"
-                                class="h-12 w-12 object-contain" />
-                        </div>
-                        <h3 class="mt-6 text-lg font-semibold tracking-tight text-[#4459c2] md:text-xl">মোট পৌরসভা</h3>
-                        <p class="mt-3 text-2xl font-semibold tracking-tight text-[#7fbc4e] md:text-3xl">330</p>
-                    </div>
-
-                    <div
-                        class="h-full w-full max-w-[280px] rounded-xl border border-[#d8dce8] bg-[#e8ebf0] px-6 py-8 text-center shadow-sm">
-                        <div class="mx-auto flex h-16 w-16 items-center justify-center text-[#4459c2]">
-                            <img src="{{ asset('images/citykor1.jpeg') }}" alt="মোট সিটি কর্পোরেশন"
-                                class="h-12 w-12 object-contain" />
-                        </div>
-                        <h3 class="mt-6 text-lg font-semibold tracking-tight text-[#4459c2] md:text-xl">মোট সিটি
-                            কর্পোরেশন</h3>
-                        <p class="mt-3 text-2xl font-semibold tracking-tight text-[#7fbc4e] md:text-3xl">13</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-
-
-        <section class="bg-[#ADD8E6] py-12 md:py-16">
-            <div class="container mx-auto max-w-6xl px-4">
-                <h2
-                    class="-mt-2 mb-8 text-center text-2xl font-bold tracking-tight text-[#1f3f73] md:-mt-12 md:mb-10 md:text-3xl">
-                    প্রয়োজনীয় তথ্য
+    <main class="bg-gray-50">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-b from-[#e8f5e9] to-[#ffffff] pt-12 pb-10 border-b border-[#006a4e]/20">
+            <div class="container mx-auto max-w-screen-xl px-4 text-center">
+                <h2 class="text-2xl font-bold tracking-tight text-[#006a4e] sm:text-3xl lg:text-4xl">
+                    কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম
                 </h2>
+                <p class="mx-auto mt-4 max-w-2xl text-lg text-gray-700">
+                    গণপ্রজাতন্ত্রী বাংলাদেশ সরকার - এই প্ল্যাটফর্মে আপনি আপনার প্রয়োজনীয় সেবাগুলো পেতে পারেন।
+                </p>
+                <div class="mx-auto mt-6 w-24 h-1 bg-[#f42a41] rounded-full"></div>
+            </div>
 
-
-
-                <div class="grid grid-cols-1 justify-items-center gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-                    <div
-                        class="h-full w-full max-w-[280px] rounded-xl border border-[#d8dce8] bg-[#e8ebf0] px-6 py-8 text-center shadow-sm">
-                        <div class="mx-auto flex h-16 w-16 items-center justify-center text-[#4459c2]">
-                            <img src="{{ asset('images/union1.jpeg') }}" alt="মোট ইউনিয়ন"
-                                class="h-12 w-12 object-contain" />
+            <div class="container mx-auto mt-12 max-w-5xl px-4">
+                <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+                    
+                    <!-- General License -->
+                    <article class="flex flex-col items-center p-8 bg-white rounded-xl shadow-lg border-t-4 border-[#006a4e] transition-transform hover:-translate-y-2 hover:shadow-xl">
+                        <div class="flex h-20 w-20 items-center justify-center rounded-full bg-[#e8f5e9] text-[#006a4e] mb-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
                         </div>
-                        <h3 class="mt-6 text-lg font-semibold tracking-tight text-[#4459c2] md:text-xl">মোট ইউনিয়ন</h3>
-                        <p class="mt-3 text-2xl font-semibold tracking-tight text-[#7fbc4e] md:text-3xl">4578</p>
-                    </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">লাইসেন্স</h3>
+                        <p class="text-center text-sm text-gray-600 mb-6 flex-grow">
+                            নতুন লাইসেন্সের আবেদন করতে এখানে ক্লিক করুন।
+                        </p>
+                        <a href="{{ route('frontend.license.create') }}" class="w-full text-center rounded-md bg-[#006a4e] px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-[#00523b] transition">
+                            আবেদন করুন
+                        </a>
+                    </article>
 
-                    <div
-                        class="h-full w-full max-w-[280px] rounded-xl border border-[#d8dce8] bg-[#e8ebf0] px-6 py-8 text-center shadow-sm">
-                        <div class="mx-auto flex h-16 w-16 items-center justify-center text-[#4459c2]">
-                            <img src="{{ asset('images/poroshova1.jpeg') }}" alt="মোট পৌরসভা"
-                                class="h-12 w-12 object-contain" />
+                    <!-- Hotel & Restaurant -->
+                    <article class="flex flex-col items-center p-8 bg-white rounded-xl shadow-lg border-t-4 border-[#006a4e] transition-transform hover:-translate-y-2 hover:shadow-xl">
+                        <div class="flex h-20 w-20 items-center justify-center rounded-full bg-[#e8f5e9] text-[#006a4e] mb-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
                         </div>
-                        <h3 class="mt-6 text-lg font-semibold tracking-tight text-[#4459c2] md:text-xl">মোট পৌরসভা</h3>
-                        <p class="mt-3 text-2xl font-semibold tracking-tight text-[#7fbc4e] md:text-3xl">330</p>
-                    </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">হোটেল ও রেস্তোরাঁ</h3>
+                        <p class="text-center text-sm text-gray-600 mb-6 flex-grow">
+                            হোটেল ও রেস্তোরাঁ লাইসেন্স সংক্রান্ত আবেদন।
+                        </p>
+                        <a href="{{ route('frontend.hotel-restaurant.create') }}" class="w-full text-center rounded-md bg-[#006a4e] px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-[#00523b] transition">
+                            আবেদন করুন
+                        </a>
+                    </article>
 
-                    <div
-                        class="h-full w-full max-w-[280px] rounded-xl border border-[#d8dce8] bg-[#e8ebf0] px-6 py-8 text-center shadow-sm">
-                        <div class="mx-auto flex h-16 w-16 items-center justify-center text-[#4459c2]">
-                            <img src="{{ asset('images/citykor1.jpeg') }}" alt="মোট সিটি কর্পোরেশন"
-                                class="h-12 w-12 object-contain" />
+                    <!-- Gun License -->
+                    <article class="flex flex-col items-center p-8 bg-white rounded-xl shadow-lg border-t-4 border-[#006a4e] transition-transform hover:-translate-y-2 hover:shadow-xl">
+                        <div class="flex h-20 w-20 items-center justify-center rounded-full bg-[#e8f5e9] text-[#006a4e] mb-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+                            </svg>
                         </div>
-                        <h3 class="mt-6 text-lg font-semibold tracking-tight text-[#4459c2] md:text-xl">মোট সিটি
-                            কর্পোরেশন</h3>
-                        <p class="mt-3 text-2xl font-semibold tracking-tight text-[#7fbc4e] md:text-3xl">13</p>
-                    </div>
-
-                    <div
-                        class="h-full w-full max-w-[280px] rounded-xl border border-[#d8dce8] bg-[#e8ebf0] px-6 py-8 text-center shadow-sm">
-                        <div class="mx-auto flex h-16 w-16 items-center justify-center text-[#4459c2]">
-                            <img src="{{ asset('images/poroshova1.jpeg') }}" alt="মোট পৌরসভা"
-                                class="h-12 w-12 object-contain" />
-                        </div>
-                        <h3 class="mt-6 text-lg font-semibold tracking-tight text-[#4459c2] md:text-xl">মোট পৌরসভা</h3>
-                        <p class="mt-3 text-2xl font-semibold tracking-tight text-[#7fbc4e] md:text-3xl">330</p>
-                    </div>
-
-
-                    <div
-                        class="h-full w-full max-w-[280px] rounded-xl border border-[#d8dce8] bg-[#e8ebf0] px-6 py-8 text-center shadow-sm">
-                        <div class="mx-auto flex h-16 w-16 items-center justify-center text-[#4459c2]">
-                            <img src="{{ asset('images/union1.jpeg') }}" alt="মোট ইউনিয়ন"
-                                class="h-12 w-12 object-contain" />
-                        </div>
-                        <h3 class="mt-6 text-lg font-semibold tracking-tight text-[#4459c2] md:text-xl">মোট ইউনিয়ন</h3>
-                        <p class="mt-3 text-2xl font-semibold tracking-tight text-[#7fbc4e] md:text-3xl">4578</p>
-                    </div>
-
-                    <div
-                        class="h-full w-full max-w-[280px] rounded-xl border border-[#d8dce8] bg-[#e8ebf0] px-6 py-8 text-center shadow-sm">
-                        <div class="mx-auto flex h-16 w-16 items-center justify-center text-[#4459c2]">
-                            <img src="{{ asset('images/poroshova1.jpeg') }}" alt="মোট পৌরসভা"
-                                class="h-12 w-12 object-contain" />
-                        </div>
-                        <h3 class="mt-6 text-lg font-semibold tracking-tight text-[#4459c2] md:text-xl">মোট পৌরসভা</h3>
-                        <p class="mt-3 text-2xl font-semibold tracking-tight text-[#7fbc4e] md:text-3xl">330</p>
-                    </div>
-
-                    <div
-                        class="h-full w-full max-w-[280px] rounded-xl border border-[#d8dce8] bg-[#e8ebf0] px-6 py-8 text-center shadow-sm">
-                        <div class="mx-auto flex h-16 w-16 items-center justify-center text-[#4459c2]">
-                            <img src="{{ asset('images/citykor1.jpeg') }}" alt="মোট সিটি কর্পোরেশন"
-                                class="h-12 w-12 object-contain" />
-                        </div>
-                        <h3 class="mt-6 text-lg font-semibold tracking-tight text-[#4459c2] md:text-xl">মোট সিটি
-                            কর্পোরেশন</h3>
-                        <p class="mt-3 text-2xl font-semibold tracking-tight text-[#7fbc4e] md:text-3xl">13</p>
-                    </div>
-
-                    <div
-                        class="h-full w-full max-w-[280px] rounded-xl border border-[#d8dce8] bg-[#e8ebf0] px-6 py-8 text-center shadow-sm">
-                        <div class="mx-auto flex h-16 w-16 items-center justify-center text-[#4459c2]">
-                            <img src="{{ asset('images/poroshova1.jpeg') }}" alt="মোট পৌরসভা"
-                                class="h-12 w-12 object-contain" />
-                        </div>
-                        <h3 class="mt-6 text-lg font-semibold tracking-tight text-[#4459c2] md:text-xl">মোট পৌরসভা</h3>
-                        <p class="mt-3 text-2xl font-semibold tracking-tight text-[#7fbc4e] md:text-3xl">330</p>
-                    </div>
-
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">আগ্নেয়াস্ত্র লাইসেন্স</h3>
+                        <p class="text-center text-sm text-gray-600 mb-6 flex-grow">
+                            আগ্নেয়াস্ত্র লাইসেন্সের নতুন আবেদন বা নবায়ন।
+                        </p>
+                        <a href="{{ route('frontend.gun-license.select') }}" class="w-full text-center rounded-md bg-[#006a4e] px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-[#00523b] transition">
+                            আবেদন করুন
+                        </a>
+                    </article>
 
                 </div>
             </div>
         </section>
 
 
+        <!-- Reports Section -->
+        <section class="py-16 bg-white">
+            <div class="container mx-auto max-w-6xl px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl font-bold text-gray-900 md:text-3xl">পরিসংখ্যান রিপোর্ট</h2>
+                    <div class="mx-auto mt-3 w-16 h-1 bg-[#006a4e] rounded"></div>
+                </div>
 
+                <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                    <div class="flex flex-col items-center justify-center p-6 bg-gray-50 border border-gray-100 rounded-lg shadow-sm hover:shadow-md transition">
+                        <img src="{{ asset('images/union1.jpeg') }}" alt="মোট ইউনিয়ন" class="h-16 w-16 object-contain mb-4 rounded-full border border-gray-200 p-1 bg-white" />
+                        <h3 class="text-lg font-semibold text-gray-700">মোট ইউনিয়ন</h3>
+                        <p class="mt-2 text-3xl font-bold text-[#006a4e]">{{ $total_unions ?? 0 }}</p>
+                    </div>
 
+                    <div class="flex flex-col items-center justify-center p-6 bg-gray-50 border border-gray-100 rounded-lg shadow-sm hover:shadow-md transition">
+                        <img src="{{ asset('images/poroshova1.jpeg') }}" alt="মোট পৌরসভা" class="h-16 w-16 object-contain mb-4 rounded-full border border-gray-200 p-1 bg-white" />
+                        <h3 class="text-lg font-semibold text-gray-700">মোট পৌরসভা</h3>
+                        <p class="mt-2 text-3xl font-bold text-[#006a4e]">{{ $total_pourashavas ?? 0 }}</p>
+                    </div>
 
+                    <div class="flex flex-col items-center justify-center p-6 bg-gray-50 border border-gray-100 rounded-lg shadow-sm hover:shadow-md transition">
+                        <img src="{{ asset('images/citykor1.jpeg') }}" alt="মোট সিটি কর্পোরেশন" class="h-16 w-16 object-contain mb-4 rounded-full border border-gray-200 p-1 bg-white" />
+                        <h3 class="text-lg font-semibold text-gray-700">মোট সিটি কর্পোরেশন</h3>
+                        <p class="mt-2 text-3xl font-bold text-[#006a4e]">{{ $total_city_corporations ?? 0 }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <!-- Information Section -->
+        <section class="py-16 bg-[#eef2f6]">
+            <div class="container mx-auto max-w-6xl px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl font-bold text-gray-900 md:text-3xl">প্রয়োজনীয় তথ্য</h2>
+                    <div class="mx-auto mt-3 w-16 h-1 bg-[#f42a41] rounded"></div>
+                </div>
 
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    <div class="flex flex-col p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <h3 class="text-md font-semibold text-gray-800 mb-2">মোট ইউনিয়ন</h3>
+                        <p class="text-2xl font-bold text-[#006a4e]">{{ $total_unions ?? 0 }}</p>
+                    </div>
+                    <div class="flex flex-col p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <h3 class="text-md font-semibold text-gray-800 mb-2">মোট পৌরসভা</h3>
+                        <p class="text-2xl font-bold text-[#006a4e]">{{ $total_pourashavas ?? 0 }}</p>
+                    </div>
+                    <div class="flex flex-col p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <h3 class="text-md font-semibold text-gray-800 mb-2">মোট সিটি কর্পোরেশন</h3>
+                        <p class="text-2xl font-bold text-[#006a4e]">{{ $total_city_corporations ?? 0 }}</p>
+                    </div>
+                    <div class="flex flex-col p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+                        <h3 class="text-md font-semibold text-gray-800 mb-2">অন্যান্য তথ্য</h3>
+                        <a href="{{ route('inquiry.index') }}" class="mt-auto inline-flex items-center text-sm font-medium text-[#f42a41] hover:underline">
+                            বিস্তারিত জানুন
+                            <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
 
     </main>
+
 @endsection
-
-
-@push('script')
-    <!-- Splide JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
-    <script src="{{ asset('assets/js/navbar.js') }}"></script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            new Splide("#image-carousel", {
-                type: "loop",
-                perPage: 1,
-                gap: "1rem",
-                autoplay: false,
-                pagination: false,
-            }).mount();
-        });
-    </script>
-@endpush
