@@ -6,9 +6,6 @@
             $subMenu == 'MarketType' ||
             $subMenu == 'MarketCategory' ||
             $subMenu == 'MarketOwnershipType' ||
-            $subMenu == 'VehicleCategory' ||
-            $subMenu == 'VehicleSubcategory' ||
-            $subMenu == 'VehicleType' ||
             $subMenu == 'Village' ||
             $subMenu == 'VillageArea' ||
             $subMenu == 'Union' ||
@@ -66,26 +63,6 @@
                     class="nav-link {{ $subMenu == 'LicenseCategory' ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>License Category</p>
-                </a>
-            </li>
-        @endif
-
-        @if (has_module_access('vehicle-category'))
-            <li class="nav-item">
-                <a href="{{ route('basic-settings.vehicle-category.index') }}"
-                    class="nav-link {{ $subMenu == 'VehicleCategory' ? 'active' : '' }}">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Vehicle Category</p>
-                </a>
-            </li>
-        @endif
-
-        @if (has_module_access('vehicle-type'))
-            <li class="nav-item">
-                <a href="{{ route('basic-settings.vehicle-type.index') }}"
-                    class="nav-link {{ $subMenu == 'VehicleType' ? 'active' : '' }}  ">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Vehicle Type</p>
                 </a>
             </li>
         @endif

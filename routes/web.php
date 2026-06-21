@@ -91,11 +91,6 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MarketController;
 use App\Http\Controllers\MarriageController;
 
-use App\Http\Controllers\Organization\OrganizationController;
-use App\Http\Controllers\Organization\TradeLicenseController;
-use App\Http\Controllers\Organization\OrganizationFeeController;
-use App\Http\Controllers\Organization\OrganizationOwnershipController;
-use App\Http\Controllers\Organization\OrganizationRenewController;
 use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\ProfessionalInfoController;
 use App\Http\Controllers\ProjectTypeController;
@@ -269,10 +264,7 @@ Route::get('/get-villages-by-type/{ID}/{type}', [VillageController::class, 'vill
 Route::get('/get-mouzas-by-thana/{thanaID}', [BasicMouzaController::class, 'mouzasByThana']);
 // Route::get('/get-areas-by-village/{villageID}', ...); // Removed: VillageAreaController deleted
 Route::get('/get-houses-by-village-area/{areaID}', [HouseController::class, 'getHouseByArea']);
-Route::get('/search-user-by-system-id/{systemID}', [PeopleController::class, 'searchUser'])->name('user.searchBySystemID');
-Route::get('/get-organization-info-by-system-id/{systemID}', [OrganizationController::class, 'getOrganizationBySystemId'])->name('getOrganizationBySystemId');
-Route::post('/organization-approve', [OrganizationController::class, 'approve'])
-    ->name('organization.approve');
+
 
 Route::get('/house-single-ownership-form', [HouseOwnershipController::class, 'loadOwnershipForm']);
 Route::get('/house-ownership-remove/{id}', [HouseOwnershipController::class, 'destroy']);
@@ -281,10 +273,6 @@ Route::get('/hotel-subcategory-options/{id}', [HotelSubCategoryController::class
 Route::get('/license-subcategory-options/{id}', [LicenseSubCategoryController::class, 'options']);
 Route::get('/house-options/{id}', [HouseController::class, 'options']);
 
-Route::get('/organization-single-ownership-form', [OrganizationOwnershipController::class, 'ownershipForm']);
-Route::get('/organization-ownership-remove/{id}', [OrganizationOwnershipController::class, 'destroy']);
-
-Route::post('/get-organization-registration-fees', [OrganizationFeeController::class, "registrationFees"])->name('organization.registration.fees');
 // Admin with Auth
 Route::get('get-people-by-union/{union_id}', [ChairmanController::class, 'getPeopleByUnion']);
 Route::get('changeMember/{councilor_member_id}', [ChairmanController::class, 'changeMember'])->name('chairman.changeMember');
@@ -467,7 +455,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
     });
 
-    Route::resource('organization', OrganizationController::class);
     Route::resource('license', LicenseController::class);
 
     // HotelRestaurantController
@@ -617,7 +604,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
         Route::get('/area/{user_id}', 'area')->name('area');
         Route::post('/areaStore', 'areaStore')->name('areaStore');
     });
-    Route::resource('organization-ownership', OrganizationOwnershipController::class);
 
     Route::resource('hotelRestaurant-ownership', HotelRestaurantOwnershipController::class);
 
@@ -676,29 +662,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
         Route::post('/{id}', 'store')->whereNumber('id')->name('store');
     });
 
-    Route::get('organizations', function () {
-        return redirect()->route('organization.index');
-    });
-    Route::prefix('organizations')->name('organizationA.')->group(function () {
-        Route::resource('trade-license', TradeLicenseController::class);
-
-        Route::get('trade-license/invoice/{id}', [TradeLicenseController::class, 'invoice'])->name('trade-license.invoice');
-        Route::get('trade-license/preview/{id}', [TradeLicenseController::class, 'preview'])->name('trade-license.preview');
-        Route::get('trade-license/confirmed/{id}', [TradeLicenseController::class, 'confirmedLicense'])->name('trade-license.confirmed');
-        Route::post('trade-license/confirmation/{id}', [TradeLicenseController::class, 'licenseConfirmation'])->name('trade-license.confirmation');
-
-        Route::get('get-trade-license', [TradeLicenseController::class, 'getTradeLicense'])->name('trade-license.getTradeLicense');
-
-
-
-        Route::resource('registration-fees', OrganizationFeeController::class);
-        Route::resource('renew-fees', OrganizationRenewController::class);
-    });
-    Route::post('/organization/trade-license/{id}/manual-payment/store', [TradeLicenseController::class, 'storeManualPayment'])
-        ->name('organizationA.trade-license.manual-payment.store');
-
-    Route::get('/organization/trade-license/{id}/online-payment', [TradeLicenseController::class, 'onlinePayment'])
-        ->name('organizationA.trade-license.online-payment');
     Route::get('/people/approve/{id}', [PeopleController::class, 'approve'])
         ->name('people.approve');
     Route::get('/staff/approve/{id}', [StaffController::class, 'approve'])
@@ -709,8 +672,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('staffapprovedlist', [StaffController::class, 'approvedlist'])
         ->name('staffapprovedlist');
 
-    Route::post('/save-new-ownership', [OrganizationOwnershipController::class, 'saveNewOwnership'])
-        ->name('savenewownership');
 
     Route::resource('institute', InstituteController::class);
 
@@ -733,6 +694,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::resource('house', HouseController::class);
     Route::resource('house-ownership', HouseOwnershipController::class);
 
+    Route::post('land/approve', [LandController::class, 'approve'])->name('land.approve');
     Route::resource('land', LandController::class);
     Route::post('vehicle/approve', [VehicleController::class, 'approve'])->name('vehicle.approve');
     Route::get('vehicle/fees', [VehicleController::class, 'feesHub'])->name('vehicle.fees.hub');

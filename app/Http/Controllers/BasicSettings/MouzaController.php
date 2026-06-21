@@ -215,4 +215,23 @@ class MouzaController extends Controller
             return response(json_encode($data, JSON_PRETTY_PRINT), 500)->header('Content-Type', 'application/json');
         }
     }
+
+    public function mouzasByThana(Request $request, $id)
+    {
+        $html = '<option value="">Select Mouza</option>';
+
+        $query = Mouza::where('upazila_id', $id);
+        if ($request->has('record') && $request->record !== '') {
+            $query->where('record', $request->record);
+        }
+        $mouzas = $query->get();
+
+        if (count($mouzas)) {
+            foreach ($mouzas as $mouza) {
+                $html .= '<option value="' . $mouza->id . '">' . $mouza->name . '</option>';
+            }
+        }
+
+        return $html;
+    }
 }

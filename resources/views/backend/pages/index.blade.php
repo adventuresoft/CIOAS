@@ -23,22 +23,6 @@
 
                 <div class="col-lg-3 col-6">
                     <!-- small box -->
-                    <div class="small-box bg-danger">
-                        <div class="inner">
-                            <h3>{{$organizations}}</h3>
-
-                            <p>Total Organization</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fas fa-briefcase"></i>
-                        </div>
-                        <a  class="link-light small-box-footer" href="{{route('organization.index')}}">View All Organizations</a>
-                    </div>
-                </div>
-                <!-- ./col -->
-
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
                     <div class="small-box bg-primary">
                         <div class="inner">
                             <h3>{{$staffs}}</h3>

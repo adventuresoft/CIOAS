@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Organization\Organization;
 use App\Models\Staff;
 use App\Models\AppointmentBooking;
 use App\Models\HotelRestaurant\HotelRestaurant;
@@ -15,7 +14,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $data['organizations'] = Organization::count();
         $data['staffs'] = Staff::count();
         $data['appointments'] = AppointmentBooking::count();
         $data['hotel_restaurants'] = HotelRestaurant::count();
