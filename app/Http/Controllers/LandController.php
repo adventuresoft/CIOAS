@@ -70,8 +70,8 @@ class LandController extends Controller
             'details.*.gazette_no' => 'nullable|string',
             'details.*.remarks' => 'nullable|string',
             'attachments' => 'nullable|array',
-            'attachments.*.name' => 'required_with:attachments|string',
-            'attachments.*.file' => 'required_with:attachments|file|max:5120',
+            'attachments.*.name' => 'required_with:attachments.*.file|nullable|string',
+            'attachments.*.file' => 'required_with:attachments.*.name|nullable|file|max:5120',
         ]);
 
         if ($validate->fails()) {
@@ -87,13 +87,19 @@ class LandController extends Controller
         try {
             $land = Land::create([
                 'land_type' => $request->land_type,
-                'record_type' => $request->record_type,
-                'district_id' => $request->district_id,
-                'upazila_id' => $request->upazila_id,
-                'mouza_id' => $request->mouza_id,
                 'status' => 0, // Pending
                 'created_by' => auth()->id()
             ]);
+
+            if ($request->filled('district_id')) {
+                LandLocation::create([
+                    'land_id' => $land->id,
+                    'record_type' => $request->record_type,
+                    'district_id' => $request->district_id,
+                    'upazila_id' => $request->upazila_id,
+                    'mouza_id' => $request->mouza_id,
+                ]);
+            }
 
             if ($request->has('location') && is_array($request->location)) {
                 foreach ($request->location as $loc) {

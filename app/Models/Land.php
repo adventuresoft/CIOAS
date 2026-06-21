@@ -47,4 +47,9 @@ class Land extends Model
     {
         return $this->hasMany(LandDocument::class, 'land_id', 'id');
     }
+
+    public function locations()
+    {
+        return $this->hasMany(LandLocation::class, 'land_id', 'id');
+    }
 }

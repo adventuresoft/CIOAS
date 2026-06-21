@@ -209,12 +209,10 @@
                                         <label for="record_type">রেকর্ড <span class="text-danger">*</span></label>
                                         <select name="record_type" id="record_type" class="form-control select2" required>
                                             <option value="">Select Record</option>
-                                            <option value="সি.এস">সি.এস (CS)</option>
-                                            <option value="এস.এ">এস.এ (SA)</option>
-                                            <option value="আর.এস">আর.এস (RS)</option>
-                                            <option value="বি.এস">বি.এস (BS)</option>
-                                            <option value="দিয়াড়া">দিয়াড়া (Diara)</option>
-                                            <option value="পেটি">পেটি (Peti)</option>
+                                            <option value="CS">CS</option>
+                                            <option value="SA">SA</option>
+                                            <option value="RS">RS</option>
+                                            <option value="City/BRS">City/BRS</option>
                                         </select>
                                     </div>
                                 </div>
@@ -279,7 +277,7 @@
                                 <div class="col-md-3">
                                     <div class="md-field">
                                         <label>রেকর্ডীয় শ্রেণি <span class="text-danger">*</span></label>
-                                        <select name="details[0][recorded_class]" class="form-control" required>
+                                        <select name="details[0][recorded_class]" class="form-control select2" required>
                                             <option value="">নির্বাচন করুন</option>
                                             <option value="নাল">নাল</option>
                                             <option value="বাড়ী">বাড়ী</option>
@@ -297,7 +295,7 @@
                                 <div class="col-md-3">
                                     <div class="md-field">
                                         <label>বাস্তব শ্রেণি <span class="text-danger">*</span></label>
-                                        <select name="details[0][actual_class]" class="form-control" required>
+                                        <select name="details[0][actual_class]" class="form-control select2" required>
                                             <option value="">নির্বাচন করুন</option>
                                             <option value="নাল">নাল</option>
                                             <option value="বাড়ী">বাড়ী</option>
@@ -327,7 +325,7 @@
                                 <div class="col-md-3">
                                     <div class="md-field">
                                         <label>দখল সংক্রান্ত অবস্থা <span class="text-danger">*</span></label>
-                                        <select name="details[0][possession_status]" class="form-control" required>
+                                        <select name="details[0][possession_status]" class="form-control select2" required>
                                             <option value="">নির্বাচন করুন</option>
                                             <option value="সরকার পক্ষে">সরকার পক্ষে</option>
                                             <option value="দখলে">দখলে</option>
@@ -379,7 +377,7 @@
                                             <div class="md-field">
                                                 <label>Record</label>
                                                 <select name="location[{{ $index }}][record]" data-row="{{ $index }}"
-                                                    class="form-control location-record">
+                                                    class="form-control select2 location-record">
                                                     <option value="">Select</option>
                                                     @foreach ($records as $rec)
                                                         <option value="{{ $rec }}" @selected($row['record'] == $rec)>{{ $rec }}
@@ -394,7 +392,7 @@
                                                 <select name="location[{{ $index }}][district_id]" data-row="{{ $index }}"
                                                     data-selected-thana="{{ $row['thana_id'] }}"
                                                     data-selected-mouza="{{ $row['mouza_id'] }}"
-                                                    class="form-control location-district">
+                                                    class="form-control select2 location-district">
                                                     <option value="">Select</option>
                                                     @foreach ($districts as $district)
                                                         <option value="{{ $district->id }}" @selected((string) ($row['district_id'] ?? '') === (string) $district->id)>
@@ -408,7 +406,7 @@
                                             <div class="md-field">
                                                 <label>Upazila</label>
                                                 <select name="location[{{ $index }}][thana_id]" id="thana_{{ $index }}"
-                                                    class="form-control location-thana">
+                                                    class="form-control select2 location-thana">
                                                     <option value="">Select</option>
                                                 </select>
                                             </div>
@@ -417,7 +415,7 @@
                                             <div class="md-field">
                                                 <label>Mouza</label>
                                                 <select name="location[{{ $index }}][mouza_id]" id="mouza_{{ $index }}"
-                                                    class="form-control location-mouza">
+                                                    class="form-control select2 location-mouza">
                                                     <option value="">Select</option>
                                                 </select>
                                             </div>
@@ -425,7 +423,7 @@
                                         <div class="col-md-3">
                                             <div class="md-field">
                                                 <label>Record Group</label>
-                                                <select name="location[{{ $index }}][record_group]" class="form-control">
+                                                <select name="location[{{ $index }}][record_group]" class="form-control select2">
                                                     <option value="">Select</option>
                                                     @foreach ($recordGroups as $value => $label)
                                                         <option value="{{ $value }}" @selected($row['record_group'] == $value)>
@@ -493,16 +491,14 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="md-field">
-                                            <label>ফাইলের নাম / প্রমাণকের নাম <span class="text-danger">*</span></label>
-                                            <input type="text" name="attachments[0][name]" class="form-control md-control"
-                                                required>
+                                            <label>ফাইলের নাম / প্রমাণকের নাম</label>
+                                            <input type="text" name="attachments[0][name]" class="form-control md-control">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="md-field">
-                                            <label>ফাইল নির্বাচন করুন <span class="text-danger">*</span></label>
-                                            <input type="file" name="attachments[0][file]" class="form-control md-control"
-                                                required>
+                                            <label>ফাইল নির্বাচন করুন</label>
+                                            <input type="file" name="attachments[0][file]" class="form-control md-control">
                                         </div>
                                     </div>
                                 </div>
@@ -646,7 +642,7 @@
                                 <div class="col-md-3">
                                     <div class="md-field">
                                         <label>Record</label>
-                                        <select name="location[${index}][record]" data-row="${index}" class="form-control location-record">
+                                        <select name="location[${index}][record]" data-row="${index}" class="form-control select2 location-record">
                                             <option value="">Select</option>
                                             @foreach ($records as $rec)
                                                 <option value="{{ $rec }}">{{ $rec }}</option>
@@ -658,7 +654,7 @@
                                     <div class="md-field">
                                         <label>District</label>
                                         <select name="location[${index}][district_id]" data-row="${index}"
-                                            class="form-control location-district">
+                                            class="form-control select2 location-district">
                                             <option value="">Select</option>
                                             @foreach ($districts as $district)
                                                 <option value="{{ $district->id }}">{{ $district->name }}</option>
@@ -670,7 +666,7 @@
                                     <div class="md-field">
                                         <label>Upazila</label>
                                         <select name="location[${index}][thana_id]" id="thana_${index}"
-                                            class="form-control location-thana">
+                                            class="form-control select2 location-thana">
                                             <option value="">Select</option>
                                         </select>
                                     </div>
@@ -679,7 +675,7 @@
                                     <div class="md-field">
                                         <label>Mouza</label>
                                         <select name="location[${index}][mouza_id]" id="mouza_${index}"
-                                            class="form-control location-mouza">
+                                            class="form-control select2 location-mouza">
                                             <option value="">Select</option>
                                         </select>
                                     </div>
@@ -687,7 +683,7 @@
                                 <div class="col-md-3">
                                     <div class="md-field">
                                         <label>Record Group</label>
-                                        <select name="location[${index}][record_group]" class="form-control">
+                                        <select name="location[${index}][record_group]" class="form-control select2">
                                             <option value="">Select</option>
                                             @foreach ($recordGroups as $value => $label)
                                                 <option value="{{ $value }}">{{ $label }}</option>
@@ -731,6 +727,10 @@
 
             $(document).on('click', '.add-location', function () {
                 $('#location_wrap').append(locationTemplate(locationIndex));
+                $('#location_wrap').find('.select2').select2({
+                    theme: 'bootstrap4',
+                    width: '100%'
+                });
                 locationIndex++;
             });
 
@@ -746,9 +746,10 @@
                 $(this).closest('[data-location-item]').find('select').val('');
             });
 
-            // Dynamic Upazila loading
-            $('#district_id').on('change', function () {
-                let districtId = $(this).val();
+            // Dynamic Upazila loading for main form
+            function loadMainUpazilas() {
+                let districtId = $('#district_id').val();
+                let record = $('#record_type').val() || '';
                 let upazilaSelect = $('#upazila_id');
                 let mouzaSelect = $('#mouza_id');
 
@@ -756,8 +757,12 @@
                 mouzaSelect.html('<option value="">Select Mouza</option>').prop('disabled', true);
 
                 if (districtId) {
+                    let url = '/get-upazilas-by-district/' + districtId;
+                    if (record) {
+                        url += '?record=' + encodeURIComponent(record);
+                    }
                     $.ajax({
-                        url: '/get-upazilas-by-district/' + districtId,
+                        url: url,
                         type: 'GET',
                         success: function (response) {
                             upazilaSelect.html(response).prop('disabled', false);
@@ -768,6 +773,10 @@
                         }
                     });
                 }
+            }
+
+            $('#district_id, #record_type').on('change', function () {
+                loadMainUpazilas();
             });
 
             // Dynamic Mouza loading
@@ -807,14 +816,14 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="md-field">
-                                        <label>ফাইলের নাম / প্রমাণকের নাম <span class="text-danger">*</span></label>
-                                        <input type="text" name="attachments[${index}][name]" class="form-control md-control" required>
+                                        <label>ফাইলের নাম / প্রমাণকের নাম</label>
+                                        <input type="text" name="attachments[${index}][name]" class="form-control md-control">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="md-field">
-                                        <label>ফাইল নির্বাচন করুন <span class="text-danger">*</span></label>
-                                        <input type="file" name="attachments[${index}][file]" class="form-control md-control" required>
+                                        <label>ফাইল নির্বাচন করুন</label>
+                                        <input type="file" name="attachments[${index}][file]" class="form-control md-control">
                                     </div>
                                 </div>
                             </div>

@@ -266,7 +266,7 @@
                                 <div class="col-md-3">
                                     <div class="md-field">
                                         <label>রেকর্ডীয় শ্রেণি <span class="text-danger">*</span></label>
-                                        <select name="details[0][recorded_class]" class="form-control" required>
+                                        <select name="details[0][recorded_class]" class="form-control select2" required>
                                             <option value="">নির্বাচন করুন</option>
                                             <option value="নাল" {{ ($detail && $detail->recorded_class == 'নাল') ? 'selected' : '' }}>নাল</option>
                                             <option value="বাড়ী" {{ ($detail && $detail->recorded_class == 'বাড়ী') ? 'selected' : '' }}>বাড়ী</option>
@@ -284,7 +284,7 @@
                                 <div class="col-md-3">
                                     <div class="md-field">
                                         <label>বাস্তব শ্রেণি <span class="text-danger">*</span></label>
-                                        <select name="details[0][actual_class]" class="form-control" required>
+                                        <select name="details[0][actual_class]" class="form-control select2" required>
                                             <option value="">নির্বাচন করুন</option>
                                             <option value="নাল" {{ ($detail && $detail->actual_class == 'নাল') ? 'selected' : '' }}>নাল</option>
                                             <option value="বাড়ী" {{ ($detail && $detail->actual_class == 'বাড়ী') ? 'selected' : '' }}>বাড়ী</option>
@@ -314,7 +314,7 @@
                                 <div class="col-md-3">
                                     <div class="md-field">
                                         <label>দখল সংক্রান্ত অবস্থা <span class="text-danger">*</span></label>
-                                        <select name="details[0][possession_status]" class="form-control" required>
+                                        <select name="details[0][possession_status]" class="form-control select2" required>
                                             <option value="">নির্বাচন করুন</option>
                                             <option value="সরকার পক্ষে" {{ ($detail && $detail->possession_status == 'সরকার পক্ষে') ? 'selected' : '' }}>সরকার পক্ষে</option>
                                             <option value="দখলে" {{ ($detail && $detail->possession_status == 'দখলে') ? 'selected' : '' }}>দখলে</option>
