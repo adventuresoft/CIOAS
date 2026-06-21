@@ -339,6 +339,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     // Staff Routes
     Route::resource('staff', StaffController::class);
 
+    // Leave Application
+    Route::get('leave-application/api/staff-info', [\App\Http\Controllers\Backend\LeaveApplicationController::class, 'getStaffInfo'])->name('leave-application.api.staff_info');
+    Route::put('leave-application/{id}/update-status', [\App\Http\Controllers\Backend\LeaveApplicationController::class, 'updateStatus'])->name('leave-application.update-status');
+    Route::resource('leave-application', \App\Http\Controllers\Backend\LeaveApplicationController::class);
+
     Route::get('/staff/family/{userID}', [StaffFamilyInfoController::class, 'create'])->name('staff.family');
     Route::post('/staff/family-store', [StaffFamilyInfoController::class, 'store'])->name('staff.familyStore');
 
@@ -702,6 +707,15 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
         Route::get('/{id}/create', 'create')->whereNumber('id')->name('create');
         Route::post('/{id}', 'store')->whereNumber('id')->name('store');
     });
+
+    Route::controller(\App\Http\Controllers\InventoryRepairController::class)->prefix('inventory/maintenance/repair')->name('inventory.maintenance.repair.')->group(function () {
+        Route::get('/create', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/approvals', 'approvals')->name('approvals');
+        Route::get('/{id}', 'show')->whereNumber('id')->name('show');
+        Route::post('/{id}/status', 'updateStatus')->whereNumber('id')->name('update_status');
+    });
+
 
     Route::get('organizations', function () {
         return redirect()->route('organization.index');

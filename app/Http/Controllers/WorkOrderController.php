@@ -121,6 +121,7 @@ class WorkOrderController extends Controller
                 $woItem = new InventoryWorkOrderItem([
                     'inventory_work_order_id' => $workOrder->id,
                     'item_name' => $item['item_name'] ?? '',
+                    'product_type' => $item['product_type'] ?? null,
                     'category' => $item['category'] ?? null,
                     'unit' => $item['unit'] ?? null,
                     'required_quantity' => $requiredQuantity,

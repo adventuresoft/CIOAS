@@ -345,6 +345,7 @@
                                 <thead>
                                     <tr>
                                         <th style="min-width: 180px;">Item Name</th>
+                                        <th style="min-width: 150px;">Product Type</th>
                                         <th style="min-width: 170px;">Category</th>
                                         <th style="min-width: 120px;">Unit</th>
                                         <th style="min-width: 130px;">Required Qty</th>
@@ -361,7 +362,14 @@
                                                 <input type="text" class="form-control form-control-sm item-name" value="{{ $item['item_name'] }}" required>
                                             </td>
                                             <td>
-                                                <select class="form-control form-control-sm item-category" required>
+                                                <select class="form-control form-control-sm item-product-type" name="items[{{ $itemIndex }}][product_type]" required>
+                                                    <option value="">Select</option>
+                                                    <option value="One time use" {{ isset($item['product_type']) && $item['product_type'] === 'One time use' ? 'selected' : '' }}>One time use</option>
+                                                    <option value="All time use" {{ isset($item['product_type']) && $item['product_type'] === 'All time use' ? 'selected' : '' }}>All time use</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class="form-control form-control-sm item-category" name="items[{{ $itemIndex }}][category]" required>
                                                     <option value="">Select</option>
                                                     @foreach ($categories as $category)
                                                         <option value="{{ $category }}" {{ $category === $item['category'] ? 'selected' : '' }}>
@@ -1023,7 +1031,14 @@
                 row.innerHTML = `
                     <td><input type="text" class="form-control form-control-sm item-name" required></td>
                     <td>
-                        <select class="form-control form-control-sm item-category" required>
+                                                <select class="form-control form-control-sm item-product-type" name="items[{{ $itemIndex }}][product_type]" required>
+                                                    <option value="">Select</option>
+                                                    <option value="One time use" {{ isset($item['product_type']) && $item['product_type'] === 'One time use' ? 'selected' : '' }}>One time use</option>
+                                                    <option value="All time use" {{ isset($item['product_type']) && $item['product_type'] === 'All time use' ? 'selected' : '' }}>All time use</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class="form-control form-control-sm item-category" name="items[{{ $itemIndex }}][category]" required>
                             ${categoryOptions}
                         </select>
                     </td>

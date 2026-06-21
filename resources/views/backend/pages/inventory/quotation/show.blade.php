@@ -57,6 +57,7 @@
                             <thead class="bg-light">
                                 <tr>
                                     <th style="width: 40px;" class="text-center">SL</th>
+                                    <th>Product Type</th>
                                     <th>Category</th>
                                     <th>Item Name</th>
                                     <th>Unit</th>
@@ -67,6 +68,7 @@
                                 @forelse($quotation->items as $index => $item)
                                     <tr>
                                         <td class="text-center">{{ $index + 1 }}</td>
+                                        <td>{{ $item->product_type ?? '-' }}</td>
                                         <td>{{ $item->category ?? '-' }}</td>
                                         <td>{{ $item->item_name }}</td>
                                         <td>{{ $item->unit ?? '-' }}</td>
@@ -74,14 +76,14 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="text-center text-muted">No items found for this quotation.</td>
+                                        <td colspan="6" class="text-center text-muted">No items found for this quotation.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
                             @if($quotation->items->count() > 0)
                             <tfoot>
                                 <tr>
-                                    <th colspan="4" class="text-right">Total:</th>
+                                    <th colspan="5" class="text-right">Total:</th>
                                     <th class="text-right">{{ number_format($quotation->items->sum('price'), 2) }}</th>
                                 </tr>
                             </tfoot>
