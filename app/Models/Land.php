@@ -12,6 +12,7 @@ class Land extends Model
     protected $table = 'lands';
 
     protected $fillable = [
+        'land_no',
         'land_type',
         'record_type',
         'district_id',
@@ -19,8 +20,18 @@ class Land extends Model
         'mouza_id',
         'status',
         'created_by',
+        'updated_by',
+        'locations',
+        'details',
+        'documents',
         'approved_by',
         'approved_at'
+    ];
+
+    protected $casts = [
+        'locations' => 'array',
+        'details' => 'array',
+        'documents' => 'array',
     ];
 
     public function district()
@@ -38,18 +49,13 @@ class Land extends Model
         return $this->belongsTo(Mouza::class, 'mouza_id', 'id');
     }
 
-    public function details()
+    public function type()
     {
-        return $this->hasMany(LandDetail::class, 'land_id', 'id');
+        return $this->belongsTo(LandType::class, 'land_type', 'id');
     }
 
-    public function documents()
+    public function record()
     {
-        return $this->hasMany(LandDocument::class, 'land_id', 'id');
-    }
-
-    public function locations()
-    {
-        return $this->hasMany(LandLocation::class, 'land_id', 'id');
+        return $this->belongsTo(LandRecord::class, 'record_type', 'id');
     }
 }

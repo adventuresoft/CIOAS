@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Land;
-use App\Models\LandDetail;
-use App\Models\LandDocument;
-use App\Models\LandLocation;
 use App\Models\District;
 use App\Models\Upazila;
 use App\Models\Mouza;
+use App\Models\LandClass;
+use App\Models\LandType;
+use App\Models\LandRecord;
 use App\DataTables\LandDataTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -40,6 +40,9 @@ class LandController extends Controller
     public function create()
     {
         $data['districts'] = District::orderBy('name')->get();
+        $data['records'] = LandRecord::all();
+        $data['landTypes'] = LandType::all();
+        $data['recordGroups'] = LandClass::all();
         return view('backend.pages.land.create', $data);
     }
 
@@ -52,8 +55,8 @@ class LandController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'land_type' => 'required|string',
-            'record_type' => 'required|string',
+            'land_type' => 'required',
+            'record_type' => 'required',
             'district_id' => 'required|exists:districts,id',
             'upazila_id' => 'required|exists:upazilas,id',
             'mouza_id' => 'required|exists:mouzas,id',
@@ -85,28 +88,48 @@ class LandController extends Controller
         DB::beginTransaction();
 
         try {
+            $latest_land = Land::orderBy('id', 'desc')->first();
+            $old_land_info = $latest_land ? $latest_land->land_no : null;
+
+            if ($old_land_info && str_contains($old_land_info, '-')) {
+                $parts = explode('-', $old_land_info);
+                $old_land = isset($parts[2]) ? (int)$parts[2] : 0;
+            } else {
+                $old_land = 0;
+            }
+
+            $new_land = str_pad($old_land + 1, 4, '0', STR_PAD_LEFT);
+
+            $district = District::find($request->district_id);
+            $district_code = $district ? $district->code : '00';
+
+            $upazila = Upazila::find($request->upazila_id);
+            $upazila_code = $upazila ? $upazila->code : '00';
+
+            $mouza = Mouza::find($request->mouza_id);
+            $mouza_code = $mouza ? $mouza->code : '000';
+
+            $land_type_model = LandType::find($request->land_type);
+            $land_type_code = $land_type_model ? str_pad($land_type_model->id, 2, '0', STR_PAD_LEFT) : '00';
+
+            $land_no = $district_code . $upazila_code . $mouza_code . '-' . $land_type_code . '-' . $new_land;
+
             $land = Land::create([
+                'land_no' => $land_no,
                 'land_type' => $request->land_type,
+                'record_type' => $request->record_type,
+                'district_id' => $request->district_id,
+                'upazila_id' => $request->upazila_id,
+                'mouza_id' => $request->mouza_id,
                 'status' => 0, // Pending
                 'created_by' => auth()->id()
             ]);
 
-            if ($request->filled('district_id')) {
-                LandLocation::create([
-                    'land_id' => $land->id,
-                    'record_type' => $request->record_type,
-                    'district_id' => $request->district_id,
-                    'upazila_id' => $request->upazila_id,
-                    'mouza_id' => $request->mouza_id,
-                ]);
-            }
-
-            if ($request->has('location') && is_array($request->location)) {
+            $locations = [];
+            if ($request->has('location')) {
                 foreach ($request->location as $loc) {
-                    // Only save if at least some data is provided
                     if (!empty($loc['district_id']) || !empty($loc['dag_no'])) {
-                        LandLocation::create([
-                            'land_id' => $land->id,
+                        $locations[] = [
                             'record_type' => $loc['record'] ?? null,
                             'district_id' => $loc['district_id'] ?? null,
                             'upazila_id' => $loc['thana_id'] ?? null,
@@ -117,40 +140,48 @@ class LandController extends Controller
                             'total_dag_no' => $loc['total_dag_no'] ?? null,
                             'total_land' => $loc['total_land'] ?? null,
                             'owner_name' => $loc['record_owner_name'] ?? null,
-                        ]);
+                        ];
                     }
                 }
             }
 
-            foreach ($request->details as $row) {
-                LandDetail::create([
-                    'land_id' => $land->id,
-                    'dag_no' => $row['dag_no'],
-                    'khatian_no' => $row['khatian_no'],
-                    'recorded_owner_name' => $row['recorded_owner_name'] ?? null,
-                    'recorded_class' => $row['recorded_class'],
-                    'actual_class' => $row['actual_class'],
-                    'total_land' => $row['total_land'],
-                    'land_amount' => $row['land_amount'],
-                    'possession_status' => $row['possession_status'],
-                    'case_no' => $row['case_no'] ?? null,
-                    'gazette_no' => $row['gazette_no'] ?? null,
-                    'remarks' => $row['remarks'] ?? null,
-                ]);
+            $details = [];
+            if ($request->has('details')) {
+                foreach ($request->details as $row) {
+                    $details[] = [
+                        'dag_no' => $row['dag_no'] ?? null,
+                        'khatian_no' => $row['khatian_no'] ?? null,
+                        'recorded_owner_name' => $row['recorded_owner_name'] ?? null,
+                        'recorded_class' => $row['recorded_class'] ?? null,
+                        'actual_class' => $row['actual_class'] ?? null,
+                        'total_land' => $row['total_land'] ?? null,
+                        'land_amount' => $row['land_amount'] ?? null,
+                        'possession_status' => $row['possession_status'] ?? null,
+                        'case_no' => $row['case_no'] ?? null,
+                        'gazette_no' => $row['gazette_no'] ?? null,
+                        'remarks' => $row['remarks'] ?? null,
+                    ];
+                }
             }
 
+            $documents = [];
             if ($request->has('attachments')) {
                 foreach ($request->attachments as $attachment) {
                     if (isset($attachment['file']) && $attachment['file']->isValid()) {
                         $path = $attachment['file']->store('lands', 'public');
-                        LandDocument::create([
-                            'land_id' => $land->id,
-                            'document_name' => $attachment['name'],
+                        $documents[] = [
+                            'document_name' => $attachment['name'] ?? null,
                             'file_path' => $path
-                        ]);
+                        ];
                     }
                 }
             }
+
+            $land->update([
+                'locations' => $locations,
+                'details' => $details,
+                'documents' => $documents,
+            ]);
 
             DB::commit();
 
@@ -176,7 +207,8 @@ class LandController extends Controller
      */
     public function show($id)
     {
-        $data['land'] = Land::with(['district', 'upazila', 'mouza', 'details', 'documents'])->findOrFail($id);
+        $data['land'] = Land::with(['district', 'upazila', 'mouza'])->findOrFail($id);
+        $data['recordGroups'] = LandClass::all();
         return view('backend.pages.land.show', $data);
     }
 
@@ -188,12 +220,15 @@ class LandController extends Controller
      */
     public function edit($id)
     {
-        $land = Land::with(['details', 'documents'])->findOrFail($id);
+        $land = Land::findOrFail($id);
 
         $data['land'] = $land;
         $data['districts'] = District::orderBy('name')->get();
         $data['upazilas'] = Upazila::where('district_id', $land->district_id)->get();
         $data['mouzas'] = Mouza::where('upazila_id', $land->upazila_id)->get();
+        $data['records'] = LandRecord::all();
+        $data['landTypes'] = LandType::all();
+        $data['recordGroups'] = LandClass::all();
 
         return view('backend.pages.land.edit', $data);
     }
@@ -210,8 +245,8 @@ class LandController extends Controller
         $land = Land::findOrFail($id);
 
         $validate = Validator::make($request->all(), [
-            'land_type' => 'required|string',
-            'record_type' => 'required|string',
+            'land_type' => 'required',
+            'record_type' => 'required',
             'district_id' => 'required|exists:districts,id',
             'upazila_id' => 'required|exists:upazilas,id',
             'mouza_id' => 'required|exists:mouzas,id',
@@ -243,43 +278,56 @@ class LandController extends Controller
         DB::beginTransaction();
 
         try {
-            $land->update([
-                'land_type' => $request->land_type,
-                'record_type' => $request->record_type,
-                'district_id' => $request->district_id,
-                'upazila_id' => $request->upazila_id,
-                'mouza_id' => $request->mouza_id
-            ]);
-
-            // Delete old details
-            $land->details()->delete();
-
-            foreach ($request->details as $row) {
-                LandDetail::create([
-                    'land_id' => $land->id,
-                    'dag_no' => $row['dag_no'],
-                    'khatian_no' => $row['khatian_no'],
-                    'recorded_owner_name' => $row['recorded_owner_name'] ?? null,
-                    'recorded_class' => $row['recorded_class'],
-                    'actual_class' => $row['actual_class'],
-                    'total_land' => $row['total_land'],
-                    'land_amount' => $row['land_amount'],
-                    'possession_status' => $row['possession_status'],
-                    'case_no' => $row['case_no'] ?? null,
-                    'gazette_no' => $row['gazette_no'] ?? null,
-                    'remarks' => $row['remarks'] ?? null,
-                ]);
+            $locations = [];
+            if ($request->has('location')) {
+                foreach ($request->location as $loc) {
+                    if (!empty($loc['district_id']) || !empty($loc['dag_no'])) {
+                        $locations[] = [
+                            'record_type' => $loc['record'] ?? null,
+                            'district_id' => $loc['district_id'] ?? null,
+                            'upazila_id' => $loc['thana_id'] ?? null,
+                            'mouza_id' => $loc['mouza_id'] ?? null,
+                            'record_group' => $loc['record_group'] ?? null,
+                            'dag_no' => $loc['dag_no'] ?? null,
+                            'khatian_no' => $loc['khatian'] ?? null,
+                            'total_dag_no' => $loc['total_dag_no'] ?? null,
+                            'total_land' => $loc['total_land'] ?? null,
+                            'owner_name' => $loc['record_owner_name'] ?? null,
+                        ];
+                    }
+                }
             }
+
+            $details = [];
+            if ($request->has('details')) {
+                foreach ($request->details as $row) {
+                    $details[] = [
+                        'dag_no' => $row['dag_no'] ?? null,
+                        'khatian_no' => $row['khatian_no'] ?? null,
+                        'recorded_owner_name' => $row['recorded_owner_name'] ?? null,
+                        'recorded_class' => $row['recorded_class'] ?? null,
+                        'actual_class' => $row['actual_class'] ?? null,
+                        'total_land' => $row['total_land'] ?? null,
+                        'land_amount' => $row['land_amount'] ?? null,
+                        'possession_status' => $row['possession_status'] ?? null,
+                        'case_no' => $row['case_no'] ?? null,
+                        'gazette_no' => $row['gazette_no'] ?? null,
+                        'remarks' => $row['remarks'] ?? null,
+                    ];
+                }
+            }
+
+            $documents = is_array($land->documents) ? $land->documents : [];
 
             // Handle deleted document removal if any are requested
             if ($request->has('remove_documents')) {
-                foreach ($request->remove_documents as $docId) {
-                    $doc = LandDocument::find($docId);
-                    if ($doc) {
-                        Storage::disk('public')->delete($doc->file_path);
-                        $doc->delete();
-                    }
+                foreach ($request->remove_documents as $docPath) {
+                    $documents = array_filter($documents, function($doc) use ($docPath) {
+                        return $doc['file_path'] !== $docPath;
+                    });
+                    Storage::disk('public')->delete($docPath);
                 }
+                $documents = array_values($documents);
             }
 
             // Handle new attachments
@@ -287,14 +335,24 @@ class LandController extends Controller
                 foreach ($request->attachments as $attachment) {
                     if (isset($attachment['file']) && $attachment['file']->isValid()) {
                         $path = $attachment['file']->store('lands', 'public');
-                        LandDocument::create([
-                            'land_id' => $land->id,
-                            'document_name' => $attachment['name'],
+                        $documents[] = [
+                            'document_name' => $attachment['name'] ?? null,
                             'file_path' => $path
-                        ]);
+                        ];
                     }
                 }
             }
+
+            $land->update([
+                'land_type' => $request->land_type,
+                'record_type' => $request->record_type,
+                'district_id' => $request->district_id,
+                'upazila_id' => $request->upazila_id,
+                'mouza_id' => $request->mouza_id,
+                'locations' => $locations,
+                'details' => $details,
+                'documents' => $documents,
+            ]);
 
             DB::commit();
 
@@ -325,13 +383,14 @@ class LandController extends Controller
         DB::beginTransaction();
 
         try {
-            // Delete files from storage
-            foreach ($land->documents as $doc) {
-                Storage::disk('public')->delete($doc->file_path);
+            // Delete associated documents from storage
+            if (is_array($land->documents)) {
+                foreach ($land->documents as $doc) {
+                    Storage::disk('public')->delete($doc['file_path']);
+                }
             }
 
             $land->delete();
-
             DB::commit();
 
             return response()->json([

@@ -1,6 +1,39 @@
 @extends('backend.master', ['mainMenu' => 'Land', 'subMenu' => 'LandList'])
 
-@section('title', 'জমির রেকর্ড সংশোধন')
+@section('title', 'জমির রেকর্ড সম্পাদনা')
+
+@php
+    $blankLocation = [
+        'record' => '',
+        'district_id' => '',
+        'thana_id' => '',
+        'mouza_id' => '',
+        'dag_no' => '',
+        'khatian' => '',
+        'record_group' => '',
+        'total_dag_no' => '',
+        'total_land' => '',
+        'record_owner_name' => '',
+    ];
+    $locationRows = is_array($land->locations) && count($land->locations) ? $land->locations : [$blankLocation];
+    
+    $blankDetail = [
+        'dag_no' => '',
+        'khatian_no' => '',
+        'recorded_owner_name' => '',
+        'recorded_class' => '',
+        'actual_class' => '',
+        'total_land' => '',
+        'land_amount' => '',
+        'possession_status' => '',
+        'case_no' => '',
+        'gazette_no' => '',
+        'remarks' => '',
+    ];
+    $detailRows = is_array($land->details) && count($land->details) ? $land->details : [$blankDetail];
+    
+    $documentRows = is_array($land->documents) ? $land->documents : [];
+@endphp
 
 @push('style')
     <style>
@@ -148,12 +181,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>জমির রেকর্ড সংশোধন</h1>
+                    <h1>নতুন জমির এন্ট্রি</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('land.index') }}">জমির রেকর্ড</a></li>
-                        <li class="breadcrumb-item active">সংশোধন</li>
+                        <li class="breadcrumb-item active">সম্পাদনা</li>
                     </ol>
                 </div>
             </div>
@@ -164,13 +197,15 @@
         <div class="container-fluid">
             <div class="miscase-shell">
 
-                <form id="landRecordForm" method="POST" enctype="multipart/form-data" action="{{ route('land.update', $land->id) }}">
+                <form id="FormSubmit" method="POST" enctype="multipart/form-data" action="{{ route('land.update', $land->id) }}"
+                    data-url="{{ route('land.update', $land->id) }}" data-redirect-url="{{ route('land.index') }}">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="approve" id="approve_input" value="0">
 
                     <div class="miscase-panel">
                         <div class="miscase-panel-header">
-                            <h3 class="miscase-panel-title"><i class="fas fa-map-marked-alt"></i> জমির রেকর্ড সংশোধন ফরম</h3>
+                            <h3 class="miscase-panel-title"><i class="fas fa-map-marked-alt"></i> জমির এন্ট্রি ফরম</h3>
                         </div>
                         <div class="miscase-panel-body">
                             <div class="row">
@@ -179,8 +214,9 @@
                                         <label for="land_type">জমির ধরণ <span class="text-danger">*</span></label>
                                         <select name="land_type" id="land_type" class="form-control select2" required>
                                             <option value="">Select Land Type</option>
-                                            <option value="অকৃষি" {{ $land->land_type == 'অকৃষি' ? 'selected' : '' }}>অকৃষি</option>
-                                            <option value="কৃষি" {{ $land->land_type == 'কৃষি' ? 'selected' : '' }}>কৃষি</option>
+                                            @foreach($landTypes as $type)
+                                                <option value="{{ $type->id }}" @selected($land->land_type == $type->id)>{{ $type->bn_name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -189,12 +225,9 @@
                                         <label for="record_type">রেকর্ড <span class="text-danger">*</span></label>
                                         <select name="record_type" id="record_type" class="form-control select2" required>
                                             <option value="">Select Record</option>
-                                            <option value="সি.এস" {{ $land->record_type == 'সি.এস' ? 'selected' : '' }}>সি.এস (CS)</option>
-                                            <option value="এস.এ" {{ $land->record_type == 'এস.এ' ? 'selected' : '' }}>এস.এ (SA)</option>
-                                            <option value="আর.এস" {{ $land->record_type == 'আর.এস' ? 'selected' : '' }}>আর.এস (RS)</option>
-                                            <option value="বি.এস" {{ $land->record_type == 'বি.এস' ? 'selected' : '' }}>বি.এস (BS)</option>
-                                            <option value="দিয়াড়া" {{ $land->record_type == 'দিয়াড়া' ? 'selected' : '' }}>দিয়াড়া (Diara)</option>
-                                            <option value="পেটি" {{ $land->record_type == 'পেটি' ? 'selected' : '' }}>পেটি (Peti)</option>
+                                            @foreach($records as $rec)
+                                                <option value="{{ $rec->id }}" @selected($land->record_type == $rec->id)>{{ $rec->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -205,7 +238,7 @@
                                         <select name="district_id" id="district_id" class="form-control select2" required>
                                             <option value="">Select District</option>
                                             @foreach($districts as $district)
-                                                <option value="{{ $district->id }}" {{ $land->district_id == $district->id ? 'selected' : '' }}>{{ $district->name }}</option>
+                                                <option value="{{ $district->id }}" @selected($land->district_id == $district->id)>{{ $district->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -216,7 +249,7 @@
                                         <select name="upazila_id" id="upazila_id" class="form-control select2" required>
                                             <option value="">Select Upazila</option>
                                             @foreach($upazilas as $upazila)
-                                                <option value="{{ $upazila->id }}" {{ $land->upazila_id == $upazila->id ? 'selected' : '' }}>{{ $upazila->name }}</option>
+                                                <option value="{{ $upazila->id }}" @selected($land->upazila_id == $upazila->id)>{{ $upazila->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -227,7 +260,7 @@
                                         <select name="mouza_id" id="mouza_id" class="form-control select2" required>
                                             <option value="">Select Mouza</option>
                                             @foreach($mouzas as $mouza)
-                                                <option value="{{ $mouza->id }}" {{ $land->mouza_id == $mouza->id ? 'selected' : '' }}>{{ $mouza->name }}</option>
+                                                <option value="{{ $mouza->id }}" @selected($land->mouza_id == $mouza->id)>{{ $mouza->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -239,161 +272,294 @@
                     <div class="miscase-panel">
                         <div class="miscase-panel-header">
                             <h3 class="miscase-panel-title"><i class="fas fa-list-ol"></i> জমির বিবরণ</h3>
+                            <button class="btn btn-sm btn-outline-success add-detail" type="button"><i
+                                    class="fas fa-plus"></i> Add More</button>
                         </div>
-                        <div class="miscase-panel-body">
-                            <div class="row">
-                                @php
-                                    $detail = $land->details->first();
-                                @endphp
-                                <div class="col-md-3">
-                                    <div class="md-field">
-                                        <label>দাগ নং <span class="text-danger">*</span></label>
-                                        <input type="text" name="details[0][dag_no]" class="form-control md-control" value="{{ $detail ? $detail->dag_no : '' }}" required>
+                        <div class="miscase-panel-body" id="detail_wrap">
+                            @foreach($detailRows as $dIndex => $detailRow)
+                            <div class="party-item" data-detail-item>
+                                <div class="party-item-top">
+                                    <span class="party-item-title">Detail Information</span>
+                                    <button type="button" class="btn btn-sm btn-outline-danger remove-detail">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>দাগ নং <span class="text-danger">*</span></label>
+                                            <input type="text" name="details[{{ $dIndex }}][dag_no]" value="{{ $detailRow['dag_no'] ?? '' }}" class="form-control md-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>খতিয়ান নং <span class="text-danger">*</span></label>
+                                            <input type="text" name="details[{{ $dIndex }}][khatian_no]" value="{{ $detailRow['khatian_no'] ?? '' }}" class="form-control md-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>রেকর্ডীয় মালিকের নাম</label>
+                                            <input type="text" name="details[{{ $dIndex }}][recorded_owner_name]" value="{{ $detailRow['recorded_owner_name'] ?? '' }}" class="form-control md-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>রেকর্ডীয় শ্রেণি <span class="text-danger">*</span></label>
+                                            <select name="details[{{ $dIndex }}][recorded_class]" class="form-control select2" required>
+                                                <option value="">নির্বাচন করুন</option>
+                                                @foreach($recordGroups as $group)
+                                                    <option value="{{ $group->id }}" @selected(($detailRow['recorded_class'] ?? '') == $group->id)>{{ $group->bn_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>বাস্তব শ্রেণি <span class="text-danger">*</span></label>
+                                            <select name="details[{{ $dIndex }}][actual_class]" class="form-control select2" required>
+                                                <option value="">নির্বাচন করুন</option>
+                                                @foreach($recordGroups as $group)
+                                                    <option value="{{ $group->id }}" @selected(($detailRow['actual_class'] ?? '') == $group->id)>{{ $group->bn_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>দাগে মোট জমি (একর) <span class="text-danger">*</span></label>
+                                            <input type="number" step="any" name="details[{{ $dIndex }}][total_land]" value="{{ $detailRow['total_land'] ?? '' }}" class="form-control md-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>জমির পরিমাণ (একর) <span class="text-danger">*</span></label>
+                                            <input type="number" step="any" name="details[{{ $dIndex }}][land_amount]" value="{{ $detailRow['land_amount'] ?? '' }}" class="form-control md-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>দখল সংক্রান্ত অবস্থা <span class="text-danger">*</span></label>
+                                            <select name="details[{{ $dIndex }}][possession_status]" class="form-control select2" required>
+                                                <option value="">নির্বাচন করুন</option>
+                                                @foreach(['সরকার পক্ষে', 'দখলে', 'বেদখল', 'অন্যান্য'] as $opt)
+                                                    <option value="{{ $opt }}" @selected(($detailRow['possession_status'] ?? '') == $opt)>{{ $opt }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>মামলা নং</label>
+                                            <input type="text" name="details[{{ $dIndex }}][case_no]" value="{{ $detailRow['case_no'] ?? '' }}" class="form-control md-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>গেজেট/প্রমাণক নাম্বার</label>
+                                            <input type="text" name="details[{{ $dIndex }}][gazette_no]" value="{{ $detailRow['gazette_no'] ?? '' }}" class="form-control md-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="md-field">
+                                            <label>মন্তব্য</label>
+                                            <input type="text" name="details[{{ $dIndex }}][remarks]" value="{{ $detailRow['remarks'] ?? '' }}" class="form-control md-control">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="md-field">
-                                        <label>খতিয়ান নং <span class="text-danger">*</span></label>
-                                        <input type="text" name="details[0][khatian_no]" class="form-control md-control" value="{{ $detail ? $detail->khatian_no : '' }}" required>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="miscase-panel">
+                        <div class="miscase-panel-header">
+                            <h3 class="miscase-panel-title"><i class="fas fa-map-marked-alt"></i> Location And Land Records
+                            </h3>
+                            <button class="btn btn-sm btn-outline-success add-location" type="button"><i
+                                    class="fas fa-plus"></i> Add More</button>
+                        </div>
+                        <div class="miscase-panel-body" id="location_wrap">
+                            @foreach ($locationRows as $index => $row)
+                                <div class="party-item" data-location-item>
+                                    <div class="party-item-top">
+                                        <span class="party-item-title">Location Information</span>
+                                        <button type="button" class="btn btn-sm btn-outline-danger remove-location">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="md-field">
+                                                <label>Record</label>
+                                                <select name="location[{{ $index }}][record]" data-row="{{ $index }}"
+                                                    class="form-control select2 location-record">
+                                                    <option value="">Select</option>
+                                                    @foreach ($records as $rec)
+                                                        <option value="{{ $rec->id }}" @selected($row['record'] == $rec->id)>{{ $rec->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="md-field">
+                                                <label>District</label>
+                                                <select name="location[{{ $index }}][district_id]" data-row="{{ $index }}"
+                                                    data-selected-thana="{{ $row['thana_id'] }}"
+                                                    data-selected-mouza="{{ $row['mouza_id'] }}"
+                                                    class="form-control select2 location-district">
+                                                    <option value="">Select</option>
+                                                    @foreach ($districts as $district)
+                                                        <option value="{{ $district->id }}" @selected((string) ($row['district_id'] ?? '') === (string) $district->id)>
+                                                            {{ $district->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="md-field">
+                                                <label>Upazila</label>
+                                                <select name="location[{{ $index }}][thana_id]" id="thana_{{ $index }}"
+                                                    class="form-control select2 location-thana">
+                                                    <option value="">Select</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="md-field">
+                                                <label>Mouza</label>
+                                                <select name="location[{{ $index }}][mouza_id]" id="mouza_{{ $index }}"
+                                                    class="form-control select2 location-mouza">
+                                                    <option value="">Select</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="md-field">
+                                                <label>Record Group</label>
+                                                <select name="location[{{ $index }}][record_group]" class="form-control select2">
+                                                    <option value="">Select</option>
+                                                    @foreach ($recordGroups as $group)
+                                                        <option value="{{ $group->id }}" @selected($row['record_group'] == $group->id)>
+                                                            {{ $group->bn_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="md-field">
+                                                <label>Dag no</label>
+                                                <input type="text" name="location[{{ $index }}][dag_no]"
+                                                    class="form-control md-control" value="{{ $row['dag_no'] }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="md-field">
+                                                <label>Khatian</label>
+                                                <input type="text" name="location[{{ $index }}][khatian]"
+                                                    class="form-control md-control" value="{{ $row['khatian'] }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="md-field">
+                                                <label>Total Dag no</label>
+                                                <input type="text" name="location[{{ $index }}][total_dag_no]"
+                                                    class="form-control md-control" value="{{ $row['total_dag_no'] }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="md-field mb-0">
+                                                <label>Total Land</label>
+                                                <input type="text" name="location[{{ $index }}][total_land]"
+                                                    class="form-control md-control" value="{{ $row['total_land'] }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="md-field mb-0">
+                                                <label>Owner Name</label>
+                                                <input type="text" name="location[{{ $index }}][record_owner_name]"
+                                                    class="form-control md-control" value="{{ $row['record_owner_name'] }}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="md-field">
-                                        <label>রেকর্ডীয় মালিকের নাম</label>
-                                        <input type="text" name="details[0][recorded_owner_name]" class="form-control md-control" value="{{ $detail ? $detail->recorded_owner_name : '' }}">
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="miscase-panel">
+                        <div class="miscase-panel-header">
+                            <h3 class="miscase-panel-title"><i class="fas fa-paperclip"></i> গেজেট/প্রমাণক / ছবি সংযোজন</h3>
+                            <button class="btn btn-sm btn-outline-success add-file" type="button"><i
+                                    class="fas fa-plus"></i> Add More</button>
+                        </div>
+                        <div class="miscase-panel-body" id="file_wrap">
+                            @foreach($documentRows as $doc)
+                                <div class="party-item" data-file-item>
+                                    <div class="party-item-top">
+                                        <span class="party-item-title">Attachment</span>
+                                        <button type="button" class="btn btn-sm btn-outline-danger remove-existing-file" data-path="{{ $doc['file_path'] }}">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        <input type="hidden" name="existing_documents[]" value="{{ $doc['file_path'] }}">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="md-field">
+                                                <label>ফাইলের নাম / প্রমাণকের নাম</label>
+                                                <input type="text" class="form-control md-control" value="{{ $doc['document_name'] ?? 'Document' }}" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="md-field">
+                                                <label>বর্তমান ফাইল</label>
+                                                <div>
+                                                    <a href="{{ asset('storage/' . $doc['file_path']) }}" target="_blank" class="btn btn-sm btn-info text-white">
+                                                        <i class="fas fa-eye"></i> View File
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="md-field">
-                                        <label>রেকর্ডীয় শ্রেণি <span class="text-danger">*</span></label>
-                                        <select name="details[0][recorded_class]" class="form-control select2" required>
-                                            <option value="">নির্বাচন করুন</option>
-                                            <option value="নাল" {{ ($detail && $detail->recorded_class == 'নাল') ? 'selected' : '' }}>নাল</option>
-                                            <option value="বাড়ী" {{ ($detail && $detail->recorded_class == 'বাড়ী') ? 'selected' : '' }}>বাড়ী</option>
-                                            <option value="ভিটি" {{ ($detail && $detail->recorded_class == 'ভিটি') ? 'selected' : '' }}>ভিটি</option>
-                                            <option value="নালা" {{ ($detail && $detail->recorded_class == 'নালা') ? 'selected' : '' }}>নালা</option>
-                                            <option value="পুকুর" {{ ($detail && $detail->recorded_class == 'পুকুর') ? 'selected' : '' }}>পুকুর</option>
-                                            <option value="ডোবা" {{ ($detail && $detail->recorded_class == 'ডোবা') ? 'selected' : '' }}>ডোবা</option>
-                                            <option value="পতিত" {{ ($detail && $detail->recorded_class == 'পতিত') ? 'selected' : '' }}>পতিত</option>
-                                            <option value="বাগান" {{ ($detail && $detail->recorded_class == 'বাগান') ? 'selected' : '' }}>বাগান</option>
-                                            <option value="রাস্তা" {{ ($detail && $detail->recorded_class == 'রাস্তা') ? 'selected' : '' }}>রাস্তা</option>
-                                            <option value="অন্যান্য" {{ ($detail && $detail->recorded_class == 'অন্যান্য') ? 'selected' : '' }}>অন্যান্য</option>
-                                        </select>
-                                    </div>
+                            @endforeach
+                            <div class="party-item" data-file-item>
+                                <div class="party-item-top">
+                                    <span class="party-item-title">New Attachment</span>
+                                    <button type="button" class="btn btn-sm btn-outline-danger remove-file">
+                                        <i class="fas fa-times"></i>
+                                    </button>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="md-field">
-                                        <label>বাস্তব শ্রেণি <span class="text-danger">*</span></label>
-                                        <select name="details[0][actual_class]" class="form-control select2" required>
-                                            <option value="">নির্বাচন করুন</option>
-                                            <option value="নাল" {{ ($detail && $detail->actual_class == 'নাল') ? 'selected' : '' }}>নাল</option>
-                                            <option value="বাড়ী" {{ ($detail && $detail->actual_class == 'বাড়ী') ? 'selected' : '' }}>বাড়ী</option>
-                                            <option value="ভিটি" {{ ($detail && $detail->actual_class == 'ভিটি') ? 'selected' : '' }}>ভিটি</option>
-                                            <option value="নালা" {{ ($detail && $detail->actual_class == 'নালা') ? 'selected' : '' }}>নালা</option>
-                                            <option value="পুকুর" {{ ($detail && $detail->actual_class == 'পুকুর') ? 'selected' : '' }}>পুকুর</option>
-                                            <option value="ডোবা" {{ ($detail && $detail->actual_class == 'ডোবা') ? 'selected' : '' }}>ডোবা</option>
-                                            <option value="পতিত" {{ ($detail && $detail->actual_class == 'পতিত') ? 'selected' : '' }}>পতিত</option>
-                                            <option value="বাগান" {{ ($detail && $detail->actual_class == 'বাগান') ? 'selected' : '' }}>বাগান</option>
-                                            <option value="রাস্তা" {{ ($detail && $detail->actual_class == 'রাস্তা') ? 'selected' : '' }}>রাস্তা</option>
-                                            <option value="অন্যান্য" {{ ($detail && $detail->actual_class == 'অন্যান্য') ? 'selected' : '' }}>অন্যান্য</option>
-                                        </select>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="md-field">
+                                            <label>ফাইলের নাম / প্রমাণকের নাম</label>
+                                            <input type="text" name="attachments[0][name]" class="form-control md-control">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="md-field">
-                                        <label>দাগে মোট জমি (একর) <span class="text-danger">*</span></label>
-                                        <input type="number" step="any" name="details[0][total_land]" class="form-control md-control" value="{{ $detail ? $detail->total_land : '' }}" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="md-field">
-                                        <label>জমির পরিমাণ (একর) <span class="text-danger">*</span></label>
-                                        <input type="number" step="any" name="details[0][land_amount]" class="form-control md-control" value="{{ $detail ? $detail->land_amount : '' }}" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="md-field">
-                                        <label>দখল সংক্রান্ত অবস্থা <span class="text-danger">*</span></label>
-                                        <select name="details[0][possession_status]" class="form-control select2" required>
-                                            <option value="">নির্বাচন করুন</option>
-                                            <option value="সরকার পক্ষে" {{ ($detail && $detail->possession_status == 'সরকার পক্ষে') ? 'selected' : '' }}>সরকার পক্ষে</option>
-                                            <option value="দখলে" {{ ($detail && $detail->possession_status == 'দখলে') ? 'selected' : '' }}>দখলে</option>
-                                            <option value="বেদখল" {{ ($detail && $detail->possession_status == 'বেদখল') ? 'selected' : '' }}>বেদখল</option>
-                                            <option value="অন্যান্য" {{ ($detail && $detail->possession_status == 'অন্যান্য') ? 'selected' : '' }}>অন্যান্য</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="md-field">
-                                        <label>মামলা নং</label>
-                                        <input type="text" name="details[0][case_no]" class="form-control md-control" value="{{ $detail ? $detail->case_no : '' }}">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="md-field">
-                                        <label>গেজেট/প্রমাণক নাম্বার</label>
-                                        <input type="text" name="details[0][gazette_no]" class="form-control md-control" value="{{ $detail ? $detail->gazette_no : '' }}">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="md-field">
-                                        <label>মন্তব্য</label>
-                                        <input type="text" name="details[0][remarks]" class="form-control md-control" value="{{ $detail ? $detail->remarks : '' }}">
+                                    <div class="col-md-6">
+                                        <div class="md-field">
+                                            <label>ফাইল নির্বাচন করুন</label>
+                                            <input type="file" name="attachments[0][file]" class="form-control md-control">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="miscase-panel">
-                        <div class="miscase-panel-header">
-                            <h3 class="miscase-panel-title"><i class="fas fa-paperclip"></i> বিদ্যমান ফাইলসমূহ</h3>
-                        </div>
-                        <div class="miscase-panel-body">
-                            @if(count($land->documents))
-                                <div class="row">
-                                    @foreach($land->documents as $doc)
-                                        <div class="col-md-4 mb-3 existing-doc-row" data-id="{{ $doc->id }}">
-                                            <div class="party-item mb-0" style="padding: 10px;">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <span class="text-truncate mr-2">
-                                                        <i class="far fa-file-alt text-primary mr-1"></i>
-                                                        <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" title="{{ $doc->document_name }}">
-                                                            {{ \Illuminate\Support\Str::limit($doc->document_name, 25) }}
-                                                        </a>
-                                                    </span>
-                                                    <button type="button" class="btn btn-sm btn-outline-danger btn-remove-existing-doc" data-id="{{ $doc->id }}">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @else
-                                <p class="text-muted mb-0">কোনো ফাইল যুক্ত করা হয়নি।</p>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="miscase-panel">
-                        <div class="miscase-panel-header">
-                            <h3 class="miscase-panel-title"><i class="fas fa-paperclip"></i> নতুন গেজেট/প্রমাণক / ছবি সংযোজন</h3>
-                            <button class="btn btn-sm btn-outline-success add-file" type="button"><i class="fas fa-plus"></i> Add More</button>
-                        </div>
-                        <div class="miscase-panel-body" id="file_wrap">
-                            <!-- New attachments will be added here -->
-                        </div>
-                    </div>
-
-                    <div id="removedDocumentsContainer"></div>
-
                     <div class="miscase-actions">
                         <a href="{{ route('land.index') }}" class="btn btn-light btn-material">
                             <i class="fas fa-arrow-left"></i> Cancel
                         </a>
                         <button type="submit" class="btn btn-material btn-material-primary" id="btnSave">
-                            <i class="fas fa-save"></i> সংশোধন করুন
+                            <i class="fas fa-save"></i> সংরক্ষণ করুন
+                        </button>
+                        <button type="button" class="btn btn-material btn-info" id="btnApprove" style="color:white">
+                            <i class="fas fa-check-double"></i> অনুমোদন করুন
                         </button>
                     </div>
                 </form>
@@ -405,19 +571,230 @@
 
 @push('script')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.select2').select2({
                 theme: 'bootstrap4',
                 width: '100%'
             });
 
-            // Initialize counters based on existing count
-            let detailIndex = {{ count($land->details) }};
+            let detailIndex = {{ count($detailRows) }};
             let fileIndex = 1;
+            let locationIndex = {{ count($locationRows) }};
 
-            // Dynamic Upazila loading
-            $('#district_id').on('change', function() {
+            function refreshSelect($select) {
+                $select.trigger('change.select2');
+            }
+
+            function resetSelect($select, placeholder) {
+                $select.html('<option value="">' + placeholder + '</option>');
+                refreshSelect($select);
+            }
+
+            function loadMouzas(row, thanaId, selectedMouza = '') {
+                let mouza = $('#mouza_' + row);
+                resetSelect(mouza, 'Loading...');
+
+                if (!thanaId) {
+                    resetSelect(mouza, 'Select');
+                    return;
+                }
+
+                $.ajax({
+                    url: '/get-mouzas-by-thana/' + thanaId,
+                    success: function (response) {
+                        mouza.html(response);
+                        if (selectedMouza) {
+                            mouza.val(String(selectedMouza));
+                        }
+                        refreshSelect(mouza);
+                    },
+                    error: function () {
+                        resetSelect(mouza, 'Select');
+                    }
+                });
+            }
+
+            function loadThanas(row, districtId, selectedThana = '', selectedMouza = '') {
+                let thana = $('#thana_' + row);
+                let record = $('select[name="location[' + row + '][record]"]').val() || '';
+                resetSelect(thana, 'Loading...');
+
+                if (!districtId) {
+                    resetSelect(thana, 'Select');
+                    resetSelect($('#mouza_' + row), 'Select');
+                    return;
+                }
+
+                let url = '/get-upazilas-by-district/' + districtId;
+                if (record) {
+                    url += '?record=' + encodeURIComponent(record);
+                }
+
+                $.ajax({
+                    url: url,
+                    success: function (response) {
+                        thana.html(response);
+                        if (selectedThana) {
+                            thana.val(String(selectedThana));
+                            loadMouzas(row, selectedThana, selectedMouza);
+                        } else {
+                            resetSelect($('#mouza_' + row), 'Select');
+                        }
+                        refreshSelect(thana);
+                    },
+                    error: function () {
+                        resetSelect(thana, 'Select');
+                        resetSelect($('#mouza_' + row), 'Select');
+                    }
+                });
+            }
+
+            $('.location-district').each(function () {
                 let districtId = $(this).val();
+                if (districtId) {
+                    loadThanas($(this).data('row'), districtId, $(this).data('selected-thana'), $(this)
+                        .data('selected-mouza'));
+                }
+            });
+
+            $(document).on('change', '.location-district', function () {
+                loadThanas($(this).data('row'), $(this).val());
+            });
+
+            $(document).on('change', '.location-record', function () {
+                let row = $(this).data('row');
+                let districtId = $('select[name="location[' + row + '][district_id]"]').val();
+                if (districtId) {
+                    loadThanas(row, districtId);
+                }
+            });
+
+            $(document).on('change', '.location-thana', function () {
+                let row = $(this).attr('id').split('_')[1];
+                loadMouzas(row, $(this).val());
+            });
+
+            function locationTemplate(index) {
+                return `
+                        <div class="party-item" data-location-item>
+                            <div class="party-item-top">
+                                <span class="party-item-title">Location Information</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger remove-location">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="md-field">
+                                        <label>Record</label>
+                                        <select name="location[${index}][record]" data-row="${index}" class="form-control select2 location-record">
+                                            <option value="">Select</option>
+                                            @foreach ($records as $rec)
+                                                <option value="{{ $rec->id }}">{{ $rec->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="md-field">
+                                        <label>District</label>
+                                        <select name="location[${index}][district_id]" data-row="${index}"
+                                            class="form-control select2 location-district">
+                                            <option value="">Select</option>
+                                            @foreach ($districts as $district)
+                                                <option value="{{ $district->id }}">{{ $district->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="md-field">
+                                        <label>Upazila</label>
+                                        <select name="location[${index}][thana_id]" id="thana_${index}"
+                                            class="form-control select2 location-thana">
+                                            <option value="">Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="md-field">
+                                        <label>Mouza</label>
+                                        <select name="location[${index}][mouza_id]" id="mouza_${index}"
+                                            class="form-control select2 location-mouza">
+                                            <option value="">Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="md-field">
+                                        <label>Record Group</label>
+                                        <select name="location[${index}][record_group]" class="form-control select2">
+                                            <option value="">Select</option>
+                                            @foreach ($recordGroups as $group)
+                                                <option value="{{ $group->id }}">{{ $group->bn_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="md-field">
+                                        <label>Dag no</label>
+                                        <input type="text" name="location[${index}][dag_no]" class="form-control md-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="md-field">
+                                        <label>Khatian</label>
+                                        <input type="text" name="location[${index}][khatian]" class="form-control md-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="md-field">
+                                        <label>Total Dag no</label>
+                                        <input type="text" name="location[${index}][total_dag_no]" class="form-control md-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="md-field mb-0">
+                                        <label>Total Land</label>
+                                        <input type="text" name="location[${index}][total_land]" class="form-control md-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="md-field mb-0">
+                                        <label>Owner Name</label>
+                                        <input type="text" name="location[${index}][record_owner_name]" class="form-control md-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+            }
+
+            $(document).on('click', '.add-location', function () {
+                $('#location_wrap').append(locationTemplate(locationIndex));
+                $('#location_wrap').find('.select2').select2({
+                    theme: 'bootstrap4',
+                    width: '100%'
+                });
+                locationIndex++;
+            });
+
+            $(document).on('click', '.remove-location', function () {
+                let wrap = $(this).closest('.miscase-panel-body');
+
+                if (wrap.find('[data-location-item]').length > 1) {
+                    $(this).closest('[data-location-item]').remove();
+                    return;
+                }
+
+                $(this).closest('[data-location-item]').find('input').val('');
+                $(this).closest('[data-location-item]').find('select').val('');
+            });
+
+            // Dynamic Upazila loading for main form
+            function loadMainUpazilas() {
+                let districtId = $('#district_id').val();
+                let record = $('#record_type').val() || '';
                 let upazilaSelect = $('#upazila_id');
                 let mouzaSelect = $('#mouza_id');
 
@@ -425,22 +802,30 @@
                 mouzaSelect.html('<option value="">Select Mouza</option>').prop('disabled', true);
 
                 if (districtId) {
+                    let url = '/get-upazilas-by-district/' + districtId;
+                    if (record) {
+                        url += '?record=' + encodeURIComponent(record);
+                    }
                     $.ajax({
-                        url: '/get-upazilas-by-district/' + districtId,
+                        url: url,
                         type: 'GET',
-                        success: function(response) {
+                        success: function (response) {
                             upazilaSelect.html(response).prop('disabled', false);
                             upazilaSelect.trigger('change.select2');
                         },
-                        error: function() {
+                        error: function () {
                             toastr.error('উপজেলা লোড করতে ব্যর্থ হয়েছে।');
                         }
                     });
                 }
+            }
+
+            $('#district_id, #record_type').on('change', function () {
+                loadMainUpazilas();
             });
 
             // Dynamic Mouza loading
-            $('#upazila_id').on('change', function() {
+            $('#upazila_id').on('change', function () {
                 let upazilaId = $(this).val();
                 let mouzaSelect = $('#mouza_id');
 
@@ -450,43 +835,157 @@
                     $.ajax({
                         url: '/get-mouzas-by-thana/' + upazilaId,
                         type: 'GET',
-                        success: function(response) {
+                        success: function (response) {
                             mouzaSelect.html(response).prop('disabled', false);
                             mouzaSelect.trigger('change.select2');
                         },
-                        error: function() {
+                        error: function () {
                             toastr.error('মৌজা লোড করতে ব্যর্থ হয়েছে।');
                         }
                     });
                 }
             });
 
-            // Remove Fixed Form JS Logic
+            // Detail JS Logic
+            function detailTemplate(index) {
+                return `
+                            <div class="party-item" data-detail-item>
+                                <div class="party-item-top">
+                                    <span class="party-item-title">Detail Information</span>
+                                    <button type="button" class="btn btn-sm btn-outline-danger remove-detail">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>দাগ নং <span class="text-danger">*</span></label>
+                                            <input type="text" name="details[${index}][dag_no]" class="form-control md-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>খতিয়ান নং <span class="text-danger">*</span></label>
+                                            <input type="text" name="details[${index}][khatian_no]" class="form-control md-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>রেকর্ডীয় মালিকের নাম</label>
+                                            <input type="text" name="details[${index}][recorded_owner_name]" class="form-control md-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>রেকর্ডীয় শ্রেণি <span class="text-danger">*</span></label>
+                                            <select name="details[${index}][recorded_class]" class="form-control select2" required>
+                                                <option value="">নির্বাচন করুন</option>
+                                                @foreach($recordGroups as $group)
+                                                    <option value="{{ $group->id }}">{{ $group->bn_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>বাস্তব শ্রেণি <span class="text-danger">*</span></label>
+                                            <select name="details[${index}][actual_class]" class="form-control select2" required>
+                                                <option value="">নির্বাচন করুন</option>
+                                                @foreach($recordGroups as $group)
+                                                    <option value="{{ $group->id }}">{{ $group->bn_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>দাগে মোট জমি (একর) <span class="text-danger">*</span></label>
+                                            <input type="number" step="any" name="details[${index}][total_land]" class="form-control md-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>জমির পরিমাণ (একর) <span class="text-danger">*</span></label>
+                                            <input type="number" step="any" name="details[${index}][land_amount]" class="form-control md-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>দখল সংক্রান্ত অবস্থা <span class="text-danger">*</span></label>
+                                            <select name="details[${index}][possession_status]" class="form-control select2" required>
+                                                <option value="">নির্বাচন করুন</option>
+                                                <option value="সরকার পক্ষে">সরকার পক্ষে</option>
+                                                <option value="দখলে">দখলে</option>
+                                                <option value="বেদখল">বেদখল</option>
+                                                <option value="অন্যান্য">অন্যান্য</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>মামলা নং</label>
+                                            <input type="text" name="details[${index}][case_no]" class="form-control md-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>গেজেট/প্রমাণক নাম্বার</label>
+                                            <input type="text" name="details[${index}][gazette_no]" class="form-control md-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="md-field">
+                                            <label>মন্তব্য</label>
+                                            <input type="text" name="details[${index}][remarks]" class="form-control md-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+            }
+
+            $(document).on('click', '.add-detail', function () {
+                $('#detail_wrap').append(detailTemplate(detailIndex));
+                $('#detail_wrap').find('.select2').select2({
+                    theme: 'bootstrap4',
+                    width: '100%'
+                });
+                detailIndex++;
+            });
+
+            $(document).on('click', '.remove-detail', function () {
+                let wrap = $(this).closest('.miscase-panel-body');
+                if (wrap.find('[data-detail-item]').length > 1) {
+                    $(this).closest('[data-detail-item]').remove();
+                    return;
+                }
+                $(this).closest('[data-detail-item]').find('input').val('');
+                $(this).closest('[data-detail-item]').find('select').val('').trigger('change');
+            });
 
             function fileTemplate(index) {
                 return `
-                    <div class="party-item" data-file-item>
-                        <div class="party-item-top">
-                            <span class="party-item-title">Attachment</span>
-                            <button type="button" class="btn btn-sm btn-outline-danger remove-file">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="md-field">
-                                    <label>ফাইলের নাম / প্রমাণকের নাম <span class="text-danger">*</span></label>
-                                    <input type="text" name="attachments[${index}][name]" class="form-control md-control" required>
+                        <div class="party-item" data-file-item>
+                            <div class="party-item-top">
+                                <span class="party-item-title">Attachment</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger remove-file">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="md-field">
+                                        <label>ফাইলের নাম / প্রমাণকের নাম</label>
+                                        <input type="text" name="attachments[${index}][name]" class="form-control md-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="md-field">
+                                        <label>ফাইল নির্বাচন করুন</label>
+                                        <input type="file" name="attachments[${index}][file]" class="form-control md-control">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="md-field">
-                                    <label>ফাইল নির্বাচন করুন <span class="text-danger">*</span></label>
-                                    <input type="file" name="attachments[${index}][file]" class="form-control md-control" required>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
+                        </div>`;
             }
 
             $(document).on('click', '.add-file', function () {
@@ -496,52 +995,72 @@
 
             $(document).on('click', '.remove-file', function () {
                 let wrap = $(this).closest('.miscase-panel-body');
-                $(this).closest('[data-file-item]').remove();
+                if (wrap.find('[data-file-item]').length > 1) {
+                    $(this).closest('[data-file-item]').remove();
+                    return;
+                }
+                $(this).closest('[data-file-item]').find('input').val('');
             });
 
-            // Remove existing document
-            $('.btn-remove-existing-doc').on('click', function() {
-                let id = $(this).data('id');
-                $(this).closest('.existing-doc-row').remove();
-                $('#removedDocumentsContainer').append(`<input type="hidden" name="remove_documents[]" value="${id}">`);
-            });
-
-            // Submit form handler
-            $('#landRecordForm').on('submit', function(e) {
-                e.preventDefault();
+            $(document).on('click', '.remove-existing-file', function () {
+                let docPath = $(this).data('path');
+                // Append a hidden input to tell server to remove this doc
+                $('#FormSubmit').append('<input type="hidden" name="remove_documents[]" value="' + docPath + '">');
                 
+                let wrap = $(this).closest('.miscase-panel-body');
+                if (wrap.find('[data-file-item]').length > 1) {
+                    $(this).closest('[data-file-item]').remove();
+                } else {
+                    $(this).closest('[data-file-item]').hide();
+                }
+            });
+
+            let isSubmitting = false;
+            $('#FormSubmit').on('submit', function (e) {
+                e.preventDefault();
+
+                if (isSubmitting) return;
+                isSubmitting = true;
+
                 let form = $(this);
                 let formData = new FormData(this);
+                let url = form.data('url');
 
                 $.ajax({
-                    url: form.attr('action'),
-                    type: "POST", // Standard Laravel RESTful API files upload works with POST + _method override
+                    url: url,
+                    type: "POST",
                     data: formData,
                     dataType: "json",
                     contentType: false,
                     cache: false,
                     processData: false,
-                    beforeSend: function() {
-                        $('#btnSave').prop('disabled', true);
+                    beforeSend: function () {
+                        $('#btnSave, #btnApprove').prop('disabled', true);
                     },
-                    success: function(response) {
+                    success: function (response) {
                         toastr.success(response.message);
-                        setTimeout(function() {
-                            window.location.href = response.redirect_url;
+                        setTimeout(function () {
+                            window.location.href = form.data('redirect-url');
                         }, 1500);
                     },
-                    error: function(xhr) {
-                        $('#btnSave').prop('disabled', false);
+                    error: function (xhr) {
+                        isSubmitting = false;
+                        $('#btnSave, #btnApprove').prop('disabled', false);
                         let err = xhr.responseJSON;
                         if (err && err.errors) {
-                            $.each(err.errors, function(key, value) {
+                            $.each(err.errors, function (key, value) {
                                 toastr.error(value[0]);
                             });
                         } else {
-                            toastr.error(err.message || 'ডাটা সংশোধন করতে ব্যর্থ হয়েছে।');
+                            toastr.error(err.message || 'ডাটা সংরক্ষণ করতে ব্যর্থ হয়েছে।');
                         }
                     }
                 });
+            });
+
+            $('#btnApprove').on('click', function () {
+                $('#approve_input').val('1');
+                $('#FormSubmit').submit();
             });
         });
     </script>

@@ -29,8 +29,18 @@ class LandDataTable extends DataTable
             ->addColumn('mouza_name', function ($row) {
                 return $row->mouza->name ?? '—';
             })
+            ->editColumn('land_type', function ($row) {
+                return $row->type->bn_name ?? $row->land_type;
+            })
+            ->editColumn('record_type', function ($row) {
+                return $row->record->name ?? $row->record_type;
+            })
             ->addColumn('total_land_amount', function ($row) {
-                $total = $row->details->sum('land_amount');
+                $total = 0;
+                $details = is_array($row->details) ? $row->details : [];
+                foreach ($details as $detail) {
+                    $total += floatval($detail['land_amount'] ?? 0);
+                }
                 return number_format($total, 4) . ' একর';
             })
             ->editColumn('status', function ($row) {
@@ -79,7 +89,7 @@ class LandDataTable extends DataTable
      */
     public function query(Land $model): QueryBuilder
     {
-        return $model->with(['district', 'upazila', 'mouza', 'details'])->newQuery()->orderBy('created_at', 'desc');
+        return $model->with(['district', 'upazila', 'mouza', 'type', 'record'])->newQuery()->orderBy('created_at', 'desc');
     }
 
     /**
@@ -118,8 +128,9 @@ class LandDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('Sl.')->searchable(false)->orderable(false)->width(30)->addClass('text-center'),
-            Column::make('land_type')->title('জমির ধরণ'),
-            Column::make('record_type')->title('রেকর্ড'),
+            Column::make('land_no')->title('জমির আইডি'),
+            Column::make('land_type')->title('জমির ধরণ')->name('type.bn_name'),
+            Column::make('record_type')->title('রেকর্ড')->name('record.name'),
             Column::make('district_name')->title('জেলা')->name('district.name'),
             Column::make('upazila_name')->title('উপজেলা')->name('upazila.name'),
             Column::make('mouza_name')->title('মৌজা')->name('mouza.name'),
