@@ -16,10 +16,10 @@ class HotelSubCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($category_id)
     {
-        $subcategories = HotelSubCategory::latest()->get();
-        return view('backend.pages.hotel-restaurant.subcategory.index', compact('subcategories'));
+        $subcategories = HotelSubCategory::where('hotel_category_id', $category_id)->latest()->get();
+        return view('backend.pages.hotel-restaurant.subcategory.index', compact('subcategories', 'category_id'));
     }
 
     /**
@@ -27,11 +27,9 @@ class HotelSubCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($category_id)
     {
-        $categories = HotelCategory::latest()->get();
-
-        return view('backend.pages.hotel-restaurant.subcategory.create', compact('categories'));
+        return view('backend.pages.hotel-restaurant.subcategory.create', compact('category_id'));
     }
 
     /**

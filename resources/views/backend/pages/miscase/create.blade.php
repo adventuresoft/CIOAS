@@ -24,28 +24,19 @@
         $plaintiffs = is_array($plaintiffs) && count($plaintiffs) ? $plaintiffs : [$blankParty];
         $defendants = is_array($defendants) && count($defendants) ? $defendants : [$blankParty];
         $savedLocationRows = old('location', []);
-        $locationRows = [];
-
-        foreach ($records as $index => $record) {
-            $row = is_array($savedLocationRows) ? $savedLocationRows[$index] ?? [] : [];
-            $locationRows[$index] = array_merge(
-                [
-                    'record' => $record,
-                    'district_id' => '',
-                    'thana_id' => '',
-                    'mouza_id' => '',
-                    'dag_no' => '',
-                    'khatian' => '',
-                    'record_group' => '',
-                    'total_dag_no' => '',
-                    'total_land' => '',
-                    'record_owner_name' => '',
-                ],
-                is_array($row) ? $row : [],
-            );
-
-            $locationRows[$index]['record'] = $locationRows[$index]['record'] ?: $record;
-        }
+        $blankLocation = [
+            'record' => '',
+            'district_id' => '',
+            'thana_id' => '',
+            'mouza_id' => '',
+            'dag_no' => '',
+            'khatian' => '',
+            'record_group' => '',
+            'total_dag_no' => '',
+            'total_land' => '',
+            'record_owner_name' => '',
+        ];
+        $locationRows = is_array($savedLocationRows) && count($savedLocationRows) ? $savedLocationRows : [$blankLocation];
 
         $caseTypes = ['Civil', 'Criminal', 'Revenue', 'Other'];
         $statuses = ['draft' => 'Draft', 'running' => 'Running', 'closed' => 'Closed', 'rejected' => 'Rejected'];
@@ -412,93 +403,117 @@
                         <div class="miscase-panel-header">
                             <h3 class="miscase-panel-title"><i class="fas fa-map-marked-alt"></i> Location And Land Records
                             </h3>
-                            <span class="section-chip">{{ count($records) }} records</span>
+                            <button class="btn btn-sm btn-outline-success add-location" type="button"><i
+                                    class="fas fa-plus"></i> Add More</button>
                         </div>
-                        <div class="miscase-panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered location-table mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Record</th>
-                                            <th>District</th>
-                                            <th>Upazila</th>
-                                            <th>Mouza</th>
-                                            <th>Dag no</th>
-                                            <th>Khatian</th>
-                                            <th>Record Group</th>
-                                            <th>Total Dag no</th>
-                                            <th>Total Land</th>
-                                            <th>Owner Name</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($locationRows as $i => $row)
-                                            <tr>
-                                                <td>
-                                                    <span class="record-pill">{{ $row['record'] }}</span>
-                                                    <input type="hidden" name="location[{{ $i }}][record]"
-                                                        value="{{ $row['record'] }}">
-                                                </td>
-                                                <td>
-                                                    <select name="location[{{ $i }}][district_id]" data-row="{{ $i }}"
-                                                        data-selected-thana="{{ $row['thana_id'] }}"
-                                                        data-selected-mouza="{{ $row['mouza_id'] }}"
-                                                        class="form-control location-district">
-                                                        <option value="">Select</option>
-                                                        @foreach ($districts as $district)
-                                                            <option value="{{ $district->id }}" @selected((string) ($row['district_id'] ?? '') === (string) $district->id)>
-                                                                {{ $district->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <select name="location[{{ $i }}][thana_id]" id="thana_{{ $i }}"
-                                                        class="form-control location-thana ">
-                                                        <option value="">Select</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <select name="location[{{ $i }}][mouza_id]" id="mouza_{{ $i }}"
-                                                        class="form-control location-mouza ">
-                                                        <option value="">Select</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" name="location[{{ $i }}][dag_no]"
-                                                        class="form-control md-control" value="{{ $row['dag_no'] }}">
-                                                </td>
-                                                <td>
-                                                    <input type="text" name="location[{{ $i }}][khatian]"
-                                                        class="form-control md-control" value="{{ $row['khatian'] }}">
-                                                </td>
-                                                <td>
-                                                    <select name="location[{{ $i }}][record_group]" class="form-control ">
-                                                        <option value="">Select</option>
-                                                        @foreach ($recordGroups as $value => $label)
-                                                            <option value="{{ $value }}" @selected($row['record_group'] == $value)>
-                                                                {{ $label }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" name="location[{{ $i }}][total_dag_no]"
-                                                        class="form-control md-control" value="{{ $row['total_dag_no'] }}">
-                                                </td>
-                                                <td>
-                                                    <input type="text" name="location[{{ $i }}][total_land]"
-                                                        class="form-control md-control" value="{{ $row['total_land'] }}">
-                                                </td>
-                                                <td>
-                                                    <input type="text" name="location[{{ $i }}][record_owner_name]"
-                                                        class="form-control md-control" value="{{ $row['record_owner_name'] }}">
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div class="miscase-panel-body" id="location_wrap">
+                            @foreach ($locationRows as $index => $row)
+                                <div class="party-item" data-location-item>
+                                    <div class="party-item-top">
+                                        <span class="party-item-title">Location Information</span>
+                                        <button type="button" class="btn btn-sm btn-outline-danger remove-location">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="md-field">
+                                                <label>Record</label>
+                                                <select name="location[{{ $index }}][record]" data-row="{{ $index }}"
+                                                    class="form-control location-record">
+                                                    <option value="">Select</option>
+                                                    @foreach ($records as $rec)
+                                                        <option value="{{ $rec }}" @selected($row['record'] == $rec)>{{ $rec }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="md-field">
+                                                <label>District</label>
+                                                <select name="location[{{ $index }}][district_id]" data-row="{{ $index }}"
+                                                    data-selected-thana="{{ $row['thana_id'] }}"
+                                                    data-selected-mouza="{{ $row['mouza_id'] }}"
+                                                    class="form-control location-district">
+                                                    <option value="">Select</option>
+                                                    @foreach ($districts as $district)
+                                                        <option value="{{ $district->id }}" @selected((string) ($row['district_id'] ?? '') === (string) $district->id)>
+                                                            {{ $district->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="md-field">
+                                                <label>Upazila</label>
+                                                <select name="location[{{ $index }}][thana_id]" id="thana_{{ $index }}"
+                                                    class="form-control location-thana">
+                                                    <option value="">Select</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="md-field">
+                                                <label>Mouza</label>
+                                                <select name="location[{{ $index }}][mouza_id]" id="mouza_{{ $index }}"
+                                                    class="form-control location-mouza">
+                                                    <option value="">Select</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="md-field">
+                                                <label>Record Group</label>
+                                                <select name="location[{{ $index }}][record_group]" class="form-control">
+                                                    <option value="">Select</option>
+                                                    @foreach ($recordGroups as $value => $label)
+                                                        <option value="{{ $value }}" @selected($row['record_group'] == $value)>
+                                                            {{ $label }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="md-field">
+                                                <label>Dag no</label>
+                                                <input type="text" name="location[{{ $index }}][dag_no]"
+                                                    class="form-control md-control" value="{{ $row['dag_no'] }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="md-field">
+                                                <label>Khatian</label>
+                                                <input type="text" name="location[{{ $index }}][khatian]"
+                                                    class="form-control md-control" value="{{ $row['khatian'] }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="md-field">
+                                                <label>Total Dag no</label>
+                                                <input type="text" name="location[{{ $index }}][total_dag_no]"
+                                                    class="form-control md-control" value="{{ $row['total_dag_no'] }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="md-field mb-0">
+                                                <label>Total Land</label>
+                                                <input type="text" name="location[{{ $index }}][total_land]"
+                                                    class="form-control md-control" value="{{ $row['total_land'] }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="md-field mb-0">
+                                                <label>Owner Name</label>
+                                                <input type="text" name="location[{{ $index }}][record_owner_name]"
+                                                    class="form-control md-control" value="{{ $row['record_owner_name'] }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
 
@@ -665,7 +680,8 @@
                 let partyIndexes = {
                     plaintiffs: {{ count($plaintiffs) }},
                     defendants: {{ count($defendants) }}
-                                                            };
+                        };
+                let locationIndex = {{ count($locationRows) }};
 
                 $('.miscase-page .select2').each(function () {
                     if (!$(this).hasClass('select2-hidden-accessible')) {
@@ -711,6 +727,7 @@
 
                 function loadThanas(row, districtId, selectedThana = '', selectedMouza = '') {
                     let thana = $('#thana_' + row);
+                    let record = $('select[name="location[' + row + '][record]"]').val() || '';
                     resetSelect(thana, 'Loading...');
 
                     if (!districtId) {
@@ -719,8 +736,13 @@
                         return;
                     }
 
+                    let url = '/get-upazilas-by-district/' + districtId;
+                    if (record) {
+                        url += '?record=' + encodeURIComponent(record);
+                    }
+
                     $.ajax({
-                        url: '/get-thanas-by-district/' + districtId,
+                        url: url,
                         success: function (response) {
                             thana.html(response);
                             if (selectedThana) {
@@ -750,6 +772,14 @@
                     loadThanas($(this).data('row'), $(this).val());
                 });
 
+                $(document).on('change', '.location-record', function () {
+                    let row = $(this).data('row');
+                    let districtId = $('select[name="location[' + row + '][district_id]"]').val();
+                    if (districtId) {
+                        loadThanas(row, districtId);
+                    }
+                });
+
                 $(document).on('change', '.location-thana', function () {
                     let row = $(this).attr('id').split('_')[1];
                     loadMouzas(row, $(this).val());
@@ -759,46 +789,46 @@
                     let title = type === 'plaintiffs' ? 'Plaintiff Information' : 'Defendant Information';
 
                     return `
-                                                                            <div class="party-item" data-party-item>
-                                                                                <div class="party-item-top">
-                                                                                    <span class="party-item-title">${title}</span>
-                                                                                    <button type="button" class="btn btn-sm btn-outline-danger remove-party">
-                                                                                        <i class="fas fa-times"></i>
-                                                                                    </button>
-                                                                                </div>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="md-field">
-                                                                                            <label>Name</label>
-                                                                                            <input type="text" name="${type}[${index}][name]" class="form-control md-control">
+                                                                                    <div class="party-item" data-party-item>
+                                                                                        <div class="party-item-top">
+                                                                                            <span class="party-item-title">${title}</span>
+                                                                                            <button type="button" class="btn btn-sm btn-outline-danger remove-party">
+                                                                                                <i class="fas fa-times"></i>
+                                                                                            </button>
                                                                                         </div>
-                                                                                    </div>
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="md-field">
-                                                                                            <label>NID</label>
-                                                                                            <input type="text" name="${type}[${index}][nid]" class="form-control md-control">
+                                                                                        <div class="row">
+                                                                                            <div class="col-md-6">
+                                                                                                <div class="md-field">
+                                                                                                    <label>Name</label>
+                                                                                                    <input type="text" name="${type}[${index}][name]" class="form-control md-control">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-md-6">
+                                                                                                <div class="md-field">
+                                                                                                    <label>NID</label>
+                                                                                                    <input type="text" name="${type}[${index}][nid]" class="form-control md-control">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-md-6">
+                                                                                                <div class="md-field">
+                                                                                                    <label>Father's Name</label>
+                                                                                                    <input type="text" name="${type}[${index}][father_name]" class="form-control md-control">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-md-6">
+                                                                                                <div class="md-field">
+                                                                                                    <label>Mobile</label>
+                                                                                                    <input type="text" name="${type}[${index}][mobile]" class="form-control md-control">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-md-12">
+                                                                                                <div class="md-field mb-0">
+                                                                                                    <label>Address</label>
+                                                                                                    <input type="text" name="${type}[${index}][address]" class="form-control md-control">
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
-                                                                                    </div>
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="md-field">
-                                                                                            <label>Father's Name</label>
-                                                                                            <input type="text" name="${type}[${index}][father_name]" class="form-control md-control">
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="md-field">
-                                                                                            <label>Mobile</label>
-                                                                                            <input type="text" name="${type}[${index}][mobile]" class="form-control md-control">
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="col-md-12">
-                                                                                        <div class="md-field mb-0">
-                                                                                            <label>Address</label>
-                                                                                            <input type="text" name="${type}[${index}][address]" class="form-control md-control">
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>`;
+                                                                                    </div>`;
                 }
 
                 $(document).on('click', '.add-party', function () {
@@ -816,6 +846,119 @@
                     }
 
                     $(this).closest('[data-party-item]').find('input').val('');
+                });
+
+                function locationTemplate(index) {
+                    return `
+                            <div class="party-item" data-location-item>
+                                <div class="party-item-top">
+                                    <span class="party-item-title">Location Information</span>
+                                    <button type="button" class="btn btn-sm btn-outline-danger remove-location">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>Record</label>
+                                            <select name="location[${index}][record]" data-row="${index}" class="form-control location-record">
+                                                <option value="">Select</option>
+                                                @foreach ($records as $rec)
+                                                    <option value="{{ $rec }}">{{ $rec }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>District</label>
+                                            <select name="location[${index}][district_id]" data-row="${index}"
+                                                class="form-control location-district">
+                                                <option value="">Select</option>
+                                                @foreach ($districts as $district)
+                                                    <option value="{{ $district->id }}">{{ $district->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>Upazila</label>
+                                            <select name="location[${index}][thana_id]" id="thana_${index}"
+                                                class="form-control location-thana">
+                                                <option value="">Select</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>Mouza</label>
+                                            <select name="location[${index}][mouza_id]" id="mouza_${index}"
+                                                class="form-control location-mouza">
+                                                <option value="">Select</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>Record Group</label>
+                                            <select name="location[${index}][record_group]" class="form-control">
+                                                <option value="">Select</option>
+                                                @foreach ($recordGroups as $value => $label)
+                                                    <option value="{{ $value }}">{{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>Dag no</label>
+                                            <input type="text" name="location[${index}][dag_no]" class="form-control md-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>Khatian</label>
+                                            <input type="text" name="location[${index}][khatian]" class="form-control md-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="md-field">
+                                            <label>Total Dag no</label>
+                                            <input type="text" name="location[${index}][total_dag_no]" class="form-control md-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="md-field mb-0">
+                                            <label>Total Land</label>
+                                            <input type="text" name="location[${index}][total_land]" class="form-control md-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="md-field mb-0">
+                                            <label>Owner Name</label>
+                                            <input type="text" name="location[${index}][record_owner_name]" class="form-control md-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                }
+
+                $(document).on('click', '.add-location', function () {
+                    $('#location_wrap').append(locationTemplate(locationIndex));
+                    locationIndex++;
+                });
+
+                $(document).on('click', '.remove-location', function () {
+                    let wrap = $(this).closest('.miscase-panel-body');
+
+                    if (wrap.find('[data-location-item]').length > 1) {
+                        $(this).closest('[data-location-item]').remove();
+                        return;
+                    }
+
+                    $(this).closest('[data-location-item]').find('input').val('');
+                    $(this).closest('[data-location-item]').find('select').val('');
                 });
             });
         </script>

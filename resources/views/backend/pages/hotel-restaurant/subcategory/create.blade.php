@@ -13,7 +13,7 @@
 <div class="col-sm-6">
 <ol class="breadcrumb float-sm-right">
 {{-- {{route('death.index')}} --}}
-<li class="breadcrumb-item"><a href="">Hotel Subcategory</a></li>
+<li class="breadcrumb-item"><a href="{{ route('basic-settings.hotel-subcategory.index', $category_id) }}">Hotel Subcategory</a></li>
 <li class="breadcrumb-item active">Create</li>
 </ol>
 </div>
@@ -40,22 +40,7 @@ enctype="multipart/form-data">
 @csrf
 <div class="card-body">
 
-<div class="form-group row">
-<label for="family_category_id" class="col-sm-2 col-form-label">Category <span
-class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
-<div class="col-sm-9">
-<select required class="form-control select2" name="hotel_category_id"
-id="hotel_category_id">
-<option value="">Hotel Category</option>
-@if ($categories)
-@foreach ($categories as $category)
-<option value="{{ $category->id }}">{{ $category->en_name }}</option>
-@endforeach
-@endif
-</select>
-<small class="text-danger error family_category_id_error"></small>
-</div>
-</div>
+<input type="hidden" name="hotel_category_id" value="{{ $category_id }}">
 
 
 <div class="form-group row">
@@ -84,7 +69,7 @@ placeholder="Hotel Sub-Category Bangla" class="form-control" id="bn_name">
 <!-- /.card-body -->
 <div class="card-footer">
 <div class="form-group row">
-<a href="{{ route('basic-settings.hotel-subcategory.index') }}"
+<a href="{{ route('basic-settings.hotel-subcategory.index', $category_id) }}"
 class="btn btn-default float-right">Cancel</a>
 <div class="col-sm-9">
 <button type="submit" class="btn btn-info">Submit</button>
@@ -128,7 +113,7 @@ thisForm.find('button[type="submit"]').prop("disabled", false);
 toastr.success(response.message);
 setTimeout(function() {
 location.href =
-"{{ route('basic-settings.hotel-subcategory.index') }}";
+"{{ route('basic-settings.hotel-subcategory.index', $category_id) }}";
 }, 2000)
 },
 error: function(xhr, status, error) {
@@ -144,3 +129,4 @@ thisForm.find("." + key + "_error").text(val[0]);
 })
 </script>
 @endpush
+

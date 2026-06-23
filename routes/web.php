@@ -17,45 +17,19 @@ use App\Http\Controllers\StaffParentInfoController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApplicationController;
 
-use App\Http\Controllers\BasicSettings\CityCorporationWardController;
 use App\Http\Controllers\CityCorporationController;
-use App\Http\Controllers\BasicSettings\FamilyCategoryController;
-use App\Http\Controllers\BasicSettings\FamilySubCategoryController;
-use App\Http\Controllers\BasicSettings\FamilyTypeController;
-use App\Http\Controllers\BasicSettings\HouseOwnerTypeController;
-use App\Http\Controllers\BasicSettings\HouseCategoryController;
-use App\Http\Controllers\BasicSettings\HouseTypeController;
-use App\Http\Controllers\BasicSettings\LandClassController;
-use App\Http\Controllers\BasicSettings\LandOwnershipTypeController;
-use App\Http\Controllers\BasicSettings\LandTypeController;
 use App\Http\Controllers\BasicSettings\MarketCategoryController;
 use App\Http\Controllers\BasicSettings\MarketOwnershipTypeController;
 use App\Http\Controllers\BasicSettings\MarketTypeController;
-use App\Http\Controllers\BasicSettings\OrganizationCategoryController;
 use App\Http\Controllers\BasicSettings\OrganizationClassController;
-use App\Http\Controllers\BasicSettings\OrganizationOwnershipTypeController;
-use App\Http\Controllers\BasicSettings\OrganizationSubCategoryController;
-use App\Http\Controllers\BasicSettings\OrganizationWorkAreaController;
-use App\Http\Controllers\BasicSettings\OrganizationTypeController;
-use App\Http\Controllers\BasicSettings\ProfessionCategoryController;
-use App\Http\Controllers\BasicSettings\ProfessionController;
-use App\Http\Controllers\BasicSettings\ProfessionSubCategoryController;
-use App\Http\Controllers\BasicSettings\ProfessionTypeController;
-use App\Http\Controllers\BasicSettings\ReserveWardController;
-use App\Http\Controllers\BasicSettings\RoadCategoryController;
-use App\Http\Controllers\BasicSettings\RoadOwnerController;
-use App\Http\Controllers\BasicSettings\RoadTypeController;
-use App\Http\Controllers\BasicSettings\UnionWardController;
 use App\Http\Controllers\BasicSettings\VehicleCategoryController;
 use App\Http\Controllers\BasicSettings\VehicleSubCategoryController;
 use App\Http\Controllers\BasicSettings\VehicleTypeController;
-use App\Http\Controllers\BasicSettings\VillageAreaController;
 use App\Http\Controllers\BasicSettings\VillageController;
 use App\Http\Controllers\BasicSettings\DistrictController as BasicDistrictController;
 use App\Http\Controllers\BasicSettings\ThanaController as BasicThanaController;
 use App\Http\Controllers\BasicSettings\MouzaController as BasicMouzaController;
 use App\Http\Controllers\BasicSettings\UpazilaController as BasicUpazilaController;
-use App\Http\Controllers\BasicSettings\LicenseTypeController;
 use App\Http\Controllers\UnionController as BasicUnionController;
 use App\Http\Controllers\BridgeController;
 use App\Http\Controllers\Certificate\BirthCertificateController;
@@ -116,12 +90,7 @@ use App\Http\Controllers\LandController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MarketController;
 use App\Http\Controllers\MarriageController;
-use App\Http\Controllers\MouzaController;
-use App\Http\Controllers\Organization\OrganizationController;
-use App\Http\Controllers\Organization\TradeLicenseController;
-use App\Http\Controllers\Organization\OrganizationFeeController;
-use App\Http\Controllers\Organization\OrganizationOwnershipController;
-use App\Http\Controllers\Organization\OrganizationRenewController;
+
 use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\ProfessionalInfoController;
 use App\Http\Controllers\ProjectTypeController;
@@ -174,6 +143,30 @@ Route::post('/inquiry', [InquiryFormController::class, 'store'])->name('inquiry.
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/miscase-list', [HomeController::class, 'miscaseList'])->name('frontend.miscase.index');
+Route::get('/license-apply', [HomeController::class, 'licenseForm'])->name('frontend.license.create');
+Route::post('/license-apply/store', [HomeController::class, 'licenseStore'])->name('frontend.license.store');
+Route::get('/license-apply/success/{application_id}', [HomeController::class, 'licenseSuccess'])->name('frontend.license.success');
+
+// Public Hotel & Restaurant
+Route::get('/hotel-restaurant-apply', [HomeController::class, 'hotelRestaurantForm'])->name('frontend.hotel-restaurant.create');
+Route::post('/hotel-restaurant-apply/store', [HomeController::class, 'hotelRestaurantStore'])->name('frontend.hotel-restaurant.store');
+Route::get('/hotel-restaurant-apply/success/{application_id}', [HomeController::class, 'hotelRestaurantSuccess'])->name('frontend.hotel-restaurant.success');
+
+// Public Gun License
+Route::get('/gun-license-apply', [HomeController::class, 'gunLicenseSelect'])->name('frontend.gun-license.select');
+Route::get('/gun-license-apply/person', [HomeController::class, 'personGunForm'])->name('frontend.gun-license.person.create');
+Route::post('/gun-license-apply/person/store', [HomeController::class, 'personGunStore'])->name('frontend.gun-license.person.store');
+Route::get('/gun-license-apply/person/success/{application_id}', [HomeController::class, 'personGunSuccess'])->name('frontend.gun-license.person.success');
+
+Route::get('/gun-license-apply/org', [HomeController::class, 'orgGunForm'])->name('frontend.gun-license.org.create');
+Route::post('/gun-license-apply/org/store', [HomeController::class, 'orgGunStore'])->name('frontend.gun-license.org.store');
+Route::get('/gun-license-apply/org/success/{application_id}', [HomeController::class, 'orgGunSuccess'])->name('frontend.gun-license.org.success');
+
+Route::get('/gun-license-apply/other-org', [HomeController::class, 'otherOrgGunForm'])->name('frontend.gun-license.other-org.create');
+Route::post('/gun-license-apply/other-org/store', [HomeController::class, 'otherOrgGunStore'])->name('frontend.gun-license.other-org.store');
+Route::get('/gun-license-apply/other-org/success/{application_id}', [HomeController::class, 'otherOrgGunSuccess'])->name('frontend.gun-license.other-org.success');
+
 Route::get('/sms', function () {
     return view('frontend.pages.sms');
 });
@@ -262,39 +255,24 @@ Route::get('/get-thanas-by-district/{districtID}', [ThanaController::class, 'tha
 Route::get('/get-upazilas-by-district/{districtID}', [UpazilaController::class, 'upazilasByDistrict']);
 Route::get('/get-pourashava-by-district/{districtID}', [PourashavaController::class, 'pourashavaByDistrict']);
 Route::get('/get-postOffice-by-thana/{thanaID}', [PostOfficeController::class, 'postOfficeByThana']);
-Route::get('/get-word-by-union/{unionID}', [UnionWardController::class, 'wordByUnion']);
+// Route::get('/get-word-by-union/{unionID}', ...); // Removed: UnionWardController deleted
 Route::get('/get-city-corporation-by-district/{districtID}', [CityCorporationController::class, 'cityByDistrict']);
 
 Route::get('/get-unions-by-thana/{thanaID}', [UnionController::class, 'unionsByThana']);
 Route::get('/get-villages-by-union/{unionID}', [VillageController::class, 'villagesByUnion']);
 Route::get('/get-villages-by-type/{ID}/{type}', [VillageController::class, 'villagesByUnion']);
-Route::get('/get-mouzas-by-thana/{thanaID}', [MouzaController::class, 'mouzasByThana']);
-Route::get('/get-areas-by-village/{villageID}', [VillageAreaController::class, 'areasByVillage']);
+Route::get('/get-mouzas-by-thana/{thanaID}', [BasicMouzaController::class, 'mouzasByThana']);
+// Route::get('/get-areas-by-village/{villageID}', ...); // Removed: VillageAreaController deleted
 Route::get('/get-houses-by-village-area/{areaID}', [HouseController::class, 'getHouseByArea']);
-Route::get('/search-user-by-system-id/{systemID}', [PeopleController::class, 'searchUser'])->name('user.searchBySystemID');
-Route::get('/get-organization-info-by-system-id/{systemID}', [OrganizationController::class, 'getOrganizationBySystemId'])->name('getOrganizationBySystemId');
-Route::post('/organization-approve', [OrganizationController::class, 'approve'])
-    ->name('organization.approve');
 
-Route::get('/profession-type-options-by-profession/{professionID}', [ProfessionTypeController::class, 'professionTypeOptions']);
-Route::get('/profession-category-options-by-profession-type/{professionTypeID}', [ProfessionCategoryController::class, 'professionCategoryOptions']);
-Route::get('/profession-subcategory-options-by-profession-category/{professionCategoryID}', [ProfessionSubcategoryController::class, 'professionSubcategoryOptions']);
 
-Route::get('/house-category-options-by-type-id/{type_id}', [HouseCategoryController::class, 'getCategoryOptions']);
 Route::get('/house-single-ownership-form', [HouseOwnershipController::class, 'loadOwnershipForm']);
 Route::get('/house-ownership-remove/{id}', [HouseOwnershipController::class, 'destroy']);
 
-Route::get('/organization-subcategory-options/{id}', [OrganizationSubCategoryController::class, 'options']);
 Route::get('/hotel-subcategory-options/{id}', [HotelSubCategoryController::class, 'options']);
 Route::get('/license-subcategory-options/{id}', [LicenseSubCategoryController::class, 'options']);
 Route::get('/house-options/{id}', [HouseController::class, 'options']);
-Route::get('/organization-work-area-options/{id}', [OrganizationWorkAreaController::class, 'options']);
-Route::get('/organization-type-options/{id}', [OrganizationTypeController::class, 'options']);
 
-Route::get('/organization-single-ownership-form', [OrganizationOwnershipController::class, 'ownershipForm']);
-Route::get('/organization-ownership-remove/{id}', [OrganizationOwnershipController::class, 'destroy']);
-
-Route::post('/get-organization-registration-fees', [OrganizationFeeController::class, "registrationFees"])->name('organization.registration.fees');
 // Admin with Auth
 Route::get('get-people-by-union/{union_id}', [ChairmanController::class, 'getPeopleByUnion']);
 Route::get('changeMember/{councilor_member_id}', [ChairmanController::class, 'changeMember'])->name('chairman.changeMember');
@@ -428,45 +406,13 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
 
     Route::prefix('basic-settings')->name('basic-settings.')->group(function () {
-        Route::resource('village-area', VillageAreaController::class);
         Route::resource('village', VillageController::class);
         Route::resource('district', BasicDistrictController::class);
         Route::resource('thana', BasicThanaController::class);
         Route::resource('mouza', BasicMouzaController::class);
         Route::resource('upazila', BasicUpazilaController::class);
         Route::resource('union', BasicUnionController::class);
-        Route::resource('union-ward', UnionWardController::class);
-        Route::resource('reserve-ward', ReserveWardController::class);
-        Route::resource('city-corporation', CityCorporationController::class);
-        Route::resource('city-corporation-ward', CityCorporationWardController::class);
-        Route::resource('road-category', RoadCategoryController::class);
-        Route::resource('road-type', RoadTypeController::class);
-        Route::resource('road-owner', RoadOwnerController::class);
-
-        Route::resource('profession', ProfessionController::class);
-        Route::resource('profession-category', ProfessionCategoryController::class);
-        Route::resource('profession-subcategory', ProfessionSubCategoryController::class);
-        Route::resource('profession-type', ProfessionTypeController::class);
-
-        Route::resource('land-type', LandTypeController::class);
-        Route::resource('land-class', LandClassController::class);
-        Route::resource('land-ownership-type', LandOwnershipTypeController::class);
-
-        Route::resource('house-ownership-type', HouseOwnerTypeController::class);
-        Route::resource('house-type', HouseTypeController::class);
-        Route::resource('house-category', HouseCategoryController::class);
-
-        Route::resource('organization-ownership-type', OrganizationOwnershipTypeController::class);
-        Route::resource('organization-category', OrganizationCategoryController::class);
-        Route::resource('organization-subcategory', OrganizationSubCategoryController::class);
-        Route::resource('organization-work-area', OrganizationWorkAreaController::class);
-
-        Route::resource('organization-type', OrganizationTypeController::class);
-
-
-        Route::resource('family-category', FamilyCategoryController::class);
-        Route::resource('family-subcategory', FamilySubCategoryController::class);
-        Route::resource('family-type', FamilyTypeController::class);
+        Route::resource('pourashava', PourashavaController::class);
 
         Route::resource('vehicle-type', VehicleTypeController::class);
         Route::resource('vehicle-category', VehicleCategoryController::class);
@@ -478,12 +424,27 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
         // hotel-restaurant category
         Route::resource('hotel-category', HotelCategoryController::class);
-        Route::resource('hotel-subcategory', HotelSubCategoryController::class);
+        
+        // hotel-restaurant subcategory
+        Route::get('hotel-subcategory/{category_id}', [HotelSubCategoryController::class, 'index'])->name('hotel-subcategory.index');
+        Route::get('hotel-subcategory/create/{category_id}', [HotelSubCategoryController::class, 'create'])->name('hotel-subcategory.create');
+        Route::post('hotel-subcategory/store', [HotelSubCategoryController::class, 'store'])->name('hotel-subcategory.store');
+        Route::get('hotel-subcategory/show/{id}', [HotelSubCategoryController::class, 'show'])->name('hotel-subcategory.show');
+        Route::get('hotel-subcategory/edit/{id}', [HotelSubCategoryController::class, 'edit'])->name('hotel-subcategory.edit');
+        Route::put('hotel-subcategory/{id}', [HotelSubCategoryController::class, 'update'])->name('hotel-subcategory.update');
+        Route::delete('hotel-subcategory/{id}', [HotelSubCategoryController::class, 'destroy'])->name('hotel-subcategory.destroy');
 
         // license category
         Route::resource('license-category', LicenseCategoryController::class);
-        Route::resource('license-subcategory', LicenseSubCategoryController::class);
-        Route::resource('license-type', LicenseTypeController::class);
+        
+        // license subcategory
+        Route::get('license-subcategory/{category_id}', [LicenseSubCategoryController::class, 'index'])->name('license-subcategory.index');
+        Route::get('license-subcategory/create/{category_id}', [LicenseSubCategoryController::class, 'create'])->name('license-subcategory.create');
+        Route::post('license-subcategory/store', [LicenseSubCategoryController::class, 'store'])->name('license-subcategory.store');
+        Route::get('license-subcategory/show/{id}', [LicenseSubCategoryController::class, 'show'])->name('license-subcategory.show');
+        Route::get('license-subcategory/edit/{id}', [LicenseSubCategoryController::class, 'edit'])->name('license-subcategory.edit');
+        Route::put('license-subcategory/{id}', [LicenseSubCategoryController::class, 'update'])->name('license-subcategory.update');
+        Route::delete('license-subcategory/{id}', [LicenseSubCategoryController::class, 'destroy'])->name('license-subcategory.destroy');
 
         //Department
         Route::resource('department', DepartmentController::class);
@@ -499,7 +460,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
     });
 
-    Route::resource('organization', OrganizationController::class);
     Route::resource('license', LicenseController::class);
 
     // HotelRestaurantController
@@ -649,7 +609,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
         Route::get('/area/{user_id}', 'area')->name('area');
         Route::post('/areaStore', 'areaStore')->name('areaStore');
     });
-    Route::resource('organization-ownership', OrganizationOwnershipController::class);
 
     Route::resource('hotelRestaurant-ownership', HotelRestaurantOwnershipController::class);
 
@@ -750,8 +709,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('staffapprovedlist', [StaffController::class, 'approvedlist'])
         ->name('staffapprovedlist');
 
-    Route::post('/save-new-ownership', [OrganizationOwnershipController::class, 'saveNewOwnership'])
-        ->name('savenewownership');
 
     Route::resource('institute', InstituteController::class);
 
@@ -774,6 +731,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::resource('house', HouseController::class);
     Route::resource('house-ownership', HouseOwnershipController::class);
 
+    Route::post('land/approve', [LandController::class, 'approve'])->name('land.approve');
     Route::resource('land', LandController::class);
     Route::post('vehicle/approve', [VehicleController::class, 'approve'])->name('vehicle.approve');
     Route::get('vehicle/fees', [VehicleController::class, 'feesHub'])->name('vehicle.fees.hub');

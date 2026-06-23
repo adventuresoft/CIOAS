@@ -74,6 +74,10 @@
                                                                 data-toggle="tooltip"
                                                                 href="{{ route('basic-settings.hotel-category.show', $item->id) }}"><i
                                                                     class="fa fa-eye"></i></a>
+                                                            <a class="btn btn-sm btn-warning" title="Subcategories"
+                                                                data-toggle="tooltip"
+                                                                href="{{ route('basic-settings.hotel-subcategory.index', $item->id) }}"><i
+                                                                    class="fa fa-list"></i> Subcategories</a>
 
                                                             <form class="deleteCategory" method="post">
                                                                 @csrf
@@ -171,3 +175,4 @@
         });
     </script>
 @endpush
+

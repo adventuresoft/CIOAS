@@ -295,90 +295,32 @@
                     </ul>
                 </li>
 
-
-                {{-- Organization Info --}}
-                {{-- Organization Info --}}
-                @if (
-                        has_module_access('organization') ||
-                        has_module_access('organizations') ||
-                        has_module_access('trade-license') ||
-                        has_module_access('trade_license')
-                    )
-                    <li class="nav-item
-                                                                                                                      @if (
-                                                                                                                        $subMenu == 'OrganizationCreate' ||
-                                                                                                                        $subMenu == 'OrganizationList' ||
-                                                                                                                        $subMenu == 'OrganizationShow' ||
-                                                                                                                        $subMenu == 'RegistrationFees' ||
-                                                                                                                        $subMenu == 'RenewFees' ||
-                                                                                                                        $subMenu == 'TradeLicense' ||
-                                                                                                                        $subMenu == 'GetTradeLicense'
-                                                                                                                    ) menu-open @endif
-                                                                                                                      ">
-                        <a href="#" class="nav-link @if ($mainMenu == 'Organization') active @endif ">
-                            <i class="nav-icon fas fa-briefcase"></i>
-                            <p>
-                                Organization
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            @if (has_sub_module_access('organization', 'create') || has_sub_module_access('organizations', 'create'))
-                                <li class="nav-item">
-                                    <a href="{{ route('organization.create') }}"
-                                        class="nav-link @if ($subMenu == 'OrganizationCreate') active @endif">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Create</p>
-                                    </a>
-                                </li>
-                            @endif
-
-                            @if (has_sub_module_access('organization', 'read') || has_sub_module_access('organizations', 'read'))
-                                <li class="nav-item">
-                                    <a href="{{ route('organization.index') }}"
-                                        class="nav-link @if ($subMenu == 'OrganizationList') active @endif">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Applicant Org. List</p>
-                                    </a>
-                                </li>
-                            @endif
-
-                            @if (
-                                    has_module_access('registration-fees') ||
-                                    has_module_access('registration_fees') ||
-                                    has_module_access('renew-fees') ||
-                                    has_module_access('renew_fees')
-                                )
-                                <li class="nav-item">
-                                    <a href="{{ route('organizationA.registration-fees.index') }}"
-                                        class="nav-link @if ($subMenu == 'RegistrationFees') active @endif">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Fees</p>
-                                    </a>
-                                </li>
-                            @endif
-
-                            @if (has_module_access('trade-license') || has_module_access('trade_license'))
-                                <li class="nav-item">
-                                    <a href="{{ route('organizationA.trade-license.index') }}"
-                                        class="nav-link @if ($subMenu == 'TradeLicense') active @endif">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Generate Invoice </p>
-                                    </a>
-                                </li>
-                            @endif
-
-                            @if (has_module_access('trade-license') || has_module_access('trade_license'))
-                                <li class="nav-item">
-                                    <a href="{{ route('organizationA.trade-license.getTradeLicense') }}"
-                                        class="nav-link @if ($subMenu == 'GetTradeLicense') active @endif">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Trade License</p>
-                                    </a>
-                                </li>
-                            @endif
-                        </ul>
-                    </li>
+                {{-- Land Record Info --}}
+                <li class="nav-item @if ($mainMenu == 'Land') menu-open @endif">
+                    <a href="#" class="nav-link @if ($mainMenu == 'Land') active @endif">
+                        <i class="nav-icon fas fa-landmark"></i>
+                        <p>
+                            Land Record
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('land.create') }}"
+                                class="nav-link @if ($subMenu == 'LandCreate') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>New Land Entry</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('land.index') }}"
+                                class="nav-link @if ($subMenu == 'LandList') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Land Record List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
                     {{-- Vehicle Info --}}
                     @if (has_module_access('vehicle') || has_module_access('vehicles'))
@@ -427,7 +369,6 @@
                             </ul>
                         </li>
                     @endif
-                @endif
 
                 {{-- License --}}
                 @if (has_module_access('license') || has_module_access('licenses'))
