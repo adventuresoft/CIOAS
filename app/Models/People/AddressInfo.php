@@ -8,7 +8,7 @@ use App\Models\House;
 use App\Models\Road;
 use App\Models\Thana;
 use App\Models\Union;
-use App\Models\UnionWard;
+use App\Models\Ward;
 use App\Models\User;
 use App\Models\PostOffice;
 use App\Models\VillageArea;
@@ -91,13 +91,13 @@ class AddressInfo extends Model
 
     public function permanentWard()
     {
-        return $this->belongsTo(UnionWard::class, 'permanent_ward_id', 'id');
+        return $this->belongsTo(Ward::class, 'permanent_ward_id', 'id');
 
     }
 
     public function presentWard()
     {
-        return $this->belongsTo(UnionWard::class, 'present_ward_id', 'id');
+        return $this->belongsTo(Ward::class, 'present_ward_id', 'id');
     }
 
     public function permanentHouse()
