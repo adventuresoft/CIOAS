@@ -82,6 +82,22 @@
                         </a>
                     </article>
 
+                    <!-- Land Search -->
+                    <article class="flex w-full md:w-[calc(33.333%-1.5rem)] flex-col items-center p-8 bg-white rounded-xl shadow-lg border-t-4 border-[#006a4e] transition-transform hover:-translate-y-2 hover:shadow-xl">
+                        <div class="flex h-20 w-20 items-center justify-center rounded-full bg-[#e8f5e9] text-[#006a4e] mb-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">জমি অনুসন্ধান</h3>
+                        <p class="text-center text-sm text-gray-600 mb-6 flex-grow">
+                            অনুমোদিত জমির তালিকা এবং বিস্তারিত তথ্য অনুসন্ধান করুন।
+                        </p>
+                        <a href="{{ route('frontend.land.search') }}" class="w-full text-center rounded-md bg-[#006a4e] px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-[#00523b] transition">
+                            অনুসন্ধান করুন
+                        </a>
+                    </article>
+
                 </div>
             </div>
         </section>

@@ -23,8 +23,8 @@
 
                                 <div class="col-md-6 text-right">
                                     @if (create_permission())
-                                        <a href="{{ route('organization.create') }}" class="btn btn-primary">Create</a>
-                                        <a href="{{ route('organization.index') }}" class="btn btn-primary">List</a>
+                                        <a href="{{ route('hotel-restaurant.create') }}" class="btn btn-primary">Create</a>
+                                        <a href="{{ route('hotel-restaurant.index') }}" class="btn btn-primary">List</a>
                                     @endif
                                 </div>
                             </div>

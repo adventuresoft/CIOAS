@@ -2,8 +2,38 @@
 
 @section('title', 'জমির বিবরণী')
 
+@push('style')
+<style>
+    @media print {
+        .no-print {
+            display: none !important;
+        }
+    }
+</style>
+@endpush
+
 @section('content')
     <x-print-view title="সরকারি স্বার্থ সংশ্লিষ্ট জমির বিবরণ">
+
+        <!-- Navigation Buttons (Hidden on Print) -->
+        <div class="no-print" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: flex-end;">
+            @php
+                $dbCase = $land->case->sortByDesc('id')->first();
+                $allocation = \App\Models\LandAllocation::where('land_no', $land->land_no)->first();
+            @endphp
+            
+            @if($dbCase)
+                <a href="{{ route('land-cases.show', $dbCase->id) }}" class="btn btn-sm btn-danger" style="font-weight: 700; border-radius: 6px; padding: 7px 14px;">
+                    <i class="fa fa-gavel"></i> মামলার বিবরণী দেখুন
+                </a>
+            @endif
+
+            @if($allocation)
+                <a href="{{ route('land-allocations.show', $allocation->id) }}" class="btn btn-sm btn-success" style="font-weight: 700; border-radius: 6px; padding: 7px 14px; background-color: #0f766e; border-color: #0f766e;">
+                    <i class="fa fa-briefcase"></i> বরাদ্দ বিবরণী দেখুন
+                </a>
+            @endif
+        </div>
 
         <div style="display: flex; justify-content: space-between; margin-bottom: 25px; font-size: 15px; font-weight: 600; color: #1e293b;">
             <div>
@@ -14,13 +44,15 @@
         </div>
 
         <div style="text-align: center; font-weight: 700; font-size: 15px; color: #0f766e; margin-bottom: 20px; border: 1px dashed #cbd5e1; padding: 10px; border-radius: 6px; background-color: #f8fafc;">
-            সর্বশেষ রেকর্ড: {{ $land->record->name ?? $land->record_type ?? '—' }}, 
-            জেলা: {{ $land->district->name ?? '—' }}, 
-            উপজেলা/সার্কেল: {{ $land->upazila->name ?? '—' }}, 
-            মৌজা: {{ $land->mouza->name ?? '—' }}, 
+            সর্বশেষ রেকর্ড: {{ $land->record->bn_name ?? $land->record_type ?? '—' }}, 
+            জেলা: {{ $land->district->bn_name ?? '—' }}, 
+            উপজেলা/সার্কেল: {{ $land->upazila->bn_name ?? '—' }}, 
+            মৌজা: {{ $land->mouza->bn_name ?? '—' }}, 
             জেএল নং: {{ $land->mouza->code ?? '—' }}
         </div>
 
+
+        <div style="font-weight: 700; color: #0f766e; margin-bottom: 12px; font-size: 16px; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px;">দাগ ও খতিয়ান সংক্রান্ত বিবরণী</div>
         <table class="data-table">
             <thead>
                 <tr>
@@ -36,46 +68,84 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse(is_array($land->details) ? $land->details : [] as $row)
+                @if($land->dag_no)
                     <tr>
-                        <td style="font-weight: 600;">{{ $row['dag_no'] ?? '' }}</td>
-                        <td style="font-weight: 600;">{{ $row['khatian_no'] ?? '' }}</td>
-                        <td>{{ $recordGroups->where('id', $row['recorded_class'])->first()->bn_name ?? $row['recorded_class'] ?? '' }}</td>
-                        <td>{{ $recordGroups->where('id', $row['actual_class'])->first()->bn_name ?? $row['actual_class'] ?? '' }}</td>
-                        <td>{{ number_format((float) ($row['total_land'] ?? 0), 4) }}</td>
-                        <td style="font-weight: 600; color: #0f766e;">{{ number_format((float) ($row['land_amount'] ?? 0), 4) }}</td>
-                        <td>{{ $row['possession_status'] ?? '' }}</td>
-                        <td>{{ $row['case_no'] ?? '' }}</td>
-                        <td>{{ $row['gazette_no'] ?? '' }}</td>
+                        <td style="font-weight: 600;">{{ $land->dag_no }}</td>
+                        <td style="font-weight: 600;">{{ $land->khatian_no }}</td>
+                        <td>{{ $recordGroups->where('id', $land->recorded_class)->first()->bn_name ?? $land->recorded_class ?? '' }}</td>
+                        <td>{{ $recordGroups->where('id', $land->actual_class)->first()->bn_name ?? $land->actual_class ?? '' }}</td>
+                        <td>{{ number_format((float)($land->total_land ?? 0), 4) }}</td>
+                        <td style="font-weight: 600; color: #0f766e;">{{ number_format((float)($land->land_amount ?? 0), 4) }}</td>
+                        <td>{{ $land->possession_status ?? '' }}</td>
+                        <td>{{ $land->case_no ?? '' }}</td>
+                        <td>{{ $land->gazette_no ?? '' }}</td>
                     </tr>
-                @empty
+                @else
                     <tr>
-                        <td colspan="9" style="text-align: center; color: #64748b; padding: 20px;">কোনো জমির বিবরণ পাওয়া যায়নি।</td>
+                        <td colspan="9" style="text-align: center; color: #64748b; padding: 20px;">কোনো জমির বিবরণ পাওয়া যায়নি।</td>
                     </tr>
-                @endforelse
+                @endif
             </tbody>
         </table>
+
+        @if(is_array($land->locations) && count($land->locations) > 0)
+        <div style="font-weight: 700; color: #0f766e; margin-top: 25px; margin-bottom: 12px; font-size: 16px; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px;">রেকর্ড অনুযায়ী অবস্থান তথ্য</div>
+        <table class="data-table" style="margin-bottom: 30px;">
+            <thead>
+                <tr>
+                    <th>রেকর্ড</th>
+                    <th>জেলা</th>
+                    <th>উপজেলা</th>
+                    <th>মৌজা</th>
+                    <th>দাগ নং</th>
+                    <th>খতিয়ান</th>
+                    <th>রেকর্ড শ্রেণি</th>
+                    <th>মোট দাগ নং</th>
+                    <th>মোট জমি (একর)</th>
+                    <th>রেকর্ডীয় মালিকের নাম</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($land->locations as $loc)
+                <tr>
+                    <td style="font-weight: 600; color: #1e3a8a;">{{ \App\Models\LandRecord::find($loc['record_type'] ?? '')->name ?? '—' }}</td>
+                    <td>{{ \App\Models\District::find($loc['district_id'] ?? '')->name ?? '—' }}</td>
+                    <td>{{ \App\Models\Upazila::find($loc['upazila_id'] ?? '')->name ?? '—' }}</td>
+                    <td>{{ \App\Models\Mouza::find($loc['mouza_id'] ?? '')->name ?? '—' }}</td>
+                    <td style="font-weight: 600;">{{ $loc['dag_no'] ?? '—' }}</td>
+                    <td style="font-weight: 600;">{{ $loc['khatian_no'] ?? '—' }}</td>
+                    <td>{{ \App\Models\LandClass::find($loc['record_group'] ?? '')->bn_name ?? '—' }}</td>
+                    <td>{{ $loc['total_dag_no'] ?? '—' }}</td>
+                    <td style="font-weight: 600; color: #0f766e;">{{ number_format((float)($loc['total_land'] ?? 0), 4) }}</td>
+                    <td>{{ $loc['owner_name'] ?? '—' }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        @endif
 
         <table class="data-table" style="margin-top: 30px;">
             <tr>
                 <td style="width: 33.33%; vertical-align: top; padding: 15px;">
                     <div style="font-weight: 700; color: #1e3a8a; margin-bottom: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">মামলা সংক্রান্ত তথ্য</div>
                     @php
-                        $detailsColl = collect(is_array($land->details) ? $land->details : []);
-                        $hasCase = $detailsColl->whereNotNull('case_no')->where('case_no', '!=', '')->count() > 0 ? 'হ্যাঁ' : 'না';
-                        $firstCase = $detailsColl->whereNotNull('case_no')->where('case_no', '!=', '')->first();
+                        $dbCase = $land->case->sortByDesc('id')->first();
+                        $hasCase = ($dbCase && $dbCase->has_case == 1) || !empty($land->case_no) ? 'হ্যাঁ' : 'না';
+                        $caseNo = $dbCase->case_no ?? $land->case_no ?? '';
+                        $courtName = $dbCase->court_name ?? '';
+                        $caseStatus = $dbCase->case_status ?? '';
+                        $comment = $dbCase->comment ?? $land->remarks ?? '';
                     @endphp
                     <div style="margin-bottom: 8px;"><strong>কোনো মামলা আছে :</strong> <span style="color: {{ $hasCase == 'হ্যাঁ' ? '#ef4444' : '#1e293b' }}">{{ $hasCase }}</span></div>
-                    <div style="margin-bottom: 8px;"><strong>মামলা নম্বর :</strong> {{ $firstCase['case_no'] ?? '' }}</div>
-                    <div style="margin-bottom: 8px;"><strong>আদালতের নাম :</strong> </div>
-                    <div style="margin-bottom: 8px;"><strong>মামলার সর্বশেষ অবস্থা :</strong> </div>
-                    <div style="margin-bottom: 8px;"><strong>মন্তব্য :</strong> {{ $firstCase['remarks'] ?? '' }}</div>
+                    <div style="margin-bottom: 8px;"><strong>মামলা নম্বর :</strong> {{ $caseNo ?: '—' }}</div>
+                    <div style="margin-bottom: 8px;"><strong>আদালতের নাম :</strong> {{ $courtName ?: '—' }}</div>
+                    <div style="margin-bottom: 8px;"><strong>মামলার সর্বশেষ অবস্থা :</strong> {{ $caseStatus ?: '—' }}</div>
+                    <div style="margin-bottom: 8px;"><strong>মন্তব্য :</strong> {{ $comment ?: '—' }}</div>
                 </td>
                 <td style="width: 33.33%; vertical-align: top; padding: 15px;">
                     <div style="font-weight: 700; color: #0f766e; margin-bottom: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">দখল সংক্রান্ত তথ্য</div>
                     @php
-                        $firstDetail = $detailsColl->first();
-                        $possession = $firstDetail ? ($firstDetail['possession_status'] ?? '') : '';
+                        $possession = $land->possession_status ?? '';
                     @endphp
                     <div style="margin-bottom: 8px;"><strong>সরকার দখলে আছে :</strong> <span style="color: {{ str_contains($possession, 'সরকার') ? '#10b981' : '#1e293b' }}">{{ $possession }}</span></div>
                     <div style="margin-bottom: 8px;"><strong>উচ্ছেদ প্রস্তাব করা হয়েছিল :</strong> </div>

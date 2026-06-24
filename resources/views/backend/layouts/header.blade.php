@@ -10,7 +10,6 @@
         {{user_institute_name(Auth::user()->institute_id)}}
         {{Auth::user()->institute->type->name ?? ''}}
         @if(Auth::user()->institute && Auth::user()->institute->institute_subcategory_id)
-          - {{instituteSubCategory(Auth::user()->institute->institute_subcategory_id)}}
         @endif
       </a>
     </li>

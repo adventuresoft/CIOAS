@@ -157,6 +157,21 @@
                 </div>
                 <!-- ./col -->
 
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3>{{$lands}}</h3>
+                            <p>Total Land</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <a class="link-light small-box-footer" href="{{route('land.index')}}">View All Land</a>
+                    </div>
+                </div>
+                <!-- ./col -->
+
             </div>
             <!-- /.row -->
 

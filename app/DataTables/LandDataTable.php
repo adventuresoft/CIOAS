@@ -36,12 +36,8 @@ class LandDataTable extends DataTable
                 return $row->record->name ?? $row->record_type;
             })
             ->addColumn('total_land_amount', function ($row) {
-                $total = 0;
-                $details = is_array($row->details) ? $row->details : [];
-                foreach ($details as $detail) {
-                    $total += floatval($detail['land_amount'] ?? 0);
-                }
-                return number_format($total, 4) . ' একর';
+                $amount = floatval($row->land_amount ?? 0);
+                return number_format($amount, 4) . ' একর';
             })
             ->editColumn('status', function ($row) {
                 if ($row->status == 1) {
@@ -89,7 +85,25 @@ class LandDataTable extends DataTable
      */
     public function query(Land $model): QueryBuilder
     {
-        return $model->with(['district', 'upazila', 'mouza', 'type', 'record'])->newQuery()->orderBy('created_at', 'desc');
+        $query = $model->with(['district', 'upazila', 'mouza', 'type', 'record'])->newQuery();
+
+        if ($this->request()->filled('land_type')) {
+            $query->where('land_type', $this->request()->get('land_type'));
+        }
+
+        if ($this->request()->filled('record_type')) {
+            $query->where('record_type', $this->request()->get('record_type'));
+        }
+
+        if ($this->request()->filled('district_id')) {
+            $query->where('district_id', $this->request()->get('district_id'));
+        }
+
+        if ($this->request()->filled('mouza_id')) {
+            $query->where('mouza_id', $this->request()->get('mouza_id'));
+        }
+
+        return $query->orderBy('created_at', 'desc');
     }
 
     /**
@@ -100,7 +114,7 @@ class LandDataTable extends DataTable
         return $this->builder()
             ->setTableId('land-table')
             ->columns($this->getColumns())
-            ->minifiedAjax()
+            ->minifiedAjax('', 'data.land_type = $("#filter_land_type").val(); data.record_type = $("#filter_record_type").val(); data.district_id = $("#filter_district_id").val(); data.mouza_id = $("#filter_mouza_id").val();')
             ->orderBy(1)
             ->addTableClass('table table-bordered table-striped')
             ->parameters([

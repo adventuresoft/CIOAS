@@ -48,7 +48,7 @@
                             <!-- /.card-body -->
                             <div class="card-footer">
                                 <div class="form-group row">
-                                    <a href="{{ route('organization.index') }}"
+                                    <a href="{{ route('hotel-restaurant.index') }}"
                                         class="btn btn-default float-right">Cancel</a>
                                     <div class="col-sm-9">
                                         <button type="submit" class="btn btn-info">Submit</button>

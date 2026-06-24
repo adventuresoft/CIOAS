@@ -310,6 +310,20 @@
                                 <p>Land Record List</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('land-cases.index') }}"
+                                class="nav-link @if ($subMenu == 'LandCaseList') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Land Case</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('land-allocations.index') }}"
+                                class="nav-link @if ($subMenu == 'LandAllocationList') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Allocation / Lease / Disposal</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 

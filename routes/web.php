@@ -171,6 +171,8 @@ Route::get('/sms', function () {
     return view('frontend.pages.sms');
 });
 
+Route::get('/land-search', [App\Http\Controllers\FrontendLandController::class, 'index'])->name('frontend.land.search');
+
 Route::get('test-api', [HomeController::class, 'testHttpRequest']);
 
 // Login
@@ -696,6 +698,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
     Route::post('land/approve', [LandController::class, 'approve'])->name('land.approve');
     Route::resource('land', LandController::class);
+    
+    Route::get('ajax/search-land-no', [\App\Http\Controllers\LandCaseController::class, 'searchLandNo'])->name('ajax.searchLandNo');
+    Route::get('ajax/get-land-case-no', [\App\Http\Controllers\LandCaseController::class, 'getLandCaseNo'])->name('ajax.getLandCaseNo');
+    Route::resource('land-cases', \App\Http\Controllers\LandCaseController::class);
+    Route::get('ajax/get-land-allocation-details', [\App\Http\Controllers\LandAllocationController::class, 'getLandAllocationDetails'])->name('ajax.getLandAllocationDetails');
+    Route::resource('land-allocations', \App\Http\Controllers\LandAllocationController::class);
     Route::post('vehicle/approve', [VehicleController::class, 'approve'])->name('vehicle.approve');
     Route::get('vehicle/fees', [VehicleController::class, 'feesHub'])->name('vehicle.fees.hub');
     Route::get('vehicle/fees/setup', [VehicleController::class, 'vehicleFees'])->name('vehicle.fees.vehicle');
