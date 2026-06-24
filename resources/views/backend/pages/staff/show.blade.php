@@ -462,8 +462,8 @@
 
             {{-- Citizen Title (centered) --}}
             <div class="citizen-title">
-                <h4>নাগরিক তথ্য বিবরণী</h4>
-                <p>Citizen Information Record</p>
+                <h4>কর্মচারীর তথ্য বিবরণী</h4>
+                <p>Staff Information Record</p>
             </div>
 
             {{-- Photo and ID block --}}

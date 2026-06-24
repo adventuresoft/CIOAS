@@ -357,6 +357,7 @@ class InventoryController extends Controller
                 InventoryRequisitionItem::create([
                     'inventory_requisition_id' => $requisition->id,
                     'item_name' => $item['item_name'] ?? '',
+                    'product_type' => $item['product_type'] ?? null,
                     'category' => $item['category'] ?? null,
                     'unit' => $item['unit'] ?? null,
                     'required_quantity' => $requiredQuantity,

@@ -71,6 +71,7 @@ class QuotationController extends Controller
                 InventoryQuotationItem::create([
                     'inventory_quotation_id' => $quotation->id,
                     'item_name' => $item['item_name'],
+                    'product_type' => $item['product_type'] ?? null,
                     'category' => $item['category'] ?? null,
                     'unit' => $item['unit'] ?? null,
                     'price' => $item['price'] ?? 0,

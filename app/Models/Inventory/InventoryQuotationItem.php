@@ -12,6 +12,7 @@ class InventoryQuotationItem extends Model
     protected $fillable = [
         'inventory_quotation_id',
         'item_name',
+        'product_type',
         'category',
         'unit',
         'price',

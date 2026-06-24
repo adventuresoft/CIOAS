@@ -86,6 +86,7 @@
                                                 <table class="table table-sm table-bordered mb-0 bg-white">
                                                     <thead>
                                                         <tr>
+                                                            <th>Product Type</th>
                                                             <th>Category</th>
                                                             <th>Item Name</th>
                                                             <th>Unit</th>
@@ -95,6 +96,7 @@
                                                     <tbody>
                                                         @foreach($req->items as $item)
                                                             <tr>
+                                                                <td>{{ $item->product_type }}</td>
                                                                 <td>{{ $item->category }}</td>
                                                                 <td>{{ $item->item_name }}</td>
                                                                 <td>{{ $item->unit }}</td>
@@ -119,6 +121,7 @@
                                             <input type="checkbox" id="selectAllItems">
                                         </th>
                                         <th style="width: 40px;">SL</th>
+                                        <th style="width: 15%;">Product Type</th>
                                         <th style="width: 15%;">Category</th>
                                         <th>Item Name</th>
                                         <th style="width: 8%;">Unit</th>
@@ -201,7 +204,7 @@
             rawRequisitions.forEach(req => {
                 req.items.forEach(item => {
                     // Create a unique key for grouping (using item_name, category, and unit)
-                    let key = `${item.item_name}_${item.category || ''}_${item.unit || ''}`.toLowerCase();
+                    let key = `${item.item_name}_${item.product_type || ''}_${item.category || ''}_${item.unit || ''}`.toLowerCase();
                     let qty = parseFloat(item.approved_quantity || item.required_quantity) || 0;
 
                     if (map.has(key)) {
@@ -215,6 +218,7 @@
                     } else {
                         map.set(key, {
                             item_name: item.item_name,
+                            product_type: item.product_type,
                             category: item.category,
                             unit: item.unit,
                             required_quantity: qty,
@@ -261,6 +265,13 @@
                         </td>
                         <td class="align-middle">${index + 1}</td>
                         <td class="align-middle">
+                            ${item.is_manual ? `<select class="form-control form-control-sm manual-input" data-field="product_type" data-index="${index}">
+                                <option value="">Select Type</option>
+                                <option value="One time use" ${item.product_type === 'One time use' ? 'selected' : ''}>One time use</option>
+                                <option value="All time use" ${item.product_type === 'All time use' ? 'selected' : ''}>All time use</option>
+                            </select>` : (item.product_type || '-')}
+                        </td>
+                        <td class="align-middle">
                             ${item.is_manual ? `<select class="form-control form-control-sm manual-input" data-field="category" data-index="${index}">
                                 <option value="">Select Category</option>
                                 @foreach($categories as $cat)
@@ -306,6 +317,7 @@
         $('#addManualItemBtn').click(function() {
             consolidatedItems.push({
                 item_name: '',
+                product_type: '',
                 category: '',
                 unit: '',
                 required_quantity: 0,

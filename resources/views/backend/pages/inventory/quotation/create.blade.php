@@ -81,6 +81,7 @@
                             <table class="table table-bordered item-table mb-0" id="itemsTable">
                                 <thead class="bg-light">
                                     <tr>
+                                        <th style="min-width: 150px;">Product Type</th>
                                         <th style="min-width: 170px;">Category</th>
                                         <th style="min-width: 180px;">Item Name</th>
                                         <th style="min-width: 120px;">Unit</th>
@@ -90,6 +91,13 @@
                                 </thead>
                                 <tbody id="quotationItemRows">
                                     <tr class="item-row">
+                                        <td>
+                                            <select class="form-control form-control-sm item-product-type" name="items[0][product_type]" required>
+                                                <option value="">Select</option>
+                                                <option value="One time use">One time use</option>
+                                                <option value="All time use">All time use</option>
+                                            </select>
+                                        </td>
                                         <td>
                                             <select class="form-control form-control-sm item-category" name="items[0][category]" required>
                                                 <option value="">Select</option>
@@ -147,11 +155,13 @@
 
         const updateNames = () => {
             itemRows.querySelectorAll('tr').forEach((row, index) => {
+                const productTypeInput = row.querySelector('.item-product-type');
                 const categoryInput = row.querySelector('.item-category');
                 const nameInput = row.querySelector('.item-name');
                 const unitInput = row.querySelector('.item-unit');
                 const priceInput = row.querySelector('.item-price');
 
+                if (productTypeInput) productTypeInput.name = `items[${index}][product_type]`;
                 if (categoryInput) categoryInput.name = `items[${index}][category]`;
                 if (nameInput) nameInput.name = `items[${index}][item_name]`;
                 if (unitInput) unitInput.name = `items[${index}][unit]`;
@@ -171,6 +181,13 @@
             const tr = document.createElement('tr');
             tr.className = 'item-row';
             tr.innerHTML = `
+                <td>
+                    <select class="form-control form-control-sm item-product-type" name="items[${rowIndex}][product_type]" required>
+                        <option value="">Select</option>
+                        <option value="One time use">One time use</option>
+                        <option value="All time use">All time use</option>
+                    </select>
+                </td>
                 <td>
                     <select class="form-control form-control-sm item-category" name="items[${rowIndex}][category]" required>
                         ${categoryOptions}

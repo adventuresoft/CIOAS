@@ -319,6 +319,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     // Staff Routes
     Route::resource('staff', StaffController::class);
 
+    // Leave Application
+    Route::get('leave-application/api/staff-info', [\App\Http\Controllers\Backend\LeaveApplicationController::class, 'getStaffInfo'])->name('leave-application.api.staff_info');
+    Route::put('leave-application/{id}/update-status', [\App\Http\Controllers\Backend\LeaveApplicationController::class, 'updateStatus'])->name('leave-application.update-status');
+    Route::resource('leave-application', \App\Http\Controllers\Backend\LeaveApplicationController::class);
+
     Route::get('/staff/family/{userID}', [StaffFamilyInfoController::class, 'create'])->name('staff.family');
     Route::post('/staff/family-store', [StaffFamilyInfoController::class, 'store'])->name('staff.familyStore');
 
@@ -664,6 +669,38 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
         Route::post('/{id}', 'store')->whereNumber('id')->name('store');
     });
 
+    Route::controller(\App\Http\Controllers\InventoryRepairController::class)->prefix('inventory/maintenance/repair')->name('inventory.maintenance.repair.')->group(function () {
+        Route::get('/create', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/approvals', 'approvals')->name('approvals');
+        Route::get('/{id}', 'show')->whereNumber('id')->name('show');
+        Route::post('/{id}/status', 'updateStatus')->whereNumber('id')->name('update_status');
+    });
+
+
+    Route::get('organizations', function () {
+        return redirect()->route('organization.index');
+    });
+    Route::prefix('organizations')->name('organizationA.')->group(function () {
+        Route::resource('trade-license', TradeLicenseController::class);
+
+        Route::get('trade-license/invoice/{id}', [TradeLicenseController::class, 'invoice'])->name('trade-license.invoice');
+        Route::get('trade-license/preview/{id}', [TradeLicenseController::class, 'preview'])->name('trade-license.preview');
+        Route::get('trade-license/confirmed/{id}', [TradeLicenseController::class, 'confirmedLicense'])->name('trade-license.confirmed');
+        Route::post('trade-license/confirmation/{id}', [TradeLicenseController::class, 'licenseConfirmation'])->name('trade-license.confirmation');
+
+        Route::get('get-trade-license', [TradeLicenseController::class, 'getTradeLicense'])->name('trade-license.getTradeLicense');
+
+
+
+        Route::resource('registration-fees', OrganizationFeeController::class);
+        Route::resource('renew-fees', OrganizationRenewController::class);
+    });
+    Route::post('/organization/trade-license/{id}/manual-payment/store', [TradeLicenseController::class, 'storeManualPayment'])
+        ->name('organizationA.trade-license.manual-payment.store');
+
+    Route::get('/organization/trade-license/{id}/online-payment', [TradeLicenseController::class, 'onlinePayment'])
+        ->name('organizationA.trade-license.online-payment');
     Route::get('/people/approve/{id}', [PeopleController::class, 'approve'])
         ->name('people.approve');
     Route::get('/staff/approve/{id}', [StaffController::class, 'approve'])

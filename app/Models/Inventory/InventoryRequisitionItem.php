@@ -9,6 +9,7 @@ class InventoryRequisitionItem extends Model
     protected $fillable = [
         'inventory_requisition_id',
         'item_name',
+        'product_type',
         'category',
         'unit',
         'required_quantity',

@@ -73,6 +73,7 @@
             <table class="table table-bordered item-table mb-0">
                 <thead>
                     <tr>
+                        <th style="min-width: 150px;">Product Type</th>
                         <th style="min-width: 170px;">Category</th>
                         <th style="min-width: 180px;">Item Name</th>
                         <th style="min-width: 120px;">Unit</th>
@@ -84,6 +85,13 @@
                     @if ($savedItems->isNotEmpty())
                         @foreach ($savedItems as $item)
                             <tr data-item-row>
+                                <td>
+                                    <select class="form-control form-control-sm item-product-type" required>
+                                        <option value="">Select</option>
+                                        <option value="One time use" {{ ($item->product_type ?? '') === 'One time use' ? 'selected' : '' }}>One time use</option>
+                                        <option value="All time use" {{ ($item->product_type ?? '') === 'All time use' ? 'selected' : '' }}>All time use</option>
+                                    </select>
+                                </td>
                                 <td>
                                     <select class="form-control form-control-sm item-category" required>
                                         <option value="">Select</option>
@@ -120,6 +128,13 @@
                         @endforeach
                     @else
                         <tr data-item-row>
+                            <td>
+                                <select class="form-control form-control-sm item-product-type" required>
+                                    <option value="">Select</option>
+                                    <option value="One time use">One time use</option>
+                                    <option value="All time use">All time use</option>
+                                </select>
+                            </td>
                             <td>
                                 <select class="form-control form-control-sm item-category" required>
                                     <option value="">Select</option>
@@ -220,6 +235,7 @@
 
             const serializeItems = () => {
                 return Array.from(document.querySelectorAll('#requisitionItemRows tr')).map((row) => ({
+                    product_type: row.querySelector('.item-product-type')?.value || '',
                     category: row.querySelector('.item-category')?.value || '',
                     item_name: row.querySelector('.item-name')?.value || '',
                     unit: row.querySelector('.item-unit')?.value || '',
@@ -232,6 +248,13 @@
                 const unitOptions = ['<option value="">Select</option>'].concat(units.map(unit => `<option value="${unit}">${unit}</option>`)).join('');
                 const row = document.createElement('tr');
                 row.innerHTML = `
+                    <td>
+                        <select class="form-control form-control-sm item-product-type" required>
+                            <option value="">Select</option>
+                            <option value="One time use">One time use</option>
+                            <option value="All time use">All time use</option>
+                        </select>
+                    </td>
                     <td><select class="form-control form-control-sm item-category" required>${categoryOptions}</select></td>
                     <td><input type="text" class="form-control form-control-sm item-name" required></td>
                     <td><select class="form-control form-control-sm item-unit" required>${unitOptions}</select></td>
@@ -269,6 +292,7 @@
 
                 document.querySelectorAll('#requisitionItemRows tr').forEach((row, index) => {
                     [
+                        { element: row.querySelector('.item-product-type'), label: `Item ${index + 1}: Product Type` },
                         { element: row.querySelector('.item-category'), label: `Item ${index + 1}: Category` },
                         { element: row.querySelector('.item-name'), label: `Item ${index + 1}: Item Name` },
                         { element: row.querySelector('.item-unit'), label: `Item ${index + 1}: Unit` },

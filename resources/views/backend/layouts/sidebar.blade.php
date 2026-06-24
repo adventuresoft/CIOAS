@@ -208,6 +208,7 @@
                             $subMenu == 'StaffList' ||
                             $subMenu == 'StaffApproveList' ||
                             $subMenu == 'approvedList' ||
+                            $subMenu == 'LeaveApplication' ||
                             $subMenu == 'Index')
                     ) menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'Staff') active @endif">
@@ -242,6 +243,14 @@
                                         class="nav-link @if ($mainMenu == 'Staff' && ($subMenu == 'StaffApproveList' || $subMenu == 'approvedList')) active @endif">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Approve Staff List</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ route('leave-application.index') }}"
+                                        class="nav-link @if ($mainMenu == 'Staff' && $subMenu == 'LeaveApplication') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Leave Application</p>
                                     </a>
                                 </li>
                             @endif
@@ -745,6 +754,31 @@
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Distribution</p>
                             </a>
+                        </li>
+                        <li class="nav-item @if (in_array($subMenu, ['InventoryRepairProduct', 'InventoryRepairApproval'])) menu-open @endif">
+                            <a href="#" class="nav-link @if (in_array($subMenu, ['InventoryRepairProduct', 'InventoryRepairApproval'])) active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Maintenance
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('inventory.maintenance.repair.create') }}"
+                                        class="nav-link @if ($subMenu == 'InventoryRepairProduct') active @endif">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Repairing Product</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('inventory.maintenance.repair.approvals') }}"
+                                        class="nav-link @if ($subMenu == 'InventoryRepairApproval') active @endif">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Repairing Approval</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </li>
