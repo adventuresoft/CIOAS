@@ -17,4 +17,9 @@ class Upazila extends Model
     {
         return $this->belongsTo(District::class, 'district_id', 'id');
     }
+
+    public function landRecord()
+    {
+        return $this->belongsTo(LandRecord::class, 'record', 'id');
+    }
 }

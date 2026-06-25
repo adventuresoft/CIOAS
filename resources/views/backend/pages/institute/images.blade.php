@@ -3,107 +3,67 @@
 @endpush
 @section('title', 'Institute Edit')
 @section('content')
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Institute Edit</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('institute.index') }}">Institute</a></li>
-                        <li class="breadcrumb-item active">Edit</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
 
-    <!-- Main content -->
-    <section class="content">
+    <section class="content cioas-page pt-5">
         <div class="container-fluid">
+            <div class="cioas-shell">
+                <form class="form-horizontal" id="instituteForm" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="institute_id" value="{{$institute->id}}">
 
-            <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <a class="linked" href="{{route('institute.edit', $institute->id)}}"> <span class="text-dark">Institute Create Info |</span></a>   
-                            <a class="linked" href="{{route('instituteA.adminCreate', $institute->id)}}"> <span class="text-dark">Institutional Admin |</span>  </a>
-                             <span class="text-light">Institutional Images</span>
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title">
+                                <i class="fas fa-images"></i> 
+                                <a class="linked" href="{{route('institute.edit', $institute->id)}}"> <span class="text-light">Institute Create Info |</span></a>   
+                                <a class="linked" href="{{route('instituteA.adminCreate', $institute->id)}}"> <span class="text-light">Institutional Admin |</span>  </a>
+                                <span class="text-light">Institutional Images</span>
+                            </h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form class="form-horizontal" id="instituteForm" method="POST" enctype="multipart/form-data">
-                            @csrf
 
-                            <input type="hidden" name="institute_id" value="{{$institute->id}}">
-
-                            <div class="card-body">
-                                <div class="row">
-                                    <label for="images" class="col-sm-2 col-form-label">Institute Images</label>
-    
-                                    <div class="col-sm-9">
-    
-                                        <div class="row">
-                                            <div class="col-sm-4">
-                                                <label for="left_image">Left</label>
-                                                <input type="file" id="left_image" name="left_image">
-                                                <small class="error left_image-error text-danger"></small><br>
-                                                <img class="img-fluid img-thumbnail my-3" height="100" width="100"
-                                                    src="{{ asset( $institute->left_image ??  'public/no-image-found.jpeg') }}" id="left_image_preview"
-                                                    alt="leftImagePreview">
-    
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <label for="top_image">Top</label>
-                                                <input type="file" id="top_image" name="top_image">
-                                                <small class="error top_image-error text-danger"></small><br>
-                                                <img class="img-fluid img-thumbnail my-3" height="100" width="100"
-                                                    src="{{ asset($institute->top_image ?? 'public/no-image-found.jpeg') }}" id="top_image_preview"
-                                                    alt="leftImagePreview">
-    
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <label for="right_image">Right</label>
-                                                <input type="file" id="right_image" name="right_image">
-                                                <small class="error right_image-error text-danger"></small><br>
-                                                <img class="img-fluid img-thumbnail my-3" height="100" width="100"
-                                                    src="{{ asset( $institute->right_image ?? 'public/no-image-found.jpeg') }}" id="right_image_preview"
-                                                    alt="leftImagePreview">
-                                            </div>
+                        <div class="cioas-panel-body">
+                            <div class="row">
+                                <label for="images" class="col-sm-2 col-form-label">Institute Images</label>
+                                <div class="col-sm-9">
+                                    <div class="row">
+                                        <div class="col-sm-4 text-center">
+                                            <label for="left_image">Left</label><br>
+                                            <input type="file" id="left_image" name="left_image" class="form-control-file mb-2">
+                                            <small class="error left_image-error text-danger"></small><br>
+                                            <img class="img-fluid img-thumbnail" style="height: 120px; object-fit: cover;"
+                                                src="{{ asset( $institute->left_image ??  'public/no-image-found.jpeg') }}" id="left_image_preview"
+                                                alt="leftImagePreview">
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <label for="top_image">Top</label><br>
+                                            <input type="file" id="top_image" name="top_image" class="form-control-file mb-2">
+                                            <small class="error top_image-error text-danger"></small><br>
+                                            <img class="img-fluid img-thumbnail" style="height: 120px; object-fit: cover;"
+                                                src="{{ asset($institute->top_image ?? 'public/no-image-found.jpeg') }}" id="top_image_preview"
+                                                alt="topImagePreview">
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <label for="right_image">Right</label><br>
+                                            <input type="file" id="right_image" name="right_image" class="form-control-file mb-2">
+                                            <small class="error right_image-error text-danger"></small><br>
+                                            <img class="img-fluid img-thumbnail" style="height: 120px; object-fit: cover;"
+                                                src="{{ asset( $institute->right_image ?? 'public/no-image-found.jpeg') }}" id="right_image_preview"
+                                                alt="rightImagePreview">
                                         </div>
                                     </div>
-    
                                 </div>
                             </div>
+                        </div>
 
-                           
-
-
-
-
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <div class="form-group row">
-                                    <a href="{{ route('institute.index') }}" class="btn btn-default float-right">Cancel</a>
-                                    <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-info">Update</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.card-footer -->
-                        </form>
+                        <div class="cioas-actions">
+                            <a href="{{ route('institute.index') }}" class="btn btn-default mr-2">Cancel</a>
+                            <button type="submit" class="btn btn-material btn-material-primary">Update</button>
+                        </div>
                     </div>
-                    <!-- /.card -->
-                </div>
+                </form>
             </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
 @endsection
 @push('script')
     <script>

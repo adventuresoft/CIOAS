@@ -1,57 +1,44 @@
 @extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'LicenseCategory'])
 @section('title', 'Edit License Category')
 @section('content')
-    <section class="content-header">
+    <section class="content cioas-page pt-4">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Edit License Category</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.license-category.index') }}">License
-                                Category</a></li>
-                        <li class="breadcrumb-item active">Edit</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="content">
-        <div class="container-fluid">
-            <div class="card card-info">
-                <div class="card-header">
-                    <h3 class="card-title">License Category Info</h3>
-                </div>
-                <form id="licenseCategoryForm" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div class="card-body">
-                        <div class="form-group row">
-                            <label for="en_name" class="col-sm-2 col-form-label">Name <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-9">
-                                <input type="text" required name="en_name" value="{{ $category->en_name }}"
-                                    class="form-control" id="en_name">
-                                <small class="text-danger error en_name_error"></small>
-                            </div>
+            <form id="licenseCategoryForm" method="POST" class="form-horizontal">
+                @csrf
+                @method('PUT')
+                <div class="cioas-shell">
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title">
+                                <i class="fas fa-id-card"></i> License Category Info
+                            </h3>
                         </div>
-                        <div class="form-group row">
-                            <label for="bn_name" class="col-sm-2 col-form-label">Name Bangla <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-9">
-                                <input type="text" required name="bn_name" value="{{ $category->bn_name }}"
-                                    class="form-control" id="bn_name">
-                                <small class="text-danger error bn_name_error"></small>
+                        <div class="cioas-panel-body">
+                            <div class="form-group row mb-4">
+                                <label for="en_name" class="col-sm-3 col-form-label text-dark font-weight-bold">Name <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" required name="en_name" value="{{ $category->en_name }}" class="form-control" id="en_name">
+                                    <small class="text-danger error en_name_error"></small>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-4">
+                                <label for="bn_name" class="col-sm-3 col-form-label text-dark font-weight-bold">Name Bangla <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" required name="bn_name" value="{{ $category->bn_name }}" class="form-control" id="bn_name">
+                                    <small class="text-danger error bn_name_error"></small>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <a href="{{ route('basic-settings.license-category.index') }}" class="btn btn-default">Cancel</a>
-                        <button type="submit" class="btn btn-info">Update</button>
+
+                    <div class="cioas-panel mt-3">
+                        <div class="cioas-panel-body d-flex justify-content-end align-items-center">
+                            <a href="{{ route('basic-settings.license-category.index') }}" class="btn btn-link text-muted font-weight-bold mr-3" style="text-decoration: none;">Cancel</a>
+                            <button type="submit" class="btn btn-material btn-material-primary">Update</button>
+                        </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </section>
 @endsection

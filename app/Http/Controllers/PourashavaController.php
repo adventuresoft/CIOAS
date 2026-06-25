@@ -18,7 +18,7 @@ class PourashavaController extends Controller
     public function pourashavaByDistrict(Request $request, $id)
     {
         $Pourashavas = Pourashava::where('district_id', $id)->get();
-        $html        = '<option value="0">Select Pourashava</option>';
+        $html = '<option value="0">Select Pourashava</option>';
         if (count($Pourashavas)) {
             foreach ($Pourashavas as $pourashava) {
                 $html .= '<option value="' . $pourashava->id . '">' . $pourashava->name . '</option>';
@@ -27,10 +27,9 @@ class PourashavaController extends Controller
         return $html;
     }
 
-    public function index()
+    public function index(\App\DataTables\BasicSettings\PourashavaDataTable $dataTable)
     {
-        $data['pourashavas'] = Pourashava::with('district')->latest()->get();
-        return view('backend.pages.basic.pourashava.index', $data);
+        return $dataTable->render('backend.pages.basic.pourashava.index');
     }
 
     public function create()
@@ -43,38 +42,38 @@ class PourashavaController extends Controller
     {
         try {
             $validate = Validator::make($request->all(), [
-                'name'        => 'required|max:255',
-                'bn_name'     => 'required|max:255',
-                'category'    => 'required|in:A,B,C,D',
+                'name' => 'required|max:255',
+                'bn_name' => 'required|max:255',
+                'category' => 'required|in:A,B,C,D',
                 'district_id' => 'required|exists:districts,id',
-                'status'      => 'required|in:0,1',
+                'status' => 'required|in:0,1',
             ]);
 
             if ($validate->fails()) {
-                $data['status']  = false;
+                $data['status'] = false;
                 $data['message'] = "Sorry! Invalid Entry.";
-                $data['errors']  = $validate->errors();
+                $data['errors'] = $validate->errors();
                 return response(json_encode($data, JSON_PRETTY_PRINT), 400)->header('Content-Type', 'application/json');
             }
 
-            $pourashava              = new Pourashava();
-            $pourashava->name        = $request->name;
-            $pourashava->bn_name     = $request->bn_name;
-            $pourashava->slug        = Str::slug($request->name);
-            $pourashava->category    = $request->category;
+            $pourashava = new Pourashava();
+            $pourashava->name = $request->name;
+            $pourashava->bn_name = $request->bn_name;
+            $pourashava->slug = Str::slug($request->name);
+            $pourashava->category = $request->category;
             $pourashava->district_id = $request->district_id;
-            $pourashava->status      = $request->status;
-            
+            $pourashava->status = $request->status;
+
             $pourashava->save();
 
-            $data['status']  = true;
+            $data['status'] = true;
             $data['message'] = "Pourashava Saved Successfully!";
             return response(json_encode($data, JSON_PRETTY_PRINT), 200)->header('Content-Type', 'application/json');
 
         } catch (\Throwable $th) {
-            $data['status']  = false;
+            $data['status'] = false;
             $data['message'] = "Something went wrong! Please try again...";
-            $data['errors']  = $th->getMessage();
+            $data['errors'] = $th->getMessage();
             return response(json_encode($data, JSON_PRETTY_PRINT), 500)->header('Content-Type', 'application/json');
         }
     }
@@ -87,7 +86,7 @@ class PourashavaController extends Controller
     public function edit($id)
     {
         $data['pourashava'] = Pourashava::find($id);
-        $data['districts']  = District::latest()->get();
+        $data['districts'] = District::latest()->get();
         return view('backend.pages.basic.pourashava.edit', $data);
     }
 
@@ -95,49 +94,49 @@ class PourashavaController extends Controller
     {
         try {
             $validate = Validator::make($request->all(), [
-                'name'        => 'required|max:255',
-                'bn_name'     => 'required|max:255',
-                'category'    => 'required|in:A,B,C,D',
+                'name' => 'required|max:255',
+                'bn_name' => 'required|max:255',
+                'category' => 'required|in:A,B,C,D',
                 'district_id' => 'required|exists:districts,id',
-                'status'      => 'required|in:0,1',
+                'status' => 'required|in:0,1',
             ]);
 
             if ($validate->fails()) {
-                $data['status']  = false;
+                $data['status'] = false;
                 $data['message'] = "Sorry! Invalid Entry.";
-                $data['errors']  = $validate->errors();
+                $data['errors'] = $validate->errors();
                 return response(json_encode($data, JSON_PRETTY_PRINT), 400)->header('Content-Type', 'application/json');
             }
 
             $pourashava = Pourashava::find($id);
 
             if ($pourashava) {
-                $pourashava->name        = $request->name;
-                $pourashava->bn_name     = $request->bn_name;
-                $pourashava->slug        = Str::slug($request->name);
-                $pourashava->category    = $request->category;
+                $pourashava->name = $request->name;
+                $pourashava->bn_name = $request->bn_name;
+                $pourashava->slug = Str::slug($request->name);
+                $pourashava->category = $request->category;
                 $pourashava->district_id = $request->district_id;
-                $pourashava->status      = $request->status;
+                $pourashava->status = $request->status;
 
                 if ($pourashava->save()) {
-                    $data['status']  = true;
+                    $data['status'] = true;
                     $data['message'] = "Pourashava Updated Successfully!";
                     return response(json_encode($data, JSON_PRETTY_PRINT), 200)->header('Content-Type', 'application/json');
                 } else {
-                    $data['status']  = false;
+                    $data['status'] = false;
                     $data['message'] = "Failed to save data!";
                     return response(json_encode($data, JSON_PRETTY_PRINT), 500)->header('Content-Type', 'application/json');
                 }
             } else {
-                $data['status']  = false;
+                $data['status'] = false;
                 $data['message'] = "Pourashava not found!";
                 return response(json_encode($data, JSON_PRETTY_PRINT), 404)->header('Content-Type', 'application/json');
             }
 
         } catch (\Throwable $th) {
-            $data['status']  = false;
+            $data['status'] = false;
             $data['message'] = "Something went wrong! Please try again...";
-            $data['errors']  = $th->getMessage();
+            $data['errors'] = $th->getMessage();
             return response(json_encode($data, JSON_PRETTY_PRINT), 500)->header('Content-Type', 'application/json');
         }
     }
@@ -148,23 +147,23 @@ class PourashavaController extends Controller
             $pourashava = Pourashava::find($id);
             if ($pourashava) {
                 if ($pourashava->delete()) {
-                    $data['status']  = true;
+                    $data['status'] = true;
                     $data['message'] = "Pourashava Deleted successfully";
                     return response(json_encode($data, JSON_PRETTY_PRINT), 200)->header('Content-Type', 'application/json');
                 } else {
-                    $data['status']  = false;
+                    $data['status'] = false;
                     $data['message'] = "Something went wrong! Please try again...";
                     return response(json_encode($data, JSON_PRETTY_PRINT), 500)->header('Content-Type', 'application/json');
                 }
             } else {
-                $data['status']  = false;
+                $data['status'] = false;
                 $data['message'] = "Pourashava not found!";
                 return response(json_encode($data, JSON_PRETTY_PRINT), 404)->header('Content-Type', 'application/json');
             }
         } catch (\Throwable $th) {
-            $data['status']  = false;
+            $data['status'] = false;
             $data['message'] = "Something went wrong! Please try again...";
-            $data['errors']  = $th->getMessage();
+            $data['errors'] = $th->getMessage();
             return response(json_encode($data, JSON_PRETTY_PRINT), 500)->header('Content-Type', 'application/json');
         }
     }

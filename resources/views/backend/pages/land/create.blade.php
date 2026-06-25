@@ -19,146 +19,7 @@
     $locationRows = is_array($savedLocationRows) && count($savedLocationRows) ? $savedLocationRows : [$blankLocation];
 @endphp
 
-@push('style')
-    <style>
-        .miscase-page {
-            --mc-primary: #0f766e;
-            --mc-primary-dark: #115e59;
-            --mc-accent: #f59e0b;
-            --mc-ink: #17202a;
-            --mc-muted: #64748b;
-            --mc-line: #dbe5ea;
-            --mc-surface: #ffffff;
-            --mc-soft: #eef7f5;
-            background:
-                linear-gradient(135deg, rgba(15, 118, 110, .12), rgba(245, 158, 11, .09)),
-                #f5f7fa;
-            min-height: calc(100vh - 120px);
-            padding-bottom: 32px;
-        }
 
-        .miscase-shell {
-            max-width: 1320px;
-            margin: 0 auto;
-        }
-
-        .miscase-panel {
-            background: var(--mc-surface);
-            border: 1px solid rgba(219, 229, 234, .85);
-            border-radius: 8px;
-            box-shadow: 0 12px 28px rgba(15, 23, 42, .08);
-            margin-bottom: 18px;
-            overflow: hidden;
-        }
-
-        .miscase-panel-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 16px 18px;
-            border-bottom: 1px solid var(--mc-line);
-            background: linear-gradient(180deg, #fff, #f8fbfb);
-        }
-
-        .miscase-panel-title {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            color: var(--mc-ink);
-            font-size: 16px;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .miscase-panel-title i {
-            color: var(--mc-primary);
-        }
-
-        .miscase-panel-body {
-            padding: 18px;
-        }
-
-        .md-field {
-            margin-bottom: 16px;
-        }
-
-        .md-field label {
-            color: var(--mc-muted);
-            display: block;
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 7px;
-        }
-
-        .md-control,
-        .miscase-page .select2-container--bootstrap4 .select2-selection,
-        .miscase-page .select2-container--default .select2-selection {
-            border: 1px solid var(--mc-line) !important;
-            border-radius: 8px !important;
-            min-height: 42px;
-            box-shadow: none !important;
-        }
-
-        .md-control:focus {
-            border-color: var(--mc-primary) !important;
-            box-shadow: 0 0 0 3px rgba(15, 118, 110, .12) !important;
-        }
-
-        .party-item {
-            border: 1px solid var(--mc-line);
-            border-radius: 8px;
-            padding: 14px;
-            margin-bottom: 12px;
-            background: #fbfdfd;
-        }
-
-        .party-item-top {
-            align-items: center;
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-
-        .party-item-title {
-            color: var(--mc-ink);
-            font-weight: 700;
-        }
-
-        .miscase-actions {
-            align-items: center;
-            background: rgba(255, 255, 255, .9);
-            border: 1px solid var(--mc-line);
-            border-radius: 8px;
-            bottom: 14px;
-            box-shadow: 0 10px 24px rgba(15, 23, 42, .1);
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            padding: 12px;
-            position: sticky;
-            z-index: 9;
-        }
-
-        .btn-material {
-            border-radius: 8px;
-            font-weight: 700;
-            padding: 10px 18px;
-        }
-
-        .btn-material-primary {
-            background: var(--mc-primary);
-            border-color: var(--mc-primary);
-            color: #fff;
-        }
-
-        .btn-material-primary:hover {
-            background: var(--mc-primary-dark);
-            border-color: var(--mc-primary-dark);
-            color: #fff;
-        }
-    </style>
-@endpush
 
 @section('content')
     <section class="content-header">
@@ -177,20 +38,20 @@
         </div>
     </section>
 
-    <section class="content miscase-page pt-5">
+    <section class="content cioas-page pt-5">
         <div class="container-fluid">
-            <div class="miscase-shell">
+            <div class="cioas-shell">
 
                 <form id="FormSubmit" method="POST" enctype="multipart/form-data" action="{{ route('land.store') }}"
                     data-url="{{ route('land.store') }}" data-redirect-url="{{ route('land.index') }}">
                     @csrf
                     <input type="hidden" name="approve" id="approve_input" value="0">
 
-                    <div class="miscase-panel">
-                        <div class="miscase-panel-header">
-                            <h3 class="miscase-panel-title"><i class="fas fa-map-marked-alt"></i> জমির এন্ট্রি ফরম</h3>
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title"><i class="fas fa-map-marked-alt"></i> জমির এন্ট্রি ফরম</h3>
                         </div>
-                        <div class="miscase-panel-body">
+                        <div class="cioas-panel-body">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="md-field">
@@ -248,9 +109,9 @@
                         </div>
                     </div>
 
-                    <div class="miscase-panel">
-                        <div class="miscase-panel-header">
-                            <h3 class="miscase-panel-title"><i class="fas fa-list-ol"></i> জমির বিবরণ</h3>
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title"><i class="fas fa-list-ol"></i> জমির বিবরণ</h3>
                         </div>
                         <div style="overflow-x: auto;">
                             <table style="width:100%; border-collapse:collapse; font-size:13px; font-family: inherit;">
@@ -321,9 +182,9 @@
                             </table>
                         </div>
 
-                        <div class="miscase-panel">
-                            <div class="miscase-panel-header" style="cursor:pointer;" id="locationToggleHeader">
-                                <h3 class="miscase-panel-title"><i class="fas fa-map-marked-alt"></i> রেকর্ড অনুযায়ী অবস্থান তথ্য</h3>
+                        <div class="cioas-panel">
+                            <div class="cioas-panel-header" style="cursor:pointer;" id="locationToggleHeader">
+                                <h3 class="cioas-panel-title"><i class="fas fa-map-marked-alt"></i> রেকর্ড অনুযায়ী অবস্থান তথ্য</h3>
                                 <button type="button" class="btn btn-sm btn-outline-info" id="locationToggleBtn">
                                     <i class="fas fa-chevron-down" id="locationToggleIcon"></i> দেখুন
                                 </button>
@@ -464,14 +325,14 @@
                         </div>
 
 
-                        <div class="miscase-panel">
-                            <div class="miscase-panel-header">
-                                <h3 class="miscase-panel-title"><i class="fas fa-paperclip"></i> গেজেট/প্রমাণক / ছবি সংযোজন
+                        <div class="cioas-panel">
+                            <div class="cioas-panel-header">
+                                <h3 class="cioas-panel-title"><i class="fas fa-paperclip"></i> গেজেট/প্রমাণক / ছবি সংযোজন
                                 </h3>
                                 <button class="btn btn-sm btn-outline-success add-file" type="button"><i
                                         class="fas fa-plus"></i> Add More</button>
                             </div>
-                            <div class="miscase-panel-body" id="file_wrap">
+                            <div class="cioas-panel-body" id="file_wrap">
                                 <div class="party-item" data-file-item>
                                     <div class="party-item-top">
                                         <span class="party-item-title">Attachment</span>
@@ -499,7 +360,7 @@
                             </div>
                         </div>
 
-                        <div class="miscase-actions">
+                        <div class="cioas-actions">
                             <a href="{{ route('land.index') }}" class="btn btn-light btn-material">
                                 <i class="fas fa-arrow-left"></i> Cancel
                             </a>
@@ -730,7 +591,7 @@
             });
 
             $(document).on('click', '.remove-file', function () {
-                let wrap = $(this).closest('.miscase-panel-body');
+                let wrap = $(this).closest('.cioas-panel-body');
                 if (wrap.find('[data-file-item]').length > 1) {
                     $(this).closest('[data-file-item]').remove();
                     return;

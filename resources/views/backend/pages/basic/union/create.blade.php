@@ -1,188 +1,175 @@
-@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' =>'Union'])
+@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'Union'])
+
 @push('style')
 @endpush
-@section('title', 'Union')
+
+@section('title', 'Create Union')
+
 @section('content')
-   <!-- Content Header (Page header) -->
-   <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1>Union</h1>
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{route('basic-settings.union.index')}}">Union</a></li>
-            <li class="breadcrumb-item active">Create</li>
-          </ol>
-        </div>
-      </div>
-    </div><!-- /.container-fluid -->
-  </section>
-
-    <!-- Main content -->
-    <section class="content">
+    <section class="content cioas-page pt-4">
         <div class="container-fluid">
-
-            <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Union Info</h3>
+            <form id="union-form" enctype="multipart/form-data" method="POST" class="form-horizontal">
+                @csrf
+                <div class="cioas-shell">
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title">
+                                <i class="fas fa-layer-group"></i> Union Info
+                            </h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form class="form-horizontal" id="union-form" enctype="multipart/form-data" method="POST">
-                            @csrf
-                            <div class="card-body">
+                        <div class="cioas-panel-body">
 
-                                <div class="form-group row">
-                                    <label for="division_id" class="col-sm-2 col-form-label">Division <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="division_id" id="division_id">
-                                            <option value="">Select Division</option>
-                                            @foreach ($divisions as $division)
-                                                <option value="{{$division->id}}">{{$division->name}}</option>
-                                            @endforeach
-                                        </select>
-                                        <small class="text-danger error division_id_error"></small>
-                                    </div>
+                            <div class="form-group row mb-4">
+                                <label for="division_id" class="col-sm-3 col-form-label text-dark font-weight-bold">Division <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <select name="division_id" id="division_id" class="form-control select2" required>
+                                        <option value="" disabled selected>Select Division</option>
+                                        @foreach ($divisions as $division)
+                                            <option value="{{ $division->id }}">{{ $division->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <small class="text-danger error division_id_error"></small>
                                 </div>
-
-                                <div class="form-group row">
-                                    <label for="district_id" class="col-sm-2 col-form-label">District <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="district_id" id="district_id">
-                                            <option value="">Select District</option>
-                                        </select>
-                                        <small class="text-danger error district_id_error"></small>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="thana_id" class="col-sm-2 col-form-label">Thana <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="thana_id" id="thana_id">
-                                            <option value="">Select Thana</option>
-                                        </select>
-                                        <small class="text-danger error thana_id_error"></small>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">Name <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" required name="name" placeholder="Name" class="form-control" id="name">
-                                        <small class="text-danger error name_error"></small>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="bn_name" class="col-sm-2 col-form-label">Bangla Name <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" required name="bn_name" placeholder="Bangla Name" class="form-control" id="bn_name">
-                                        <small class="text-danger error bn_name_error"></small>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="status" class="col-sm-2 col-form-label">Status <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="status" id="status">
-                                            <option value="1">Active</option>
-                                            <option value="0">Inactive</option>
-                                        </select>
-                                        <small class="text-danger error status_error"></small>
-                                    </div>
-                                </div>
-
                             </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-info">Save</button>
-                                <button type="reset" class="btn btn-default float-right">Cancel</button>
+
+                            <div class="form-group row mb-4">
+                                <label for="district_id" class="col-sm-3 col-form-label text-dark font-weight-bold">District <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <select name="district_id" id="district_id" class="form-control select2" required>
+                                        <option value="" disabled selected>Select District</option>
+                                    </select>
+                                    <small class="text-danger error district_id_error"></small>
+                                </div>
                             </div>
-                            <!-- /.card-footer -->
-                        </form>
+
+                            <div class="form-group row mb-4">
+                                <label for="thana_id" class="col-sm-3 col-form-label text-dark font-weight-bold">Thana <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <select name="thana_id" id="thana_id" class="form-control select2" required>
+                                        <option value="" disabled selected>Select Thana</option>
+                                    </select>
+                                    <small class="text-danger error thana_id_error"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-4">
+                                <label for="name" class="col-sm-3 col-form-label text-dark font-weight-bold">Name <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="name" id="name" class="form-control" placeholder="Name" required>
+                                    <small class="text-danger error name_error"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-4">
+                                <label for="bn_name" class="col-sm-3 col-form-label text-dark font-weight-bold">Bangla Name <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="bn_name" id="bn_name" class="form-control" placeholder="Bangla Name" required>
+                                    <small class="text-danger error bn_name_error"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-4">
+                                <label for="status" class="col-sm-3 col-form-label text-dark font-weight-bold">Status <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <select name="status" id="status" class="form-control select2" required>
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
+                                    </select>
+                                    <small class="text-danger error status_error"></small>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                    <!-- /.card -->
+
+                    <div class="cioas-panel mt-3">
+                        <div class="cioas-panel-body d-flex justify-content-end align-items-center">
+                            <a href="{{ route('basic-settings.union.index') }}" class="btn btn-link text-muted font-weight-bold mr-3" style="text-decoration: none;">Cancel</a>
+                            <button type="submit" class="btn btn-material btn-material-primary">Submit</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+            </form>
+        </div>
     </section>
-    <!-- /.content -->
-
 @endsection
+
 @push('script')
+    <script>
+        $(document).ready(function() {
+            $(".select2").select2();
 
-<script>
-    $(document).ready(function() {
-        $('#division_id').on('change', function() {
-            var division_id = $(this).val();
-            if(division_id) {
-                $.ajax({
-                    url: "{{ url('/get-districts-by-division') }}/" + division_id,
-                    type: "GET",
-                    success: function(data) {
-                        $('#district_id').empty().html(data);
-                        $('#thana_id').empty().html('<option value="">Select Thana</option>');
-                    }
-                });
-            } else {
-                $('#district_id').empty().html('<option value="">Select District</option>');
-                $('#thana_id').empty().html('<option value="">Select Thana</option>');
-            }
-        });
-
-        $('#district_id').on('change', function() {
-            var district_id = $(this).val();
-            if(district_id) {
-                $.ajax({
-                    url: "{{ url('/get-thanas-by-district') }}/" + district_id,
-                    type: "GET",
-                    success: function(data) {
-                        $('#thana_id').empty().html(data);
-                    }
-                });
-            } else {
-                $('#thana_id').empty().html('<option value="">Select Thana</option>');
-            }
-        });
-
-        $('#union-form').on('submit', function(e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-            var thisForm = $(this);
-            $.ajax({
-                type: "POST",
-                url: "{{route('basic-settings.union.store')}}",
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                beforeSend: function() {
-                    thisForm.find('button[type="submit"]').prop("disabled",true);
-                },
-                success: function(response) {
-                    thisForm.find('button[type="submit"]').prop("disabled",false);
-                    toastr.success(response.message);
-                    setTimeout(function() {
-                        location.href = "{{route('basic-settings.union.index')}}";
-                    }, 2000)
-                },
-                error: function(xhr, status, error) {
-                    thisForm.find('button[type="submit"]').prop("disabled",false);
-                    var responseText = jQuery.parseJSON(xhr.responseText);
-                    toastr.error(responseText.message);
-                    $.each(responseText.errors, function(key, val) {
-                        thisForm.find("." + key + "_error").text(val[0]);
+            $('#division_id').on('change', function() {
+                var division_id = $(this).val();
+                if(division_id) {
+                    $.ajax({
+                        url: "{{ url('/get-districts-by-division') }}/" + division_id,
+                        type: "GET",
+                        success: function(data) {
+                            $('#district_id').empty().html(data);
+                            $('#thana_id').empty().html('<option value="" disabled selected>Select Thana</option>');
+                        }
                     });
+                } else {
+                    $('#district_id').empty().html('<option value="" disabled selected>Select District</option>');
+                    $('#thana_id').empty().html('<option value="" disabled selected>Select Thana</option>');
                 }
             });
+
+            $('#district_id').on('change', function() {
+                var district_id = $(this).val();
+                if(district_id) {
+                    $.ajax({
+                        url: "{{ url('/get-thanas-by-district') }}/" + district_id,
+                        type: "GET",
+                        success: function(data) {
+                            $('#thana_id').empty().html(data);
+                        }
+                    });
+                } else {
+                    $('#thana_id').empty().html('<option value="" disabled selected>Select Thana</option>');
+                }
+            });
+
+            $('#union-form').on('submit', function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                var thisForm = $(this);
+                
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('basic-settings.union.store') }}",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function() {
+                        thisForm.find('button[type="submit"]').prop("disabled", true);
+                        $('.error').text('');
+                    },
+                    success: function(response) {
+                        thisForm.find('button[type="submit"]').prop("disabled", false);
+                        if(response.status) {
+                            toastr.success(response.message);
+                            setTimeout(function() {
+                                location.href = "{{ route('basic-settings.union.index') }}";
+                            }, 1500);
+                        } else {
+                            toastr.error(response.message || 'Something went wrong!');
+                        }
+                    },
+                    error: function(xhr) {
+                        thisForm.find('button[type="submit"]').prop("disabled", false);
+                        var responseText = jQuery.parseJSON(xhr.responseText);
+                        toastr.error(responseText.message || "An error occurred");
+                        if(responseText.errors) {
+                            $.each(responseText.errors, function(key, val) {
+                                thisForm.find("." + key + "_error").text(val[0]);
+                            });
+                        }
+                    }
+                });
+            });
         });
-    });
-</script>
+    </script>
 @endpush

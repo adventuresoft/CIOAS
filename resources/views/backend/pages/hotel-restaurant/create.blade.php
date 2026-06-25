@@ -22,47 +22,33 @@
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content cioas-page pt-5">
         <div class="container-fluid">
+            <div class="cioas-shell">
+                <form id="organizationForm" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="id" value="">
 
-            <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Hotel & Restaurant Information</h3>
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title">
+                                <i class="fas fa-briefcase"></i> Hotel & Restaurant Information
+                            </h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form class="form-horizontal" id="organizationForm" method="POST" enctype="multipart/form-data">
-                            @csrf
-
-                            <input type="hidden" name="id" value="">
-
+                        <div class="cioas-panel-body">
                             @include('backend.pages.hotel-restaurant.forms.hotel-restaurant', [
                                 'organization' => null,
                             ])
-
-
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <div class="form-group row">
-                                    <a href="{{ route('hotel-restaurant.index') }}"
-                                        class="btn btn-default float-right">Cancel</a>
-                                    <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-info">Submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.card-footer -->
-                        </form>
+                        </div>
                     </div>
-                    <!-- /.card -->
-                </div>
+
+                    <div class="cioas-actions">
+                        <a href="{{ route('hotel-restaurant.index') }}" class="btn btn-material btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-material btn-material-primary">Submit</button>
+                    </div>
+                </form>
             </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
     <!-- /.content -->
 

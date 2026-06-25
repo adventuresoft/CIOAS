@@ -15,6 +15,7 @@
             $subMenu == 'LicenseCategory' ||
             $subMenu == 'Mouza' ||
             $subMenu == 'Upazila' ||
+            $subMenu == 'Department' ||
             $subMenu == 'Year'
         ) menu-open @endif
         ">

@@ -4,30 +4,30 @@
 
 @push('style')
 <style>
-    .miscase-panel {
+    .cioas-panel {
         background: #fff;
         border-radius: 8px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         margin-bottom: 30px;
     }
-    .miscase-panel-header {
+    .cioas-panel-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 20px 25px;
         border-bottom: 1px solid #f1f5f9;
     }
-    .miscase-panel-title {
+    .cioas-panel-title {
         font-size: 18px;
         font-weight: 700;
         color: #1e293b;
         margin: 0;
     }
-    .miscase-panel-title i {
+    .cioas-panel-title i {
         color: #3b82f6;
         margin-right: 8px;
     }
-    .miscase-panel-body {
+    .cioas-panel-body {
         padding: 25px;
     }
 </style>
@@ -52,10 +52,10 @@
 
 <section class="content pt-3">
     <div class="container-fluid">
-        <div class="miscase-shell">
-            <div class="miscase-panel">
-                <div class="miscase-panel-header">
-                    <h3 class="miscase-panel-title">
+        <div class="cioas-shell">
+            <div class="cioas-panel">
+                <div class="cioas-panel-header">
+                    <h3 class="cioas-panel-title">
                         <i class="fas fa-list"></i> জমির মামলার তালিকা
                     </h3>
                     <a href="{{ route('land-cases.create') }}" class="btn btn-primary" style="font-weight: 600;">
@@ -63,7 +63,7 @@
                     </a>
                 </div>
 
-                <div class="miscase-panel-body">
+                <div class="cioas-panel-body">
                     <div class="table-responsive">
                         {{ $dataTable->table(['class' => 'table table-bordered table-striped table-hover']) }}
                     </div>

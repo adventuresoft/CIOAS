@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Departments;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Department\Department;
+use App\DataTables\BasicSettings\DepartmentDataTable;
 use Illuminate\Support\Facades\Validator;
 
 class DepartmentController extends Controller
@@ -14,10 +15,9 @@ class DepartmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(DepartmentDataTable $dataTable)
     {
-        $departments = Department::all();
-        return view("backend.pages.basic.department.index", compact("departments"));
+        return $dataTable->render("backend.pages.basic.department.index");
     }
 
     /**
@@ -39,27 +39,27 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'    => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'bn_name' => 'required|string|max:255',
         ]);
 
 
         if ($validator->fails()) {
             return response()->json([
-                'status'  => false,
+                'status' => false,
                 'message' => 'Sorry! Invalid Entry.',
-                'errors'  => $validator->errors(),
+                'errors' => $validator->errors(),
             ], 400);
         }
 
         $department = new Department();
 
-        $department->name    = $request->name;
+        $department->name = $request->name;
         $department->bn_name = $request->bn_name;
         $department->save();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => 'Department created successfully.',
         ], 200);
 
@@ -84,7 +84,8 @@ class DepartmentController extends Controller
      */
     public function edit($id)
     {
-        //
+        $department = Department::findOrFail($id);
+        return view("backend.pages.basic.department.edit", compact("department"));
     }
 
     /**
@@ -96,7 +97,28 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'bn_name' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Sorry! Invalid Entry.',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        $department = Department::findOrFail($id);
+        $department->name = $request->name;
+        $department->bn_name = $request->bn_name;
+        $department->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Department updated successfully.',
+        ], 200);
     }
 
     /**
@@ -112,7 +134,7 @@ class DepartmentController extends Controller
         $department->delete();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => 'Department deleted successfully.',
         ], 200);
 

@@ -28,34 +28,17 @@
 @endpush
 
 @section('content')
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Leave Application Form</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('leave-application.index') }}">Leave Applications</a></li>
-                    <li class="breadcrumb-item active">Apply</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card card-info">
-                    <div class="card-header">
-                        <h3 class="card-title">New Leave Request</h3>
-                    </div>
-                    
-                    <form action="{{ route('leave-application.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="card-body">
+    <section class="content cioas-page pt-5">
+        <div class="container-fluid">
+            <div class="cioas-shell">
+                <form action="{{ route('leave-application.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title"><i class="fas fa-file-signature"></i> New Leave Request</h3>
+                        </div>
+                        
+                        <div class="cioas-panel-body">
                             
                             <!-- Applicant Info -->
                             <div class="leave-panel">
@@ -162,16 +145,15 @@
                             </div>
 
                         </div>
-                        <div class="card-footer text-right">
-                            <a href="{{ route('leave-application.index') }}" class="btn btn-secondary">Cancel</a>
-                            <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Submit Application</button>
+                        <div class="cioas-actions">
+                            <a href="{{ route('leave-application.index') }}" class="btn btn-default mr-2">Cancel</a>
+                            <button type="submit" class="btn btn-material btn-material-primary"><i class="fas fa-paper-plane"></i> Submit Application</button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 @endsection
 
 @push('script')

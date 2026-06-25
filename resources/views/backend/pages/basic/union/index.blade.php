@@ -1,117 +1,84 @@
-@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' =>'Union'])
+@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'Union'])
+
 @push('style')
 @endpush
-@section('title', 'Union')
+
+@section('title', 'Union List')
+
 @section('content')
-   <!-- Content Header (Page header) -->
-   <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1>Union</h1>
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{route('basic-settings.union.index')}}">Union</a></li>
-            <li class="breadcrumb-item active">View</li>
-          </ol>
-        </div>
-      </div>
-    </div><!-- /.container-fluid -->
-  </section>
-
     <!-- Main content -->
-    <section class="content">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
-
             <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-md-6 text-left">
-                                    <h3 class="card-title">Union List</h3>
-                                </div>
-                                <div class="col-md-6 text-right">
-                                    <a href="{{route('basic-settings.union.create')}}" class="btn btn-primary">Create</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.card-header -->
-
-                        <div class="card-body">
-                          <div class="table-responsive">
-                            {!! $dataTable->table(['class' => 'table table-bordered table-striped']) !!}
-                          </div>
-                            
-                          </div>
-                          <!-- /.card-body -->
-
+            <div class="cioas-shell">
+                <div class="cioas-panel">
+                    <div class="cioas-panel-header">
+                        <h3 class="cioas-panel-title">
+                            <i class="fas fa-list"></i> Union List
+                        </h3>
+                        <a href="{{ route('basic-settings.union.create') }}" class="btn btn-material btn-material-primary">
+                            <i class="fas fa-plus-circle"></i> Create Union
+                        </a>
                     </div>
-                    <!-- /.card -->
+
+                    <div class="cioas-panel-body">
+                        <div class="table-responsive">
+                            {!! $dataTable->table(['class' => 'table table-custom table-hover w-100']) !!}
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
-
 @endsection
-@push('script')
 
-<script>
-  $(document).ready(function(){
-    $(document).on('submit', '.deleteData', function(e){
-      e.preventDefault();
-      var thisForm = $(this);
-      var formData = $(this).serialize();
-      var deleteUrl = $(this).find(".deleteUrl").val();
-      $("#toast-container").show();
-      toastr.success("<br /><button type='button' id='confirmationRevertNo' class='btn clear'>No</button><br /><button type='button' id='confirmationRevertYes' class='btn clear'>Yes</button>",'Are you sure, you want to delete it?',
-		{
-			closeButton: false,
-			allowHtml: true,
-			onShown: function (toast) {
-				$("#confirmationRevertYes").click(function(){
-					$.ajax({
-                    type: "POST",
-                    url: deleteUrl,
-                    data: formData,
-                    beforeSend: function() {
-                        thisForm.find('button[type="submit"]').prop("disabled",true);
-                    },
-                    success: function (response) {
-                        thisForm.find('button[type="submit"]').prop("disabled",false);
-                        toastr.success(response.message);
-                        $('.dataTable').DataTable().ajax.reload();
-                    },
-                    error: function(xhr, status, error) {
-                        thisForm.find('button[type="submit"]').prop("disabled",false);
-                        var responseText = jQuery.parseJSON(xhr.responseText);
-                        toastr.error(responseText.message);
-                        $.each(responseText.errors, function(key, val) {
-                            thisForm.find("." + key + "-error").text(val[0]);
+@push('script')
+    {!! $dataTable->scripts() !!}
+
+    <script>
+        $(document).ready(function() {
+            // Setup CSRF token for AJAX
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            // Handle Delete
+            $(document).on('submit', '.deleteData', function(e) {
+                e.preventDefault();
+                var form = $(this);
+                var url = form.attr('action');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to delete this union!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'DELETE',
+                            url: url,
+                            data: form.serialize(),
+                            success: function(response) {
+                                if (response.status) {
+                                    toastr.success(response.message);
+                                    window.LaravelDataTables["union-table"].ajax.reload();
+                                } else {
+                                    toastr.error(response.message || 'Something went wrong!');
+                                }
+                            },
+                            error: function(xhr) {
+                                toastr.error('An error occurred while deleting.');
+                            }
                         });
                     }
                 });
-
-                
-          
-				});
-
-        $("#confirmationRevertNo").click(function(){
-          $("#toast-container").hide();
-        })
-			}
-		});
-    })
-  });
-
-</script>
-@endpush
-
-@push('script')
-{!! $dataTable->scripts() !!}
+            });
+        });
+    </script>
 @endpush

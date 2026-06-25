@@ -13,10 +13,9 @@ class InstituteCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(\App\DataTables\InstituteCategoryDataTable $dataTable)
     {
-        $categories = InstituteCategory::all();
-        return view('backend.pages.institute.category.index', compact('categories'));
+        return $dataTable->render('backend.pages.institute.category.index');
     }
 
     /**
@@ -95,16 +94,10 @@ class InstituteCategoryController extends Controller
         $category = InstituteCategory::find($id);
 
         if (!$category) {
-            return response()->json([
-                'status'  => false,
-                'message' => 'Institute Category not found.',
-            ], 404);
+            return redirect()->back()->with('error', 'Institute Category not found.');
         }
 
-        return response()->json([
-            'status' => true,
-            'data'   => $category,
-        ], 200);
+        return view('backend.pages.institute.category.edit', compact('category'));
     }
 
     /**

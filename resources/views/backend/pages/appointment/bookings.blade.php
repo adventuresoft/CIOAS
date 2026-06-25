@@ -1,21 +1,18 @@
 @extends('backend.master', ['mainMenu' => 'Appointment', 'subMenu' => 'Bookings'])
 @section('title', 'Appointment Bookings')
 @section('content')
-    <section class="content-header">
+    <section class="content cioas-page pt-5">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Appointment Bookings List</h1>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="content">
-        <div class="container-fluid">
-            <div class="card card-primary card-outline shadow-sm">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        {{ $dataTable->table(['class' => 'table table-bordered table-striped table-hover w-100']) }}
+            <div class="cioas-shell">
+                <div class="cioas-panel">
+                    <div class="cioas-panel-header d-flex justify-content-between align-items-center">
+                        <h3 class="cioas-panel-title"><i class="fas fa-calendar-check"></i> Appointment Bookings List</h3>
+                    </div>
+
+                    <div class="cioas-panel-body">
+                        <div class="table-responsive">
+                            {{ $dataTable->table(['class' => 'table table-bordered table-striped table-hover w-100']) }}
+                        </div>
                     </div>
                 </div>
             </div>

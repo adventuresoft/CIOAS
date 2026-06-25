@@ -1,88 +1,63 @@
 @extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'Department'])
-@push('style')
-@endpush
-@section('title', 'Family Category')
+
+@section('title', 'Department Details')
+
 @section('content')
-    <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Deputy commissioner</h1>
+                    <h1>Department Details</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.department.index') }}">Departments
-                            </a></li>
-                        <li class="breadcrumb-item active">Show</li>
+                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.department.index') }}">Basic Settings</a></li>
+                        <li class="breadcrumb-item active">Department Details</li>
                     </ol>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content cioas-page pt-5">
         <div class="container-fluid">
-
-            <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <div class="row">
-                                <h3 class="card-title">Department Info</h3>
-                            </div>
-                        </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form>
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">Name <span class="text-danger"
-                                            data-toggle="tooltip" title="Required">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" value="{{ $department->name }}" readonly class="form-control">
-                                        <small class="text-danger error name_error"></small>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="bn_name" class="col-sm-2 col-form-label">Bangla Name <span
-                                            class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" value="{{ $department->bn_name }}" readonly
-                                            class="form-control" id="bn_name">
-                                        <small class="text-danger error bn_name_error"></small>
-
-                                    </div>
-                                </div>
-
-
-                            </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <div class="form-group row">
-                                    <a href="{{ route('basic-settings.department.index') }}"
-                                        class="btn btn-default float-right">Back</a>
-                                </div>
-                            </div>
-                            <!-- /.card-footer -->
-                        </form>
+            <div class="cioas-shell">
+                <div class="cioas-panel">
+                    <div class="cioas-panel-header">
+                        <h3 class="cioas-panel-title"><i class="fas fa-eye"></i> Department Details</h3>
                     </div>
-                    <!-- /.card -->
+                    <div class="cioas-panel-body">
+                        @if ($department)
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <th width="30%">Department Name</th>
+                                    <td>{{ $department->name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Bengali Name</th>
+                                    <td>{{ $department->bn_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Created At</th>
+                                    <td>{{ $department->created_at ? $department->created_at->format('d M, Y h:i A') : '—' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Updated At</th>
+                                    <td>{{ $department->updated_at ? $department->updated_at->format('d M, Y h:i A') : '—' }}</td>
+                                </tr>
+                            </table>
+                        @else
+                            <p class="text-danger">Department information not found.</p>
+                        @endif
+                    </div>
+                    <div class="cioas-actions mt-4">
+                        <a href="{{ route('basic-settings.department.index') }}" class="btn btn-light btn-material">
+                            <i class="fas fa-arrow-left"></i> Back to List
+                        </a>
+                    </div>
                 </div>
             </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
-
 @endsection
-@push('script')
-    <script>
-        $(document).ready(function() {
-
-        })
-    </script>
-@endpush

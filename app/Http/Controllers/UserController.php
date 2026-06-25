@@ -21,25 +21,16 @@ class UserController extends Controller
     // }
 
 
-    public function index(Request $request)
+    public function index(\App\DataTables\UserDataTable $dataTable)
     {
-        $search = $request->input('search');
-
-        $query = User::with(['roles.permissions', 'permissions', 'institute.union', 'institute.pourashava', 'institute.cityCorporation', 'institute.district', 'institute.type'])
-            ->orderBy('id', 'desc');
-
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'LIKE', "%{$search}%")
-                    ->orWhere('email', 'LIKE', "%{$search}%")
-                    ->orWhere('mobile', 'LIKE', "%{$search}%")
-                    ->orWhere('system_id', 'LIKE', "%{$search}%");
-            });
-        }
-
-        $users = $query->paginate(10);
-        return view('backend.pages.user.index', compact('users', 'search'))
-            ->with(['title' => 'Operators Directory', 'page' => 'user']);
+        $departments = \App\Models\Department\Department::all();
+        $sections = \App\Models\Department\Section::all();
+        return $dataTable->render('backend.pages.user.index', [
+            'title' => 'Operators Directory', 
+            'page' => 'user',
+            'departments' => $departments,
+            'sections' => $sections
+        ]);
     }
 
     public function create()

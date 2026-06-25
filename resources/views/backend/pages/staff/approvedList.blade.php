@@ -58,30 +58,21 @@
 
 @section('content')
 
-<section class="content">
+<section class="content cioas-page pt-5">
     <div class="container-fluid">
-
-        <div class="row">
-            <div class="col-md-12">
-
-                <div class="card card-info">
-
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col-md-6">
-                                <h3 class="card-title" style="font-size:24px; font-weight: semi-bold;">Staff Information</h3>
-                            </div>
-
-                            <div class="col-md-6 text-right">
-                                @if (create_permission())
-                                <a href="{{ route('staff.create') }}" class="btn btn-primary">Create</a>
-                                <a href="{{ route('staff.index') }}" class="btn btn-primary">List</a>
-                                @endif
-                            </div>
-                        </div>
+        <div class="cioas-shell">
+            <div class="cioas-panel">
+                <div class="cioas-panel-header d-flex justify-content-between align-items-center">
+                    <h3 class="cioas-panel-title"><i class="fas fa-users"></i> Staff Information</h3>
+                    <div>
+                        @if (create_permission())
+                        <a href="{{ route('staff.create') }}" class="btn btn-material btn-material-primary btn-sm">Create</a>
+                        <a href="{{ route('staff.index') }}" class="btn btn-material btn-material-primary btn-sm">List</a>
+                        @endif
                     </div>
+                </div>
 
-                    <div class="card-body">
+                <div class="cioas-panel-body">
 
                         <!-- FILTER BAR -->
                         <div class="row mb-3 align-items-center g-2">
@@ -270,8 +261,7 @@
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
 @endsection
 

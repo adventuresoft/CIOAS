@@ -4,11 +4,12 @@
 @section('title', 'Upazila/Circle')
 @section('content')
  <div class="container-fluid pt-4">
-    <div class="card card-info">
-        <div class="card-header">
-            <h3 class="card-title">Upazila/Circle Details</h3>
+    <div class="cioas-shell">
+                    <div class="cioas-panel">
+        <div class="cioas-panel-header">
+            <h3 class="cioas-panel-title">Upazila/Circle Details</h3>
         </div>
-        <div class="card-body">
+        <div class="cioas-panel-body">
             @if ($upazila)
                 <table class="table table-bordered">
                     <tr>
@@ -46,9 +47,10 @@
                 <p class="text-danger">Upazila/Circle information not found.</p>
             @endif
         </div>
-        <div class="card-footer">
+        <div class="cioas-actions mt-4">
             <a href="{{ route('basic-settings.upazila.index') }}" class="btn btn-default">Back to List</a>
         </div>
+    </div>
     </div>
  </div>
 @endsection

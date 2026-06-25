@@ -1,197 +1,161 @@
 @extends('backend.master', ['mainMenu' => 'Staff', 'subMenu' => 'Create'])
 @section('title', 'Staff Create')
 @section('content')
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Employee Information</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('staff.index') }}">Staff</a></li>
-                        <li class="breadcrumb-item active">Create</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
 
-    <!-- Main content -->
-    <section class="content">
+    <section class="content cioas-page pt-5">
         <div class="container-fluid">
-            <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
+            <div class="cioas-shell">
+                <form class="form-horizontal" id="peoplePersonalForm" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
                             @include('backend.pages.staff.tabs.tab_header', ['user' => $user ?? false, 'active_tab' => 'personal'])
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form class="form-horizontal" id="peoplePersonalForm" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="card-body">
-                                <!-- Row 1: Name and Bangla Name -->
-                                <div class="form-group row">
-                                    <div class="col-sm-6">
-                                        <label for="name">Name <span class="text-danger" title="Required"
-                                                data-toggle="tooltip">*</span></label>
-                                        <input type="text" required value="" class="form-control" name="name" id="name"
-                                            placeholder="Name English">
-                                        <small class="error name-error text-danger"></small>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="bn_name">Name Bangla <span class="text-danger" title="Required"
-                                                data-toggle="tooltip">*</span></label>
-                                        <input type="text" required value="" class="form-control" name="bn_name"
-                                            id="bn_name" placeholder="Name Bangla">
-                                        <small class="error bn_name-error text-danger"></small>
-                                    </div>
+
+                        <div class="cioas-panel-body">
+                            <!-- Row 1: Name and Bangla Name -->
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="name">Name <span class="text-danger" title="Required"
+                                            data-toggle="tooltip">*</span></label>
+                                    <input type="text" required value="" class="form-control" name="name" id="name"
+                                        placeholder="Name English">
+                                    <small class="error name-error text-danger"></small>
                                 </div>
-
-                                <!-- Row 2: Date of Birth, Age, Birth Place -->
-                                <div class="form-group row">
-                                    <div class="col-sm-4">
-                                        <label for="date_of_birth">Date of Birth</label>
-                                        <input type="date" value="" name="date_of_birth" class="form-control"
-                                            id="date_of_birth">
-                                        <small class="error date_of_birth-error text-danger"></small>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label for="age">Age</label>
-                                        <input type="text" value="" class="form-control" id="age" readonly
-                                            placeholder="Auto calculated">
-                                        <small class="error age-error text-danger"></small>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label for="birth_place">Birth Place</label>
-                                        <select name="birth_place" class="form-control" id="birth_place">
-                                            <option value="">Select Birth Place</option>
-                                            @if (count($districts))
-                                                @foreach ($districts as $district)
-                                                    <option value="{{ $district->id }}">{{ $district->name }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        <small class="error birth_place-error text-danger"></small>
-                                    </div>
+                                <div class="col-sm-6">
+                                    <label for="bn_name">Name Bangla <span class="text-danger" title="Required"
+                                            data-toggle="tooltip">*</span></label>
+                                    <input type="text" required value="" class="form-control" name="bn_name"
+                                        id="bn_name" placeholder="Name Bangla">
+                                    <small class="error bn_name-error text-danger"></small>
                                 </div>
+                            </div>
 
-                                <!-- Row 3: Gender, Religion, Blood Group -->
-                                <div class="form-group row">
-                                    <div class="col-sm-4">
-                                        <label for="gender">Gender</label>
-                                        <select name="gender" class="form-control" id="gender">
-                                            <option value="">Select Gender</option>
-                                            @if (count(people_constant_option('gender')))
-                                                @foreach (people_constant_option('gender') as $key => $item)
-                                                    <option value="{{ $key }}">{{ $item }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        <small class="error gender-error text-danger"></small>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label for="religion">Religion</label>
-                                        <select name="religion" class="form-control" id="religion">
-                                            <option value="">Select Religion</option>
-                                            @if (count($religions))
-                                                @foreach ($religions as $religion)
-                                                    <option value="{{ $religion->id }}">{{ $religion->name }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        <small class="error religion-error text-danger"></small>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label for="blood_group">Blood Group</label>
-                                        <select name="blood_group" class="form-control" id="blood_group">
-                                            <option value="">Select Blood Group</option>
-                                            @if (count(people_constant_option('blood_group')))
-                                                @foreach (people_constant_option('blood_group') as $key => $item)
-                                                    <option value="{{ $key }}">{{ $item }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        <small class="error blood_group-error text-danger"></small>
-                                    </div>
+                            <!-- Row 2: Date of Birth, Age, Birth Place -->
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="date_of_birth">Date of Birth</label>
+                                    <input type="date" value="" name="date_of_birth" class="form-control"
+                                        id="date_of_birth">
+                                    <small class="error date_of_birth-error text-danger"></small>
                                 </div>
-
-                                <!-- Row 4: Birth Reg. No., NID No. -->
-                                <div class="form-group row">
-                                    <div class="col-sm-6">
-                                        <label for="birth_certificate">Birth Reg. No.</label>
-                                        <input type="text" value="" name="birth_certificate" placeholder="Birth Reg. No."
-                                            class="form-control" id="birth_certificate">
-                                        <small class="error birth_certificate-error text-danger"></small>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="nid">NID No.</label>
-                                        <input type="text" value="" name="nid" placeholder="NID No." class="form-control"
-                                            id="nid">
-                                        <span class="error nid-error text-danger"></span>
-                                    </div>
+                                <div class="col-sm-4">
+                                    <label for="age">Age</label>
+                                    <input type="text" value="" class="form-control" id="age" readonly
+                                        placeholder="Auto calculated">
+                                    <small class="error age-error text-danger"></small>
                                 </div>
-
-                                <!-- Row 5: Mobile No., Email -->
-                                <div class="form-group row">
-                                    <div class="col-sm-6">
-                                        <label for="mobile">Mobile No.</label>
-                                        <input type="tel" value="" required name="mobile" placeholder="Mobile"
-                                            class="form-control" id="mobile">
-                                        <small class="error mobile-error text-danger"></small>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="email">Email</label>
-                                        <input type="email" value="" name="email" placeholder="Email" class="form-control"
-                                            id="email">
-                                        <small class="error email-error text-danger"></small>
-                                    </div>
+                                <div class="col-sm-4">
+                                    <label for="birth_place">Birth Place</label>
+                                    <select name="birth_place" class="form-control" id="birth_place">
+                                        <option value="">Select Birth Place</option>
+                                        @if (count($districts))
+                                            @foreach ($districts as $district)
+                                                <option value="{{ $district->id }}">{{ $district->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <small class="error birth_place-error text-danger"></small>
                                 </div>
+                            </div>
 
-                                <div class="form-group row">
-
-                                    <!-- Row 6: Photo -->
-                                    <div class="form-group row">
-                                        <div class="col-sm-6">
-                                            <label for="image">Photo</label>
-                                            <input type="file" name="image" class="image form-control-file" id="image">
-                                            <span class="error image-error text-danger"></span>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <label for="signature">Signature</label>
-                                            <input type="file" name="signature" class="signature form-control-file"
-                                                id="signature">
-                                            <span class="error signature-error text-danger"></span>
-                                        </div>
-                                    </div>
-
-
-
+                            <!-- Row 3: Gender, Religion, Blood Group -->
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label for="gender">Gender</label>
+                                    <select name="gender" class="form-control" id="gender">
+                                        <option value="">Select Gender</option>
+                                        @if (count(people_constant_option('gender')))
+                                            @foreach (people_constant_option('gender') as $key => $item)
+                                                <option value="{{ $key }}">{{ $item }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <small class="error gender-error text-danger"></small>
                                 </div>
-                                <!-- /.card-body -->
-                                <div class="card-footer bg-white mt-3" style="border-top: none;">
-                                    <div class="text-right">
-                                        <a href="{{ route('staff.index') }}"
-                                            class="btn btn-outline-secondary mr-2 px-4">Cancel</a>
-                                        <button type="submit" class="btn btn-primary px-4"
-                                            style="background-color: #5b4bdf; border-color: #5b4bdf;">Save & Next <i
-                                                class="fas fa-arrow-right ml-1"></i></button>
-                                    </div>
+                                <div class="col-sm-4">
+                                    <label for="religion">Religion</label>
+                                    <select name="religion" class="form-control" id="religion">
+                                        <option value="">Select Religion</option>
+                                        @if (count($religions))
+                                            @foreach ($religions as $religion)
+                                                <option value="{{ $religion->id }}">{{ $religion->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <small class="error religion-error text-danger"></small>
                                 </div>
-                                <!-- /.card-footer -->
-                        </form>
+                                <div class="col-sm-4">
+                                    <label for="blood_group">Blood Group</label>
+                                    <select name="blood_group" class="form-control" id="blood_group">
+                                        <option value="">Select Blood Group</option>
+                                        @if (count(people_constant_option('blood_group')))
+                                            @foreach (people_constant_option('blood_group') as $key => $item)
+                                                <option value="{{ $key }}">{{ $item }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <small class="error blood_group-error text-danger"></small>
+                                </div>
+                            </div>
+
+                            <!-- Row 4: Birth Reg. No., NID No. -->
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="birth_certificate">Birth Reg. No.</label>
+                                    <input type="text" value="" name="birth_certificate" placeholder="Birth Reg. No."
+                                        class="form-control" id="birth_certificate">
+                                    <small class="error birth_certificate-error text-danger"></small>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="nid">NID No.</label>
+                                    <input type="text" value="" name="nid" placeholder="NID No." class="form-control"
+                                        id="nid">
+                                    <span class="error nid-error text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Row 5: Mobile No., Email -->
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="mobile">Mobile No.</label>
+                                    <input type="tel" value="" required name="mobile" placeholder="Mobile"
+                                        class="form-control" id="mobile">
+                                    <small class="error mobile-error text-danger"></small>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="email">Email</label>
+                                    <input type="email" value="" name="email" placeholder="Email" class="form-control"
+                                        id="email">
+                                    <small class="error email-error text-danger"></small>
+                                </div>
+                            </div>
+
+                            <!-- Row 6: Photo -->
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="image">Photo</label>
+                                    <input type="file" name="image" class="image form-control-file" id="image">
+                                    <span class="error image-error text-danger"></span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="signature">Signature</label>
+                                    <input type="file" name="signature" class="signature form-control-file"
+                                        id="signature">
+                                    <span class="error signature-error text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cioas-actions">
+                            <a href="{{ route('staff.index') }}" class="btn btn-default mr-2">Cancel</a>
+                            <button type="submit" class="btn btn-material btn-material-primary">Save & Next <i class="fas fa-arrow-right ml-1"></i></button>
+                        </div>
                     </div>
-                    <!-- /.card -->
-                </div>
+                </form>
             </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
 
 @endsection
 

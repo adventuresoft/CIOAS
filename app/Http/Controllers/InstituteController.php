@@ -82,25 +82,9 @@ class InstituteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(\App\DataTables\InstituteDataTable $dataTable)
     {
-        $institutes = Institute::latest()->get();
-        if (count($institutes)) {
-            foreach ($institutes as $institute) {
-                if ($institute->institute_type_id == 1) {
-                    $institute->union = Union::find($institute->union_id);
-                } else if ($institute->institute_type_id == 2) {
-                    $institute->pourashava = Pourashava::find($institute->pourashava_id);
-                } else if ($institute->institute_type_id == 3) {
-                    $institute->cityCorporation = CityCorporation::find($institute->city_corporation_id);
-                } else if ($institute->institute_type_id == 4) {
-                    $institute->district = District::find($institute->district_id);
-                }
-            }
-        }
-
-        $data['institutes'] = $institutes;
-        return view('backend.pages.institute.index', $data);
+        return $dataTable->render('backend.pages.institute.index');
     }
 
     /**

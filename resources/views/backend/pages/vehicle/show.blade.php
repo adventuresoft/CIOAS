@@ -215,7 +215,12 @@
 @endpush
 
 @section('content')
-<div class="people-certificate-page">
+<section class="content cioas-page pt-5">
+    <div class="container-fluid">
+        <div class="cioas-shell">
+            <div class="cioas-panel">
+                <div class="cioas-panel-body">
+                    <div class="people-certificate-page border-0 shadow-none">
     <div class="people-certificate-content">
         @php
             $fallbackHeaderUnion = \App\Models\Institute::with('union.thana.district')
@@ -472,7 +477,12 @@
             </div>
         </div>
     </div>
-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 @endsection
 
 @push('script')

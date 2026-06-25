@@ -6,72 +6,68 @@
 
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
+            <div class="cioas-shell">
+                <div class="cioas-panel">
+                    <div class="cioas-panel-header">
+                        <h3 class="cioas-panel-title">
+                            <i class="fas fa-list"></i> Hotel Restaurant Information
+                        </h3>
+                        <div>
+                            @if (create_permission())
+                                <a href="{{ route('hotel-restaurant.create') }}" class="btn btn-material btn-material-primary">
+                                    <i class="fas fa-plus-circle"></i> Create
+                                </a>
+                            @endif
+                        </div>
+                    </div>
 
-            <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <div class="row align-items-center">
-                                <div class="col-md-6">
-                                    <h3 class="card-title" style="font-size:24px; font-weight: semi-bold;">Hotel Restaurant
-                                        Information</h3>
-                                </div>
+                    <div class="cioas-panel-body">
+                        <!-- FILTER BAR -->
+                        <div class="row mb-4 p-3" style="background-color: #f8fafc; border-radius: 8px; border: 1px solid var(--mc-line); margin: 0 0 20px 0;">
+                            <!-- Show Entries -->
+                            <div class="col-md-2 mb-2">
+                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Show Entries</label>
+                                <select id="tableLength" class="form-control form-control-sm">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
 
-                                <div class="col-md-6 text-right">
-                                    @if (create_permission())
-                                        <a href="{{ route('hotel-restaurant.create') }}" class="btn btn-primary">Create</a>
-                                        <a href="{{ route('hotel-restaurant.index') }}" class="btn btn-primary">List</a>
-                                    @endif
-                                </div>
+                            <!-- Organization Name Filter -->
+                            <div class="col-md-3 mb-2">
+                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Hotel & Restaurant</label>
+                                <input type="text" id="search_hotel_name" class="form-control form-control-sm"
+                                    placeholder="Name">
+                            </div>
+
+                            <!-- Category Filter -->
+                            <div class="col-md-2 mb-2">
+                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Category</label>
+                                <input type="text" id="search_category" class="form-control form-control-sm"
+                                    placeholder="Category">
+                            </div>
+
+                            <!-- Subcategory Filter -->
+                            <div class="col-md-2 mb-2">
+                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Subcategory</label>
+                                <input type="text" id="search_subcategory" class="form-control form-control-sm"
+                                    placeholder="Subcategory">
+                            </div>
+
+                            <!-- GLOBAL SEARCH -->
+                            <div class="col-md-3 mb-2">
+                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Search</label>
+                                <input type="text" id="search_global" class="form-control form-control-sm"
+                                    placeholder="Search...">
                             </div>
                         </div>
-                        <!-- /.card-header -->
 
-                        <div class="card-body">
-
-                            <!-- FILTER BAR -->
-                            <div class="row mb-3 align-items-center g-2">
-
-                                <!-- Show Entries -->
-                                <div class="col-md-1">
-                                    <select id="tableLength" class="form-control form-control-sm">
-                                        <option value="10">10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                    </select>
-                                </div>
-
-                                <!-- Organization Name Filter -->
-                                <div class="col-md-2">
-                                    <input type="text" id="search_hotel_name" class="form-control form-control-sm"
-                                        placeholder="Hotel & Restaurant Name">
-                                </div>
-
-                                <!-- Category Filter -->
-                                <div class="col-md-2">
-                                    <input type="text" id="search_category" class="form-control form-control-sm"
-                                        placeholder="Category">
-                                </div>
-
-                                <!-- Subcategory Filter -->
-                                <div class="col-md-2">
-                                    <input type="text" id="search_subcategory" class="form-control form-control-sm"
-                                        placeholder="Subcategory">
-                                </div>
-
-                                <!-- GLOBAL SEARCH -->
-                                <div class="col-md-2">
-                                    <input type="text" id="search_global" class="form-control form-control-sm"
-                                        placeholder="Search">
-                                </div>
-
-                            </div>
-                            <table id="hotelRestaurant" class="table table-bordered table-striped">
+                        <div class="table-responsive">
+                            <table id="hotelRestaurant" class="table table-custom table-hover">
                                 <thead>
                                     <tr>
                                         <th>Sl.</th>
@@ -86,21 +82,12 @@
                                 </thead>
                                 <tbody>
                                 </tbody>
-
                             </table>
                         </div>
-                        <!-- /.card-body -->
-
-                        </table>
                     </div>
-                    <!-- /.card-body -->
-
                 </div>
-                <!-- /.card -->
             </div>
         </div>
-        <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
 

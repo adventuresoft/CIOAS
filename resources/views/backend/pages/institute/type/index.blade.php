@@ -3,102 +3,44 @@
 @endpush
 @section('title', 'Institute Type List')
 @section('content')
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Institute List</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('institute-type.index') }}">Institute Type List</a></li>
-                        <li class="breadcrumb-item active">View</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content mt-4">
         <div class="container-fluid">
-
-            <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-md-6 text-left">
-                                    <h3 class="card-title">Institute Type List</h3>
-                                </div>
-                                <div class="col-md-6 text-right">
-                                    <a href="{{ route('institute-type.create') }}" class="btn btn-primary">Create</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.card-header -->
-
-                        <div class="card-body">
-                            <table id="example1" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Sl.</th>
-                                        <th>Institute Name</th>
-                                        <th>Institute Description</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($institute as $key => $item)
-                                        <tr>
-
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>{{ $item->name }}</td>
-                                            <td>{{ $item->description }}</td>
-                                            <td>
-                                                <div class="table-action">
-                                                    <div class="dropdown dropleft d-inline ml-2">
-                                                    </div>
-                                                    <a class="btn btn-sm btn-primary" title="Edit" data-toggle="tooltip"
-                                                        href="{{ route('institute-type.edit', $item->id) }}"><i
-                                                            class="fa fa-edit"></i></a>
-
-                                                    <form class="deleteData" method="post">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <input type="hidden" class="id" name="id"
-                                                            value="{{ $item->id }}">
-                                                        <input type="hidden" class="deleteUrl" name="deleteUrl"
-                                                            value="{{ route('institute-type.destroy', $item->id) }}">
-                                                        <input type="hidden" class="redirect-url" name="redirectUrl"
-                                                            value="{{ route('institute-type.index') }}">
-                                                        <button type="submit" title="Delete" data-toggle="tooltip"
-                                                            class="btn btn-sm btn-danger"><i
-                                                                class="fa fa-trash"></i></button>
-                                                    </form>
-                                                </div>
-                                            </td>
-
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-
-                            </table>
-                        </div>
-                        <!-- /.card-body -->
-
+            <!-- Alert Notifications -->
+            @if(session()->has('success'))
+                <div class="alert alert-success alert-dismissible fade show premium-card p-3 mb-4" role="alert">
+                    <i class="fas fa-check-circle mr-2"></i> {{ session()->get('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+            
+            <div class="card cioas-shell">
+                <div class="card-header cioas-panel-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title text-dark font-weight-bold mb-0">
+                        <i class="fas fa-list-ul text-teal mr-2" style="color: #0f766e;"></i> Institute Type List
+                    </h3>
+                    <div>
+                        <a href="{{ route('institute-type.create') }}" class="btn btn-sm" style="background-color: #0f766e; color: white;">
+                            <i class="fas fa-plus-circle mr-1"></i> Create Institute Type
+                        </a>
                     </div>
-                    <!-- /.card -->
+                </div>
+                <div class="card-body p-0">
+                    <div class="p-4">
+                        {!! $dataTable->table(['class' => 'table table-bordered table-hover cioas-datatable w-100']) !!}
+                    </div>
                 </div>
             </div>
-            <!-- /.row (main row) -->
+
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
 
 @endsection
+
 @push('script')
+    {!! $dataTable->scripts() !!}
 @endpush

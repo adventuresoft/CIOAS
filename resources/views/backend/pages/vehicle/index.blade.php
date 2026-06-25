@@ -25,107 +25,86 @@
 @section('content')
 
 
-    <!-- Main content -->
-    <section class="content">
+    <section class="content cioas-page pt-5">
         <div class="container-fluid">
+            <div class="cioas-shell">
+                <div class="cioas-panel">
+                    <div class="cioas-panel-header d-flex justify-content-between align-items-center">
+                        <h3 class="cioas-panel-title"><i class="fas fa-car"></i> Vehicle Information</h3>
+                        <div>
+                            <a href="{{route('vehicle.create')}}" class="btn btn-material btn-material-primary"><i class="fas fa-plus"></i> Create</a>
+                        </div>
+                    </div>
 
-            <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <div class="row align-items-center">
-                                <div class="col-md-6 text-left">
-                                    <h3 class="card-title" style="font-size:24px; font-weight: semi-bold;">Vehicle Information</h3>
-                                </div>
-                                <div class="col-md-6 text-right">
-                                    <a href="{{route('vehicle.create')}}" class="btn btn-primary">Create</a>
-                                    <a href="{{route('vehicle.index')}}" class="btn btn-primary">List</a>
-                                </div>
+                    <div class="cioas-panel-body">
+                        <!-- FILTER BAR -->
+                        <div class="row mb-3 align-items-center g-2">
+                            <div class="col-md-1">
+                                <select id="tableLength" class="form-control form-control-sm">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2">
+                                <input type="text" id="search_vehicle_name" class="form-control form-control-sm" placeholder="Vehicle Name">
+                            </div>
+
+                            <div class="col-md-2">
+                                <input type="text" id="search_type" class="form-control form-control-sm" placeholder="Vehicle Type">
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="text" id="search_global" class="form-control form-control-sm" placeholder="Search">
                             </div>
                         </div>
-                        <!-- /.card-header -->
 
-                        <div class="card-body">
-                            <!-- FILTER BAR -->
-                            <div class="row mb-3 align-items-center g-2">
-                                <div class="col-md-1">
-                                    <select id="tableLength" class="form-control form-control-sm">
-                                        <option value="10">10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <input type="text" id="search_vehicle_name" class="form-control form-control-sm" placeholder="Vehicle Name">
-                                </div>
-
-                                <div class="col-md-2">
-                                    <input type="text" id="search_type" class="form-control form-control-sm" placeholder="Vehicle Type">
-                                </div>
-
-
-
-                                <div class="col-md-3">
-                                    <input type="text" id="search_global" class="form-control form-control-sm" placeholder="Search">
-                                </div>
-                            </div>
-
+                        <div class="table-responsive">
                             <table id="example1" class="table table-bordered table-striped">
-                              <thead>
-                                <tr>
-                                    <th>Sl.</th>
-                                    <th>Registration No</th>
-                                    <th>Vehicle Name</th>
-                                    <th>Type</th>
-                                    <th>Category</th>
-                                    <th>Model</th>
-
-                                    <th>Action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                @if (isset($vehicles) && count($vehicles))
-                                    @foreach ($vehicles as $key => $vehicle)
-                                        <tr>
-                                            <td>{{ ++$key }}</td>
-                                            <td>{{ $vehicle->registration_no ?? '--' }}</td>
-                                            <td>{{ $vehicle->vehicle_model ?? '--' }}</td>
-                                            <td>{{ $vehicle->vehicle_type ?? '--' }}</td>
-                                            <td>{{ $vehicle->vehicle_category ?? '--' }}</td>
-                                            <td>{{ $vehicle->make_company ?? '--' }}{{ $vehicle->make_year ? ' (' . $vehicle->make_year . ')' : '' }}</td>
-
-                                            <td>
-                                                <div class="table-action">
-                                                    <a class="btn btn-sm btn-primary" href="{{ route('vehicle.edit', $vehicle->id) }}" title="Edit">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                    <a class="btn btn-sm btn-info" href="{{ route('vehicle.show', $vehicle->id) }}" title="View">
-                                                        <i class="fa fa-eye"></i>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-
-                              </tbody>
-
+                                <thead>
+                                    <tr>
+                                        <th>Sl.</th>
+                                        <th>Registration No</th>
+                                        <th>Vehicle Name</th>
+                                        <th>Type</th>
+                                        <th>Category</th>
+                                        <th>Model</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (isset($vehicles) && count($vehicles))
+                                        @foreach ($vehicles as $key => $vehicle)
+                                            <tr>
+                                                <td>{{ ++$key }}</td>
+                                                <td>{{ $vehicle->registration_no ?? '--' }}</td>
+                                                <td>{{ $vehicle->vehicle_model ?? '--' }}</td>
+                                                <td>{{ $vehicle->vehicle_type ?? '--' }}</td>
+                                                <td>{{ $vehicle->vehicle_category ?? '--' }}</td>
+                                                <td>{{ $vehicle->make_company ?? '--' }}{{ $vehicle->make_year ? ' (' . $vehicle->make_year . ')' : '' }}</td>
+                                                <td>
+                                                    <div class="table-action">
+                                                        <a class="btn btn-sm btn-primary" href="{{ route('vehicle.edit', $vehicle->id) }}" title="Edit">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-info" href="{{ route('vehicle.show', $vehicle->id) }}" title="View">
+                                                            <i class="fa fa-eye"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
                             </table>
-                          </div>
-                          <!-- /.card-body -->
-
+                        </div>
                     </div>
-                    <!-- /.card -->
                 </div>
             </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
 
 @endsection
 @push('script')

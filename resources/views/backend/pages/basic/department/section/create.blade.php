@@ -1,94 +1,131 @@
-@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'FamilyCategory'])
-@push('style')
-@endpush
-@section('title', 'Family Category')
+@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'Department'])
+
+@section('title', 'Create Section')
+
 @section('content')
     @php
         $department = App\Models\Department\Department::find($department_id);
     @endphp
-    <!-- Content Header (Page header) -->
+
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>{{ $department->name }} Section</h1>
+                    <h1>Create Section</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a
-                                href="{{ route('basic-settings.department.index') }}">{{ $department->name }}</a></li>
-                        <li class="breadcrumb-item active">Section</li>
-                        <li class="breadcrumb-item active">Create</li>
+                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.department.index') }}">Basic Settings</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.department-section.index', $department_id) }}">Section List</a></li>
+                        <li class="breadcrumb-item active">Create Section</li>
                     </ol>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content cioas-page pt-5">
         <div class="container-fluid">
-
-            <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Create Section</h3>
+            <div class="cioas-shell">
+                <form class="form-horizontal" id="FormSubmit" method="POST" enctype="multipart/form-data"
+                    action="{{ route('basic-settings.department-section.store') }}"
+                    data-url="{{ route('basic-settings.department-section.store') }}"
+                    data-redirect-url="{{ route('basic-settings.department-section.index', $department_id) }}">
+                    @csrf
+                    <input type="hidden" name="department_id" value="{{ $department_id }}">
+                    
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title">
+                                <i class="fas fa-plus-circle"></i> Create Section ({{ $department->name ?? 'Department' }})
+                            </h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form class="form-horizontal" id="FormSubmit" method="POST" enctype="multipart/form-data"
-                            data-url="{{ route('basic-settings.department-section.store') }}"
-                            data-redirect-url="{{ route('basic-settings.department-section.index', $department_id) }}">
-                            @csrf
-                            <input type="hidden" name="department_id" value="{{ $department_id }}">
-                            <div class="card-body">
-
-                                <div class="form-group row">
-                                    <label for="en_name" class="col-sm-2 col-form-label">Name <span class="text-danger"
-                                            data-toggle="tooltip" title="Required">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="name" placeholder="Department Section Name"
-                                            class="form-control" id="name">
+                        <div class="cioas-panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="md-field">
+                                        <label for="name">Name <span class="text-danger">*</span></label>
+                                        <input type="text" name="name" placeholder="Section Name"
+                                            class="form-control" id="name" required>
                                         <small class="text-danger error name_error"></small>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="bn_name" class="col-sm-2 col-form-label">Name Bangla <span
-                                            class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="bn_name" placeholder="Department Section Name In Bangla"
-                                            class="form-control" id="bn_name">
+                                <div class="col-md-6">
+                                    <div class="md-field">
+                                        <label for="bn_name">Bangla Name <span class="text-danger">*</span></label>
+                                        <input type="text" name="bn_name" placeholder="Section Name In Bangla"
+                                            class="form-control" id="bn_name" required>
                                         <small class="text-danger error bn_name_error"></small>
-
-                                    </div>
-                                </div>
-
-
-                            </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <div class="form-group row">
-                                    <a href="{{ route('basic-settings.family-category.index') }}"
-                                        class="btn btn-default float-right">Cancel</a>
-                                    <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-info">Submit</button>
                                     </div>
                                 </div>
                             </div>
-                            <!-- /.card-footer -->
-                        </form>
+                        </div>
                     </div>
-                    <!-- /.card -->
-                </div>
-            </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
 
+                    <div class="cioas-actions mt-4">
+                        <a href="{{ route('basic-settings.department-section.index', $department_id) }}" class="btn btn-light btn-material">
+                            <i class="fas fa-arrow-left"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-material btn-material-primary" id="btnSave">
+                            <i class="fas fa-save"></i> Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
 @endsection
+
 @push('script')
+    <script>
+        $(document).ready(function() {
+            let isSubmitting = false;
+            $('#FormSubmit').on('submit', function(e) {
+                e.preventDefault();
+
+                if (isSubmitting) return;
+                isSubmitting = true;
+
+                let form = $(this);
+                let formData = new FormData(this);
+                let url = form.data('url');
+
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: formData,
+                    dataType: "json",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $('#btnSave').prop('disabled', true);
+                        $('.error').text('');
+                    },
+                    success: function(response) {
+                        toastr.success(response.message);
+                        setTimeout(function() {
+                            window.location.href = form.data('redirect-url');
+                        }, 1500);
+                    },
+                    error: function(xhr) {
+                        isSubmitting = false;
+                        $('#btnSave').prop('disabled', false);
+                        let err = xhr.responseJSON;
+                        if (err && err.errors) {
+                            $.each(err.errors, function(key, value) {
+                                toastr.error(value[0]);
+                                form.find("." + key + "_error").text(value[0]);
+                            });
+                        } else if (err && err.message) {
+                            toastr.error(err.message);
+                        } else {
+                            toastr.error('Failed to save data.');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 @endpush

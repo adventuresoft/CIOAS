@@ -3,167 +3,44 @@
 @endpush
 @section('title', 'Institute List')
 @section('content')
-   <!-- Content Header (Page header) -->
-   <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1>Institute List</h1>
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{route('institute.index')}}">Institute List</a></li>
-            <li class="breadcrumb-item active">View</li>
-          </ol>
-        </div>
-      </div>
-    </div><!-- /.container-fluid -->
-  </section>
 
-    <!-- Main content -->
-    <section class="content">
+    <section class="content mt-4">
         <div class="container-fluid">
-
-            <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-md-6 text-left">
-                                    <h3 class="card-title">Institute List</h3>
-                                </div>
-                                <div class="col-md-6 text-right">
-                                    <a href="{{route('institute.create')}}" class="btn btn-primary">Create</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.card-header -->
-
-                        <div class="card-body">
-
-                          <div class="table-responsive">
-                            <table id="example1" class="table table-bordered table-striped">
-                              <thead>
-                                <tr>
-                                    <th>Sl.</th>
-                                    <th>Institute Name</th>
-                                    <th>Institute Type</th>
-                                    <th>Institute Category</th>
-                                    <th>Activation Time</th>
-                                    <th>Action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                  @if (count($institutes))
-                                    @foreach ($institutes as $key=>$institute)
-                                      <tr>
-                                          <td>{{++$key}}</td>
-                                          <td>
-                                            @if ($institute->institute_type_id == 1)
-                                              {{$institute->union->name ?? ''}}
-                                            @elseif($institute->institute_type_id == 2)
-                                              {{$institute->pourashava->name ?? ''}}
-                                            @elseif($institute->institute_type_id == 3)
-                                              {{$institute->cityCorporation->name ?? ''}}
-                                            @elseif($institute->institute_type_id == 4)
-                                            {{$institute->district->name ?? ''}}
-                                            @endif  
-                                          </td>
-                                          <td>{{$institute->type->name ?? ''}}</td>
-                                          <td>{{$institute->category->name ?? ''}}</td>
-                                          <td>{{$institute->activation_time ? date("d M, Y", strtotime($institute->activation_time)) : ''}}</td>
-                                          <td style="width: 10%">
-                                            <div class="table-action">
-                                                <a class="btn btn-sm btn-primary" title="Edit" data-toggle="tooltip" href="{{route('institute.edit', $institute->id)}}"><i class="fa fa-edit"></i></a>
-                                                <a class="btn btn-sm btn-info" title="Show" data-toggle="tooltip" href="{{route('institute.show', $institute->id)}}"><i class="fa fa-eye"></i></a>
-
-                                                <form class="deleteInstitute" method="post">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <input type="hidden" class="id" name="id" value="{{$institute->id}}">
-                                                    <input type="hidden" class="deleteUrl" name="deleteUrl" value="{{route('institute.destroy', $institute->id)}}">
-                                                    <button type="submit" title="Delete" data-toggle="tooltip" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-                                                </form>
-                                            </div>
-                                          </td>
-                                      </tr>
-                                    @endforeach
-                                  @endif
-                              </tbody>
-
-                            </table>
-                          </div>
-                           
-
-
-                          </div>
-                          <!-- /.card-body -->
-
+            <!-- Alert Notifications -->
+            @if(session()->has('success'))
+                <div class="alert alert-success alert-dismissible fade show premium-card p-3 mb-4" role="alert"
+                    style="border-left: 5px solid #10b981;">
+                    <i class="fas fa-check-circle mr-2"></i> {{ session()->get('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+            
+            <div class="card cioas-shell">
+                <div class="card-header cioas-panel-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title text-dark font-weight-bold mb-0">
+                        <i class="fas fa-university text-teal mr-2" style="color: #0f766e;"></i> Institute List
+                    </h3>
+                    <div>
+                        <a href="{{route('institute.create')}}" class="btn btn-sm" style="background-color: #0f766e; color: white;">
+                            <i class="fas fa-plus-circle mr-1"></i> Create Institute
+                        </a>
                     </div>
-                    <!-- /.card -->
+                </div>
+                <div class="card-body p-0">
+                    <div class="p-4">
+                        {!! $dataTable->table(['class' => 'table table-bordered table-hover cioas-datatable w-100']) !!}
+                    </div>
                 </div>
             </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+
+        </div>
     </section>
-    <!-- /.content -->
 
 @endsection
+
 @push('script')
-
-<script>
-  
-  $(document).ready(function(){
-    $(".deleteInstitute").on('submit', function(e){
-      e.preventDefault();
-      var thisForm = $(this);
-      var formData = $(this).serialize();
-      var deleteUrl = $(this).find(".deleteUrl").val();
-      $("#toast-container").show();
-      toastr.success("<br /><button type='button' id='confirmationRevertNo' class='btn clear'>No</button><br /><button type='button' id='confirmationRevertYes' class='btn clear'>Yes</button>",'Are you sure, you want to delete it?',
-		{
-			closeButton: false,
-			allowHtml: true,
-			onShown: function (toast) {
-				$("#confirmationRevertYes").click(function(){
-					$.ajax({
-                    type: "POST",
-                    url: deleteUrl,
-                    data: formData,
-                    beforeSend: function() {
-                        thisForm.find('button[type="submit"]').prop("disabled",true);
-                    },
-                    success: function (response) {
-                        thisForm.find('button[type="submit"]').prop("disabled",false);
-                        toastr.success(response.message);
-                        setTimeout(function() {
-                            location.href = "{{route('institute.index')}}";
-                        }, 2000)
-                    },
-                    error: function(xhr, status, error) {
-                        thisForm.find('button[type="submit"]').prop("disabled",false);
-                        var responseText = jQuery.parseJSON(xhr.responseText);
-                        toastr.error(responseText.message);
-                        $.each(responseText.errors, function(key, val) {
-                            thisForm.find("." + key + "-error").text(val[0]);
-                        });
-                    }
-                });
-
-                
-          
-				});
-
-        $("#confirmationRevertNo").click(function(){
-          $("#toast-container").hide();
-        })
-			}
-		});
-    })
-  });
-
-</script>
+    {!! $dataTable->scripts() !!}
 @endpush
 

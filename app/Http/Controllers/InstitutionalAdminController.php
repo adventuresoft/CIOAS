@@ -34,12 +34,9 @@ class InstitutionalAdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(\App\DataTables\InstitutionalAdminDataTable $dataTable)
     {
-        $data['admins'] = User::where('institute_id', Auth::user()->institute_id)
-            ->where('user_type', 'admin')
-            ->get();
-        return view('backend.pages.institutional_admin.index', $data);
+        return $dataTable->render('backend.pages.institutional_admin.index');
     }
 
     /**

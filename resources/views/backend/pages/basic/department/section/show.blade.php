@@ -1,120 +1,64 @@
-@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'HotelCategory'])
-@push('style')
-@endpush
-@section('title', 'Hotel Category')
+@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'Department'])
+
+@section('title', 'Section Details')
+
 @section('content')
-    <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Show Hotel Category</h1>
+                    <h1>Section Details</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.hotel-category.index') }}">Hotel
-                                Category</a></li>
-                        <li class="breadcrumb-item active">Show</li>
+                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.department.index') }}">Basic Settings</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.department-section.index', $section->department_id) }}">Section List</a></li>
+                        <li class="breadcrumb-item active">Section Details</li>
                     </ol>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content cioas-page pt-5">
         <div class="container-fluid">
-
-            <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Hotel Category Info</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form class="form-horizontal" id="familyCateogryForm" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-                            <div class="card-body">
-
-                                <div class="form-group row">
-                                    <label for="en_name" class="col-sm-2 col-form-label">Category <span class="text-danger"
-                                            data-toggle="tooltip" title="Required">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="en_name" value="{{ $category->en_name }}"
-                                            placeholder="Family Category" class="form-control" id="en_name" disabled>
-                                        <small class="text-danger error en_name_error"></small>
-
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="bn_name" class="col-sm-2 col-form-label">Category Bangla <span
-                                            class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="bn_name" value="{{ $category->bn_name }}"
-                                            placeholder="Family Category Bangla" class="form-control" id="bn_name"
-                                            disabled>
-                                        <small class="text-danger error bn_name_error"></small>
-
-                                    </div>
-                                </div>
-
-
-                            </div>
-                            <!-- /.card-body -->
-
-                            <!-- /.card-footer -->
-                        </form>
+            <div class="cioas-shell">
+                <div class="cioas-panel">
+                    <div class="cioas-panel-header">
+                        <h3 class="cioas-panel-title"><i class="fas fa-eye"></i> Section Details</h3>
                     </div>
-                    <!-- /.card -->
+                    <div class="cioas-panel-body">
+                        @if ($section)
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <th width="30%">Section Name</th>
+                                    <td>{{ $section->name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Bengali Name</th>
+                                    <td>{{ $section->bn_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Created At</th>
+                                    <td>{{ $section->created_at ? $section->created_at->format('d M, Y h:i A') : '—' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Updated At</th>
+                                    <td>{{ $section->updated_at ? $section->updated_at->format('d M, Y h:i A') : '—' }}</td>
+                                </tr>
+                            </table>
+                        @else
+                            <p class="text-danger">Section information not found.</p>
+                        @endif
+                    </div>
+                    <div class="cioas-actions mt-4">
+                        <a href="{{ route('basic-settings.department-section.index', $section->department_id) }}" class="btn btn-light btn-material">
+                            <i class="fas fa-arrow-left"></i> Back to List
+                        </a>
+                    </div>
                 </div>
             </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
-
 @endsection
-@push('script')
-    <script>
-        $(document).ready(function() {
-        $(".select2").select2();
-
-        e.preventDefault();
-        let thisForm = $(this);
-        $.ajax({
-            type: "POST",
-            url: "{{ route('basic-settings.family-category.update', $category->id) }}",
-            data: new FormData(this),
-            dataType: "json",
-            contentType: false,
-            cache: false,
-            processData: false,
-            beforeSend: function() {
-                thisForm.find('button[type="submit"]').prop("disabled", true);
-                $('.error').text('');
-            },
-            success: function(response) {
-                thisForm.find('button[type="submit"]').prop("disabled", false);
-                toastr.success(response.message);
-                setTimeout(function() {
-                    location.href =
-                        "{{ route('basic-settings.family-category.index') }}";
-                }, 2000)
-            },
-            error: function(xhr, status, error) {
-                thisForm.find('button[type="submit"]').prop("disabled", false);
-                var responseText = jQuery.parseJSON(xhr.responseText);
-                toastr.error(responseText.message);
-                $.each(responseText.errors, function(key, val) {
-                    thisForm.find("." + key + "_error").text(val[0]);
-                });
-            }
-        });
-        })
-        })
-    </script>
-@endpush

@@ -192,57 +192,7 @@ Route::prefix('application')->name('application.')->group(function () {
 });
 
 
-/* permisison */
-// Role route start
-Route::controller(RoleController::class)->group(function () {
-    Route::get('role', 'index')->name('role.index');
-    Route::post('role', 'store')->name('role.store');
-    Route::get('role/{id}/edit', 'edit')->name('role.edit');
-    Route::patch('role/{id}', 'update')->name('role.update');
-    Route::delete('role/{id}', 'destroy')->name('role.destroy');
-});
 
-// Permission route start
-Route::controller(PermissionController::class)->group(function () {
-    Route::get('permission', 'index')->name('permission.index');
-    Route::post('permission', 'store')->name('permission.store');
-    Route::get('permission/{id}/edit', 'edit')->name('permission.edit');
-    Route::patch('permission/{id}', 'update')->name('permission.update');
-    Route::delete('permission/{id}', 'destroy')->name('permission.destroy');
-});
-
-// Role Permission route start
-Route::controller(RolePermissionController::class)->group(function () {
-    Route::get('rolepermission', 'index')->name('rolepermission.index');
-    Route::post('rolepermission', 'store')->name('rolepermission.store');
-    Route::get('rolepermission/{role_id}/edit/{permission_id}', 'edit')->name('rolepermission.edit');
-    Route::patch('rolepermission/{id}', 'update')->name('rolepermission.update');
-
-    Route::post('rolepermission/destroy', 'destroy')->name('rolepermission.destroy');
-});
-
-// Role User route start
-Route::controller(RoleUserController::class)->group(function () {
-    Route::get('roleuser', 'index')->name('roleuser.index');
-    Route::get('roleuser/create', 'create')->name('roleuser.create');
-    Route::post('roleuser', 'store')->name('roleuser.store');
-    Route::get('roleuser/{role_id}/edit/{user_id}', 'edit')->name('roleuser.edit');
-    Route::patch('roleuser/{id}', 'update')->name('roleuser.update');
-    Route::post('roleuser/roleusersoft', 'roleusersoft')->name('roleuser.roleusersoft');
-
-});
-
-// User Permission route start
-Route::controller(UserPermissionController::class)->group(function () {
-    Route::get('userper', 'index')->name('userper.index');
-    Route::get('userper/create', 'create')->name('userper.create');
-    Route::post('userper', 'store')->name('userper.store');
-    Route::get('userper/{model_id}/edit/{permission_id}', 'edit')->name('userper.edit');
-    Route::patch('userper/{id}', 'update')->name('userper.update');
-    Route::post('userper/delete', 'destroy')->name('userper.destroy');
-});
-
-Route::resource('user', UserController::class);
 
 Route::get('/certificate/verify', [CertificateVerifyController::class, 'index'])->name('certificate.verify');
 Route::post('/certificate/verify/search', [CertificateVerifyController::class, 'search'])->name('certificate.verify.search');
@@ -317,6 +267,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('/people/property-delete/{proID}', [PropertyInfoController::class, 'destroy'])->name('people.propertyDelete');
 
     // Staff Routes
+    Route::post('staff/records', [StaffController::class, 'records'])->name('staff.records');
     Route::resource('staff', StaffController::class);
 
     // Leave Application
@@ -426,7 +377,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
         // hotel-restaurant category
         Route::resource('hotel-category', HotelCategoryController::class);
-        
+
         // hotel-restaurant subcategory
         Route::get('hotel-subcategory/{category_id}', [HotelSubCategoryController::class, 'index'])->name('hotel-subcategory.index');
         Route::get('hotel-subcategory/create/{category_id}', [HotelSubCategoryController::class, 'create'])->name('hotel-subcategory.create');
@@ -438,7 +389,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
         // license category
         Route::resource('license-category', LicenseCategoryController::class);
-        
+
         // license subcategory
         Route::get('license-subcategory/{category_id}', [LicenseSubCategoryController::class, 'index'])->name('license-subcategory.index');
         Route::get('license-subcategory/create/{category_id}', [LicenseSubCategoryController::class, 'create'])->name('license-subcategory.create');
@@ -455,7 +406,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
         Route::get('department-section/{department_id}', [DepartmentSectionController::class, 'index'])->name('department-section.index');
         Route::get('department-section/create/{department_id}', [DepartmentSectionController::class, 'create'])->name('department-section.create');
         Route::post('department-section/store', [DepartmentSectionController::class, 'store'])->name('department-section.store');
-        Route::post('department-section/show/{id}', [DepartmentSectionController::class, 'show'])->name('department-section.show');
+        Route::get('department-section/show/{id}', [DepartmentSectionController::class, 'show'])->name('department-section.show');
+        Route::get('department-section/edit/{id}', [DepartmentSectionController::class, 'edit'])->name('department-section.edit');
+        Route::put('department-section/update/{id}', [DepartmentSectionController::class, 'update'])->name('department-section.update');
         Route::delete('department-section/delete/{id}', [DepartmentSectionController::class, 'destroy'])->name('department-section.destroy');
         Route::get('get-sections-by-department/{department_id}', [DepartmentSectionController::class, 'getSectionsByDepartment'])->name('get-sections-by-department');
 
@@ -735,7 +688,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
     Route::post('land/approve', [LandController::class, 'approve'])->name('land.approve');
     Route::resource('land', LandController::class);
-    
+
     Route::get('ajax/search-land-no', [\App\Http\Controllers\LandCaseController::class, 'searchLandNo'])->name('ajax.searchLandNo');
     Route::get('ajax/get-land-case-no', [\App\Http\Controllers\LandCaseController::class, 'getLandCaseNo'])->name('ajax.getLandCaseNo');
     Route::resource('land-cases', \App\Http\Controllers\LandCaseController::class);
@@ -790,6 +743,59 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('appointment-bookings', [\App\Http\Controllers\Backend\AppointmentBookingController::class, 'index'])->name('appointment.booking.index');
     Route::get('appointment-bookings/{id}', [\App\Http\Controllers\Backend\AppointmentBookingController::class, 'show'])->name('appointment.booking.show');
     Route::post('appointment-bookings/{id}/status', [\App\Http\Controllers\Backend\AppointmentBookingController::class, 'updateStatus'])->name('appointment.booking.updateStatus');
+
+
+    /* permisison */
+    // Role route start
+    Route::controller(RoleController::class)->group(function () {
+        Route::get('role', 'index')->name('role.index');
+        Route::post('role', 'store')->name('role.store');
+        Route::get('role/{id}/edit', 'edit')->name('role.edit');
+        Route::patch('role/{id}', 'update')->name('role.update');
+        Route::delete('role/{id}', 'destroy')->name('role.destroy');
+    });
+
+    // Permission route start
+    Route::controller(PermissionController::class)->group(function () {
+        Route::get('permission', 'index')->name('permission.index');
+        Route::post('permission', 'store')->name('permission.store');
+        Route::get('permission/{id}/edit', 'edit')->name('permission.edit');
+        Route::patch('permission/{id}', 'update')->name('permission.update');
+        Route::delete('permission/{id}', 'destroy')->name('permission.destroy');
+    });
+
+    // Role Permission route start
+    Route::controller(RolePermissionController::class)->group(function () {
+        Route::get('rolepermission', 'index')->name('rolepermission.index');
+        Route::post('rolepermission', 'store')->name('rolepermission.store');
+        Route::get('rolepermission/{role_id}/edit/{permission_id}', 'edit')->name('rolepermission.edit');
+        Route::patch('rolepermission/{id}', 'update')->name('rolepermission.update');
+
+        Route::post('rolepermission/destroy', 'destroy')->name('rolepermission.destroy');
+    });
+
+    // Role User route start
+    Route::controller(RoleUserController::class)->group(function () {
+        Route::get('roleuser', 'index')->name('roleuser.index');
+        Route::get('roleuser/create', 'create')->name('roleuser.create');
+        Route::post('roleuser', 'store')->name('roleuser.store');
+        Route::get('roleuser/{role_id}/edit/{user_id}', 'edit')->name('roleuser.edit');
+        Route::patch('roleuser/{id}', 'update')->name('roleuser.update');
+        Route::post('roleuser/roleusersoft', 'roleusersoft')->name('roleuser.roleusersoft');
+
+    });
+
+    // User Permission route start
+    Route::controller(UserPermissionController::class)->group(function () {
+        Route::get('userper', 'index')->name('userper.index');
+        Route::get('userper/create', 'create')->name('userper.create');
+        Route::post('userper', 'store')->name('userper.store');
+        Route::get('userper/{model_id}/edit/{permission_id}', 'edit')->name('userper.edit');
+        Route::patch('userper/{id}', 'update')->name('userper.update');
+        Route::post('userper/delete', 'destroy')->name('userper.destroy');
+    });
+
+    Route::resource('user', UserController::class);
 
 });
 

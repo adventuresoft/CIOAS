@@ -1,64 +1,84 @@
-@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' =>'Thana'])
+@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'Thana'])
+
 @push('style')
 @endpush
-@section('title', 'Thana')
+
+@section('title', 'Thana List')
+
 @section('content')
-   <!-- Content Header (Page header) -->
-   <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1>Thana</h1>
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{route('basic-settings.thana.index')}}">Thana</a></li>
-            <li class="breadcrumb-item active">View</li>
-          </ol>
-        </div>
-      </div>
-    </div><!-- /.container-fluid -->
-  </section>
-
     <!-- Main content -->
-    <section class="content">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
-
             <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-md-6 text-left">
-                                    <h3 class="card-title">Thana List</h3>
-                                </div>
-                                <div class="col-md-6 text-right">
-                                    <a href="{{route('basic-settings.thana.create')}}" class="btn btn-primary">Create</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.card-header -->
-
-                        <div class="card-body">
-                          <div class="table-responsive">
-                            {{ $dataTable->table(['class' => 'table table-bordered table-striped table-hover w-100']) }}
-                          </div>
-                            
-                          </div>
-                          <!-- /.card-body -->
-
+            <div class="cioas-shell">
+                <div class="cioas-panel">
+                    <div class="cioas-panel-header">
+                        <h3 class="cioas-panel-title">
+                            <i class="fas fa-list"></i> Thana List
+                        </h3>
+                        <a href="{{ route('basic-settings.thana.create') }}" class="btn btn-material btn-material-primary">
+                            <i class="fas fa-plus-circle"></i> Create Thana
+                        </a>
                     </div>
-                    <!-- /.card -->
+
+                    <div class="cioas-panel-body">
+                        <div class="table-responsive">
+                            {!! $dataTable->table(['class' => 'table table-custom table-hover w-100']) !!}
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
-
 @endsection
+
 @push('script')
-{{ $dataTable->scripts() }}
+    {!! $dataTable->scripts() !!}
+
+    <script>
+        $(document).ready(function() {
+            // Setup CSRF token for AJAX
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            // Handle Delete
+            $(document).on('submit', '.deleteData', function(e) {
+                e.preventDefault();
+                var form = $(this);
+                var url = form.attr('action');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to delete this thana!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'DELETE',
+                            url: url,
+                            data: form.serialize(),
+                            success: function(response) {
+                                if (response.status) {
+                                    toastr.success(response.message);
+                                    window.LaravelDataTables["thana-table"].ajax.reload();
+                                } else {
+                                    toastr.error(response.message || 'Something went wrong!');
+                                }
+                            },
+                            error: function(xhr) {
+                                toastr.error('An error occurred while deleting.');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 @endpush

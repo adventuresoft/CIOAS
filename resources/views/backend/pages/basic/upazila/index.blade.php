@@ -1,56 +1,31 @@
-@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' =>'Upazila'])
+@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'Upazila'])
 @push('style')
 @endpush
 @section('title', 'Upazila/Circle')
 @section('content')
-   <!-- Content Header (Page header) -->
-   <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1>Upazila/Circle</h1>
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{route('basic-settings.upazila.index')}}">Upazila/Circle</a></li>
-            <li class="breadcrumb-item active">View</li>
-          </ol>
-        </div>
-      </div>
-    </div><!-- /.container-fluid -->
-  </section>
+
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content cioas-page pt-5">
         <div class="container-fluid">
 
             <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-md-6 text-left">
-                                    <h3 class="card-title">Upazila/Circle List</h3>
-                                </div>
-                                <div class="col-md-6 text-right">
-                                    <a href="{{route('basic-settings.upazila.create')}}" class="btn btn-primary">Create</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.card-header -->
-
-                        <div class="card-body">
-                          <div class="table-responsive">
-                            {{ $dataTable->table(['class' => 'table table-bordered table-striped table-hover w-100']) }}
-                          </div>
-                            
-                          </div>
-                          <!-- /.card-body -->
-
+            <div class="cioas-shell">
+                <div class="cioas-panel">
+                    <div class="cioas-panel-header">
+                        <h3 class="cioas-panel-title">
+                            <i class="fas fa-list"></i> Upazila/Circle List
+                        </h3>
+                        <a href="{{ route('basic-settings.upazila.create') }}" class="btn btn-material btn-material-primary">
+                            <i class="fas fa-plus-circle"></i> Create Upazila
+                        </a>
                     </div>
-                    <!-- /.card -->
+
+                    <div class="cioas-panel-body">
+                        <div class="table-responsive">
+                            {{ $dataTable->table(['class' => 'table table-custom table-hover w-100']) }}
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- /.row (main row) -->
@@ -60,5 +35,5 @@
 
 @endsection
 @push('script')
-{{ $dataTable->scripts() }}
+    {{ $dataTable->scripts() }}
 @endpush

@@ -43,9 +43,6 @@
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset('plugins') }}/summernote/summernote-bs4.min.css">
 
-    <link rel="stylesheet" href="{{ asset('assets') }}/style/cioas.css">
-
-
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('plugins') }}/select2/css/select2.min.css">
     <link rel="stylesheet" href="{{ asset('plugins') }}/select2-bootstrap4-theme/select2-bootstrap4.min.css">
@@ -53,157 +50,9 @@
     {{-- data table --}}
     <link rel="stylesheet" href="//cdn.datatables.net/2.3.6/css/dataTables.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.6/css/dataTables.bootstrap5.css">
-    <style>
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            color: #444;
-            line-height: 17px !important;
-        }
 
-        .select2 {
-            width: 100% !important;
-        }
-
-        .table-action {
-            display: flex;
-            gap: 8px;
-        }
-
-        /* Bootstrap 4 to 5 Spacing and Utility Compatibility Bridge */
-        .mr-1 {
-            margin-right: 0.25rem !important;
-        }
-
-        .mr-2 {
-            margin-right: 0.5rem !important;
-        }
-
-        .mr-3 {
-            margin-right: 1rem !important;
-        }
-
-        .mr-4 {
-            margin-right: 1.5rem !important;
-        }
-
-        .mr-5 {
-            margin-right: 3rem !important;
-        }
-
-        .mr-auto {
-            margin-right: auto !important;
-        }
-
-        .ml-1 {
-            margin-left: 0.25rem !important;
-        }
-
-        .ml-2 {
-            margin-left: 0.5rem !important;
-        }
-
-        .ml-3 {
-            margin-left: 1rem !important;
-        }
-
-        .ml-4 {
-            margin-left: 1.5rem !important;
-        }
-
-        .ml-5 {
-            margin-left: 3rem !important;
-        }
-
-        .ml-auto {
-            margin-left: auto !important;
-        }
-
-        .pr-1 {
-            padding-right: 0.25rem !important;
-        }
-
-        .pr-2 {
-            padding-right: 0.5rem !important;
-        }
-
-        .pr-3 {
-            padding-right: 1rem !important;
-        }
-
-        .pr-4 {
-            padding-right: 1.5rem !important;
-        }
-
-        .pr-5 {
-            padding-right: 3rem !important;
-        }
-
-        .pl-1 {
-            padding-left: 0.25rem !important;
-        }
-
-        .pl-2 {
-            padding-left: 0.5rem !important;
-        }
-
-        .pl-3 {
-            padding-left: 1rem !important;
-        }
-
-        .pl-4 {
-            padding-left: 1.5rem !important;
-        }
-
-        .pl-5 {
-            padding-left: 3rem !important;
-        }
-
-        .float-left {
-            float: left !important;
-        }
-
-        .float-right {
-            float: right !important;
-        }
-
-        .text-right {
-            text-align: right !important;
-        }
-
-        .text-left {
-            text-align: left !important;
-        }
-
-        .custom-select {
-            display: inline-block;
-            width: 100%;
-            height: calc(2.25rem + 2px);
-            padding: .375rem 1.75rem .375rem .75rem;
-            line-height: 1.5;
-            color: #495057;
-            vertical-align: middle;
-            background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
-            background-color: #fff;
-            border: 1px solid #ced4da;
-            border-radius: .25rem;
-            appearance: none;
-        }
-
-        .nav-sidebar .nav-item>.nav-link {
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-sidebar .nav-link p {
-            margin-bottom: 0 !important;
-        }
-
-        .form-inline .form-group {
-            display: flex;
-            flex-flow: row wrap;
-            align-items: center;
-            margin-bottom: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('assets') }}/style/cioas.css">
+    <link rel="stylesheet" href="{{ asset('backend/css/custom-cioas.css') }}">
     @stack('style')
 </head>
 
@@ -356,58 +205,67 @@
                 e.preventDefault();
                 var thisForm = $(this);
                 var formData = $(this).serialize();
-                var deleteUrl = $(this).find(".deleteUrl").val();
+                var deleteUrl = $(this).attr('action') || $(this).find(".deleteUrl").val();
                 var redirectUrl = $(this).find(".redirect-url").val();
 
+                var title = $(this).data('title') || 'Are you sure?';
+                var text = $(this).data('text') || "This action cannot be undone.";
 
-                $("#toast-container").show();
-                toastr.success(
-                    "<br /><button type='button' id='confirmationRevertNo' class='btn clear'>No</button><br /><button type='button' id='confirmationRevertYes' class='btn clear'>Yes</button>",
-                    'Are you sure, you want to delete it?', {
-                        closeButton: false,
-                        allowHtml: true,
-                        onShown: function(toast) {
-                            $("#confirmationRevertYes").click(function() {
-                                $.ajax({
-                                    type: "DELETE",
-                                    url: deleteUrl,
-                                    data: formData,
-                                    beforeSend: function() {
-                                        thisForm.find('button[type="submit"]')
-                                            .prop("disabled", true);
-                                    },
-                                    success: function(response) {
-                                        thisForm.find('button[type="submit"]')
-                                            .prop("disabled", false);
-                                        toastr.success(response.message);
-                                        setTimeout(function() {
-                                            location.href = redirectUrl;
-                                        }, 2000)
-                                    },
-                                    error: function(xhr, status, error) {
-                                        thisForm.find('button[type="submit"]')
-                                            .prop("disabled", false);
-                                        var responseText = jQuery.parseJSON(xhr
-                                            .responseText);
-                                        toastr.error(responseText.message);
-                                        $.each(responseText.errors, function(
-                                            key, val) {
-                                            thisForm.find("." + key +
-                                                "-error").text(val[
-                                                0]);
-                                        });
-                                    }
+                Swal.fire({
+                    title: title,
+                    text: text,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc2626',
+                    cancelButtonColor: '#475569',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: deleteUrl,
+                            data: formData,
+                            beforeSend: function() {
+                                thisForm.find('button[type="submit"]').prop("disabled", true);
+                            },
+                            success: function(response) {
+                                thisForm.find('button[type="submit"]').prop("disabled", false);
+                                Swal.fire(
+                                    'Deleted!',
+                                    response.message,
+                                    'success'
+                                );
+                                
+                                if (redirectUrl && redirectUrl !== '') {
+                                    setTimeout(function() {
+                                        location.href = redirectUrl;
+                                    }, 1500);
+                                } else if (typeof $.fn.DataTable !== 'undefined' && $('.dataTable').length > 0) {
+                                    // Refresh the datatable without losing current pagination state
+                                    $('.dataTable').DataTable().ajax.reload(null, false);
+                                } else {
+                                    // Fallback if no DataTable exists
+                                    setTimeout(function() {
+                                        location.reload();
+                                    }, 1500);
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                thisForm.find('button[type="submit"]').prop("disabled", false);
+                                var responseText = jQuery.parseJSON(xhr.responseText);
+                                Swal.fire(
+                                    'Error!',
+                                    responseText.message || 'Something went wrong.',
+                                    'error'
+                                );
+                                $.each(responseText.errors, function(key, val) {
+                                    thisForm.find("." + key + "-error").text(val[0]);
                                 });
-
-
-
-                            });
-
-                            $("#confirmationRevertNo").click(function() {
-                                $("#toast-container").hide();
-                            })
-                        }
-                    });
+                            }
+                        });
+                    }
+                });
             })
 
             // Map Bootstrap 4 data attributes to Bootstrap 5

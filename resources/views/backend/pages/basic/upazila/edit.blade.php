@@ -3,34 +3,20 @@
 @endpush
 @section('title', 'Upazila/Circle')
 @section('content')
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Upazila/Circle</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.upazila.index') }}">Upazila/Circle</a></li>
-                        <li class="breadcrumb-item active">Edit</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
+    
 
     <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
+    <section class="content cioas-page pt-5">
+    <div class="container-fluid">
 
             <!-- Main row -->
             <div class="row">
                 <div class="col-md-12">
                     <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Upazila/Circle Info</h3>
+                    <div class="cioas-shell">
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title">Upazila/Circle Info</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -38,7 +24,7 @@
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
-                            <div class="card-body">
+                            <div class="cioas-panel-body">
 
                                 <div class="form-group row">
                                     <label for="record" class="col-sm-2 col-form-label">Record</label>
@@ -113,19 +99,20 @@
 
                             </div>
                             <!-- /.card-body -->
-                            <div class="card-footer">
+                            <div class="cioas-actions mt-4">
                                 <div class="form-group row">
                                     <a href="{{ route('basic-settings.upazila.index') }}"
                                         class="btn btn-default float-right">Cancel</a>
                                     <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-info">Update</button>
+                                        <button type="submit" class="btn btn-material btn-material-primary">Update</button>
                                     </div>
                                 </div>
                             </div>
                             <!-- /.card-footer -->
                         </form>
                     </div>
-                    <!-- /.card -->
+                    </div>
+                    <!-- /.cioas-shell -->
                 </div>
             </div>
             <!-- /.row (main row) -->

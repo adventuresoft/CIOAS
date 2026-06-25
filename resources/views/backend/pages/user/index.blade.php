@@ -213,148 +213,68 @@
         @endif
 
         <!-- Active Employee Registry -->
-        <div class="card premium-card">
-
+        <div class="card cioas-shell">
+            <div class="card-header cioas-panel-header d-flex justify-content-between align-items-center">
+                <h3 class="card-title text-dark font-weight-bold mb-0">
+                    <i class="fas fa-users text-success mr-2"></i> Employee Directory
+                </h3>
+                <div>
+                    <a href="{{ route('user.create') }}" class="btn btn-success btn-sm">
+                        <i class="fas fa-plus"></i> Add New Employee
+                    </a>
+                </div>
+            </div>
             <div class="card-body">
-                <!-- Search Filter Bar -->
-                <form method="GET" action="{{ route('user.index') }}" class="mb-4">
-                    <div class="search-wrapper">
-                        <i class="fas fa-search"></i>
-                        <input type="text" name="search" class="form-control form-control-premium"
-                            placeholder="Search by name, email, mobile, or ID..." value="{{ request('search') }}">
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <label class="text-secondary" style="font-size: 0.85rem; font-weight: 600;">Filter by Department</label>
+                        <select id="filter_department" class="form-control form-control-premium">
+                            <option value="">All Departments</option>
+                            @foreach($departments as $dept)
+                                <option value="{{ $dept->id }}">{{ $dept->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                </form>
-
-                @if($users->count() == 0)
-                    <div class="text-center py-5">
-                        <i class="fas fa-user-slash text-muted fa-3x mb-3"></i>
-                        <h5 class="text-secondary">No Employees Registered</h5>
-                        <p class="text-muted">Register a new Employee to assign security permissions.</p>
+                    <div class="col-md-3">
+                        <label class="text-secondary" style="font-size: 0.85rem; font-weight: 600;">Filter by Section</label>
+                        <select id="filter_section" class="form-control form-control-premium">
+                            <option value="">All Sections</option>
+                            @foreach($sections as $sec)
+                                <option value="{{ $sec->id }}">{{ $sec->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                @else
-                    <div class="table-responsive">
-                        <table class="table premium-table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th style="width: 60px">#</th>
-                                    <th>Employee Profile</th>
-                                    <th>Contact & Area</th>
-                                    <th>Roles</th>
-                                    <th>Status</th>
-                                    <th style="width: 160px" class="text-center">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($users as $key => $item)
-                                    @php
-                                        $firstLetter = strtoupper(substr($item->name, 0, 1));
-
-                                        // Format Area Name
-                                        $areaName = 'No Area';
-                                        if ($item->institute) {
-                                            if ($item->institute->institute_type_id == 1) {
-                                                $areaName = ($item->institute->union->name ?? '') . ' (' . ($item->institute->type->name ?? 'Union') . ')';
-                                            } elseif ($item->institute->institute_type_id == 2) {
-                                                $areaName = ($item->institute->pourashava->name ?? '') . ' (' . ($item->institute->type->name ?? 'Pourashava') . ')';
-                                            } elseif ($item->institute->institute_type_id == 3) {
-                                                $areaName = ($item->institute->cityCorporation->name ?? '') . ' (' . ($item->institute->type->name ?? 'City Corp') . ')';
-                                            } elseif ($item->institute->institute_type_id == 4) {
-                                                $areaName = ($item->institute->district->name ?? '') . ' (' . ($item->institute->type->name ?? 'District') . ')';
-                                            } else {
-                                                $areaName = 'Area ID: ' . $item->institute->id;
-                                            }
-
-                                            if (!empty($item->institute->district->name)) {
-                                                $areaName .= ' - District: ' . $item->institute->district->name;
-                                            }
-                                        }
-                                    @endphp
-                                    <tr>
-                                        <td class="font-weight-bold text-secondary">{{ $users->firstItem() + $key }}</td>
-                                        <td>
-                                            <div class="d-flex align-items-center" style="gap: 12px;">
-                                                @if(!empty($item->image) && file_exists(public_path('upload/users/images/' . $item->image)))
-                                                    <img src="{{ asset('upload/users/images/' . $item->image) }}" class="rounded-circle"
-                                                        width="44" height="44"
-                                                        style="object-fit: cover; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                                                @else
-                                                    <div class="avatar-circle">{{ $firstLetter }}</div>
-                                                @endif
-                                                <div>
-                                                    <div class="font-weight-bold text-dark">{{ $item->name }}</div>
-                                                    <div class="text-muted" style="font-size: 0.82rem;">{{ $item->email }}</div>
-                                                    <div class="text-secondary" style="font-size: 0.8rem;"><i
-                                                            class="fas fa-id-card mr-1"></i> {{ $item->system_id }}</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <div class="text-dark"><i class="fas fa-phone-alt text-secondary mr-2"
-                                                        style="font-size: 0.85rem;"></i>{{ $item->mobile ?? 'N/A' }}</div>
-                                                <div class="text-secondary" style="font-size: 0.85rem;"><i
-                                                        class="fas fa-map-marker-alt text-danger mr-2"
-                                                        style="font-size: 0.85rem;"></i>{{ $areaName }}</div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            @if($item->roles->count() > 0)
-                                                @foreach($item->roles as $role)
-                                                    <span class="badge text-white px-2 py-1"
-                                                        style="background-color: #0ea5e9; border-radius: 6px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
-                                                        <i class="fas fa-user-shield" style="font-size: 0.8rem;"></i> {{ $role->name }}
-                                                    </span>
-                                                @endforeach
-                                            @else
-                                                <span class="text-muted font-italic" style="font-size: 0.85rem;">No role</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($item->status == 1)
-                                                <span class="badge-verified"><i class="fas fa-check-circle"></i> Verified</span>
-                                            @else
-                                                <span class="badge-pending"><i class="fas fa-clock"></i> Pending</span>
-                                            @endif
-                                        </td>
-                                        <td class="text-center">
-                                            <div class="d-flex justify-content-center align-items-center" style="gap: 8px;">
-                                                <a href="{{ route('user.show', $item->id) }}"
-                                                    class="btn btn-operation btn-operation-view" title="View Employee Profile">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                                <a href="{{ route('user.edit', $item->id) }}"
-                                                    class="btn btn-operation btn-operation-edit" title="Modify Employee Profile">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <form action="{{ route('user.destroy', $item->id) }}" method="POST"
-                                                    class="d-inline delete-form-confirm">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-operation btn-operation-delete"
-                                                        title="Delete Employee">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="button" id="clear_filters" class="btn btn-outline-danger w-100" style="padding: 0.375rem 0.75rem;">
+                            <i class="fas fa-times-circle mr-1"></i> Clear Filters
+                        </button>
                     </div>
-                    <div class="d-flex justify-content-center mt-4">
-                        {!! $users->appends(request()->input())->links('pagination::bootstrap-4') !!}
-                    </div>
-                @endif
+                </div>
+                {!! $dataTable->table(['class' => 'table table-bordered table-striped cioas-datatable w-100']) !!}
             </div>
         </div>
     </div>
 @endsection
 
 @push('script')
+    {!! $dataTable->scripts() !!}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function () {
-            $('.delete-form-confirm').on('submit', function (e) {
+            // Trigger datatable reload when filters change
+            $('#filter_department, #filter_section').on('change', function() {
+                window.LaravelDataTables["user-table"].ajax.reload();
+            });
+
+            // Clear filters button
+            $('#clear_filters').on('click', function() {
+                $('#filter_department').val('');
+                $('#filter_section').val('');
+                window.LaravelDataTables["user-table"].ajax.reload();
+            });
+
+            // Use event delegation for delete buttons generated by DataTables
+            $(document).on('submit', '.delete-form-confirm', function (e) {
                 e.preventDefault();
                 var form = this;
                 Swal.fire({
@@ -374,5 +294,4 @@
             });
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endpush

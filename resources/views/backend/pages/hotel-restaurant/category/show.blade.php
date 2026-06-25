@@ -1,120 +1,66 @@
 @extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'HotelCategory'])
 @push('style')
 @endpush
-@section('title', 'Hotel Category')
+@section('title', 'Hotel Category Details')
 @section('content')
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Show Hotel Category</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.hotel-category.index') }}">Hotel
-                                Category</a></li>
-                        <li class="breadcrumb-item active">Show</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
-
     <!-- Main content -->
-    <section class="content">
+    <section class="content mt-3">
         <div class="container-fluid">
-
             <!-- Main row -->
             <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Hotel Category Info</h3>
+                <div class="col-md-8 offset-md-2">
+                    <div class="cioas-panel">
+                        <div class="panel-header">
+                            <h3 class="panel-title">Hotel Category Information</h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form class="form-horizontal" id="familyCateogryForm" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-                            <div class="card-body">
-
-                                <div class="form-group row">
-                                    <label for="en_name" class="col-sm-2 col-form-label">Category <span class="text-danger"
-                                            data-toggle="tooltip" title="Required">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="en_name" value="{{ $category->en_name }}"
-                                            placeholder="Family Category" class="form-control" id="en_name" disabled>
-                                        <small class="text-danger error en_name_error"></small>
-
-                                    </div>
+                        <div class="panel-body">
+                            @if ($category)
+                                <table class="table table-bordered table-striped cioas-table">
+                                    <tbody>
+                                        <tr>
+                                            <th style="width: 30%;">English Name</th>
+                                            <td>{{ $category->en_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Bengali Name</th>
+                                            <td>{{ $category->bn_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Status</th>
+                                            <td>
+                                                @if ($category->status == 1)
+                                                    <span class="badge bg-success">Active</span>
+                                                @else
+                                                    <span class="badge bg-danger">Inactive</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Created At</th>
+                                            <td>{{ $category->created_at ? $category->created_at->format('d M, Y h:i A') : '' }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            @else
+                                <div class="alert alert-danger">
+                                    Hotel Category information not found.
                                 </div>
-                                <div class="form-group row">
-                                    <label for="bn_name" class="col-sm-2 col-form-label">Category Bangla <span
-                                            class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="bn_name" value="{{ $category->bn_name }}"
-                                            placeholder="Family Category Bangla" class="form-control" id="bn_name"
-                                            disabled>
-                                        <small class="text-danger error bn_name_error"></small>
+                            @endif
 
-                                    </div>
-                                </div>
-
-
+                            <div class="mt-4 text-right">
+                                <a href="{{ route('basic-settings.hotel-category.index') }}" class="btn btn-secondary">
+                                    <i class="ti ti-arrow-left"></i> Back to List
+                                </a>
                             </div>
-                            <!-- /.card-body -->
-
-                            <!-- /.card-footer -->
-                        </form>
+                        </div>
                     </div>
-                    <!-- /.card -->
                 </div>
             </div>
             <!-- /.row (main row) -->
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-
 @endsection
-@push('script')
-    <script>
-        $(document).ready(function() {
-        $(".select2").select2();
 
-        e.preventDefault();
-        let thisForm = $(this);
-        $.ajax({
-            type: "POST",
-            url: "{{ route('basic-settings.family-category.update', $category->id) }}",
-            data: new FormData(this),
-            dataType: "json",
-            contentType: false,
-            cache: false,
-            processData: false,
-            beforeSend: function() {
-                thisForm.find('button[type="submit"]').prop("disabled", true);
-                $('.error').text('');
-            },
-            success: function(response) {
-                thisForm.find('button[type="submit"]').prop("disabled", false);
-                toastr.success(response.message);
-                setTimeout(function() {
-                    location.href =
-                        "{{ route('basic-settings.family-category.index') }}";
-                }, 2000)
-            },
-            error: function(xhr, status, error) {
-                thisForm.find('button[type="submit"]').prop("disabled", false);
-                var responseText = jQuery.parseJSON(xhr.responseText);
-                toastr.error(responseText.message);
-                $.each(responseText.errors, function(key, val) {
-                    thisForm.find("." + key + "_error").text(val[0]);
-                });
-            }
-        });
-        })
-        })
-    </script>
+@push('script')
 @endpush

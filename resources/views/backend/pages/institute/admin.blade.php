@@ -3,145 +3,109 @@
 @endpush
 @section('title', 'Institute Edit')
 @section('content')
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Institute Edit</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('institute.index') }}">Institute</a></li>
-                        <li class="breadcrumb-item active">Edit</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
 
-    <!-- Main content -->
-    <section class="content">
+    <section class="content cioas-page pt-5">
         <div class="container-fluid">
+            <div class="cioas-shell">
+                <form class="form-horizontal" id="instituteForm" method="POST" enctype="multipart/form-data">
+                    @csrf
 
-            <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">
+                    <input type="hidden" name="institute_id" value="{{ $institute->id }}">
+                    <input type="hidden" name="user_id" value="{{ $institute->superUser->id ?? 0 }}">
+
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title">
+                                <i class="fas fa-user-shield"></i> 
                                 <a class="linked" href="{{ route('institute.edit', $institute->id) }}"> <span
-                                        class="text-dark">Institute Create Info |</span></a>
+                                        class="text-light">Institute Create Info |</span></a>
                                 <span class="text-light">Institutional Admin |</span>
                                 <a class="linked" href="{{ route('instituteA.imagesCreate', $institute->id) }}"> <span
-                                        class="text-dark">Institutional Images</span> </a>
+                                        class="text-light">Institutional Images</span> </a>
                             </h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form class="form-horizontal" id="instituteForm" method="POST" enctype="multipart/form-data">
-                            @csrf
 
-                            <input type="hidden" name="institute_id" value="{{ $institute->id }}">
-                            <input type="hidden" name="user_id" value="{{ $institute->superUser->id ?? 0 }}">
-
-
-
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">Admin Name <span
-                                            class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" id="name" value="{{ $institute->superUser->name ?? '' }}"
-                                            placeholder="Institinal Super Admin Name" name="name" class="form-control"
-                                            required>
-                                        <small class="error name-error text-danger"></small>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="email" class="col-sm-2 col-form-label">Email <span class="text-danger"
-                                            title="Required" data-toggle="tooltip">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="email" id="email"
-                                            value="{{ $institute->superUser->email ?? '' }}"
-                                            placeholder="Institinal Super Admin Email" name="email" class="form-control"
-                                            required>
-                                        <small class="error email-error text-danger"></small>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="mobile" class="col-sm-2 col-form-label">Mobile <span class="text-danger"
-                                            title="Required" data-toggle="tooltip">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" id="mobile"
-                                            value="{{ $institute->superUser->mobile ?? '' }}"
-                                            placeholder="Institinal Super Admin Mobile" name="mobile" class="form-control"
-                                            required>
-                                        <small class="error mobile-error text-danger"></small>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="department_id" class="col-sm-2 col-form-label">Department</label>
-                                    <div class="col-sm-9">
-                                        <select name="department_id" id="department_id" class="form-control">
-                                            <option value="">-- Select Department --</option>
-                                            @foreach($departments as $department)
-                                                <option value="{{ $department->id }}" {{ ($institute->superUser->department_id ?? 0) == $department->id ? 'selected' : '' }}>{{ $department->name }} ({{ $department->bn_name }})</option>
-                                            @endforeach
-                                        </select>
-                                        <small class="error department_id-error text-danger"></small>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="section_id" class="col-sm-2 col-form-label">Section</label>
-                                    <div class="col-sm-9">
-                                        <select name="section_id" id="section_id" class="form-control">
-                                            <option value="">-- Select Section --</option>
-                                            @foreach($sections as $section)
-                                                <option value="{{ $section->id }}" {{ ($institute->superUser->section_id ?? 0) == $section->id ? 'selected' : '' }}>{{ $section->name }} ({{ $section->bn_name }})</option>
-                                            @endforeach
-                                        </select>
-                                        <small class="error section_id-error text-danger"></small>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="password" class="col-sm-2 col-form-label">Password <span class="text-danger"
-                                            title="Required" data-toggle="tooltip">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="password" id="password" placeholder="Keep empty to unchange"
-                                            name="password" class="form-control" required>
-                                        <small class="error password-error text-danger"></small>
-                                    </div>
+                        <div class="cioas-panel-body">
+                            <div class="form-group row">
+                                <label for="name" class="col-sm-2 col-form-label">Admin Name <span
+                                        class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="name" value="{{ $institute->superUser->name ?? '' }}"
+                                        placeholder="Institinal Super Admin Name" name="name" class="form-control"
+                                        required>
+                                    <small class="error name-error text-danger"></small>
                                 </div>
                             </div>
 
-
-
-
-
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <div class="form-group row">
-                                    <a href="{{ route('institute.index') }}" class="btn btn-default float-right">Cancel</a>
-                                    <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-info">Update</button>
-                                    </div>
+                            <div class="form-group row">
+                                <label for="email" class="col-sm-2 col-form-label">Email <span class="text-danger"
+                                        title="Required" data-toggle="tooltip">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="email" id="email"
+                                        value="{{ $institute->superUser->email ?? '' }}"
+                                        placeholder="Institinal Super Admin Email" name="email" class="form-control"
+                                        required>
+                                    <small class="error email-error text-danger"></small>
                                 </div>
                             </div>
-                            <!-- /.card-footer -->
-                        </form>
+
+                            <div class="form-group row">
+                                <label for="mobile" class="col-sm-2 col-form-label">Mobile <span class="text-danger"
+                                        title="Required" data-toggle="tooltip">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="mobile"
+                                        value="{{ $institute->superUser->mobile ?? '' }}"
+                                        placeholder="Institinal Super Admin Mobile" name="mobile" class="form-control"
+                                        required>
+                                    <small class="error mobile-error text-danger"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="department_id" class="col-sm-2 col-form-label">Department</label>
+                                <div class="col-sm-9">
+                                    <select name="department_id" id="department_id" class="form-control">
+                                        <option value="">-- Select Department --</option>
+                                        @foreach($departments as $department)
+                                            <option value="{{ $department->id }}" {{ ($institute->superUser->department_id ?? 0) == $department->id ? 'selected' : '' }}>{{ $department->name }} ({{ $department->bn_name }})</option>
+                                        @endforeach
+                                    </select>
+                                    <small class="error department_id-error text-danger"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="section_id" class="col-sm-2 col-form-label">Section</label>
+                                <div class="col-sm-9">
+                                    <select name="section_id" id="section_id" class="form-control">
+                                        <option value="">-- Select Section --</option>
+                                        @foreach($sections as $section)
+                                            <option value="{{ $section->id }}" {{ ($institute->superUser->section_id ?? 0) == $section->id ? 'selected' : '' }}>{{ $section->name }} ({{ $section->bn_name }})</option>
+                                        @endforeach
+                                    </select>
+                                    <small class="error section_id-error text-danger"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password" class="col-sm-2 col-form-label">Password <span class="text-danger"
+                                        title="Required" data-toggle="tooltip">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="password" id="password" placeholder="Keep empty to unchange"
+                                        name="password" class="form-control" required>
+                                    <small class="error password-error text-danger"></small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cioas-actions">
+                            <a href="{{ route('institute.index') }}" class="btn btn-default mr-2">Cancel</a>
+                            <button type="submit" class="btn btn-material btn-material-primary">Update</button>
+                        </div>
                     </div>
-                    <!-- /.card -->
-                </div>
+                </form>
             </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
     <!-- /.content -->
 @endsection

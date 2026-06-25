@@ -12,10 +12,9 @@ class InstituteTypeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(\App\DataTables\InstituteTypeDataTable $dataTable)
     {
-        $institute = InstituteType::all();
-        return view('backend.pages.institute.type.index', compact('institute'));
+        return $dataTable->render('backend.pages.institute.type.index');
     }
 
     /**

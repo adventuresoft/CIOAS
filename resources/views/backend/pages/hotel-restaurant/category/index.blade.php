@@ -1,178 +1,86 @@
 @extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'HotelCategory'])
+
 @push('style')
 @endpush
+
 @section('title', 'Hotel Category')
+
 @section('content')
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Hotel Category</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.hotel-category.index') }}">Hotel
-                                Category</a></li>
-                        <li class="breadcrumb-item active">View</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
+    <!-- No content-header -->
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
-
             <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-md-6 text-left">
-                                    <h3 class="card-title">Hotel Category List</h3>
-                                </div>
-                                <div class="col-md-6 text-right">
-                                    <a href="{{ route('basic-settings.hotel-category.create') }}"
-                                        class="btn btn-primary">Create</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.card-header -->
-
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table id="example1" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Sl.</th>
-                                            <th>Name</th>
-                                            <th>Bengali Name</th>
-                                            <th>Created at</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        @if ($categories)
-                                            @foreach ($categories as $key => $item)
-                                                <tr>
-                                                    <td>{{ ++$key }}</td>
-                                                    <td>{{ $item->en_name }}</td>
-                                                    <td>{{ $item->bn_name }}</td>
-                                                    <td>{{ date('d M, Y', strtotime($item->updated_at)) }}</td>
-                                                    <td>
-                                                        <div class="table-action">
-                                                            <a class="btn btn-sm btn-primary" title="Edit"
-                                                                data-toggle="tooltip"
-                                                                href="{{ route('basic-settings.hotel-category.edit', $item->id) }}"><i
-                                                                    class="fa fa-edit"></i></a>
-                                                            <a class="btn btn-sm btn-info" title="Show"
-                                                                data-toggle="tooltip"
-                                                                href="{{ route('basic-settings.hotel-category.show', $item->id) }}"><i
-                                                                    class="fa fa-eye"></i></a>
-                                                            <a class="btn btn-sm btn-warning" title="Subcategories"
-                                                                data-toggle="tooltip"
-                                                                href="{{ route('basic-settings.hotel-subcategory.index', $item->id) }}"><i
-                                                                    class="fa fa-list"></i> Subcategories</a>
-
-                                                            <form class="deleteCategory" method="post">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <input type="hidden" class="id" name="id"
-                                                                    value="{{ $item->id }}">
-                                                                <input type="hidden" class="deleteUrl" name="deleteUrl"
-                                                                    value="{{ route('basic-settings.hotel-category.destroy', $item->id) }}">
-                                                                <button type="submit" title="Delete" data-toggle="tooltip"
-                                                                    class="btn btn-sm btn-danger"><i
-                                                                        class="fa fa-trash"></i></button>
-                                                            </form>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        @endif
-
-
-                                    </tbody>
-                                </table>
-                            </div>
-
-                        </div>
-                        <!-- /.card-body -->
-
+            <div class="cioas-shell">
+                <div class="cioas-panel">
+                    <div class="cioas-panel-header">
+                        <h3 class="cioas-panel-title">
+                            <i class="fas fa-list"></i> Hotel Category List
+                        </h3>
+                        <a href="{{ route('basic-settings.hotel-category.create') }}" class="btn btn-material btn-material-primary">
+                            <i class="fas fa-plus-circle"></i> Create Category
+                        </a>
                     </div>
-                    <!-- /.card -->
+
+                    <div class="cioas-panel-body">
+                        <div class="table-responsive">
+                            {{ $dataTable->table(['class' => 'table table-custom table-hover w-100']) }}
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
-
 @endsection
+
 @push('script')
+    {{ $dataTable->scripts() }}
+
     <script>
         $(document).ready(function() {
-            $(".deleteCategory").on('submit', function(e) {
+            // Setup CSRF token for AJAX
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            // Handle Delete
+            $(document).on('submit', '.deleteData', function(e) {
                 e.preventDefault();
-                var thisForm = $(this);
-                var formData = $(this).serialize();
-                var deleteUrl = $(this).find(".deleteUrl").val();
-                $("#toast-container").show();
-                toastr.success(
-                    "<br /><button type='button' id='confirmationRevertNo' class='btn clear'>No</button><br /><button type='button' id='confirmationRevertYes' class='btn clear'>Yes</button>",
-                    'Are you sure, you want to delete it?', {
-                        closeButton: false,
-                        allowHtml: true,
-                        onShown: function(toast) {
-                            $("#confirmationRevertYes").click(function() {
-                                $.ajax({
-                                    type: "DELETE",
-                                    url: deleteUrl,
-                                    data: formData,
-                                    beforeSend: function() {
-                                        thisForm.find('button[type="submit"]')
-                                            .prop("disabled", true);
-                                    },
-                                    success: function(response) {
-                                        thisForm.find('button[type="submit"]')
-                                            .prop("disabled", false);
-                                        toastr.success(response.message);
-                                        setTimeout(function() {
-                                            location.href =
-                                                "{{ route('basic-settings.hotel-category.index') }}";
-                                        }, 2000)
-                                    },
-                                    error: function(xhr, status, error) {
-                                        thisForm.find('button[type="submit"]')
-                                            .prop("disabled", false);
-                                        var responseText = jQuery.parseJSON(xhr
-                                            .responseText);
-                                        toastr.error(responseText.message);
-                                        $.each(responseText.errors, function(
-                                            key, val) {
-                                            thisForm.find("." + key +
-                                                "-error").text(val[
-                                                0]);
-                                        });
-                                    }
-                                });
+                var form = $(this);
+                var url = form.attr('action');
 
-
-
-                            });
-
-                            $("#confirmationRevertNo").click(function() {
-                                $("#toast-container").hide();
-                            })
-                        }
-                    });
-            })
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to delete this category!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'DELETE',
+                            url: url,
+                            data: form.serialize(),
+                            success: function(response) {
+                                if (response.status) {
+                                    toastr.success(response.message);
+                                    window.LaravelDataTables["hotelcategory-table"].ajax.reload();
+                                } else {
+                                    toastr.error(response.message || 'Something went wrong!');
+                                }
+                            },
+                            error: function(xhr) {
+                                toastr.error('An error occurred while deleting.');
+                            }
+                        });
+                    }
+                });
+            });
         });
     </script>
 @endpush
-

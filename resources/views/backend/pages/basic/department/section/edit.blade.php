@@ -1,128 +1,125 @@
-@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'HotelCategory'])
-@push('style')
-@endpush
-@section('title', 'Hotel Category')
+@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'Department'])
+
+@section('title', 'Edit Section')
+
 @section('content')
-    <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Edit Hotel Category</h1>
+                    <h1>Edit Section</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.hotel-category.index') }}">Hotel
-                                Category</a></li>
-                        <li class="breadcrumb-item active">Edit</li>
+                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.department.index') }}">Basic Settings</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.department-section.index', $section->department_id) }}">Section List</a></li>
+                        <li class="breadcrumb-item active">Edit Section</li>
                     </ol>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content cioas-page pt-5">
         <div class="container-fluid">
-
-            <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Family Category Info</h3>
+            <div class="cioas-shell">
+                <form class="form-horizontal" id="FormSubmit" method="POST" enctype="multipart/form-data"
+                    action="{{ route('basic-settings.department-section.update', $section->id) }}"
+                    data-url="{{ route('basic-settings.department-section.update', $section->id) }}"
+                    data-redirect-url="{{ route('basic-settings.department-section.index', $section->department_id) }}">
+                    @csrf
+                    @method('PUT')
+                    
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title"><i class="fas fa-edit"></i> Edit Section</h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form class="form-horizontal" id="familyCateogryForm" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-                            <div class="card-body">
-
-                                <div class="form-group row">
-                                    <label for="en_name" class="col-sm-2 col-form-label">Category <span class="text-danger"
-                                            data-toggle="tooltip" title="Required">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="en_name" value="{{ $category->en_name }}"
-                                            placeholder="Family Category" class="form-control" id="en_name">
-                                        <small class="text-danger error en_name_error"></small>
-
+                        <div class="cioas-panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="md-field">
+                                        <label for="name">Name <span class="text-danger">*</span></label>
+                                        <input type="text" name="name" placeholder="Section Name"
+                                            class="form-control" id="name" value="{{ $section->name }}" required>
+                                        <small class="text-danger error name_error"></small>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="bn_name" class="col-sm-2 col-form-label">Category Bangla <span
-                                            class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="bn_name" value="{{ $category->bn_name }}"
-                                            placeholder="Family Category Bangla" class="form-control" id="bn_name">
+                                <div class="col-md-6">
+                                    <div class="md-field">
+                                        <label for="bn_name">Bangla Name <span class="text-danger">*</span></label>
+                                        <input type="text" name="bn_name" placeholder="Section Name In Bangla"
+                                            class="form-control" id="bn_name" value="{{ $section->bn_name }}" required>
                                         <small class="text-danger error bn_name_error"></small>
-
-                                    </div>
-                                </div>
-
-
-                            </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <div class="form-group row">
-                                    {{-- {{route('death.index')}} --}}
-                                    <a href="{{ route('basic-settings.family-category.index') }}"
-                                        class="btn btn-default float-right">Cancel</a>
-                                    <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-info">Update</button>
                                     </div>
                                 </div>
                             </div>
-                            <!-- /.card-footer -->
-                        </form>
+                        </div>
                     </div>
-                    <!-- /.card -->
-                </div>
-            </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
 
+                    <div class="cioas-actions mt-4">
+                        <a href="{{ route('basic-settings.department-section.index', $section->department_id) }}" class="btn btn-light btn-material">
+                            <i class="fas fa-arrow-left"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-material btn-material-primary" id="btnSave">
+                            <i class="fas fa-save"></i> Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
 @endsection
+
 @push('script')
     <script>
         $(document).ready(function() {
-            $(".select2").select2();
-            $("#familyCateogryForm").on('submit', function(e) {
+            let isSubmitting = false;
+            $('#FormSubmit').on('submit', function(e) {
                 e.preventDefault();
-                let thisForm = $(this);
+
+                if (isSubmitting) return;
+                isSubmitting = true;
+
+                let form = $(this);
+                let formData = new FormData(this);
+                let url = form.data('url');
+
                 $.ajax({
+                    url: url,
                     type: "POST",
-                    url: "{{ route('basic-settings.hotel-category.update', $category->id) }}",
-                    data: new FormData(this),
+                    data: formData,
                     dataType: "json",
                     contentType: false,
                     cache: false,
                     processData: false,
                     beforeSend: function() {
-                        thisForm.find('button[type="submit"]').prop("disabled", true);
+                        $('#btnSave').prop('disabled', true);
                         $('.error').text('');
                     },
                     success: function(response) {
-                        thisForm.find('button[type="submit"]').prop("disabled", false);
                         toastr.success(response.message);
                         setTimeout(function() {
-                            location.href =
-                                "{{ route('basic-settings.hotel-category.index') }}";
-                        }, 2000)
+                            window.location.href = form.data('redirect-url');
+                        }, 1500);
                     },
-                    error: function(xhr, status, error) {
-                        thisForm.find('button[type="submit"]').prop("disabled", false);
-                        var responseText = jQuery.parseJSON(xhr.responseText);
-                        toastr.error(responseText.message);
-                        $.each(responseText.errors, function(key, val) {
-                            thisForm.find("." + key + "_error").text(val[0]);
-                        });
+                    error: function(xhr) {
+                        isSubmitting = false;
+                        $('#btnSave').prop('disabled', false);
+                        let err = xhr.responseJSON;
+                        if (err && err.errors) {
+                            $.each(err.errors, function(key, value) {
+                                toastr.error(value[0]);
+                                form.find("." + key + "_error").text(value[0]);
+                            });
+                        } else if (err && err.message) {
+                            toastr.error(err.message);
+                        } else {
+                            toastr.error('Failed to update data.');
+                        }
                     }
                 });
-            })
-        })
+            });
+        });
     </script>
 @endpush

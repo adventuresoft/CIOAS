@@ -16,10 +16,9 @@ class HotelCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(\App\DataTables\BasicSettings\HotelCategoryDataTable $dataTable)
     {
-        $categories = HotelCategory::latest()->get();
-        return view('backend.pages.hotel-restaurant.category.index', compact('categories'));
+        return $dataTable->render('backend.pages.hotel-restaurant.category.index');
     }
 
     /**
@@ -48,16 +47,16 @@ class HotelCategoryController extends Controller
             'bn_name' => 'required|unique:hotel_categories,bn_name',
         ]);
 
-        $category             = new HotelCategory();
-        $category->en_name    = $request->en_name;
-        $category->bn_name    = $request->bn_name;
-        $category->status     = $request->status ? $request->status : true;
+        $category = new HotelCategory();
+        $category->en_name = $request->en_name;
+        $category->bn_name = $request->bn_name;
+        $category->status = $request->status ? $request->status : true;
         $category->created_by = Auth()->user()->id;
-        $category->slug       = str_replace(' ', '-', $request->en_name);
+        $category->slug = str_replace(' ', '-', $request->en_name);
         $category->save();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => 'Hotel Category Created Successfully!',
         ], 200);
     }
@@ -101,16 +100,16 @@ class HotelCategoryController extends Controller
             'bn_name' => 'required|unique:hotel_categories,bn_name,' . $id,
         ]);
 
-        $category             = HotelCategory::findOrFail($id);
-        $category->en_name    = $request->en_name;
-        $category->bn_name    = $request->bn_name;
-        $category->status     = $request->status ? $request->status : true;
+        $category = HotelCategory::findOrFail($id);
+        $category->en_name = $request->en_name;
+        $category->bn_name = $request->bn_name;
+        $category->status = $request->status ? $request->status : true;
         $category->updated_by = Auth()->user()->id;
-        $category->slug       = str_replace(' ', '-', $request->en_name);
+        $category->slug = str_replace(' ', '-', $request->en_name);
         $category->save();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => 'Hotel Category Updated Successfully!',
         ], 200);
     }
@@ -127,7 +126,7 @@ class HotelCategoryController extends Controller
         $category->delete();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => 'Hotel Category Deleted Successfully!',
         ], 200);
     }

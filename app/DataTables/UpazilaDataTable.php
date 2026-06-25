@@ -25,18 +25,34 @@ class UpazilaDataTable extends DataTable
                     return '<span class="badge badge-danger">Inactive</span>';
                 }
             })
+            ->editColumn('record', function ($row) {
+                $recordNames = [
+                    '1' => 'CS',
+                    '2' => 'SA',
+                    '3' => 'RS',
+                    '4' => 'City/BRS'
+                ];
+                return $recordNames[$row->record] ?? $row->record;
+            })
             ->addColumn('action', function ($row) {
-                $editButton = '<a class="btn btn-sm btn-primary mr-1" title="Edit" data-toggle="tooltip" href="' . route('basic-settings.upazila.edit', $row->id) . '"><i class="fa fa-edit"></i></a>';
-                $showButton = '<a class="btn btn-sm btn-info mr-1" title="Show" data-toggle="tooltip" href="' . route('basic-settings.upazila.show', $row->id) . '"><i class="fa fa-eye"></i></a>';
-                $deleteForm = '<form class="deleteData" method="post" style="display:inline-block;">                          
-                                    <input type="hidden" name="_token" value="' . csrf_token() . '">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <input type="hidden" class="id" name="id" value="' . $row->id . '">
-                                    <input type="hidden" class="deleteUrl" name="deleteUrl" value="' . route('basic-settings.upazila.destroy', $row->id) . '">
-                                    <input type="hidden" class="redirect-url" name="redirectUrl" value="' . route('basic-settings.upazila.index') . '">
-                                    <button type="submit" title="Delete" data-toggle="tooltip" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-                               </form>';
-                return '<div class="table-action">' . $editButton . $showButton . $deleteForm . '</div>';
+                $actionBtn = '
+                <div class="table-action d-flex align-items-center justify-content-center">
+                    <a href="' . route('basic-settings.upazila.show', $row->id) . '" class="btn btn-sm btn-info mr-1" title="Show" data-toggle="tooltip">
+                        <i class="fa fa-eye"></i>
+                    </a>
+                    <a href="' . route('basic-settings.upazila.edit', $row->id) . '" class="btn btn-sm btn-primary mr-1" title="Edit" data-toggle="tooltip">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    <form action="' . route('basic-settings.upazila.destroy', $row->id) . '" method="POST" class="deleteData" style="display:inline-block; margin:0;">
+                        ' . csrf_field() . '
+                        ' . method_field('DELETE') . '
+                        <button type="submit" class="btn btn-sm btn-danger" title="Delete" data-toggle="tooltip">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+                ';
+                return $actionBtn;
             })
             ->rawColumns(['status', 'action'])
             ->setRowId('id');
@@ -69,7 +85,7 @@ class UpazilaDataTable extends DataTable
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(120)
+                ->width(150)
                 ->addClass('text-center'),
         ];
     }

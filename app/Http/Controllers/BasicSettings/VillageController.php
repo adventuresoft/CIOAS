@@ -85,10 +85,9 @@ class VillageController extends Controller
         return $villageOptions;
     }
 
-    public function index()
+    public function index(\App\DataTables\BasicSettings\VillageDataTable $dataTable)
     {
-        $data['villages'] = Village::with('division', 'district', 'thana', 'union')->latest()->get();
-        return view('backend.pages.basic.village.index', $data);
+        return $dataTable->render('backend.pages.basic.village.index');
     }
 
     /**
@@ -119,50 +118,50 @@ class VillageController extends Controller
 
         try {
             $validate = Validator::make($request->all(), [
-                'en_name'             => 'required',
-                'bn_name'             => 'required',
-                'division_id'         => 'required',
-                'district_id'         => 'required',
-                'thana_id'            => 'nullable|integer',
-                'union_id'            => 'nullable|integer',
-                'pourashava_id'       => 'nullable|integer',
-                'post_office_id'      => 'nullable|integer',
+                'en_name' => 'required',
+                'bn_name' => 'required',
+                'division_id' => 'required',
+                'district_id' => 'required',
+                'thana_id' => 'nullable|integer',
+                'union_id' => 'nullable|integer',
+                'pourashava_id' => 'nullable|integer',
+                'post_office_id' => 'nullable|integer',
                 'city_corporation_id' => 'nullable|integer',
-                'location_type'       => 'required',
+                'location_type' => 'required',
             ]);
 
             if ($validate->fails()) {
-                $data['status']  = false;
+                $data['status'] = false;
                 $data['message'] = "Sorry! Invalid Entry.";
-                $data['errors']  = $validate->errors();
+                $data['errors'] = $validate->errors();
                 return response(json_encode($data, JSON_PRETTY_PRINT), 400)->header('Content-Type', 'application/json');
             }
 
 
-            $village          = new Village();
+            $village = new Village();
             $village->en_name = $request->en_name;
             $village->bn_name = $request->bn_name;
 
-            $village->division_id    = $request->division_id;
-            $village->district_id    = $request->district_id;
-            $village->thana_id       = $request->thana_id;
-            $village->union_id       = $request->union_id ?? 0;
-            $village->pourashava_id  = $request->pourashava_id ?? 0;
+            $village->division_id = $request->division_id;
+            $village->district_id = $request->district_id;
+            $village->thana_id = $request->thana_id;
+            $village->union_id = $request->union_id ?? 0;
+            $village->pourashava_id = $request->pourashava_id ?? 0;
             $village->post_office_id = $request->post_office_id ?? 0;
-            $village->city_id        = $request->city_corporation_id ?? 0;
-            $village->location_type  = $request->location_type ?? 0;
-            $village->status         = $request->status ? $request->status : true;
-            $village->created_by     = Auth::id();
+            $village->city_id = $request->city_corporation_id ?? 0;
+            $village->location_type = $request->location_type ?? 0;
+            $village->status = $request->status ? $request->status : true;
+            $village->created_by = Auth::id();
 
             $village->save();
-            $data['status']  = true;
+            $data['status'] = true;
             $data['message'] = "Village Saved Successfully!";
             return response(json_encode($data, JSON_PRETTY_PRINT), 200)->header('Content-Type', 'application/json');
 
         } catch (\Throwable $th) {
-            $data['status']  = false;
+            $data['status'] = false;
             $data['message'] = "Something went wrong! Please try again...";
-            $data['errors']  = $th;
+            $data['errors'] = $th;
             return response(json_encode($data, JSON_PRETTY_PRINT), 500)->header('Content-Type', 'application/json');
         }
 
@@ -176,7 +175,8 @@ class VillageController extends Controller
      */
     public function show($id)
     {
-        return view('backend.pages.basic.village.show');
+        $data['village'] = Village::with(['division', 'district', 'thana', 'union', 'cityCorporation', 'pourashava'])->find($id);
+        return view('backend.pages.basic.village.show', $data);
     }
 
     /**
@@ -187,11 +187,11 @@ class VillageController extends Controller
      */
     public function edit($id)
     {
-        $data['village']   = Village::find($id);
+        $data['village'] = Village::find($id);
         $data['divisions'] = Division::latest()->get();
         $data['districts'] = District::latest()->get();
-        $data['thanas']    = Thana::latest()->get();
-        $data['unions']    = Union::latest()->get();
+        $data['thanas'] = Thana::latest()->get();
+        $data['unions'] = Union::latest()->get();
         $data['pourashavas'] = Pourashava::latest()->get();
         $data['cityCorporations'] = CityCorporation::latest()->get();
         return view('backend.pages.basic.village.edit', $data);
@@ -208,22 +208,22 @@ class VillageController extends Controller
     {
         try {
             $validate = Validator::make($request->all(), [
-                'en_name'             => 'required',
-                'bn_name'             => 'required',
-                'division_id'         => 'required',
-                'district_id'         => 'required',
-                'thana_id'            => 'nullable|integer',
-                'union_id'            => 'nullable|integer',
-                'pourashava_id'       => 'nullable|integer',
-                'post_office_id'      => 'nullable|integer',
+                'en_name' => 'required',
+                'bn_name' => 'required',
+                'division_id' => 'required',
+                'district_id' => 'required',
+                'thana_id' => 'nullable|integer',
+                'union_id' => 'nullable|integer',
+                'pourashava_id' => 'nullable|integer',
+                'post_office_id' => 'nullable|integer',
                 'city_corporation_id' => 'nullable|integer',
-                'location_type'       => 'required',
+                'location_type' => 'required',
             ]);
 
             if ($validate->fails()) {
-                $data['status']  = false;
+                $data['status'] = false;
                 $data['message'] = "Sorry! Invalid Entry.";
-                $data['errors']  = $validate->errors();
+                $data['errors'] = $validate->errors();
                 return response(json_encode($data, JSON_PRETTY_PRINT), 400)->header('Content-Type', 'application/json');
             }
 
@@ -234,38 +234,38 @@ class VillageController extends Controller
                 $village->en_name = $request->en_name;
                 $village->bn_name = $request->bn_name;
 
-                $village->division_id    = $request->division_id;
-                $village->district_id    = $request->district_id;
-                $village->thana_id       = $request->thana_id;
-                $village->union_id       = $request->union_id ?? 0;
-                $village->pourashava_id  = $request->pourashava_id ?? 0;
+                $village->division_id = $request->division_id;
+                $village->district_id = $request->district_id;
+                $village->thana_id = $request->thana_id;
+                $village->union_id = $request->union_id ?? 0;
+                $village->pourashava_id = $request->pourashava_id ?? 0;
                 $village->post_office_id = $request->post_office_id ?? 0;
-                $village->city_id        = $request->city_corporation_id ?? 0;
-                $village->location_type  = $request->location_type ?? 0;
+                $village->city_id = $request->city_corporation_id ?? 0;
+                $village->location_type = $request->location_type ?? 0;
 
-                $village->status     = $request->status ? $request->status : true;
+                $village->status = $request->status ? $request->status : true;
                 $village->updated_by = Auth::id();
 
                 if ($village->save()) {
-                    $data['status']  = true;
+                    $data['status'] = true;
                     $data['message'] = "Village Updated Successfully!";
                     return response(json_encode($data, JSON_PRETTY_PRINT), 200)->header('Content-Type', 'application/json');
                 } else {
-                    $data['status']  = false;
+                    $data['status'] = false;
                     $data['message'] = "Failed to save data!";
                     return response(json_encode($data, JSON_PRETTY_PRINT), 500)->header('Content-Type', 'application/json');
                 }
             } else {
-                $data['status']  = false;
+                $data['status'] = false;
                 $data['message'] = "Noting to save!";
                 return response(json_encode($data, JSON_PRETTY_PRINT), 500)->header('Content-Type', 'application/json');
             }
 
 
         } catch (\Throwable $th) {
-            $data['status']  = false;
+            $data['status'] = false;
             $data['message'] = "Something went wrong! Please try again...";
-            $data['errors']  = $th;
+            $data['errors'] = $th;
             return response(json_encode($data, JSON_PRETTY_PRINT), 500)->header('Content-Type', 'application/json');
         }
     }
@@ -282,23 +282,23 @@ class VillageController extends Controller
             $query = Village::find($id);
             if ($query) {
                 if ($query->delete()) {
-                    $data['status']  = true;
+                    $data['status'] = true;
                     $data['message'] = "Village Deleted successfully";
                     return response(json_encode($data, JSON_PRETTY_PRINT), 200)->header('Content-Type', 'application/json');
                 } else {
-                    $data['status']  = false;
+                    $data['status'] = false;
                     $data['message'] = "Something went wrong! Please try again...";
                     return response(json_encode($data, JSON_PRETTY_PRINT), 500)->header('Content-Type', 'application/json');
                 }
             } else {
-                $data['status']  = false;
+                $data['status'] = false;
                 $data['message'] = "Something went wrong! Please try again...";
                 return response(json_encode($data, JSON_PRETTY_PRINT), 404)->header('Content-Type', 'application/json');
             }
         } catch (\Throwable $th) {
-            $data['status']  = false;
+            $data['status'] = false;
             $data['message'] = "Something went wrong! Please try again...";
-            $data['errors']  = $th;
+            $data['errors'] = $th;
             return response(json_encode($data, JSON_PRETTY_PRINT), 500)->header('Content-Type', 'application/json');
         }
     }

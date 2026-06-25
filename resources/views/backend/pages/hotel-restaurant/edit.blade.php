@@ -21,55 +21,37 @@
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content cioas-page pt-5">
         <div class="container-fluid">
+            <div class="cioas-shell">
+                <form id="organizationForm" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="id" value="{{ $organization->id }}">
 
-            <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <a href="{{ route('hotel-restaurant.edit', $organization->id) }}"> <span
-                                        class="text-dark">Hotel Restaurant Information</span> </a> <span
-                                    class="text-secondary">|</span>
-                                <a href="{{ route('hotelRestaurant-ownership.edit', $organization->id) }}"> <span
-                                        class="text-light">Ownership Information</span> </a>
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title">
+                                <i class="fas fa-briefcase"></i> 
+                                <a href="{{ route('hotel-restaurant.edit', $organization->id) }}" class="text-dark">Hotel Restaurant Information</a>
+                                <span class="text-secondary mx-2">|</span>
+                                <a href="{{ route('hotelRestaurant-ownership.edit', $organization->id) }}" class="text-muted">Ownership Information</a>
                             </h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form class="form-horizontal" id="organizationForm" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-
-                            <input type="hidden" name="id" value="{{ $organization->id }}">
-
-
+                        <div class="cioas-panel-body">
                             @include('backend.pages.hotel-restaurant.forms.hotel-restaurant', [
                                 'organization' => $organization,
                             ])
-
-
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <div class="form-group row">
-                                    <a href="{{ route('hotel-restaurant.index') }}"
-                                        class="btn btn-default float-right">Cancel</a>
-                                    <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-info">Update & Next</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.card-footer -->
-                        </form>
+                        </div>
                     </div>
-                    <!-- /.card -->
-                </div>
+
+                    <div class="cioas-actions">
+                        <a href="{{ route('hotel-restaurant.index') }}" class="btn btn-material btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-material btn-material-primary">Update & Next</button>
+                    </div>
+                </form>
             </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
 <!-- /.content -->@endsection
 @push('script')

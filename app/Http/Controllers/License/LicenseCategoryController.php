@@ -9,10 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class LicenseCategoryController extends Controller
 {
-    public function index()
+    public function index(\App\DataTables\BasicSettings\LicenseCategoryDataTable $dataTable)
     {
-        $categories = LicenseCategory::latest()->get();
-        return view('backend.pages.license.category.index', compact('categories'));
+        return $dataTable->render('backend.pages.license.category.index');
     }
 
     public function create()
@@ -28,15 +27,15 @@ class LicenseCategoryController extends Controller
         ]);
 
         LicenseCategory::create([
-            'en_name'    => $request->en_name,
-            'bn_name'    => $request->bn_name,
-            'slug'       => str_replace(' ', '-', $request->en_name),
-            'status'     => $request->has('status') ? (bool) $request->status : true,
+            'en_name' => $request->en_name,
+            'bn_name' => $request->bn_name,
+            'slug' => str_replace(' ', '-', $request->en_name),
+            'status' => $request->has('status') ? (bool) $request->status : true,
             'created_by' => Auth::id(),
         ]);
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => 'License Category Created Successfully!',
         ], 200);
     }
@@ -60,16 +59,16 @@ class LicenseCategoryController extends Controller
             'bn_name' => 'required|unique:license_categories,bn_name,' . $id,
         ]);
 
-        $category             = LicenseCategory::findOrFail($id);
-        $category->en_name    = $request->en_name;
-        $category->bn_name    = $request->bn_name;
-        $category->slug       = str_replace(' ', '-', $request->en_name);
-        $category->status     = $request->has('status') ? (bool) $request->status : true;
+        $category = LicenseCategory::findOrFail($id);
+        $category->en_name = $request->en_name;
+        $category->bn_name = $request->bn_name;
+        $category->slug = str_replace(' ', '-', $request->en_name);
+        $category->status = $request->has('status') ? (bool) $request->status : true;
         $category->updated_by = Auth::id();
         $category->save();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => 'License Category Updated Successfully!',
         ], 200);
     }
@@ -79,7 +78,7 @@ class LicenseCategoryController extends Controller
         LicenseCategory::findOrFail($id)->delete();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => 'License Category Deleted Successfully!',
         ], 200);
     }

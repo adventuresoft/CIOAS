@@ -134,19 +134,16 @@
 @endpush
 
 @section('content')
-<section class="content-header">
+<section class="content cioas-page pt-5">
     <div class="container-fluid">
-        <div class="row mb-4">
-            <div class="col-sm-12 text-center">
-                <h1 class="font-weight-bold text-dark mb-2" style="font-size: 2.2rem;">আগ্নেয়াস্ত্র লাইসেন্স আবেদন</h1>
-                <p class="text-muted" style="font-size: 1.1rem;">অনুগ্রহ করে আপনার আবেদনের লাইসেন্সের ধরণটি নির্বাচন করুন</p>
+        <div class="cioas-shell">
+            <div class="row mb-4">
+                <div class="col-sm-12 text-center">
+                    <h1 class="font-weight-bold text-dark mb-2" style="font-size: 2.2rem;">আগ্নেয়াস্ত্র লাইসেন্স আবেদন</h1>
+                    <p class="text-muted" style="font-size: 1.1rem;">অনুগ্রহ করে আপনার আবেদনের লাইসেন্সের ধরণটি নির্বাচন করুন</p>
+                </div>
             </div>
-        </div>
-    </div>
-</section>
 
-<section class="content">
-    <div class="container-fluid">
         <div class="row justify-content-center" style="gap: 24px; margin-top: 20px;">
             
             <!-- 1. Personal License Card -->
@@ -191,6 +188,7 @@
                 </div>
             </div>
 
+        </div>
         </div>
     </div>
 </section>

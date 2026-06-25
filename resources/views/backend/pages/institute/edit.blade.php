@@ -1,174 +1,144 @@
 @extends('backend.master', ['mainMenu' => 'Institute', 'subMenu' =>'InstituteList'])
-@push('style')
-@endpush
 @section('title', 'Institute Edit')
 @section('content')
-   <!-- Content Header (Page header) -->
-   <section class="content-header">
+
+    <section class="content mt-4">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Institute Edit</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('institute.index')}}">Institute</a></li>
-                        <li class="breadcrumb-item active">Edit</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
+            <form class="form-horizontal" id="instituteForm" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
 
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
-
-            <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <span class="text-light">Institute Create Info |</span>
-                                <a class="linked" href="{{route('instituteA.adminCreate', $institute->id)}}"><span class="text-dark">Institutional Admin |</span> </a>
-                                <a class="linked" href="{{route('instituteA.imagesCreate', $institute->id)}}"> <span class="text-dark">Institutional Images</span> </a>
-                            </h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form class="form-horizontal" id="instituteForm" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-
-                            <div class="card-body">
-
-                                {{-- Institute Category --}}
-                                <div class="form-group row">
-                                    <label for="institute_category" class="col-sm-2 col-form-label">Uses as</label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="institute_category" id="institute_category">
-                                            <option value="">Select Working/Monitoring</option>
-                                            @foreach ($institute_categories as $institute_category)
-                                                <option value="{{ $institute_category->id }}"
-                                                    {{ $institute->institute_category_id == $institute_category->id ? 'selected' : '' }}>
-                                                    {{ $institute_category->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                                {{-- Institute Subcategory --}}
-                                <div class="form-group row">
-                                    <label for="institute_subcategory_id" class="col-sm-2 col-form-label">Institute Category</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control select2" name="institute_subcategory_id" id="institute_subcategory_id">
-                                            <option value="">Category A/B/C</option>
-                                            <option value="1" {{ $institute->institute_subcategory_id == 1 ? 'selected' : '' }}>Category A</option>
-                                            <option value="2" {{ $institute->institute_subcategory_id == 2 ? 'selected' : '' }}>Category B</option>
-                                            <option value="3" {{ $institute->institute_subcategory_id == 3 ? 'selected' : '' }}>Category C</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                {{-- Activation Date --}}
-                                <div class="form-group row">
-                                    <label for="activation_time" class="col-sm-2 col-form-label">Activation Date</label>
-                                    <div class="col-sm-9">
-                                        <input type="date" id="activation_time" value="{{ $institute->activation_time ?? '' }}"
-                                            name="activation_time" class="form-control" required>
-                                    </div>
-                                </div>
-
-                                {{-- Division --}}
-                                <div class="form-group row">
-                                    <label for="division" class="col-sm-2 col-form-label">Division <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="division" id="division">
-                                            <option value="">Select Division</option>
-                                            @foreach ($divisions as $division)
-                                                <option value="{{ $division->id }}"
-                                                    {{ $institute->division_id == $division->id ? 'selected' : '' }}>
-                                                    {{ $division->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <small class="error division-error text-danger"></small>
-                                    </div>
-                                </div>
-
-                                {{-- District --}}
-                                <div class="form-group row">
-                                    <label for="district" class="col-sm-2 col-form-label">District <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="district" id="district">
-                                            <option value="">Select District</option>
-                                            {{-- Pre-populate if division is set --}}
-                                            @if($institute->district_id && $institute->district)
-                                                <option value="{{ $institute->district_id }}" selected>
-                                                    {{ $institute->district->name ?? 'District #'.$institute->district_id }}
-                                                </option>
-                                            @endif
-                                        </select>
-                                        <small class="error district-error text-danger"></small>
-                                    </div>
-                                </div>
-
-                                {{-- Thana --}}
-                                <div class="form-group row">
-                                    <label for="thana" class="col-sm-2 col-form-label">Thana / Upazila</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control select2" name="thana" id="thana">
-                                            <option value="">Select Thana</option>
-                                            @if($institute->thana_id && $institute->thana)
-                                                <option value="{{ $institute->thana_id }}" selected>
-                                                    {{ $institute->thana->name ?? 'Thana #'.$institute->thana_id }}
-                                                </option>
-                                            @endif
-                                        </select>
-                                        <small class="error thana-error text-danger"></small>
-                                    </div>
-                                </div>
-
-                                {{-- Institute Type --}}
-                                <div class="form-group row">
-                                    <label for="institute_type" class="col-sm-2 col-form-label">Institute Type <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="institute_type" id="institute_type">
-                                            <option value="">Select Institute Type</option>
-                                            @foreach ($institute_types as $institute_type)
-                                                <option value="{{ $institute_type->id }}"
-                                                    {{ $institute->institute_type_id == $institute_type->id ? 'selected' : '' }}>
-                                                    {{ $institute_type->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <small class="error institute_type-error text-danger"></small>
-                                    </div>
-                                </div>
-
-                                <div id="loadProjectTypeContent"></div>
-
-                            </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <div class="form-group row">
-                                    <a href="{{ route('institute.index') }}" class="btn btn-default float-right">Cancel</a>
-                                    <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-info">Update</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.card-footer -->
-                        </form>
+                <div class="card cioas-shell">
+                    <div class="card-header cioas-panel-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title text-dark font-weight-bold mb-0">
+                            <i class="fas fa-edit text-teal mr-2" style="color: #0f766e;"></i> 
+                            <span class="top-nav-active">Institute Create Info</span>
+                            <a class="top-nav-link" href="{{route('instituteA.adminCreate', $institute->id)}}">Institutional Admin</a> | 
+                            <a class="top-nav-link" href="{{route('instituteA.imagesCreate', $institute->id)}}">Institutional Images</a>
+                        </h3>
                     </div>
-                    <!-- /.card -->
+
+                    <div class="card-body p-4">
+
+                        {{-- Institute Category --}}
+                        <div class="form-group row premium-form-group align-items-center">
+                            <label for="institute_category" class="col-sm-3 col-form-label premium-form-label">Uses as</label>
+                            <div class="col-sm-9">
+                                <select required class="form-control select2 premium-form-control" name="institute_category" id="institute_category">
+                                    <option value="">Select Working/Monitoring</option>
+                                    @foreach ($institute_categories as $institute_category)
+                                        <option value="{{ $institute_category->id }}"
+                                            {{ $institute->institute_category_id == $institute_category->id ? 'selected' : '' }}>
+                                            {{ $institute_category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        {{-- Institute Subcategory --}}
+                        <div class="form-group row premium-form-group align-items-center">
+                            <label for="institute_subcategory_id" class="col-sm-3 col-form-label premium-form-label">Institute Category</label>
+                            <div class="col-sm-9">
+                                <select class="form-control select2 premium-form-control" name="institute_subcategory_id" id="institute_subcategory_id">
+                                    <option value="">Category A/B/C</option>
+                                    <option value="1" {{ $institute->institute_subcategory_id == 1 ? 'selected' : '' }}>Category A</option>
+                                    <option value="2" {{ $institute->institute_subcategory_id == 2 ? 'selected' : '' }}>Category B</option>
+                                    <option value="3" {{ $institute->institute_subcategory_id == 3 ? 'selected' : '' }}>Category C</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        {{-- Activation Date --}}
+                        <div class="form-group row premium-form-group align-items-center">
+                            <label for="activation_time" class="col-sm-3 col-form-label premium-form-label">Activation Date</label>
+                            <div class="col-sm-9">
+                                <input type="date" id="activation_time" value="{{ $institute->activation_time ?? '' }}"
+                                    name="activation_time" class="form-control premium-form-control" required>
+                            </div>
+                        </div>
+
+                        {{-- Division --}}
+                        <div class="form-group row premium-form-group align-items-center">
+                            <label for="division" class="col-sm-3 col-form-label premium-form-label">Division <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                            <div class="col-sm-9">
+                                <select required class="form-control select2 premium-form-control" name="division" id="division">
+                                    <option value="">Select Division</option>
+                                    @foreach ($divisions as $division)
+                                        <option value="{{ $division->id }}"
+                                            {{ $institute->division_id == $division->id ? 'selected' : '' }}>
+                                            {{ $division->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <small class="error division-error text-danger"></small>
+                            </div>
+                        </div>
+
+                        {{-- District --}}
+                        <div class="form-group row premium-form-group align-items-center">
+                            <label for="district" class="col-sm-3 col-form-label premium-form-label">District <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                            <div class="col-sm-9">
+                                <select required class="form-control select2 premium-form-control" name="district" id="district">
+                                    <option value="">Select District</option>
+                                    {{-- Pre-populate if division is set --}}
+                                    @if($institute->district_id && $institute->district)
+                                        <option value="{{ $institute->district_id }}" selected>
+                                            {{ $institute->district->name ?? 'District #'.$institute->district_id }}
+                                        </option>
+                                    @endif
+                                </select>
+                                <small class="error district-error text-danger"></small>
+                            </div>
+                        </div>
+
+                        {{-- Thana --}}
+                        <div class="form-group row premium-form-group align-items-center">
+                            <label for="thana" class="col-sm-3 col-form-label premium-form-label">Thana / Upazila</label>
+                            <div class="col-sm-9">
+                                <select class="form-control select2 premium-form-control" name="thana" id="thana">
+                                    <option value="">Select Thana</option>
+                                    @if($institute->thana_id && $institute->thana)
+                                        <option value="{{ $institute->thana_id }}" selected>
+                                            {{ $institute->thana->name ?? 'Thana #'.$institute->thana_id }}
+                                        </option>
+                                    @endif
+                                </select>
+                                <small class="error thana-error text-danger"></small>
+                            </div>
+                        </div>
+
+                        {{-- Institute Type --}}
+                        <div class="form-group row premium-form-group align-items-center">
+                            <label for="institute_type" class="col-sm-3 col-form-label premium-form-label">Institute Type <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                            <div class="col-sm-9">
+                                <select required class="form-control select2 premium-form-control" name="institute_type" id="institute_type">
+                                    <option value="">Select Institute Type</option>
+                                    @foreach ($institute_types as $institute_type)
+                                        <option value="{{ $institute_type->id }}"
+                                            {{ $institute->institute_type_id == $institute_type->id ? 'selected' : '' }}>
+                                            {{ $institute_type->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <small class="error institute_type-error text-danger"></small>
+                            </div>
+                        </div>
+
+                        <div id="loadProjectTypeContent"></div>
+
+                    </div>
                 </div>
-            </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+
+                <div class="card cioas-shell mt-4">
+                    <div class="card-body d-flex justify-content-end p-3" style="gap: 15px;">
+                        <a href="{{ route('institute.index') }}" class="btn btn-premium-cancel">Cancel</a>
+                        <button type="submit" class="btn btn-premium-submit">Update</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
     </section>
     <!-- /.content -->
 @endsection

@@ -65,30 +65,114 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $query = User::with([
-            'staff',
-            'professionalInfos',
-            'addressInfo.presentWard',
-            'addressInfo.presentDistrict',
-            'addressInfo.presentThana',
-            'addressInfo.presentPostoffice',
-            'addressInfo.presentVillage',
-            'addressInfo.presentRoad',
-            'addressInfo.presentHouse',
-            'addressInfo.permanentDistrict',
-            'addressInfo.permanentThana',
-            'addressInfo.permanentPostOffice',
-            'addressInfo.permanentVillage',
-            'addressInfo.permanentRoad',
-            'addressInfo.permanentHouse',
-        ])->orwhere('user_type', 'staff');
+        return view('backend.pages.staff.index');
+    }
 
-        if (Auth::user()->institute_id) {
-            $query->where('institute_id', Auth::user()->institute_id);
+    public function records(Request $request)
+    {
+        if ($request->ajax()) {
+            $query = User::with([
+                'staff',
+                'department',
+                'section'
+            ])->where('user_type', 'staff');
+
+            if (Auth::user()->institute_id) {
+                $query->where('institute_id', Auth::user()->institute_id);
+            }
+
+            // Apply custom search filters
+            if ($request->has('search_name') && !empty($request->search_name)) {
+                $query->where('name', 'like', '%' . $request->search_name . '%');
+            }
+
+            if ($request->has('search_mobile') && !empty($request->search_mobile)) {
+                $query->where('mobile', 'like', '%' . $request->search_mobile . '%');
+            }
+
+            if ($request->has('search_email') && !empty($request->search_email)) {
+                $query->where('email', 'like', '%' . $request->search_email . '%');
+            }
+
+            if ($request->has('search_gender') && !empty($request->search_gender)) {
+                $query->whereHas('staff', function ($q) use ($request) {
+                    $q->where('gender', $request->search_gender);
+                });
+            }
+
+            // Handle global search
+            if ($request->has('search_global') && !empty($request->search_global)) {
+                $searchTerm = $request->search_global;
+                $query->where(function ($q) use ($searchTerm) {
+                    $q->where('name', 'like', '%' . $searchTerm . '%')
+                        ->orWhere('system_id', 'like', '%' . $searchTerm . '%')
+                        ->orWhere('mobile', 'like', '%' . $searchTerm . '%')
+                        ->orWhere('email', 'like', '%' . $searchTerm . '%')
+                        ->orWhereHas('department', function ($subQ) use ($searchTerm) {
+                            $subQ->where('name', 'like', '%' . $searchTerm . '%');
+                        })
+                        ->orWhereHas('section', function ($subQ) use ($searchTerm) {
+                            $subQ->where('name', 'like', '%' . $searchTerm . '%');
+                        });
+                });
+            }
+
+            return \Yajra\DataTables\Facades\DataTables::of($query)
+                ->addIndexColumn()
+                ->addColumn('photo', function ($row) {
+                    $photoUrl = asset($row->image ?? 'default.png');
+                    $defaultUrl = asset('default.png');
+                    return '<img src="' . $photoUrl . '" width="38" height="48" class="img" onerror="this.src=\'' . $defaultUrl . '\'">';
+                })
+                ->addColumn('id_name', function ($row) {
+                    $systemId = $row->system_id ?? '';
+                    $name = $row->name ?? '';
+                    return '<span class="citizen-id">' . htmlspecialchars($systemId) . '</span><br><strong>' . htmlspecialchars($name) . '</strong>';
+                })
+                ->addColumn('mobile_email', function ($row) {
+                    $mobileHtml = '';
+                    if ($row->mobile) {
+                        $mobileHtml .= '<a href="tel:' . $row->mobile . '">' . htmlspecialchars($row->mobile) . '</a>';
+                    }
+                    $emailHtml = '';
+                    if ($row->email) {
+                        if ($mobileHtml) {
+                            $emailHtml .= '<br>';
+                        }
+                        $emailHtml .= '<a href="mailto:' . $row->email . '">' . htmlspecialchars($row->email) . '</a>';
+                    }
+                    return $mobileHtml . $emailHtml;
+                })
+                ->addColumn('gender_dob', function ($row) {
+                    $genderOptions = people_constant_option('gender');
+                    $gender = isset($row->staff->gender) ? ($genderOptions[$row->staff->gender] ?? '') : '';
+                    $dob = $row->staff->date_of_birth ?? '';
+                    $dobHtml = $dob ? date('d-m-Y', strtotime($dob)) : 'N/A';
+                    return $gender . '<br><small>' . $dobHtml . '</small>';
+                })
+                ->addColumn('department_name', function ($row) {
+                    return $row->department->name ?? 'N/A';
+                })
+                ->addColumn('section_name', function ($row) {
+                    return $row->section->name ?? 'N/A';
+                })
+                ->addColumn('user_type', function ($row) {
+                    return $row->user_type ?? 'N/A';
+                })
+                ->addColumn('action', function ($row) {
+                    $actionButtons = '<div class="table-action">';
+                    if (view_permission()) {
+                        $actionButtons .= '<a href="' . route('staff.edit', $row->id) . '" title="Edit" class="btn btn-primary btn-sm btn-action"><i class="fa fa-edit"></i></a>';
+                    }
+                    if (view_permission()) {
+                        $actionButtons .= '<a href="' . route('staff.show', $row->id) . '" title="View" class="btn btn-info btn-sm btn-action"><i class="fa fa-eye"></i></a>';
+                    }
+                    $actionButtons .= '</div>';
+                    return $actionButtons;
+                })
+                ->rawColumns(['photo', 'id_name', 'mobile_email', 'gender_dob', 'action'])
+                ->make(true);
         }
-
-        $data['users'] = $query->latest()->get();
-        return view('backend.pages.staff.index', $data);
     }
 
 

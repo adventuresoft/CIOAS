@@ -45,7 +45,7 @@
 
     @push('style')
         <style>
-            .miscase-page {
+            .cioas-page {
                 --mc-primary: #0f766e;
                 --mc-primary-dark: #115e59;
                 --mc-accent: #f59e0b;
@@ -61,12 +61,12 @@
                 padding-bottom: 32px;
             }
 
-            .miscase-shell {
+            .cioas-shell {
                 max-width: 1320px;
                 margin: 0 auto;
             }
 
-            .miscase-panel {
+            .cioas-panel {
                 background: var(--mc-surface);
                 border: 1px solid rgba(219, 229, 234, .85);
                 border-radius: 8px;
@@ -75,7 +75,7 @@
                 overflow: hidden;
             }
 
-            .miscase-panel-header {
+            .cioas-panel-header {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -85,7 +85,7 @@
                 background: linear-gradient(180deg, #fff, #f8fbfb);
             }
 
-            .miscase-panel-title {
+            .cioas-panel-title {
                 display: flex;
                 gap: 10px;
                 align-items: center;
@@ -95,11 +95,11 @@
                 margin: 0;
             }
 
-            .miscase-panel-title i {
+            .cioas-panel-title i {
                 color: var(--mc-primary);
             }
 
-            .miscase-panel-body {
+            .cioas-panel-body {
                 padding: 18px;
             }
 
@@ -116,8 +116,8 @@
             }
 
             .md-control,
-            .miscase-page .select2-container--bootstrap4 .select2-selection,
-            .miscase-page .select2-container--default .select2-selection {
+            .cioas-page .select2-container--bootstrap4 .select2-selection,
+            .cioas-page .select2-container--default .select2-selection {
                 border: 1px solid var(--mc-line) !important;
                 border-radius: 8px !important;
                 min-height: 42px;
@@ -129,7 +129,7 @@
                 box-shadow: 0 0 0 3px rgba(15, 118, 110, .12) !important;
             }
 
-            .miscase-page textarea.md-control {
+            .cioas-page textarea.md-control {
                 min-height: 96px;
                 resize: vertical;
             }
@@ -198,7 +198,7 @@
                 font-weight: 700;
             }
 
-            .miscase-actions {
+            .cioas-actions {
                 align-items: center;
                 background: rgba(255, 255, 255, .9);
                 border: 1px solid var(--mc-line);
@@ -238,13 +238,13 @@
             }
 
             @media (max-width: 767px) {
-                .miscase-actions {
+                .cioas-actions {
                     align-items: stretch;
                     flex-direction: column-reverse;
                     position: static;
                 }
 
-                .miscase-actions .btn {
+                .cioas-actions .btn {
                     width: 100%;
                 }
             }
@@ -267,20 +267,20 @@
         </div>
     </section>
 
-    <section class="content miscase-page pt-5">
+    <section class="content cioas-page pt-5">
         <div class="container-fluid">
-            <div class="miscase-shell">
+            <div class="cioas-shell">
 
                 <form id="FormSubmit" method="POST" enctype="multipart/form-data" action="{{ $formAction }}"
                     data-url="{{ $formAction }}" data-redirect-url="{{ route('miscase.index') }}">
                     @csrf
 
-                    <div class="miscase-panel">
-                        <div class="miscase-panel-header">
-                            <h3 class="miscase-panel-title"><i class="fas fa-folder-open"></i> Case Information</h3>
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title"><i class="fas fa-folder-open"></i> Case Information</h3>
                             <span class="section-chip">Required: Case Date</span>
                         </div>
-                        <div class="miscase-panel-body">
+                        <div class="cioas-panel-body">
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="md-field">
@@ -399,14 +399,14 @@
                         </div>
                     </div>
 
-                    <div class="miscase-panel">
-                        <div class="miscase-panel-header">
-                            <h3 class="miscase-panel-title"><i class="fas fa-map-marked-alt"></i> Location And Land Records
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title"><i class="fas fa-map-marked-alt"></i> Location And Land Records
                             </h3>
                             <button class="btn btn-sm btn-outline-success add-location" type="button"><i
                                     class="fas fa-plus"></i> Add More</button>
                         </div>
-                        <div class="miscase-panel-body" id="location_wrap">
+                        <div class="cioas-panel-body" id="location_wrap">
                             @foreach ($locationRows as $index => $row)
                                 <div class="party-item" data-location-item>
                                     <div class="party-item-top">
@@ -518,13 +518,13 @@
                     </div>
 
                     <div class="party-grid">
-                        <div class="miscase-panel">
-                            <div class="miscase-panel-header">
-                                <h3 class="miscase-panel-title"><i class="fas fa-user-check"></i> বাদীর তথ্য</h3>
+                        <div class="cioas-panel">
+                            <div class="cioas-panel-header">
+                                <h3 class="cioas-panel-title"><i class="fas fa-user-check"></i> বাদীর তথ্য</h3>
                                 <button class="btn btn-sm btn-outline-success add-party" data-party-type="plaintiffs"
                                     type="button"><i class="fas fa-plus"></i> Add</button>
                             </div>
-                            <div class="miscase-panel-body" id="plaintiffs_wrap">
+                            <div class="cioas-panel-body" id="plaintiffs_wrap">
                                 @foreach ($plaintiffs as $index => $party)
                                     <div class="party-item" data-party-item>
                                         <div class="party-item-top">
@@ -576,13 +576,13 @@
                             </div>
                         </div>
 
-                        <div class="miscase-panel">
-                            <div class="miscase-panel-header">
-                                <h3 class="miscase-panel-title"><i class="fas fa-user-shield"></i> বিবাদীর তথ্য</h3>
+                        <div class="cioas-panel">
+                            <div class="cioas-panel-header">
+                                <h3 class="cioas-panel-title"><i class="fas fa-user-shield"></i> বিবাদীর তথ্য</h3>
                                 <button class="btn btn-sm btn-outline-success add-party" data-party-type="defendants"
                                     type="button"><i class="fas fa-plus"></i> Add</button>
                             </div>
-                            <div class="miscase-panel-body" id="defendants_wrap">
+                            <div class="cioas-panel-body" id="defendants_wrap">
                                 @foreach ($defendants as $index => $party)
                                     <div class="party-item" data-party-item>
                                         <div class="party-item-top">
@@ -635,11 +635,11 @@
                         </div>
                     </div>
 
-                    <div class="miscase-panel">
-                        <div class="miscase-panel-header">
-                            <h3 class="miscase-panel-title"><i class="fas fa-paperclip"></i> Notes And Documents</h3>
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title"><i class="fas fa-paperclip"></i> Notes And Documents</h3>
                         </div>
-                        <div class="miscase-panel-body">
+                        <div class="cioas-panel-body">
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="md-field mb-md-0">
@@ -661,7 +661,7 @@
                         </div>
                     </div>
 
-                    <div class="miscase-actions">
+                    <div class="cioas-actions">
                         <a href="{{ route('miscase.index') }}" class="btn btn-light btn-material">
                             <i class="fas fa-arrow-left"></i> Cancel
                         </a>
@@ -683,7 +683,7 @@
                         };
                 let locationIndex = {{ count($locationRows) }};
 
-                $('.miscase-page .select2').each(function () {
+                $('.cioas-page .select2').each(function () {
                     if (!$(this).hasClass('select2-hidden-accessible')) {
                         $(this).select2({
                             theme: 'bootstrap4',
@@ -838,7 +838,7 @@
                 });
 
                 $(document).on('click', '.remove-party', function () {
-                    let wrap = $(this).closest('.miscase-panel-body');
+                    let wrap = $(this).closest('.cioas-panel-body');
 
                     if (wrap.find('[data-party-item]').length > 1) {
                         $(this).closest('[data-party-item]').remove();
@@ -950,7 +950,7 @@
                 });
 
                 $(document).on('click', '.remove-location', function () {
-                    let wrap = $(this).closest('.miscase-panel-body');
+                    let wrap = $(this).closest('.cioas-panel-body');
 
                     if (wrap.find('[data-location-item]').length > 1) {
                         $(this).closest('[data-location-item]').remove();

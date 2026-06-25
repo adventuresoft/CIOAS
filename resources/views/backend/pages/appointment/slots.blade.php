@@ -7,55 +7,52 @@
 </style>
 @endpush
 @section('content')
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Appointment Slots Management</h1>
-            </div>
-        </div>
-    </div>
-</section>
-<section class="content">
+<section class="content cioas-page pt-5">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
-                <div class="card card-primary card-outline shadow-sm">
-                    <div class="card-header">
-                        <h3 class="card-title">Create Slot</h3>
-                    </div>
-                    <div class="card-body">
-                        <form id="createSlotForm">
-                            @csrf
-                            <div class="form-group">
-                                <label>Date <span class="text-danger">*</span></label>
-                                <input type="date" name="slot_date" id="slot_date" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Slot Type <span class="text-danger">*</span></label>
-                                <select name="slot_type" id="slot_type" class="form-control" required>
-                                    <option value="regular">Regular Slot</option>
-                                    <option value="emergency">Emergency Slot</option>
-                                </select>
-                            </div>
-                            <div class="form-group" id="timeFields">
-                                <label>Start Time <span class="text-danger">*</span></label>
-                                <input type="time" name="start_time" id="start_time" class="form-control" required>
-                            </div>
-                            <div class="form-group" id="capacityField" style="display: none;">
-                                <label>Capacity</label>
-                                <input type="number" name="capacity" id="capacity" class="form-control" value="3" readonly>
-                                <small class="text-muted">Emergency slots have a fixed capacity of 3.</small>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100 mt-2"><i class="fas fa-plus-circle"></i> Create Slot</button>
-                        </form>
+                <div class="cioas-shell">
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title">Create Slot</h3>
+                        </div>
+                        <div class="cioas-panel-body">
+                            <form id="createSlotForm">
+                                @csrf
+                                <div class="form-group">
+                                    <label>Date <span class="text-danger">*</span></label>
+                                    <input type="date" name="slot_date" id="slot_date" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Slot Type <span class="text-danger">*</span></label>
+                                    <select name="slot_type" id="slot_type" class="form-control" required>
+                                        <option value="regular">Regular Slot</option>
+                                        <option value="emergency">Emergency Slot</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" id="timeFields">
+                                    <label>Start Time <span class="text-danger">*</span></label>
+                                    <input type="time" name="start_time" id="start_time" class="form-control" required>
+                                </div>
+                                <div class="form-group" id="capacityField" style="display: none;">
+                                    <label>Capacity</label>
+                                    <input type="number" name="capacity" id="capacity" class="form-control" value="3" readonly>
+                                    <small class="text-muted">Emergency slots have a fixed capacity of 3.</small>
+                                </div>
+                                <div class="cioas-actions mt-3">
+                                    <button type="submit" class="btn btn-material btn-material-primary w-100"><i class="fas fa-plus-circle"></i> Create Slot</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-9">
-                <div class="card card-primary card-outline shadow-sm">
-                    <div class="card-body p-0">
-                        <div id="calendar" class="p-3"></div>
+                <div class="cioas-shell">
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-body p-0">
+                            <div id="calendar" class="p-3"></div>
+                        </div>
                     </div>
                 </div>
             </div>

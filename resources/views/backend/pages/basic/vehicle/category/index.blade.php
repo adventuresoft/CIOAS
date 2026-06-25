@@ -3,37 +3,22 @@
 @endpush
 @section('title', 'Vehicle Category')
 @section('content')
-   <!-- Content Header (Page header) -->
-   <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1>Vehicle Category</h1>
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            {{-- {{route('death.index')}} --}}
-            <li class="breadcrumb-item"><a href="">Vehicle Category</a></li>
-            <li class="breadcrumb-item active">View</li>
-          </ol>
-        </div>
-      </div>
-    </div><!-- /.container-fluid -->
-  </section>
+   
 
     <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
+    <section class="content cioas-page pt-5">
+    <div class="container-fluid">
 
             <!-- Main row -->
             <div class="row">
                 <div class="col-md-12">
                     <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
+                    <div class="cioas-shell">
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
                             <div class="row">
                                 <div class="col-md-6 text-left">
-                                    <h3 class="card-title">Vehicle Category List</h3>
+                                    <h3 class="cioas-panel-title">Vehicle Category List</h3>
                                 </div>
                                 <div class="col-md-6 text-right">
                                     {{-- {{route('death.create')}} --}}
@@ -44,7 +29,7 @@
                         </div>
                         <!-- /.card-header -->
 
-                        <div class="card-body">
+                        <div class="cioas-panel-body">
                             <table id="example1" class="table table-bordered table-striped">
                               <thead>
                                 <tr>
@@ -70,7 +55,8 @@
                           <!-- /.card-body -->
 
                     </div>
-                    <!-- /.card -->
+                    </div>
+                    <!-- /.cioas-shell -->
                 </div>
             </div>
             <!-- /.row (main row) -->
