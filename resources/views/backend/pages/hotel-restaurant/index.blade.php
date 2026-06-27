@@ -1,4 +1,4 @@
-@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'HotelCategory'])
+@extends('backend.master', ['mainMenu' => 'hotel_restaurant', 'subMenu' => 'HotelRestaurantList'])
 @push('style')
 @endpush
 @section('title', 'Hotel & Restaurant List')
@@ -25,10 +25,12 @@
 
                     <div class="cioas-panel-body">
                         <!-- FILTER BAR -->
-                        <div class="row mb-4 p-3" style="background-color: #f8fafc; border-radius: 8px; border: 1px solid var(--mc-line); margin: 0 0 20px 0;">
+                        <div class="row mb-4 p-3"
+                            style="background-color: #f8fafc; border-radius: 8px; border: 1px solid var(--mc-line); margin: 0 0 20px 0;">
                             <!-- Show Entries -->
                             <div class="col-md-2 mb-2">
-                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Show Entries</label>
+                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Show
+                                    Entries</label>
                                 <select id="tableLength" class="form-control form-control-sm">
                                     <option value="10">10</option>
                                     <option value="25">25</option>
@@ -39,28 +41,32 @@
 
                             <!-- Organization Name Filter -->
                             <div class="col-md-3 mb-2">
-                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Hotel & Restaurant</label>
+                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Hotel &
+                                    Restaurant</label>
                                 <input type="text" id="search_hotel_name" class="form-control form-control-sm"
                                     placeholder="Name">
                             </div>
 
                             <!-- Category Filter -->
                             <div class="col-md-2 mb-2">
-                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Category</label>
+                                <label
+                                    style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Category</label>
                                 <input type="text" id="search_category" class="form-control form-control-sm"
                                     placeholder="Category">
                             </div>
 
                             <!-- Subcategory Filter -->
                             <div class="col-md-2 mb-2">
-                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Subcategory</label>
+                                <label
+                                    style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Subcategory</label>
                                 <input type="text" id="search_subcategory" class="form-control form-control-sm"
                                     placeholder="Subcategory">
                             </div>
 
                             <!-- GLOBAL SEARCH -->
                             <div class="col-md-3 mb-2">
-                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Search</label>
+                                <label
+                                    style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Search</label>
                                 <input type="text" id="search_global" class="form-control form-control-sm"
                                     placeholder="Search...">
                             </div>

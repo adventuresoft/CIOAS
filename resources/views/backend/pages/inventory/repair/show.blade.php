@@ -45,7 +45,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th style="width: 30%">Application Date:</th>
-                                <td>{{ $repair->application_date->format('d M, Y') }}</td>
+                                <td>{{ $repair->application_date ? $repair->application_date->format('d M, Y') : '—' }}</td>
                             </tr>
                             <tr>
                                 <th>Applicant:</th>

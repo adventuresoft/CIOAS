@@ -153,9 +153,11 @@
             background-color: var(--mc-surface);
             transition: border-color 0.2s;
         }
+
         .dt-container .dt-search input:focus {
             border-color: var(--mc-primary);
         }
+
         .dt-container .dt-length select {
             border: 1px solid var(--mc-line);
             border-radius: 6px;
@@ -164,6 +166,7 @@
             font-size: 14px;
             color: var(--mc-ink);
         }
+
         .dt-container .dt-paging .dt-paging-button {
             border: 1px solid var(--mc-line) !important;
             border-radius: 6px !important;
@@ -174,11 +177,13 @@
             font-weight: 600 !important;
             font-size: 13px !important;
         }
+
         .dt-container .dt-paging .dt-paging-button.current {
             background: var(--mc-primary) !important;
             color: #ffffff !important;
             border-color: var(--mc-primary) !important;
         }
+
         .dt-container .dt-paging .dt-paging-button:hover:not(.current) {
             background: #f1f5f9 !important;
             color: var(--mc-ink) !important;
@@ -188,21 +193,6 @@
 
 @section('title', 'Missed Case')
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Missed Case List</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item active">Missed Case</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="content mc-page">
         <div class="container-fluid">
             @if (session('success'))

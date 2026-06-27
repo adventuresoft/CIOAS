@@ -50,7 +50,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $repair->repair_no }}</td>
-                                    <td>{{ $repair->application_date->format('d M, Y') }}</td>
+                                    <td>{{ $repair->application_date ? $repair->application_date->format('d M, Y') : '—' }}</td>
                                     <td>{{ $repair->applicant_name }}<br><small class="text-muted">{{ $repair->department_name }}</small></td>
                                     <td>{{ $repair->item_name }}</td>
                                     <td>{{ $repair->quantity }}</td>

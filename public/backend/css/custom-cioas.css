@@ -288,17 +288,37 @@ table.dataTable.table-custom>thead>tr>td:not(.sorting_disabled) {
     text-decoration: none !important;
 }
 
-.btn-list { background-color: #1e293b; }
-.btn-list:hover { background-color: #0f172a; }
+.btn-list {
+    background-color: #1e293b;
+}
 
-.btn-view { background-color: #06b6d4; }
-.btn-view:hover { background-color: #0891b2; }
+.btn-list:hover {
+    background-color: #0f172a;
+}
 
-.btn-edit { background-color: #3b82f6; }
-.btn-edit:hover { background-color: #2563eb; }
+.btn-view {
+    background-color: #06b6d4;
+}
 
-.btn-delete { background-color: #ef4444; }
-.btn-delete:hover { background-color: #dc2626; }
+.btn-view:hover {
+    background-color: #0891b2;
+}
+
+.btn-edit {
+    background-color: #3b82f6;
+}
+
+.btn-edit:hover {
+    background-color: #2563eb;
+}
+
+.btn-delete {
+    background-color: #ef4444;
+}
+
+.btn-delete:hover {
+    background-color: #dc2626;
+}
 
 /* =========================================================================
    PREMIUM SELECT2 OVERRIDES
@@ -375,4 +395,78 @@ table.dataTable tbody td {
     border-radius: 4px;
     padding: 4px 8px;
     margin-left: 8px;
+}
+
+/* MisCase Create Styles */
+.cioas-page textarea.md-control {
+    min-height: 96px;
+    resize: vertical;
+}
+
+.section-chip {
+    background: var(--mc-soft);
+    border: 1px solid rgba(15, 118, 110, .16);
+    border-radius: 999px;
+    color: var(--mc-primary-dark);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 11px;
+}
+
+.location-table {
+    min-width: 1150px;
+}
+
+.location-table th {
+    color: var(--mc-muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.location-table td {
+    vertical-align: middle;
+}
+
+.record-pill {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 999px;
+    color: #9a3412;
+    display: inline-block;
+    font-weight: 700;
+    min-width: 64px;
+    padding: 6px 10px;
+    text-align: center;
+}
+
+.party-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+/* content-header */
+
+.content-header {
+    /* display: none !important; */
+}
+
+@media (max-width: 991px) {
+    .party-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 767px) {
+    .cioas-actions {
+        align-items: stretch;
+        flex-direction: column-reverse;
+        position: static;
+    }
+
+    .cioas-actions .btn {
+        width: 100%;
+    }
 }

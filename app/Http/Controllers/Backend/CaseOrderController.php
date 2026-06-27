@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\DataTables\CaseOrderDataTable;
 use App\Models\CaseOrder;
 use App\Models\MisCase;
 use Illuminate\Http\Request;
@@ -15,19 +16,9 @@ class CaseOrderController extends Controller
     /**
      * All Case Order — সকল CaseOrder রেকর্ড দেখাবে।
      */
-    public function index()
+    public function index(CaseOrderDataTable $dataTable)
     {
-        // প্রতিটি mis_case_id-র সর্বশেষ CaseOrder রেকর্ড নিয়ে তালিকা তৈরি
-        $caseOrders = CaseOrder::with('misCase')
-            ->whereIn('id', function ($query) {
-                $query->selectRaw('MAX(id)')
-                    ->from('case_orders')
-                    ->groupBy('mis_case_id');
-            })
-            ->latest()
-            ->paginate(20);
-
-        return view('backend.pages.case-order.index', compact('caseOrders'));
+        return $dataTable->render('backend.pages.case-order.index');
     }
 
     /**

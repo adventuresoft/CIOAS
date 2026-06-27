@@ -1,4 +1,4 @@
-@extends('backend.master', ['mainMenu' => 'HotelRestaurant', 'subMenu' => 'HotelRestaurantCreate'])
+@extends('backend.master', ['mainMenu' => 'hotel_restaurant', 'subMenu' => 'HotelRestaurantCreate'])
 @push('style')
 @endpush
 @section('title', 'Hotel & Restaurant Create')

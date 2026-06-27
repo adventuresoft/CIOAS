@@ -14,16 +14,20 @@
                         </div>
                         <div class="cioas-panel-body">
                             <div class="form-group row mb-4">
-                                <label for="en_name" class="col-sm-3 col-form-label text-dark font-weight-bold">Name <span class="text-danger">*</span></label>
+                                <label for="en_name" class="col-sm-3 col-form-label text-dark font-weight-bold">Name <span
+                                        class="text-danger">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="text" required name="en_name" placeholder="License Category" class="form-control" id="en_name">
+                                    <input type="text" required name="en_name" placeholder="License Category"
+                                        class="form-control" id="en_name">
                                     <small class="text-danger error en_name_error"></small>
                                 </div>
                             </div>
                             <div class="form-group row mb-4">
-                                <label for="bn_name" class="col-sm-3 col-form-label text-dark font-weight-bold">Name Bangla <span class="text-danger">*</span></label>
+                                <label for="bn_name" class="col-sm-3 col-form-label text-dark font-weight-bold">Name Bangla
+                                    <span class="text-danger">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="text" required name="bn_name" placeholder="License Category Bangla" class="form-control" id="bn_name">
+                                    <input type="text" required name="bn_name" placeholder="License Category Bangla"
+                                        class="form-control" id="bn_name">
                                     <small class="text-danger error bn_name_error"></small>
                                 </div>
                             </div>
@@ -32,7 +36,9 @@
 
                     <div class="cioas-panel mt-3">
                         <div class="cioas-panel-body d-flex justify-content-end align-items-center">
-                            <a href="{{ route('basic-settings.license-category.index') }}" class="btn btn-link text-muted font-weight-bold mr-3" style="text-decoration: none;">Cancel</a>
+                            <a href="{{ route('basic-settings.license-category.index') }}"
+                                class="btn btn-link text-muted font-weight-bold mr-3"
+                                style="text-decoration: none;">Cancel</a>
                             <button type="submit" class="btn btn-material btn-material-primary">Submit</button>
                         </div>
                     </div>

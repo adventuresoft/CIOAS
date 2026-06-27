@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\License;
 
 use App\Http\Controllers\Controller;
+use App\DataTables\License\LicenseDataTable;
 use App\Models\CityCorporation;
 use App\Models\District;
 use App\Models\Division;
@@ -36,13 +37,9 @@ class LicenseController extends Controller
         $this->middleware('permission:license.delete')->only('destroy');
     }
 
-    public function index()
+    public function index(LicenseDataTable $dataTable)
     {
-
-        $licenses = License::with('category', 'subcategory')->latest()->get();
-        $data["wards"] = [];
-        $data["ownership_types"] = [];
-        return view('backend.pages.license.index', compact('licenses'));
+        return $dataTable->render('backend.pages.license.index');
     }
 
     public function create()

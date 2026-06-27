@@ -6,6 +6,8 @@ use App\Models\Inventory\InventoryWorkOrder;
 use App\Models\Inventory\InventoryWorkOrderItem;
 use App\Models\Inventory\InventoryQuotation;
 use App\Models\Inventory\InventoryVendor;
+use App\DataTables\InventoryWorkOrderDataTable;
+use App\DataTables\InventoryWorkOrderApproveDataTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,15 +17,8 @@ class WorkOrderController extends Controller
     private array $categories = ['Stationery', 'Furniture', 'IT Equipment', 'Office Supplies', 'Maintenance'];
     private array $units = ['Pcs', 'Box', 'Pack', 'Set', 'Dozen'];
 
-    public function index()
+    public function index(InventoryWorkOrderDataTable $dataTable)
     {
-        $workOrders = InventoryWorkOrder::withCount('items')
-            ->withSum('items', 'purchase_quantity')
-            ->with('requisitions')
-
-            ->latest()
-            ->get();
-
         $summaryCards = [
             [
                 'label' => 'Draft Orders',
@@ -45,7 +40,7 @@ class WorkOrderController extends Controller
             ],
         ];
 
-        return view('backend.pages.inventory.work_order.index', compact('workOrders', 'summaryCards'));
+        return $dataTable->render('backend.pages.inventory.work_order.index', compact('summaryCards'));
     }
 
     public function create()
@@ -250,16 +245,9 @@ class WorkOrderController extends Controller
             ->with('success', "Work Order {$workOrder->work_order_no} has been updated successfully.");
     }
 
-    public function approveList()
+    public function approveList(InventoryWorkOrderApproveDataTable $dataTable)
     {
-        $workOrders = InventoryWorkOrder::withCount('items')
-            ->withSum('items', 'purchase_quantity')
-            ->where('workflow_status', 'approved')
-            ->whereNull('inventory_vendor_id')
-            ->latest()
-            ->get();
-
-        return view('backend.pages.inventory.work_order.approve_list', compact('workOrders'));
+        return $dataTable->render('backend.pages.inventory.work_order.approve_list');
     }
 
     public function approveWorkOrder(Request $request)

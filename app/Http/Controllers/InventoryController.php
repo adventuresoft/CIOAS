@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventory\InventoryRequisition;
 use App\Models\Inventory\InventoryRequisitionItem;
+use App\DataTables\InventoryRequisitionDataTable;
+use App\DataTables\InventoryRequisitionApproveDataTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -41,15 +43,8 @@ class InventoryController extends Controller
         ],
     ];
 
-    public function index()
+    public function index(InventoryRequisitionDataTable $dataTable)
     {
-        $inventories = InventoryRequisition::withCount('items')
-            ->withSum('items', 'required_quantity')
-            ->withSum('items', 'estimated_total_cost')
-
-            ->latest()
-            ->get();
-
         $summaryCards = [
             [
                 'label' => 'Draft Requests',
@@ -77,7 +72,7 @@ class InventoryController extends Controller
             ],
         ];
 
-        return view('backend.pages.inventory.index', compact('inventories', 'summaryCards'));
+        return $dataTable->render('backend.pages.inventory.index', compact('summaryCards'));
     }
 
     public function create()
@@ -127,16 +122,9 @@ class InventoryController extends Controller
             ->with('success', 'Inventory requisition deleted successfully.');
     }
 
-    public function approveList()
+    public function approveList(InventoryRequisitionApproveDataTable $dataTable)
     {
-        $inventories = InventoryRequisition::withCount('items')
-            ->withSum('items', 'required_quantity')
-            ->withSum('items', 'estimated_total_cost')
-            ->where('workflow_status', 'approved')
-            ->latest()
-            ->get();
-
-        return view('backend.pages.inventory.approve_list', compact('inventories'));
+        return $dataTable->render('backend.pages.inventory.approve_list');
     }
 
     public function receive()

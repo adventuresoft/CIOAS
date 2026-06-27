@@ -106,12 +106,12 @@
                     {{-- Institute Settings --}}
                     <li
                         class="nav-item
-                                                                                                                            @if (
-                                                                                                                                $subMenu == 'InstituteCreate' ||
-                                                                                                                                $subMenu == 'InstituteType' ||
-                                                                                                                                $subMenu == 'InstituteCategory' ||
-                                                                                                                                $subMenu == 'InstituteList'
-                                                                                                                            ) menu-open @endif">
+                                                                                                                                                                                            @if (
+                                                                                                                                                                                                $subMenu == 'InstituteCreate' ||
+                                                                                                                                                                                                $subMenu == 'InstituteType' ||
+                                                                                                                                                                                                $subMenu == 'InstituteCategory' ||
+                                                                                                                                                                                                $subMenu == 'InstituteList'
+                                                                                                                                                                                            ) menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'Institute') active @endif ">
                             <i class="nav-icon fas fa-university"></i>
                             <p>
@@ -336,60 +336,61 @@
                     </ul>
                 </li>
 
-                    {{-- Vehicle Info --}}
-                    @if (has_module_access('vehicle') || has_module_access('vehicles'))
-                        <li
-                            class="nav-item @if (in_array($subMenu, ['VehicleCreate', 'VehicleList', 'VehicleShow'])) menu-open @endif">
-                            <a href="#" class="nav-link @if ($mainMenu == 'Vehicle') active @endif">
-                                <i class="nav-icon fas fa-car"></i>
-                                <p>
-                                    Vehicle
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                @if (has_sub_module_access('vehicle', 'create') || has_sub_module_access('vehicles', 'create'))
-                                    <li class="nav-item">
-                                        <a href="{{ route('vehicle.create') }}"
-                                            class="nav-link @if ($subMenu == 'VehicleCreate') active @endif">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Add Vehicle</p>
-                                        </a>
-                                    </li>
-                                @endif
-                                @if (has_sub_module_access('vehicle', 'read') || has_sub_module_access('vehicles', 'read'))
-                                    <li class="nav-item">
-                                        <a href="{{ route('vehicle.index') }}"
-                                            class="nav-link @if ($subMenu == 'VehicleList') active @endif">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Vehicle List</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{{ route('vehicle.repairing.index') }}"
-                                            class="nav-link @if ($subMenu == 'VehicleRepairingList' || $subMenu == 'VehicleRepairingCreate') active @endif">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Repairing</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{{ route('vehicle.fuel.index') }}"
-                                            class="nav-link @if ($subMenu == 'VehicleFuelList' || $subMenu == 'VehicleFuelCreate') active @endif">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Fuel</p>
-                                        </a>
-                                    </li>
-                                @endif
-                            </ul>
-                        </li>
-                    @endif
+                {{-- Vehicle Info --}}
+                @if (has_module_access('vehicle') || has_module_access('vehicles'))
+                    <li
+                        class="nav-item @if (in_array($subMenu, ['VehicleCreate', 'VehicleList', 'VehicleShow'])) menu-open @endif">
+                        <a href="#" class="nav-link @if ($mainMenu == 'Vehicle') active @endif">
+                            <i class="nav-icon fas fa-car"></i>
+                            <p>
+                                Vehicle
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (has_sub_module_access('vehicle', 'create') || has_sub_module_access('vehicles', 'create'))
+                                <li class="nav-item">
+                                    <a href="{{ route('vehicle.create') }}"
+                                        class="nav-link @if ($subMenu == 'VehicleCreate') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Add Vehicle</p>
+                                    </a>
+                                </li>
+                            @endif
+                            @if (has_sub_module_access('vehicle', 'read') || has_sub_module_access('vehicles', 'read'))
+                                <li class="nav-item">
+                                    <a href="{{ route('vehicle.index') }}"
+                                        class="nav-link @if ($subMenu == 'VehicleList') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Vehicle List</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('vehicle.repairing.index') }}"
+                                        class="nav-link @if ($subMenu == 'VehicleRepairingList' || $subMenu == 'VehicleRepairingCreate') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Repairing</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('vehicle.fuel.index') }}"
+                                        class="nav-link @if ($subMenu == 'VehicleFuelList' || $subMenu == 'VehicleFuelCreate') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Fuel</p>
+                                    </a>
+                                </li>
+                            @endif
+                        </ul>
+                    </li>
+                @endif
 
                 {{-- License --}}
                 @if (has_module_access('license') || has_module_access('licenses'))
-                    <li class="nav-item
-                                                                                                                      @if ($subMenu == 'LicenseCreate' || $subMenu == 'LicenseList' || $subMenu == 'LicenseShow' || $subMenu == 'LicenseEdit') menu-open @endif
-                                                                                                                      ">
-                        <a href="#" class="nav-link @if ($mainMenu == 'License') active @endif ">
+                    <li
+                        class="nav-item
+                                                                                                                                                                                      @if ($subMenu == 'LicenseCreate' || $subMenu == 'LicenseList' || $subMenu == 'LicenseShow' || $subMenu == 'LicenseEdit') menu-open @endif
+                                                                                                                                                                                      ">
+                        <a href="#" class="nav-link @if ($mainMenu == 'license') active @endif ">
                             <i class="nav-icon fas fa-id-card"></i>
                             <p>
                                 License
@@ -423,10 +424,8 @@
                 {{-- Hotel & Restaurant --}}
                 {{-- Hotel & Restaurant --}}
                 @if (has_module_access('hotel-restaurant') || has_module_access('hotel_restaurant'))
-                    <li
-                        class="nav-item
-                                                                                                                         @if ($subMenu == 'HotelRestaurant' || $subMenu == 'HotelRestaurantist') menu-open @endif">
-                        <a href="#" class="nav-link @if ($mainMenu == 'HotelRestaurant') active @endif ">
+                    <li class="nav-item @if ($mainMenu == 'hotel_restaurant') menu-open @endif">
+                        <a href="#" class="nav-link @if ($mainMenu == 'hotel_restaurant') active @endif ">
                             <i class="nav-icon fas fa-briefcase"></i>
                             <p>
                                 Hotel & Restaurant
@@ -449,7 +448,7 @@
                                     <a href="{{ route('hotel-restaurant.index') }}"
                                         class="nav-link @if ($subMenu == 'HotelRestaurantList') active @endif">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Hotel & Restaurant List</p>
+                                        <p>Table List</p>
                                     </a>
                                 </li>
                             @endif
@@ -755,8 +754,10 @@
                                 <p>Distribution</p>
                             </a>
                         </li>
-                        <li class="nav-item @if (in_array($subMenu, ['InventoryRepairProduct', 'InventoryRepairApproval'])) menu-open @endif">
-                            <a href="#" class="nav-link @if (in_array($subMenu, ['InventoryRepairProduct', 'InventoryRepairApproval'])) active @endif">
+                        <li
+                            class="nav-item @if (in_array($subMenu, ['InventoryRepairProduct', 'InventoryRepairApproval'])) menu-open @endif">
+                            <a href="#"
+                                class="nav-link @if (in_array($subMenu, ['InventoryRepairProduct', 'InventoryRepairApproval'])) active @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>
                                     Maintenance
