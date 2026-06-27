@@ -607,6 +607,12 @@
                     <li>
                         <div class="sep"></div>
                     </li>
+                    @guest
+                    <li><a href="{{ route('frontend.user.register') }}"><i class="fas fa-user-plus"></i> Citizen Register</a></li>
+                    <li>
+                        <div class="sep"></div>
+                    </li>
+                    @endguest
                     <li>
                         <a href="{{ url('/') }}/login" class="btn-login">
                             <i class="fas fa-sign-in-alt"></i> System Login
@@ -644,6 +650,11 @@
                         Helpline: <strong>16100</strong>
                     </a>
                     <div class="gov-access-btns">
+                        @guest
+                        <a href="{{ route('frontend.user.register') }}" class="gov-btn-citizen bg-danger border-danger">
+                            <i class="fas fa-user-plus"></i> নাগরিক নিবন্ধন
+                        </a>
+                        @endguest
                         <a href="{{ url('/login') }}" class="gov-btn-citizen">
                             <i class="fas fa-user"></i> নাগরিক লগইন
                         </a>
@@ -728,6 +739,11 @@
                     </li>
                 @else
                     <li class="nav-login-btn">
+                        <a href="{{ route('frontend.user.register') }}" class="bg-[#cc0000] border-[#cc0000] text-white">
+                            <i class="fas fa-user-plus"></i> নিবন্ধন
+                        </a>
+                    </li>
+                    <li class="nav-login-btn">
                         <a href="{{ url('/login') }}">
                             <i class="fas fa-sign-in-alt"></i> লগইন
                         </a>
@@ -786,6 +802,9 @@
                     <i class="fas fa-sign-out-alt"></i> লগআউট
                 </a>
             @else
+                <a href="{{ route('frontend.user.register') }}" class="gov-drawer-link">
+                    <i class="fas fa-user-plus"></i> নাগরিক নিবন্ধন
+                </a>
                 <a href="{{ url('/login') }}" class="gov-drawer-link">
                     <i class="fas fa-user"></i> নাগরিক লগইন
                 </a>

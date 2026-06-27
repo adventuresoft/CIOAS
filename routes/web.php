@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\AddressInfoController;
+use App\Http\Controllers\TradeLicenseController;
+use App\Http\Controllers\OrganizationFeeController;
+use App\Http\Controllers\OrganizationRenewController;
 // Staff Controllers
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StaffFamilyInfoController;
@@ -179,10 +182,15 @@ Route::get('test-api', [HomeController::class, 'testHttpRequest']);
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login-check', [LoginController::class, 'loginCheck'])->name('login.check');
 
-// Register
 Route::get('/register', [LoginController::class, 'register'])->name('register');
 Route::post('/register/store', [LoginController::class, 'registerStore'])->name('register.store');
-Route::get('/profile', [LoginController::class, 'profile'])->name('profile')->middleware('auth');
+Route::get('/dashboard/profile', [LoginController::class, 'profile'])->name('profile')->middleware('auth');
+Route::post('/dashboard/profile/update', [LoginController::class, 'profileUpdate'])->name('profile.update')->middleware('auth');
+
+// Normal User / Citizen Routes
+Route::get('/user/register', [\App\Http\Controllers\Frontend\UserDashboardController::class, 'registerForm'])->name('frontend.user.register');
+Route::post('/user/register', [\App\Http\Controllers\Frontend\UserDashboardController::class, 'registerStore'])->name('frontend.user.register.store');
+Route::get('/user/dashboard', [\App\Http\Controllers\Frontend\UserDashboardController::class, 'index'])->name('frontend.user.dashboard')->middleware('auth');
 
 // Application
 Route::prefix('application')->name('application.')->group(function () {

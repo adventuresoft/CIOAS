@@ -578,14 +578,11 @@
                 <h5 class="section-title"><i class="fas fa-image"></i> লোগো আপলোড (Organization Logo)</h5>
                 <div class="row align-items-center mb-4">
                     <div class="col-md-4">
-                        <label>প্রতিষ্ঠানের লোগো / ছবি:</label>
+                        <label for="hotel_logo" class="font-weight-bold">প্রতিষ্ঠানের লোগো / ছবি:</label>
                     </div>
                     <div class="col-md-8">
-                        <div class="custom-file">
-                            <input type="file" name="hotel_logo" class="custom-file-input" id="hotel_logo">
-                            <label class="custom-file-label" for="hotel_logo">Choose file...</label>
-                        </div>
-                        <small class="error-text error hotel_logo_error"></small>
+                        <input type="file" name="hotel_logo" class="form-control" id="hotel_logo" accept="image/*" style="padding: 10px 14px; height: auto;">
+                        <small class="error-text error hotel_logo-error hotel_logo_error"></small>
                     </div>
                 </div>
 

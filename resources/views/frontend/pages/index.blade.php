@@ -13,6 +13,26 @@
                     গণপ্রজাতন্ত্রী বাংলাদেশ সরকার - এই প্ল্যাটফর্মে আপনি আপনার প্রয়োজনীয় সেবাগুলো পেতে পারেন।
                 </p>
                 <div class="mx-auto mt-6 w-24 h-1 bg-[#f42a41] rounded-full"></div>
+
+                @guest
+                <div class="mt-8 flex flex-wrap justify-center gap-4">
+                    <a href="{{ route('frontend.user.register') }}" class="inline-flex items-center gap-2 rounded-lg bg-red-600 px-6 py-3 text-base font-bold text-white shadow-lg hover:bg-red-700 hover:shadow-xl transition transform hover:-translate-y-0.5">
+                        <i class="fas fa-user-plus text-lg"></i>
+                        নাগরিক নিবন্ধন করুন (Citizen Registration)
+                    </a>
+                    <a href="{{ url('/login') }}" class="inline-flex items-center gap-2 rounded-lg bg-[#006a4e] px-6 py-3 text-base font-bold text-white shadow-lg hover:bg-[#00523b] hover:shadow-xl transition transform hover:-translate-y-0.5">
+                        <i class="fas fa-sign-in-alt text-lg"></i>
+                        লগইন করুন (Login)
+                    </a>
+                </div>
+                @else
+                <div class="mt-8 flex justify-center">
+                    <a href="{{ route('frontend.user.dashboard') }}" class="inline-flex items-center gap-2 rounded-lg bg-[#006a4e] px-6 py-3 text-base font-bold text-white shadow-lg hover:bg-[#00523b] hover:shadow-xl transition transform hover:-translate-y-0.5">
+                        <i class="fas fa-tachometer-alt text-lg"></i>
+                        আমার ড্যাশবোর্ড (Go to Dashboard)
+                    </a>
+                </div>
+                @endguest
             </div>
 
             <div class="container mx-auto mt-12 max-w-5xl px-4">

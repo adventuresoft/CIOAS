@@ -14,6 +14,10 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        if (auth()->check() && auth()->user()->user_type === 'normal') {
+            return redirect()->route('frontend.user.dashboard');
+        }
+
         $data['staffs'] = Staff::count();
         $data['appointments'] = AppointmentBooking::count();
         $data['hotel_restaurants'] = HotelRestaurant::count();

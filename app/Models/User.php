@@ -102,6 +102,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(Staff::class, 'user_id', 'id');
     }
+    public function peopleProfile()
+    {
+        return $this->hasOne(People::class, 'user_id', 'id');
+    }
     public function familyInfo()
     {
         return $this->hasOne(FamilyInfo::class, 'user_id', 'id');
