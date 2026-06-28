@@ -1,75 +1,36 @@
 @extends('backend.master', ['mainMenu' => 'Inventory', 'subMenu' => 'InventoryQuotationList'])
 
+@push('style')
+@endpush
+
 @section('title', 'Quotation List')
 
 @section('content')
-    <section class="content-header">
+    <section class="content cioas-page pt-4">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Quotation List</h1>
+            <!-- Alert Notifications -->
+            @if(session()->has('success'))
+                <div class="alert alert-success alert-dismissible fade show premium-card p-3 mb-4" role="alert"
+                    style="border-left: 5px solid #10b981;">
+                    <i class="fas fa-check-circle mr-2"></i> {{ session()->get('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Quotation List</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="content">
-        <div class="container-fluid">
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
-            <div class="card card-primary card-outline">
-                <div class="card-header">
-                    <h3 class="card-title">All Quotations</h3>
-                    <div class="card-tools">
-                        <a href="{{ route('inventory.quotation.create') }}" class="btn btn-sm btn-primary">
-                            <i class="fas fa-plus"></i> Add New Quotation
-                        </a>
-                    </div>
+            <div class="cioas-panel">
+                <div class="cioas-panel-header">
+                    <h3 class="cioas-panel-title">
+                        <i class="fas fa-file-invoice-dollar"></i> Quotation List
+                    </h3>
+                    <a href="{{ route('inventory.quotation.create') }}" class="btn btn-material btn-material-primary" style="background-color: #0f766e; border-color: #0f766e; color: white;">
+                        <i class="fas fa-plus-circle"></i> Add New Quotation
+                    </a>
                 </div>
-                <div class="card-body">
+                <div class="cioas-panel-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="quotationsTable">
-                            <thead class="bg-light">
-                                <tr>
-                                    <th>SL</th>
-                                    <th>Quotation No</th>
-                                    <th>Date</th>
-                                    <th>Items Count</th>
-                                    <th>Status</th>
-                                    <th class="text-center">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($quotations as $index => $quotation)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $quotation->quotation_no }}</td>
-                                        <td>{{ $quotation->quotation_date ? $quotation->quotation_date->format('d-M-Y') : '' }}</td>
-                                        <td>{{ $quotation->items->count() }}</td>
-                                        <td>
-                                            <span class="badge badge-info">{{ ucfirst($quotation->workflow_status) }}</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href="{{ route('inventory.quotation.show', $quotation->id) }}" class="btn btn-sm btn-info" title="View Quotation">
-                                                <i class="fas fa-eye"></i> Show
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center text-muted">No Quotations Found</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                        {!! $dataTable->table(['class' => 'table table-custom table-hover w-100']) !!}
                     </div>
                 </div>
             </div>
@@ -77,18 +38,6 @@
     </section>
 @endsection
 
-@push('js')
-<script>
-    $(document).ready(function() {
-        $('#quotationsTable').DataTable({
-            "paging": true,
-            "lengthChange": true,
-            "searching": true,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
-        });
-    });
-</script>
+@push('script')
+    {!! $dataTable->scripts() !!}
 @endpush

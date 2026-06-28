@@ -2,7 +2,7 @@
 @section('title', 'Application Form')
 @section('content')
 
-    <section class="content cioas-page pt-5">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <div class="cioas-shell">
                 <form id="applicationForm" method="POST" enctype="multipart/form-data">
@@ -30,8 +30,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>প্রেরক (Sender) <span class="text-danger">*</span></label>
-                                        <input type="text" name="sender" placeholder="প্রেরক (Sender)"
-                                            class="form-control">
+                                        <input type="text" name="sender" placeholder="প্রেরক (Sender)" class="form-control">
                                         <small class="text-danger error sender_error"></small>
                                     </div>
 
@@ -71,8 +70,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>ইমেইল (Email) <span class="text-danger">*</span></label>
-                                        <input type="text" name="email" placeholder="ইমেইল (Email)"
-                                            class="form-control">
+                                        <input type="text" name="email" placeholder="ইমেইল (Email)" class="form-control">
                                         <small class="text-danger error email_error"></small>
                                     </div>
 
@@ -114,7 +112,8 @@
 
                         <div class="cioas-actions">
                             <a href="{{ route('application-form.index') }}" class="btn btn-default mr-2">Cancel</a>
-                            <button type="submit" class="btn btn-material btn-material-primary">আবেদনটি নিশ্চিত করুন</button>
+                            <button type="submit" class="btn btn-material btn-material-primary">আবেদনটি নিশ্চিত
+                                করুন</button>
                         </div>
                     </div>
                 </form>

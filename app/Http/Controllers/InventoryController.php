@@ -6,6 +6,7 @@ use App\Models\Inventory\InventoryRequisition;
 use App\Models\Inventory\InventoryRequisitionItem;
 use App\DataTables\InventoryRequisitionDataTable;
 use App\DataTables\InventoryRequisitionApproveDataTable;
+use App\DataTables\InventoryStockDataTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -170,30 +171,9 @@ class InventoryController extends Controller
             ->with('success', "Received items for Requisition {$requisition->requisition_no} successfully and added to Stock.");
     }
 
-    public function stock()
+    public function stock(InventoryStockDataTable $dataTable)
     {
-        $receivedItems = \App\Models\Inventory\InventoryWorkOrderItem::whereHas('workOrder', function ($q) {
-                $q->where('workflow_status', 'received');
-            })
-            ->where('receive_quantity', '>', 0)
-            ->with('workOrder')
-            ->get();
-
-        // Group by category, item_name, unit
-        $stockItems = $receivedItems->groupBy(function($item) {
-            return ($item->category ?? '') . '|' . ($item->item_name ?? '') . '|' . ($item->unit ?? '');
-        })->map(function($group) {
-            return (object) [
-                'work_order_nos' => $group->pluck('workOrder.work_order_no')->filter()->unique()->implode(', '),
-                'category' => $group->first()->category,
-                'item_name' => $group->first()->item_name,
-                'unit' => $group->first()->unit,
-                'quantity' => $group->sum('receive_quantity'),
-                'stock_status' => 'In Stock',
-            ];
-        })->values();
-
-        return view('backend.pages.inventory.stock', compact('stockItems'));
+        return $dataTable->render('backend.pages.inventory.stock');
     }
 
     public function distribution(\Illuminate\Http\Request $request)

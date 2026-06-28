@@ -1,0 +1,15 @@
+<div class="table-action d-flex align-items-center justify-content-center">
+    <a href="{{ route('basic-settings.license-subcategory.show', $id) }}" class="btn btn-sm btn-info mr-1" title="Show" data-toggle="tooltip">
+        <i class="fa fa-eye"></i>
+    </a>
+    <a href="{{ route('basic-settings.license-subcategory.edit', $id) }}" class="btn btn-sm btn-primary mr-1" title="Edit" data-toggle="tooltip">
+        <i class="fa fa-edit"></i>
+    </a>
+    <form action="{{ route('basic-settings.license-subcategory.destroy', $id) }}" method="POST" class="deleteData" style="display:inline-block; margin:0;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-sm btn-danger" title="Delete" data-toggle="tooltip">
+            <i class="fa fa-trash"></i>
+        </button>
+    </form>
+</div>

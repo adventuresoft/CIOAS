@@ -1,4 +1,4 @@
-@extends('backend.master', ['mainMenu' => 'Inquiry Form', 'subMenu' => 'InquiryFormList'])
+@extends('backend.master', ['mainMenu' => 'Inquiry', 'subMenu' => 'FormList'])
 @section('title', 'View Inquiry Form')
 
 @push('style')
@@ -440,22 +440,22 @@
         }
 
         .query-report-paper .govt-header {
-            padding: 22px 24px;
-            margin-bottom: 22px;
-            border: 1px solid #dbeafe;
-            border-bottom: 1px solid #dbeafe;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
-            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+            padding: 20px 10px;
+            margin-bottom: 24px;
+            border: none;
+            border-bottom: 2px solid #cbd5e1;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
         }
 
         .query-report-paper .govt-logo-container img {
-            max-height: 72px;
-            padding: 8px;
-            border-radius: 50%;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+            max-height: 75px;
+            padding: 0;
+            border-radius: 0;
+            background: transparent;
+            border: none;
+            box-shadow: none;
         }
 
         .query-report-paper .govt-maintext {
@@ -565,16 +565,21 @@
         }
 
         .section-header-box {
-            background-color: #ffffff;
-            color: #000000;
-            font-weight: 700;
+            background: linear-gradient(90deg, #eef7f5 0%, #ffffff 100%);
+            color: #0f766e;
+            font-weight: 800;
             font-size: 16px;
-            padding: 5px 12px;
-            border: 1px solid #000000;
-            width: 300px;
+            padding: 8px 16px;
+            border-left: 4px solid #0f766e;
+            border-top: none;
+            border-right: none;
+            border-bottom: none;
+            width: 100%;
             max-width: 100%;
-            margin-bottom: 15px;
-            margin-top: 25px;
+            margin-bottom: 18px;
+            margin-top: 30px;
+            letter-spacing: 0.3px;
+            border-radius: 0 6px 6px 0;
         }
 
         .report-info-table {

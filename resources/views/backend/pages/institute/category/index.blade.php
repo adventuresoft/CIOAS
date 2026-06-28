@@ -5,7 +5,7 @@
 @section('content')
 
     <!-- Main content -->
-    <section class="content mt-4">
+    <section class="content cioas-page pt-4">
         <div class="container-fluid">
             <!-- Alert Notifications -->
             @if(session()->has('success'))
@@ -18,20 +18,18 @@
                 </div>
             @endif
             
-            <div class="card cioas-shell">
-                <div class="card-header cioas-panel-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title text-dark font-weight-bold mb-0">
-                        <i class="fas fa-list-ul text-teal mr-2" style="color: #0f766e;"></i> Institute Category List
+            <div class="cioas-panel">
+                <div class="cioas-panel-header">
+                    <h3 class="cioas-panel-title">
+                        <i class="fas fa-list-ul"></i> Institute Category List
                     </h3>
-                    <div>
-                        <a href="{{ route('institute-category.create') }}" class="btn btn-sm" style="background-color: #0f766e; color: white;">
-                            <i class="fas fa-plus-circle mr-1"></i> Create Institute Category
-                        </a>
-                    </div>
+                    <a href="{{ route('institute-category.create') }}" class="btn btn-material btn-material-primary" style="background-color: #0f766e; border-color: #0f766e; color: white;">
+                        <i class="fas fa-plus-circle"></i> Create Institute Category
+                    </a>
                 </div>
-                <div class="card-body p-0">
-                    <div class="p-4">
-                        {!! $dataTable->table(['class' => 'table table-bordered table-hover cioas-datatable w-100']) !!}
+                <div class="cioas-panel-body">
+                    <div class="table-responsive">
+                        {!! $dataTable->table(['class' => 'table table-custom table-hover w-100']) !!}
                     </div>
                 </div>
             </div>

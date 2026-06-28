@@ -1,50 +1,115 @@
 @extends('backend.master', ['mainMenu' => 'Inventory', 'subMenu' => 'InventoryDistribution'])
 
+@push('style')
+    <style>
+        /* Premium Form Styling based on design_tem/form2.png */
+        .distribution-container {
+            padding: 12px 8px;
+        }
+
+        .distribution-container label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .distribution-container .form-control {
+            border-radius: 8px !important;
+            border: 1.5px solid #cbd5e1 !important;
+            height: 42px !important;
+            padding: 8px 14px !important;
+            font-size: 0.9rem !important;
+            background-color: #ffffff !important;
+            color: #1e293b !important;
+            box-shadow: none !important;
+            transition: all 0.15s ease-in-out !important;
+        }
+
+        .distribution-container .form-control:focus {
+            border-color: #0f766e !important;
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15) !important;
+        }
+
+        .distribution-container .form-control[readonly],
+        .distribution-container .form-control[disabled] {
+            background-color: #f1f5f9 !important;
+            color: #64748b !important;
+            border-color: #e2e8f0 !important;
+            cursor: not-allowed;
+        }
+
+        .distribution-container select.form-control {
+            padding: 8px 12px !important;
+        }
+
+        .btn-submit-dist {
+            background-color: #0f766e;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 10px 28px;
+            border-radius: 8px;
+            border: none;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(15, 118, 110, 0.15);
+        }
+
+        .btn-submit-dist:hover {
+            background-color: #0d5e57;
+            color: #ffffff;
+            box-shadow: 0 6px 12px rgba(13, 94, 87, 0.2);
+        }
+        
+        .snapshot-card {
+            background-color: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px 20px;
+        }
+    </style>
+@endpush
+
 @section('title', 'Distribution')
 
 @section('content')
-    <section class="content-header">
+    <section class="content cioas-page pt-4">
         <div class="container-fluid">
-            <div class="row mb-2 align-items-center">
-                <div class="col-sm-7">
-                    <h1 class="mb-1">Distribution</h1>
-                </div>
-                <div class="col-sm-5">
-                    <ol class="breadcrumb float-sm-right mb-0">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('inventory.requisition.index') }}">Inventory</a></li>
-                        <li class="breadcrumb-item active">Distribution</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="content">
-        <div class="container-fluid">
-            @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
+            <!-- Alert Notifications -->
+            @if(session()->has('success'))
+                <div class="alert alert-success alert-dismissible fade show premium-card p-3 mb-4" role="alert"
+                    style="border-left: 5px solid #10b981;">
+                    <i class="fas fa-check-circle mr-2"></i> {{ session()->get('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
             @endif
 
-            @if (session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
+            @if(session()->has('error'))
+                <div class="alert alert-danger alert-dismissible fade show premium-card p-3 mb-4" role="alert"
+                    style="border-left: 5px solid #ef4444;">
+                    <i class="fas fa-exclamation-circle mr-2"></i> {{ session()->get('error') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
             @endif
 
-            <div class="card card-info">
-                <div class="card-header">
-                    <h3 class="card-title" style="font-size:24px; font-weight:600;">Distribution</h3>
+            <div class="cioas-panel">
+                <div class="cioas-panel-header">
+                    <h3 class="cioas-panel-title">
+                        <i class="fas fa-dolly"></i> Stock Distribution
+                    </h3>
                 </div>
-                <div class="card-body">
+                <div class="cioas-panel-body distribution-container">
                     <!-- Requisition Selection -->
                     <form method="GET" action="{{ route('inventory.distribution') }}" class="mb-4">
                         <div class="row align-items-end">
                             <div class="col-md-4">
-                                <label class="font-weight-bold">Select Requisition</label>
-                                <select name="requisition_id" class="form-control" onchange="this.form.submit()">
+                                <label for="requisition_id" class="font-weight-bold">Select Requisition</label>
+                                <select name="requisition_id" id="requisition_id" class="form-control" onchange="this.form.submit()">
                                     <option value="">-- Select Requisition --</option>
                                     @foreach($requisitions as $req)
                                         <option value="{{ $req->id }}" {{ (request('requisition_id') == $req->id) ? 'selected' : '' }}>
@@ -57,28 +122,35 @@
                     </form>
 
                     @if($requisition)
-                        <hr>
-                        <h4 class="mb-3 text-info">Requisition Snapshot</h4>
-                        <div class="row mb-4">
-                            <div class="col-md-3 mb-3">
-                                <label class="font-weight-bold text-secondary text-uppercase" style="font-size: 12px; letter-spacing: 0.5px;">Requisition No</label>
-                                <div style="font-size: 16px; font-weight: 600;">{{ $requisition->requisition_no }}</div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label class="font-weight-bold text-secondary text-uppercase" style="font-size: 12px; letter-spacing: 0.5px;">Name (Applicant)</label>
-                                <div style="font-size: 16px; font-weight: 600;">{{ $requisition->applicant_name ?? '-' }}</div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label class="font-weight-bold text-secondary text-uppercase" style="font-size: 12px; letter-spacing: 0.5px;">Department</label>
-                                <div style="font-size: 16px; font-weight: 600;">{{ $requisition->department_name ?? '-' }}</div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label class="font-weight-bold text-secondary text-uppercase" style="font-size: 12px; letter-spacing: 0.5px;">Date</label>
-                                <div style="font-size: 16px; font-weight: 600;">{{ optional($requisition->application_date)->format('d M Y') ?: '-' }}</div>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label class="font-weight-bold text-secondary text-uppercase" style="font-size: 12px; letter-spacing: 0.5px;">Priority</label>
-                                <div style="font-size: 16px; font-weight: 600;">{{ $requisition->priority_level ?? '-' }}</div>
+                        <div class="snapshot-card mb-4">
+                            <h5 class="mb-3 font-weight-bold" style="color: #0f766e;"><i class="fas fa-info-circle mr-1"></i> Requisition Snapshot</h5>
+                            <div class="row">
+                                <div class="col-md-3 mb-2">
+                                    <label class="text-secondary text-uppercase mb-1" style="font-size: 11px; letter-spacing: 0.5px;">Requisition No</label>
+                                    <div style="font-size: 15px; font-weight: 600; color: #1e293b;">{{ $requisition->requisition_no }}</div>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <label class="text-secondary text-uppercase mb-1" style="font-size: 11px; letter-spacing: 0.5px;">Applicant Name</label>
+                                    <div style="font-size: 15px; font-weight: 600; color: #1e293b;">{{ $requisition->applicant_name ?? '-' }}</div>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <label class="text-secondary text-uppercase mb-1" style="font-size: 11px; letter-spacing: 0.5px;">Department</label>
+                                    <div style="font-size: 15px; font-weight: 600; color: #1e293b;">{{ $requisition->department_name ?? '-' }}</div>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <label class="text-secondary text-uppercase mb-1" style="font-size: 11px; letter-spacing: 0.5px;">Application Date</label>
+                                    <div style="font-size: 15px; font-weight: 600; color: #1e293b;">{{ optional($requisition->application_date)->format('d M Y') ?: '-' }}</div>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <label class="text-secondary text-uppercase mb-1" style="font-size: 11px; letter-spacing: 0.5px;">Priority Level</label>
+                                    <div style="font-size: 15px; font-weight: 600; color: #1e293b;">
+                                        @if(strtolower($requisition->priority_level ?? '') == 'urgent' || strtolower($requisition->priority_level ?? '') == 'emergency')
+                                            <span class="badge badge-danger">{{ $requisition->priority_level }}</span>
+                                        @else
+                                            <span class="badge badge-secondary">{{ $requisition->priority_level }}</span>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -86,17 +158,17 @@
                             @csrf
                             <input type="hidden" name="requisition_id" value="{{ $requisition->id }}">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped mb-0">
+                                <table class="table table-custom table-hover w-100 mb-0">
                                     <thead>
                                         <tr>
-                                            <th>Sl.</th>
+                                            <th style="width: 5%;" class="text-center">Sl.</th>
                                             <th>Category</th>
                                             <th>Item Name</th>
                                             <th>Unit</th>
-                                            <th>Required Qty</th>
-                                            <th>Total Stock Quantity</th>
-                                            <th>Get Qty</th>
-                                            <th>Stock Balance</th>
+                                            <th class="text-center">Required Qty</th>
+                                            <th class="text-center">Total Stock Qty</th>
+                                            <th class="text-center" style="width: 150px;">Get Qty</th>
+                                            <th class="text-center">Stock Balance</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -104,25 +176,29 @@
                                             @php
                                                 $required = (int) ($item->required_quantity ?? 0);
                                                 $stockReceive = (int) ($item->total_stock ?? 0);
-                                                $getQty = 0; // Default or saved value could go here
+                                                $getQty = 0;
                                             @endphp
                                             <tr>
-                                                <td class="align-middle">{{ $key + 1 }}</td>
+                                                <td class="align-middle text-center">{{ $key + 1 }}</td>
                                                 <td class="align-middle">{{ $item->category ?: '-' }}
                                                     <input type="hidden" name="items[{{ $item->id }}][category]" value="{{ $item->category }}">
                                                 </td>
-                                                <td class="align-middle">{{ $item->item_name }}
+                                                <td class="align-middle"><strong>{{ $item->item_name }}</strong>
                                                     <input type="hidden" name="items[{{ $item->id }}][item_name]" value="{{ $item->item_name }}">
                                                 </td>
                                                 <td class="align-middle">{{ $item->unit ?: '-' }}
                                                     <input type="hidden" name="items[{{ $item->id }}][unit]" value="{{ $item->unit }}">
                                                 </td>
-                                                <td class="align-middle required-qty" data-val="{{ $required }}">{{ $required }}</td>
-                                                <td class="align-middle stock-qty" data-val="{{ $stockReceive }}">{{ $stockReceive }}</td>
-                                                <td class="align-middle">
-                                                    <input type="number" name="items[{{ $item->id }}][get_qty]" class="form-control form-control-sm text-right get-qty-input" value="{{ $getQty }}" min="0" step="1" style="width: 100px;">
+                                                <td class="align-middle text-center required-qty" data-val="{{ $required }}">
+                                                    <span class="badge bg-secondary text-dark px-2 py-1">{{ $required }}</span>
                                                 </td>
-                                                <td class="align-middle font-weight-bold balance-cell">
+                                                <td class="align-middle text-center stock-qty" data-val="{{ $stockReceive }}">
+                                                    <span class="badge bg-light text-dark px-2 py-1" style="border: 1px solid #cbd5e1;">{{ $stockReceive }}</span>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <input type="number" name="items[{{ $item->id }}][get_qty]" class="form-control text-right get-qty-input" value="{{ $getQty }}" min="0" step="1" style="width: 100%; height: 35px !important; border-radius: 6px !important; border: 1px solid #cbd5e1 !important;">
+                                                </td>
+                                                <td class="align-middle text-center font-weight-bold balance-cell" style="font-size: 15px;">
                                                     0
                                                 </td>
                                             </tr>
@@ -135,15 +211,15 @@
                                 </table>
                             </div>
 
-                            <div class="text-right mt-3">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-check mr-1"></i> Submit
+                            <div class="d-flex justify-content-end mt-4">
+                                <button type="submit" class="btn btn-submit-dist">
+                                    <i class="fas fa-check-circle mr-2"></i> Submit Distribution
                                 </button>
                             </div>
                         </form>
                     @else
-                        <div class="alert alert-info text-center mt-3">
-                            <i class="fas fa-info-circle mr-1"></i> Please select a Requisition to proceed with distribution.
+                        <div class="alert alert-info text-center mt-3 premium-card p-3" style="border-left: 5px solid #0ea5e9;">
+                            <i class="fas fa-info-circle mr-2"></i> Please select a Requisition to proceed with distribution.
                         </div>
                     @endif
                 </div>
@@ -160,7 +236,8 @@
                 title: 'Success!',
                 text: 'Successfully Distributed from Stock',
                 icon: 'success',
-                confirmButtonText: 'Close'
+                confirmButtonText: 'Close',
+                confirmButtonColor: '#0f766e'
             }).then((result) => {
                 window.location.href = "{{ route('inventory.stock') }}";
             });
@@ -175,9 +252,10 @@
                 text: "Are you sure to Submit to Requisition No : {{ $requisition->requisition_no }}",
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#0f766e',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Okay'
+                confirmButtonText: 'Okay',
+                cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
                     form.submit();

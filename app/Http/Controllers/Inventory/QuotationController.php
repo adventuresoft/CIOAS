@@ -8,13 +8,13 @@ use App\Models\Inventory\InventoryQuotation;
 use App\Models\Inventory\InventoryQuotationItem;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\DataTables\InventoryQuotationDataTable;
 
 class QuotationController extends Controller
 {
-    public function index()
+    public function index(InventoryQuotationDataTable $dataTable)
     {
-        $quotations = InventoryQuotation::with('items')->orderBy('id', 'desc')->get();
-        return view('backend.pages.inventory.quotation.index', compact('quotations'));
+        return $dataTable->render('backend.pages.inventory.quotation.index');
     }
 
     public function create()

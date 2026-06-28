@@ -192,8 +192,10 @@
                             <ul class="nav nav-pills border-0">
                                 <li class="nav-item"><a class="nav-link active" href="#personal"
                                         data-toggle="tab">Personal</a></li>
+                                @if(auth()->user()->user_type !== 'admin')
                                 <li class="nav-item"><a class="nav-link" href="#family" data-toggle="tab">Family</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#address" data-toggle="tab">Address</a></li>
+                                @endif
                                 <li class="nav-item"><a class="nav-link" href="#password" data-toggle="tab">Password</a>
                                 </li>
                             </ul>
@@ -239,123 +241,11 @@
                                                     placeholder="Email" class="form-control" id="email">
                                                 <small class="error email-error text-danger d-block mt-1"></small>
                                             </div>
-                                            <div class="col-md-4">
-                                                <label for="date_of_birth">Date of Birth</label>
-                                                <input type="date" value="{{ $user->people->date_of_birth ?? '' }}"
-                                                    name="date_of_birth" class="form-control" id="date_of_birth">
-                                                <small class="error date_of_birth-error text-danger d-block mt-1"></small>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label for="age">Age</label>
-                                                <input type="text" class="form-control" id="age" readonly
-                                                    placeholder="Auto calculated">
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-4">
-                                            <div class="col-md-3">
-                                                <label for="birth_place">Birth Place</label>
-                                                <select name="birth_place" class="form-control" id="birth_place">
-                                                    <option value="">Select Birth Place</option>
-                                                    @if (count(people_constant_option('birth_place')))
-                                                        @foreach (people_constant_option('birth_place') as $key => $item)
-                                                            <option value="{{ $key }}" {{isset($user->people->birth_place) ? (($user->people->birth_place == $key) ? 'selected' : '') : ''}}>
-                                                                {{ $item }}
-                                                            </option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <small class="error birth_place-error text-danger d-block mt-1"></small>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="gender">Gender</label>
-                                                <select name="gender" class="form-control" id="gender">
-                                                    <option value="">Select Gender</option>
-                                                    @if (count(people_constant_option('gender')))
-                                                        @foreach (people_constant_option('gender') as $key => $item)
-                                                            <option value="{{ $key }}" {{isset($user->people->gender) ? (($user->people->gender == $key) ? 'selected' : '') : ''}}>{{ $item }}
-                                                            </option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <small class="error gender-error text-danger d-block mt-1"></small>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="religion">Religion</label>
-                                                <select name="religion" class="form-control" id="religion">
-                                                    <option value="">Select Religion</option>
-                                                    @if (count($religions))
-                                                        @foreach ($religions as $religion)
-                                                            <option value="{{ $religion->id }}" {{isset($user->people->religion_id) ? (($user->people->religion_id == $religion->id) ? 'selected' : '') : ''}}>{{ $religion->name }}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <small class="error religion-error text-danger d-block mt-1"></small>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="blood_group">Blood Group</label>
-                                                <select name="blood_group" class="form-control" id="blood_group">
-                                                    <option value="">Select Blood Group</option>
-                                                    @if (count(people_constant_option('blood_group')))
-                                                        @foreach (people_constant_option('blood_group') as $key => $item)
-                                                            <option value="{{ $key }}" {{isset($user->people->blood_group) ? (($user->people->blood_group == $key) ? 'selected' : '') : ''}}>
-                                                                {{ $item }}
-                                                            </option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <small class="error blood_group-error text-danger d-block mt-1"></small>
-                                            </div>
-                                        </div>
-
-                                        <div
-                                            class="row mb-4 districts-countries-row {{isset($user->people->birth_place) ? (($user->people->birth_place == 1 || $user->people->birth_place == 2) ? '' : 'd-none') : 'd-none'}}">
-                                            <div
-                                                class="col-md-6 districts {{isset($user->people->birth_place) ? (($user->people->birth_place == 1) ? '' : 'd-none') : 'd-none'}}">
-                                                <label for="district_id">District</label>
-                                                <select name="district_id" class="form-control" id="district_id">
-                                                    @if (count($districts))
-                                                        @foreach ($districts as $district)
-                                                            <option value="{{ $district->id }}" {{isset($user->people->district_id) ? (($user->people->district_id == $district->id) ? 'selected' : '') : ''}}>{{ $district->name }}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <small class="error district_id-error text-danger d-block mt-1"></small>
-                                            </div>
-                                            <div
-                                                class="col-md-6 countries {{isset($user->people->birth_place) ? (($user->people->birth_place == 2) ? '' : 'd-none') : 'd-none'}}">
-                                                <label for="country_id">Country</label>
-                                                <select name="country_id" class="form-control" id="country_id">
-                                                    @if (count($countries))
-                                                        @foreach ($countries as $country)
-                                                            <option value="{{ $country->id }}" {{isset($user->people->country_id) ? (($user->people->country_id == $country->id) ? 'selected' : '') : ''}}>{{ $country->name }}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <small class="error country_id-error text-danger d-block mt-1"></small>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-4">
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <label for="mobile">Mobile No.</label>
                                                 <input type="tel" value="{{ $user->mobile ?? '' }}" name="mobile"
                                                     placeholder="Mobile" class="form-control" id="mobile">
                                                 <small class="error mobile-error text-danger d-block mt-1"></small>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="birth_certificate">Birth Reg. No.</label>
-                                                <input type="text" value="{{ $user->birth_certificate ?? '' }}"
-                                                    name="birth_certificate" placeholder="Birth Reg. No."
-                                                    class="form-control" id="birth_certificate">
-                                                <small
-                                                    class="error birth_certificate-error text-danger d-block mt-1"></small>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="nid">NID No.</label>
-                                                <input type="text" value="{{ $user->nid ?? '' }}" name="nid"
-                                                    placeholder="NID No." class="form-control" id="nid">
-                                                <span class="error nid-error text-danger d-block mt-1"></span>
                                             </div>
                                         </div>
 
@@ -382,55 +272,24 @@
 
 
                                     <!-- /.tab-pane -->
+                                    @if(auth()->user()->user_type !== 'admin')
                                     <div class="tab-pane" id="family">
                                         <div class="row mb-4">
-                                            <div class="col-md-6">
-                                                <label for="family_type_id">Family Member Type <span
-                                                        class="text-danger">*</span></label>
-                                                <select name="family_type_id" required class="form-control"
-                                                    id="family_type_id">
-                                                    <option value="">Select Member Type</option>
-                                                    @if (count($familyTypes))
-                                                        @foreach ($familyTypes as $familyType)
-                                                            <option value="{{$familyType->id}}" {{$user->familyInfo ? ($user->familyInfo->family_type_id == $familyType->id ? 'selected' : '') : ''}}>{{$familyType->en_name}}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <small class="text-danger error family_type_id_error d-block mt-1"></small>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="family_category_id">Family Category <span
-                                                        class="text-danger">*</span></label>
-                                                <select required name="family_category_id" class="form-control"
-                                                    id="family_category_id">
-                                                    <option value="">Select Family Category</option>
-                                                    @if (count($familyCategories))
-                                                        @foreach ($familyCategories as $familyCategory)
-                                                            <option value="{{$familyCategory->id}}" {{$user->familyInfo ? ($user->familyInfo->family_type_id == $familyCategory->id ? 'selected' : '') : ''}}>{{$familyCategory->en_name}}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <small
-                                                    class="text-danger error family_category_id_error d-block mt-1"></small>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-4">
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label for="fatherName">Father's Name</label>
                                                 <input type="text" name="father_name"
                                                     value="{{$user->familyInfo->father_name ?? ''}}" class="form-control"
                                                     id="fatherName" placeholder="Father's Name">
                                                 <small class="text-danger error father_name_error d-block mt-1"></small>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label for="father_name_bn">Father's Name (Bangla)</label>
                                                 <input type="text" name="father_name_bn"
                                                     value="{{$user->familyInfo->father_name_bn ?? ''}}" class="form-control"
                                                     id="father_name_bn" placeholder="Father's Name in Bangla">
                                                 <small class="text-danger error father_name_bn_error d-block mt-1"></small>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label for="fathersLiveStatus">Father's Live Status</label>
                                                 <select name="father_live_status" class="form-control"
                                                     id="fathersLiveStatus">
@@ -438,37 +297,33 @@
                                                         <option value="{{$key}}" {{$user->familyInfo ? ($user->familyInfo->father_live_status == $key ? 'selected' : '') : ''}}>{{$live_status}}</option>
                                                     @endforeach
                                                 </select>
-                                                <small
-                                                    class="text-danger error father_live_status_error d-block mt-1"></small>
+                                                <small class="text-danger error father_live_status_error d-block mt-1"></small>
                                             </div>
-                                        </div>
-
-                                        <div class="row mb-4">
-                                            <div class="col-md-6">
+                                            <div class="col-md-3">
                                                 <label for="fatherNID">Father's ID</label>
                                                 <input type="text" name="father_nid" class="form-control" id="fatherNID"
                                                     value="{{$user->familyInfo->father_nid ?? ''}}"
                                                     placeholder="Father's NID">
                                                 <small class="text-danger error father_nid_error d-block mt-1"></small>
                                             </div>
-                                            <div class="col-md-6">
+                                        </div>
+
+                                        <div class="row mb-4">
+                                            <div class="col-md-3">
                                                 <label for="motherName">Mother's Name</label>
                                                 <input type="text" class="form-control" name="mother_name" id="motherName"
                                                     value="{{$user->familyInfo->mother_name ?? ''}}"
                                                     placeholder="Mother's Name">
                                                 <small class="text-danger error mother_name_error d-block mt-1"></small>
                                             </div>
-                                        </div>
-
-                                        <div class="row mb-4">
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label for="mother_name_bn">Mother's Name (Bangla)</label>
                                                 <input type="text" class="form-control" name="mother_name_bn"
                                                     id="mother_name_bn" value="{{$user->familyInfo->mother_name_bn ?? ''}}"
                                                     placeholder="Mother's Name in Bangla">
                                                 <small class="text-danger error mother_name_bn_error d-block mt-1"></small>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label for="motherLiveStatus">Mother's Live Status</label>
                                                 <select name="mother_live_status" class="form-control"
                                                     id="motherLiveStatus">
@@ -476,10 +331,9 @@
                                                         <option value="{{$key}}" {{$user->familyInfo ? ($user->familyInfo->mother_live_status == $key ? 'selected' : '') : ''}}>{{$live_status}}</option>
                                                     @endforeach
                                                 </select>
-                                                <small
-                                                    class="text-danger error mother_live_status_error d-block mt-1"></small>
+                                                <small class="text-danger error mother_live_status_error d-block mt-1"></small>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label for="motherNID">Mother's ID</label>
                                                 <input type="text" name="mother_nid" class="form-control" id="motherNID"
                                                     value="{{$user->familyInfo->mother_nid ?? ''}}"
@@ -672,134 +526,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- Same as Present Checkbox -->
-                                        <div class="custom-control custom-checkbox mb-4 p-3 rounded"
-                                            style="background-color: #f8fafc; border: 1px solid #e2e8f0; width: fit-content; cursor: pointer;">
-                                            <input type="checkbox" class="custom-control-input" id="same_as_present"
-                                                style="cursor: pointer;">
-                                            <label class="custom-control-label font-weight-bold text-dark mb-0"
-                                                for="same_as_present" style="cursor: pointer; padding-left: 8px;">Same as
-                                                Present Address (বর্তমান ঠিকানার মতো)</label>
-                                        </div>
 
-                                        <!-- Permanent Address Sub-Section -->
-                                        <div class="mb-4 pb-2 border-bottom"
-                                            style="border-bottom: 2px solid #e6f3ef !important;">
-                                            <h6 class="font-weight-bold" style="color: #006a4e;"><i
-                                                    class="fas fa-map-marker-alt mr-2"></i> Permanent Address (স্থায়ী
-                                                ঠিকানা)</h6>
-                                        </div>
-
-                                        <div class="row mb-4">
-                                            <div class="col-md-4">
-                                                <label for="permanent_division_id">Division</label>
-                                                <select name="permanent_division_id" class="form-control select2 select2bs4"
-                                                    id="permanent_division_id">
-                                                    <option value="">Select Division</option>
-                                                    @if ($divisions)
-                                                        @foreach ($divisions as $division)
-                                                            <option value="{{ $division->id }}" {{$user->addressInfo && $user->addressInfo->permanent_division_id == $division->id ? 'selected' : ''}}>{{ $division->name }}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <small class="text-danger error permanent_division_id_error"></small>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="permanent_district_id">District</label>
-                                                <select name="permanent_district_id" class="form-control select2 select2bs4"
-                                                    id="permanent_district_id">
-                                                    <option value="">Select District</option>
-                                                    @if ($districts)
-                                                        @foreach ($districts as $district)
-                                                            <option value="{{ $district->id }}" {{$user->addressInfo && $user->addressInfo->permanent_district_id == $district->id ? 'selected' : ''}}>{{ $district->name }}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <small class="text-danger error permanent_district_id_error"></small>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="permanent_thana_id">Thana</label>
-                                                <select name="permanent_thana_id" class="form-control select2 select2bs4"
-                                                    id="permanent_thana_id">
-                                                    <option value="">Select Thana</option>
-                                                    @if ($thanas)
-                                                        @foreach ($thanas as $thana)
-                                                            <option value="{{ $thana->id }}" {{$user->addressInfo && $user->addressInfo->permanent_thana_id == $thana->id ? 'selected' : ''}}>{{ $thana->name }}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <small class="text-danger error permanent_thana_id_error"></small>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-4">
-                                            <div class="col-md-4">
-                                                <label for="permanent_union_id">Union</label>
-                                                <select name="permanent_union_id" class="form-control select2 select2bs4"
-                                                    id="permanent_union_id">
-                                                    <option value="">Select Union</option>
-                                                    @if ($unions)
-                                                        @foreach ($unions as $union)
-                                                            <option value="{{ $union->id }}" {{$user->addressInfo && $user->addressInfo->permanent_union_id == $union->id ? 'selected' : ''}}>{{ $union->name }}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <small class="text-danger error permanent_union_id_error"></small>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="permanent_ward_id">Ward</label>
-                                                <select name="permanent_ward_id" class="form-control select2 select2bs4"
-                                                    id="permanent_ward_id">
-                                                    <option value="">Select Ward</option>
-                                                    @if ($wards)
-                                                        @foreach ($wards as $ward)
-                                                            <option value="{{$ward->id}}" {{$user->addressInfo && $user->addressInfo->permanent_ward_id == $ward->id ? 'selected' : ''}}>{{$ward->en_ward_no}}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <small class="text-danger error permanent_ward_id_error"></small>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="permanent_village_id">Village</label>
-                                                <select name="permanent_village_id" class="form-control select2 select2bs4"
-                                                    id="permanent_village_id">
-                                                    <option value="">Select Village</option>
-                                                    @if ($villages)
-                                                        @foreach ($villages as $village)
-                                                            <option value="{{$village->id}}" {{$user->addressInfo && $user->addressInfo->permanent_village_id == $village->id ? 'selected' : ''}}>{{$village->en_name}}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <small class="text-danger error permanent_village_id_error"></small>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-4">
-                                            <div class="col-md-4">
-                                                <label for="permanent_road">Road</label>
-                                                <input type="text" name="permanent_road" class="form-control"
-                                                    id="permanent_road"
-                                                    value="{{ $user->addressInfo->permanent_road ?? '' }}"
-                                                    placeholder="Permanent Road">
-                                                <small class="text-danger error permanent_road_error"></small>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="permanent_house">House</label>
-                                                <input type="text" name="permanent_house" class="form-control"
-                                                    id="permanent_house"
-                                                    value="{{ $user->addressInfo->permanent_house ?? '' }}"
-                                                    placeholder="Permanent House">
-                                                <small class="text-danger error permanent_house_error"></small>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="permanent_flat">Flat</label>
-                                                <input type="text" name="permanent_flat" class="form-control"
-                                                    id="permanent_flat"
-                                                    value="{{ $user->addressInfo->permanent_flat ?? '' }}"
-                                                    placeholder="Permanent Flat">
-                                                <small class="text-danger error permanent_flat_error"></small>
-                                            </div>
-                                        </div>
 
                                         <div class="d-flex justify-content-end mt-4">
                                             <button type="submit" class="btn btn-submit-profile"><i
@@ -808,6 +535,7 @@
                                     </div>
 
                                     <!-- /.tab-pane -->
+                                    @endif
                                     <div class="tab-pane" id="password">
                                         <div class="mb-4 pb-2 border-bottom"
                                             style="border-bottom: 2px solid #e6f3ef !important;">

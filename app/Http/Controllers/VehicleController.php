@@ -8,7 +8,7 @@ use App\Models\VehicleFee;
 use App\Models\Organization\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Validator;
+use App\DataTables\VehicleDataTable;
 
 class VehicleController extends Controller
 {
@@ -17,10 +17,9 @@ class VehicleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(VehicleDataTable $dataTable)
     {
-        $data['vehicles'] = Vehicle::latest()->get();
-        return view('backend.pages.vehicle.index', $data);
+        return $dataTable->render('backend.pages.vehicle.index');
     }
 
     /**

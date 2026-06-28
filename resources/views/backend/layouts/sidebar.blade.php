@@ -110,12 +110,12 @@
                     {{-- Institute Settings --}}
                     <li
                         class="nav-item
-                                                                                                                                                                                            @if (
-                                                                                                                                                                                                $subMenu == 'InstituteCreate' ||
-                                                                                                                                                                                                $subMenu == 'InstituteType' ||
-                                                                                                                                                                                                $subMenu == 'InstituteCategory' ||
-                                                                                                                                                                                                $subMenu == 'InstituteList'
-                                                                                                                                                                                            ) menu-open @endif">
+                                                                                                                                                                                                @if (
+                                                                                                                                                                                                    $subMenu == 'InstituteCreate' ||
+                                                                                                                                                                                                    $subMenu == 'InstituteType' ||
+                                                                                                                                                                                                    $subMenu == 'InstituteCategory' ||
+                                                                                                                                                                                                    $subMenu == 'InstituteList'
+                                                                                                                                                                                                ) menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'Institute') active @endif ">
                             <i class="nav-icon fas fa-university"></i>
                             <p>
@@ -342,8 +342,7 @@
 
                 {{-- Vehicle Info --}}
                 @if (has_module_access('vehicle') || has_module_access('vehicles'))
-                    <li
-                        class="nav-item @if (in_array($subMenu, ['VehicleCreate', 'VehicleList', 'VehicleShow'])) menu-open @endif">
+                    <li class="nav-item @if ($mainMenu == 'Vehicle') menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'Vehicle') active @endif">
                             <i class="nav-icon fas fa-car"></i>
                             <p>
@@ -392,8 +391,8 @@
                 @if (has_module_access('license') || has_module_access('licenses'))
                     <li
                         class="nav-item
-                                                                                                                                                                                      @if ($subMenu == 'LicenseCreate' || $subMenu == 'LicenseList' || $subMenu == 'LicenseShow' || $subMenu == 'LicenseEdit') menu-open @endif
-                                                                                                                                                                                      ">
+                                                                                                                                                                                          @if ($subMenu == 'LicenseCreate' || $subMenu == 'LicenseList' || $subMenu == 'LicenseShow' || $subMenu == 'LicenseEdit') menu-open @endif
+                                                                                                                                                                                          ">
                         <a href="#" class="nav-link @if ($mainMenu == 'license') active @endif ">
                             <i class="nav-icon fas fa-id-card"></i>
                             <p>

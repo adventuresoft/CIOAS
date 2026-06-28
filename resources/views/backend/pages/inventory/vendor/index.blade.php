@@ -1,80 +1,43 @@
 @extends('backend.master', ['mainMenu' => 'Inventory', 'subMenu' => 'InventoryVendorList'])
 
+@push('style')
+@endpush
+
 @section('title', 'Vendor List')
 
 @section('content')
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Vendor List</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Vendor List</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-</section>
+    <section class="content cioas-page pt-4">
+        <div class="container-fluid">
+            <!-- Alert Notifications -->
+            @if(session()->has('success'))
+                <div class="alert alert-success alert-dismissible fade show premium-card p-3 mb-4" role="alert"
+                    style="border-left: 5px solid #10b981;">
+                    <i class="fas fa-check-circle mr-2"></i> {{ session()->get('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
 
-<section class="content">
-    <div class="container-fluid">
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        <div class="card card-default">
-            <div class="card-header">
-                <h3 class="card-title">Vendors</h3>
-                <div class="card-tools">
-                    <a href="{{ route('inventory.vendors.create') }}" class="btn btn-primary btn-sm">
-                        <i class="fas fa-plus"></i> Create New Vendor
+            <div class="cioas-panel">
+                <div class="cioas-panel-header">
+                    <h3 class="cioas-panel-title">
+                        <i class="fas fa-truck-loading"></i> Vendor List
+                    </h3>
+                    <a href="{{ route('inventory.vendors.create') }}" class="btn btn-material btn-material-primary" style="background-color: #0f766e; border-color: #0f766e; color: white;">
+                        <i class="fas fa-plus-circle"></i> Create New Vendor
                     </a>
                 </div>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th style="width: 1%">Sl.</th>
-                                <th>Name</th>
-                                <th>Contact Number</th>
-                                <th>Email</th>
-                                <th>Trade License</th>
-                                <th>Address</th>
-                                <th style="width: 1%; white-space: nowrap;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($vendors as $key => $vendor)
-                            <tr>
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{ $vendor->name }}</td>
-                                <td>{{ $vendor->contact_number }}</td>
-                                <td>{{ $vendor->email }}</td>
-                                <td>{{ $vendor->trade_license }}</td>
-                                <td>{{ Str::limit($vendor->address, 50) }}</td>
-                                <td style="white-space: nowrap;">
-                                    <a href="{{ route('inventory.vendors.show', $vendor->id) }}" class="btn btn-info btn-sm">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="7" class="text-center text-muted">No vendors found.</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                <div class="cioas-panel-body">
+                    <div class="table-responsive">
+                        {!! $dataTable->table(['class' => 'table table-custom table-hover w-100']) !!}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 @endsection
+
+@push('script')
+    {!! $dataTable->scripts() !!}
+@endpush

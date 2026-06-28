@@ -21,15 +21,17 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 3px double #0f766e;
-        padding-bottom: 12px;
+        border-bottom: 4px solid;
+        border-image: linear-gradient(to right, #cbd5e1, #94a3b8, #0f766e, #94a3b8, #cbd5e1) 1;
+        padding-bottom: 16px;
         margin-bottom: 24px;
     }
 
     .pad-header img {
-        height: 70px;
-        width: 70px;
+        height: 75px;
+        width: 75px;
         object-fit: contain;
+        filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.08));
     }
 
     .pad-header-center {
@@ -39,17 +41,19 @@
 
     .pad-header-center h4 {
         margin: 0;
-        font-size: 16px;
+        font-size: 14px;
         color: #475569;
-        font-weight: 600;
-        letter-spacing: 0.5px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
     }
 
     .pad-header-center h2 {
-        margin: 4px 0;
-        font-size: 17px;
+        margin: 6px 0;
+        font-size: 21px;
         color: #0f766e;
-        font-weight: 700;
+        font-weight: 800;
+        letter-spacing: 0.5px;
     }
 
     .pad-header-center h3 {
@@ -63,6 +67,8 @@
         margin: 4px 0 0;
         font-size: 13px;
         color: #64748b;
+        font-weight: 600;
+        letter-spacing: 0.3px;
     }
 
     .report-title-container {
@@ -191,28 +197,31 @@
 </style>
 @endpush
 
-<div class="container p-0">
+<div class="container p-2">
     <div class="print-pad-container">
+        
+        @php
+            $institute = auth()->user()->institute ?? null;
+            $leftLogo = ($institute && $institute->left_image) ? asset($institute->left_image) : asset('images/govt-bd-logo.png');
+            $rightLogo = ($institute && $institute->right_image) ? asset($institute->right_image) : asset('images/dhaka.png');
+            $dcName = $institute->type->description ?? 'জেলা প্রশাসকের কার্যালয়, ঢাকা';
+            $districtName = $institute->district->bn_name ?? 'ঢাকা';
+        @endphp
         
         <!-- Pad Header (Letterhead) -->
         <div class="pad-header">
             <div class="logo-left">
-                <img src="{{ asset('images/govt-bd-logo.png') }}" alt="Government Seal">
+                <img src="{{ $leftLogo }}" alt="Government Seal">
             </div>
             
             <div class="pad-header-center">
                 <h4>গণপ্রজাতন্ত্রী বাংলাদেশ সরকার</h4>
-                @php
-                    $institute = auth()->user()->institute ?? null;
-                    $dcName = $institute->type->description ?? 'জেলা প্রশাসকের কার্যালয়, ঢাকা';
-                    $districtName = $institute->district->bn_name ?? 'ঢাকা';
-                @endphp
                 <h2>{{ $dcName }}, {{ $districtName }}</h2>
                 <p>জেলা: {{ $districtName }}, বাংলাদেশ।</p>
             </div>
 
             <div class="logo-right">
-                <img src="{{ asset('images/dhaka.png') }}" alt="Union Emblem">
+                <img src="{{ $rightLogo }}" alt="Union Emblem">
             </div>
         </div>
 

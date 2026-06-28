@@ -7,16 +7,13 @@ use App\Models\Inventory\InventoryWorkOrder;
 use App\Models\Inventory\InventoryPurchaseOrder;
 use App\Models\Inventory\InventoryWorkOrderItem;
 use Illuminate\Support\Facades\DB;
+use App\DataTables\InventoryPurchaseOrderDataTable;
 
 class PurchaseOrderController extends Controller
 {
-    public function index()
+    public function index(InventoryPurchaseOrderDataTable $dataTable)
     {
-        $workOrders = InventoryWorkOrder::with('vendor', 'items', 'purchaseOrder')
-                        ->whereNotNull('inventory_vendor_id')
-                        ->latest('updated_at')
-                        ->get();
-        return view('backend.pages.inventory.purchase_order.index', compact('workOrders'));
+        return $dataTable->render('backend.pages.inventory.purchase_order.index');
     }
 
     public function create($id)

@@ -5,6 +5,10 @@
     <a href="{{ route('basic-settings.hotel-category.edit', $id) }}" class="btn btn-sm btn-primary mr-1" title="Edit" data-toggle="tooltip">
         <i class="fa fa-edit"></i>
     </a>
+    <a href="{{ route('basic-settings.hotel-subcategory.index', $id) }}" class="btn btn-sm btn-warning mr-1"
+        title="Subcategories" data-toggle="tooltip">
+        <i class="fa fa-list"></i>
+    </a>
     <form action="{{ route('basic-settings.hotel-category.destroy', $id) }}" method="POST" class="deleteData" style="display:inline-block; margin:0;">
         @csrf
         @method('DELETE')

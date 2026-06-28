@@ -1,107 +1,75 @@
-@extends('backend.master')
-@section('title', 'Vehicle Repairing')
-@push('css')
-    <!-- DataTables -->
-    <link rel="stylesheet" href="{{ asset('backend/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+@extends('backend.master', ['mainMenu' => 'Vehicle', 'subMenu' => 'VehicleRepairingList'])
+
+@push('style')
 @endpush
+
+@section('title', 'Vehicle Repairing')
+
 @section('content')
-
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section class="content cioas-page pt-4">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Vehicle Repairing</h1>
+            <!-- Alert Notifications -->
+            @if(session()->has('success'))
+                <div class="alert alert-success alert-dismissible fade show premium-card p-3 mb-4" role="alert"
+                    style="border-left: 5px solid #10b981;">
+                    <i class="fas fa-check-circle mr-2"></i> {{ session()->get('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Vehicle Repairing</li>
-                    </ol>
+            @endif
+            @if(session()->has('error'))
+                <div class="alert alert-danger alert-dismissible fade show premium-card p-3 mb-4" role="alert"
+                    style="border-left: 5px solid #ef4444;">
+                    <i class="fas fa-exclamation-circle mr-2"></i> {{ session()->get('error') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
+            @endif
 
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h3 class="card-title m-0">Vehicle Repairing List</h3>
-                            <div class="ml-auto">
-                                <a href="{{ route('vehicle.repairing.create') }}" class="btn btn-primary btn-sm"><i
-                                        class="fas fa-plus"></i> Add New</a>
-                            </div>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-                            <table id="example1" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Sl</th>
-                                        <th>Registration No.</th>
-                                        <th>Repair Date</th>
-                                        <th>Workshop Name</th>
-                                        <th>Cost</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($repairings as $key => $item)
-                                        <tr>
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>{{ $item->vehicle->registration_no ?? 'N/A' }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($item->repair_date)->format('d M, Y') }}</td>
-                                            <td>{{ $item->workshop_name }}</td>
-                                            <td>{{ number_format($item->cost, 2) }}</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $item->id }}">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.card-body -->
+            <div class="cioas-panel">
+                <div class="cioas-panel-header">
+                    <h3 class="cioas-panel-title">
+                        <i class="fas fa-tools"></i> Vehicle Repairing List
+                    </h3>
+                    <a href="{{ route('vehicle.repairing.create') }}" class="btn btn-material btn-material-primary" style="background-color: #0f766e; border-color: #0f766e; color: white;">
+                        <i class="fas fa-plus-circle"></i> Add New Repairing
+                    </a>
+                </div>
+                <div class="cioas-panel-body">
+                    <div class="table-responsive">
+                        {!! $dataTable->table(['class' => 'table table-custom table-hover w-100']) !!}
                     </div>
-                    <!-- /.card -->
                 </div>
-                <!-- /.col -->
             </div>
-            <!-- /.row -->
         </div>
-        <!-- /.container-fluid -->
     </section>
-    <!-- /.content -->
-
 @endsection
 
-@push('js')
-    <!-- DataTables  & Plugins -->
-    <script src="{{ asset('backend/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('backend/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('backend/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('backend/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('backend/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('backend/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-
+@push('script')
+    {!! $dataTable->scripts() !!}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        $(function() {
-            $("#example1").DataTable({
-                "responsive": true,
-                "lengthChange": true,
-                "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            
-            // Delete Logic can be added here if needed
+        $(document).ready(function () {
+            $(document).on('submit', '.delete-form-confirm', function (e) {
+                e.preventDefault();
+                var form = this;
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to delete this repairing record permanently?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc2626',
+                    cancelButtonColor: '#475569',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
         });
     </script>
 @endpush

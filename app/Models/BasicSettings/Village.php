@@ -38,4 +38,14 @@ class Village extends Model
         return $this->belongsTo(Union::class, 'union_id', 'id');
     }
 
+    public function pourashava()
+    {
+        return $this->belongsTo(\App\Models\Pourashava::class, 'pourashava_id', 'id');
+    }
+
+    public function cityCorporation()
+    {
+        return $this->belongsTo(\App\Models\CityCorporation::class, 'city_id', 'id');
+    }
+
 }

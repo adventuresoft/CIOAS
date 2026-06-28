@@ -213,18 +213,16 @@
         @endif
 
         <!-- Active Employee Registry -->
-        <div class="card cioas-shell">
-            <div class="card-header cioas-panel-header d-flex justify-content-between align-items-center">
-                <h3 class="card-title text-dark font-weight-bold mb-0">
-                    <i class="fas fa-users text-success mr-2"></i> Employee Directory
+        <div class="cioas-panel">
+            <div class="cioas-panel-header">
+                <h3 class="cioas-panel-title">
+                    <i class="fas fa-users"></i> Employee Directory
                 </h3>
-                <div>
-                    <a href="{{ route('user.create') }}" class="btn btn-success btn-sm">
-                        <i class="fas fa-plus"></i> Add New Employee
-                    </a>
-                </div>
+                <a href="{{ route('user.create') }}" class="btn btn-material btn-material-primary" style="background-color: #0f766e; border-color: #0f766e; color: white;">
+                    <i class="fas fa-plus-circle"></i> Add New Employee
+                </a>
             </div>
-            <div class="card-body">
+            <div class="cioas-panel-body">
                 <div class="row mb-4">
                     <div class="col-md-3">
                         <label class="text-secondary" style="font-size: 0.85rem; font-weight: 600;">Filter by Department</label>

@@ -10,10 +10,9 @@ use Illuminate\Support\Facades\Auth;
 
 class LicenseSubCategoryController extends Controller
 {
-    public function index($category_id)
+    public function index(\App\DataTables\BasicSettings\LicenseSubCategoryDataTable $dataTable, $category_id)
     {
-        $subcategories = LicenseSubCategory::with('category')->where('license_category_id', $category_id)->latest()->get();
-        return view('backend.pages.license.subcategory.index', compact('subcategories', 'category_id'));
+        return $dataTable->with('category_id', $category_id)->render('backend.pages.license.subcategory.index', compact('category_id'));
     }
 
     public function create($category_id)

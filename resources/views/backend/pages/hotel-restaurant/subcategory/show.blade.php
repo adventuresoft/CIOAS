@@ -1,111 +1,59 @@
-@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'HotelSubcategory'])
+@extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'HotelCategory'])
 @push('style')
 @endpush
-@section('title', 'Edit Family Subcategory')
+@section('title', 'Hotel Subcategory Details')
 @section('content')
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Hotel Subcategory</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        {{-- {{route('death.index')}} --}}
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.hotel-subcategory.index', $subcategory->hotel_category_id) }}">Hotel Subcategory</a></li>
-                        <li class="breadcrumb-item active">Create</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
-
     <!-- Main content -->
-    <section class="content">
+    <section class="content cioas-page pt-4">
         <div class="container-fluid">
-
-            <!-- Main row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Edit Hotel Subcategory Info</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form class="form-horizontal" id="familySubcateogryEditForm" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-                            @method('put')
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <label for="family_category_id" class="col-sm-2 col-form-label">Hotel Category <span
-                                            class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
-                                    <div class="col-sm-9">
-                                        <select required class="form-control select2" name="hotel_category_id"
-                                            id="family_category_id" disabled>
-                                            <option value="">Hotel Category</option>
-                                            @if ($categories)
-                                                @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}"
-                                                        @if ($category->id == $subcategory->hotel_category_id) selected @endif>
-                                                        {{ $category->en_name }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        <small class="text-danger error family_category_id_error"></small>
-
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="en_name" class="col-sm-2 col-form-label">Subcategory <span
-                                            class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="en_name" value="{{ $subcategory->en_name }}"
-                                            placeholder="Hotel Sub-Category" class="form-control" id="en_name" disabled>
-                                        <small class="text-danger error en_name_error"></small>
-
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="bn_name" class="col-sm-2 col-form-label">Subcategory Bangla <span
-                                            class="text-danger" data-toggle="tooltip" title="Required">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="bn_name" disabled value="{{ $subcategory->bn_name }}"
-                                            placeholder="Hotel Sub-Category Bangla" disabled class="form-control"
-                                            id="bn_name">
-                                        <small class="text-danger error bn_name_error"></small>
-
-                                    </div>
-                                </div>
-
-
-                            </div>
-                            <!-- /.card-body -->
-
-                            <div class="card-footer">
-                                <a href="{{ route('basic-settings.hotel-subcategory.index', $subcategory->hotel_category_id) }}" class="btn btn-default">Back</a>
-                            </div>
-                            <!-- /.card-footer -->
-                        </form>
+            <div class="cioas-shell">
+                <div class="cioas-panel">
+                    <div class="cioas-panel-header">
+                        <h3 class="cioas-panel-title">
+                            <i class="fas fa-eye"></i> Hotel Subcategory Details
+                        </h3>
                     </div>
-                    <!-- /.card -->
+                    <div class="cioas-panel-body">
+                        @if ($subcategory)
+                            <table class="table table-bordered table-striped cioas-table">
+                                <tbody>
+                                    <tr>
+                                        <th style="width: 30%;">English Name</th>
+                                        <td>{{ $subcategory->en_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Bengali Name</th>
+                                        <td>{{ $subcategory->bn_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Hotel Category</th>
+                                        <td>{{ $subcategory->category->en_name ?? '' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Created At</th>
+                                        <td>{{ $subcategory->created_at ? $subcategory->created_at->format('d M, Y h:i A') : '—' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        @else
+                            <div class="alert alert-danger">
+                                Hotel Subcategory information not found.
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="cioas-panel mt-3">
+                    <div class="cioas-panel-body d-flex justify-content-end align-items-center">
+                        <a href="{{ route('basic-settings.hotel-subcategory.index', $subcategory->hotel_category_id) }}" class="btn btn-secondary btn-material">
+                            <i class="fas fa-arrow-left"></i> Back to List
+                        </a>
+                    </div>
                 </div>
             </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
-
-    {{-- {{ route('death.store') }} --}}
 @endsection
-@push('script')
-    <script>
-        $(document).ready(function() {
-            $(".select2").select2();
-        })
-    </script>
-@endpush
 
+@push('script')
+@endpush

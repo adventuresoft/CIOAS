@@ -7,14 +7,13 @@ use App\Models\Vehicle;
 use App\Models\VehicleRepairing;
 use Illuminate\Support\Facades\Validator;
 
+use App\DataTables\VehicleRepairingDataTable;
+
 class VehicleRepairingController extends Controller
 {
-    public function index()
+    public function index(VehicleRepairingDataTable $dataTable)
     {
-        $data['mainMenu'] = 'Vehicle';
-        $data['subMenu'] = 'VehicleRepairingList';
-        $data['repairings'] = VehicleRepairing::with('vehicle')->orderBy('id', 'desc')->get();
-        return view('backend.pages.vehicle_repairing.index', $data);
+        return $dataTable->render('backend.pages.vehicle_repairing.index');
     }
 
     public function create()
@@ -77,6 +76,19 @@ class VehicleRepairingController extends Controller
                 'message' => 'Something went wrong!',
                 'error' => $e->getMessage()
             ], 500);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $repairing = VehicleRepairing::findOrFail($id);
+            if ($repairing->delete()) {
+                return redirect()->route('vehicle.repairing.index')->with('success', 'Vehicle Repairing deleted successfully!');
+            }
+            return redirect()->route('vehicle.repairing.index')->with('error', 'Failed to delete record!');
+        } catch (\Exception $e) {
+            return redirect()->route('vehicle.repairing.index')->with('error', 'Something went wrong!');
         }
     }
 }

@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Inventory\InventoryVendor;
+use App\DataTables\InventoryVendorDataTable;
+use App\DataTables\InventoryVendorAssignedDataTable;
 
 class InventoryVendorController extends Controller
 {
-    public function index()
+    public function index(InventoryVendorDataTable $dataTable)
     {
-        $vendors = InventoryVendor::latest()->get();
-        return view('backend.pages.inventory.vendor.index', compact('vendors'));
+        return $dataTable->render('backend.pages.inventory.vendor.index');
     }
 
     public function create()
@@ -45,20 +46,16 @@ class InventoryVendorController extends Controller
         return view('backend.pages.inventory.vendor.show', compact('vendor'));
     }
 
-    public function assigned()
+    public function assigned(InventoryVendorAssignedDataTable $dataTable)
     {
-        $workOrders = \App\Models\Inventory\InventoryWorkOrder::with('vendor', 'items')
-                        ->whereNotNull('inventory_vendor_id')
-                        ->latest('updated_at')
-                        ->get();
-        return view('backend.pages.inventory.vendor.assigned', compact('workOrders'));
+        return $dataTable->render('backend.pages.inventory.vendor.assigned');
     }
 
     public function assignedShow($id)
     {
         $workOrder = \App\Models\Inventory\InventoryWorkOrder::with(['vendor', 'items'])->findOrFail($id);
         $items = $workOrder->items;
-        
+
         return view('backend.pages.inventory.vendor.assigned_show', compact('workOrder', 'items'));
     }
 }

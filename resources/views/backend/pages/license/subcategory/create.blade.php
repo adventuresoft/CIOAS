@@ -1,97 +1,77 @@
 @extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'LicenseCategory'])
+@push('style')
+@endpush
 @section('title', 'License Subcategory Create')
-
 @section('content')
-    <section class="content-header">
+    <!-- Main content -->
+    <section class="content cioas-page pt-4">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>License Subcategory</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a
-                                href="{{ route('basic-settings.license-subcategory.index', $category_id) }}">License
-                                Subcategory</a></li>
-                        <li class="breadcrumb-item active">Create</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
+            <form id="licenseSubcategoryForm" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                @csrf
+                <div class="cioas-shell">
                     <div class="cioas-panel">
-                        <div class="panel-header">
-                            <h3 class="panel-title">Create License Subcategory</h3>
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title">
+                                <i class="fas fa-certificate"></i> License Subcategory Info
+                            </h3>
                         </div>
-                        <div class="panel-body">
-                            <form id="licenseSubcategoryForm" action="{{ route('basic-settings.license-subcategory.store') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="license_category_id" value="{{ $category_id }}">
-                                
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group md-field">
-                                            <input type="text" name="en_name" id="en_name" class="md-input" placeholder=" " required>
-                                            <label for="en_name" class="md-label">English Name <span class="text-danger">*</span></label>
-                                            <small class="text-danger error en_name_error"></small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group md-field">
-                                            <input type="text" name="bn_name" id="bn_name" class="md-input" placeholder=" " required>
-                                            <label for="bn_name" class="md-label">Bengali Name <span class="text-danger">*</span></label>
-                                            <small class="text-danger error bn_name_error"></small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group md-field">
-                                            <select name="status" id="status" class="md-input select2" required>
-                                                <option value="1">Active</option>
-                                                <option value="0">Inactive</option>
-                                            </select>
-                                            <label for="status" class="md-label">Status <span class="text-danger">*</span></label>
-                                            <small class="text-danger error status_error"></small>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="cioas-panel-body">
+                            <input type="hidden" name="license_category_id" value="{{ $category_id }}">
 
-                                <div class="row mt-4">
-                                    <div class="col-12 d-flex justify-content-end gap-2">
-                                        <a href="{{ route('basic-settings.license-subcategory.index', $category_id) }}" class="btn btn-secondary">
-                                            <i class="ti ti-arrow-left"></i> Back
-                                        </a>
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="ti ti-device-floppy"></i> Save Subcategory
-                                        </button>
-                                    </div>
+                            <div class="form-group row mb-4">
+                                <label for="en_name" class="col-sm-3 col-form-label text-dark font-weight-bold">English Name <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="en_name" id="en_name" class="form-control" placeholder="License Sub-Category" required>
+                                    <small class="text-danger error en_name_error"></small>
                                 </div>
-                            </form>
+                            </div>
+
+                            <div class="form-group row mb-4">
+                                <label for="bn_name" class="col-sm-3 col-form-label text-dark font-weight-bold">Bengali Name <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="bn_name" id="bn_name" class="form-control" placeholder="License Sub-Category Bangla" required>
+                                    <small class="text-danger error bn_name_error"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-4">
+                                <label for="status" class="col-sm-3 col-form-label text-dark font-weight-bold">Status <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <select name="status" id="status" class="form-control select2" required>
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
+                                    </select>
+                                    <small class="text-danger error status_error"></small>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="cioas-panel mt-3">
+                        <div class="cioas-panel-body d-flex justify-content-end align-items-center">
+                            <a href="{{ route('basic-settings.license-subcategory.index', $category_id) }}" class="btn btn-link text-muted font-weight-bold mr-3" style="text-decoration: none;">Cancel</a>
+                            <button type="submit" class="btn btn-material btn-material-primary">Submit</button>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </section>
 @endsection
 
 @push('script')
     <script>
-        $(document).ready(function () {
-            $('.select2').select2();
-            $('#licenseSubcategoryForm').on('submit', function (e) {
+        $(document).ready(function() {
+            $(".select2").select2();
+            $("#licenseSubcategoryForm").on('submit', function(e) {
                 e.preventDefault();
                 let thisForm = $(this);
-                
                 $.ajax({
-                    type: 'POST',
+                    type: "POST",
                     url: "{{ route('basic-settings.license-subcategory.store') }}",
                     data: new FormData(this),
-                    dataType: 'json',
+                    dataType: "json",
                     contentType: false,
                     cache: false,
                     processData: false,
@@ -99,29 +79,29 @@
                         thisForm.find('button[type="submit"]').prop("disabled", true);
                         $('.error').text('');
                     },
-                    success: function (response) {
+                    success: function(response) {
                         thisForm.find('button[type="submit"]').prop("disabled", false);
-                        if (response.status) {
+                        if(response.status) {
                             toastr.success(response.message);
-                            setTimeout(function () {
+                            setTimeout(function() {
                                 location.href = "{{ route('basic-settings.license-subcategory.index', $category_id) }}";
-                            }, 1500);
+                            }, 1500)
                         } else {
                             toastr.error(response.message || 'Something went wrong!');
                         }
                     },
-                    error: function (xhr) {
+                    error: function(xhr, status, error) {
                         thisForm.find('button[type="submit"]').prop("disabled", false);
-                        let responseText = jQuery.parseJSON(xhr.responseText);
+                        var responseText = jQuery.parseJSON(xhr.responseText);
                         toastr.error(responseText.message || "An error occurred");
-                        if (responseText.errors) {
-                            $.each(responseText.errors, function (key, val) {
-                                thisForm.find('.' + key + '_error').text(val[0]);
+                        if(responseText.errors) {
+                            $.each(responseText.errors, function(key, val) {
+                                thisForm.find("." + key + "_error").text(val[0]);
                             });
                         }
                     }
                 });
-            });
-        });
+            })
+        })
     </script>
 @endpush

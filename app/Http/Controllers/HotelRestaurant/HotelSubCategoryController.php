@@ -8,6 +8,7 @@ use App\Models\HotelRestaurant\HotelCategory;
 use App\Models\HotelRestaurant\HotelSubCategory;
 use App\Models\HotelRestaurant\HotelOwnerShip;
 use Illuminate\Support\Facades\Auth;
+use App\DataTables\BasicSettings\HotelSubCategoryDataTable;
 
 class HotelSubCategoryController extends Controller
 {
@@ -16,10 +17,9 @@ class HotelSubCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($category_id)
+    public function index(HotelSubCategoryDataTable $dataTable, $category_id)
     {
-        $subcategories = HotelSubCategory::where('hotel_category_id', $category_id)->latest()->get();
-        return view('backend.pages.hotel-restaurant.subcategory.index', compact('subcategories', 'category_id'));
+        return $dataTable->with('category_id', $category_id)->render('backend.pages.hotel-restaurant.subcategory.index', compact('category_id'));
     }
 
     /**

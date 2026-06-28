@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Inventory\InventoryRepairApplication;
 use App\Models\Inventory\InventoryWorkOrderItem;
 use Illuminate\Support\Facades\DB;
+use App\DataTables\InventoryRepairDataTable;
 
 class InventoryRepairController extends Controller
 {
@@ -70,10 +71,9 @@ class InventoryRepairController extends Controller
         return redirect()->route('inventory.maintenance.repair.create')->with('success', 'Repair application submitted successfully.');
     }
 
-    public function approvals()
+    public function approvals(InventoryRepairDataTable $dataTable)
     {
-        $repairs = InventoryRepairApplication::orderBy('id', 'desc')->get();
-        return view('backend.pages.inventory.repair.approvals', compact('repairs'));
+        return $dataTable->render('backend.pages.inventory.repair.approvals');
     }
 
     public function show($id)

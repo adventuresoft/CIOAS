@@ -30,6 +30,10 @@
     .site-header {
         font-family: var(--font-en);
     }
+    
+    .site-header .container-fluid {
+        font-size: 12px;
+    }
 
     /* ══ 1. TOP UTILITY BAR ══ */
     .gov-top-bar {
@@ -56,7 +60,7 @@
         display: flex;
         align-items: center;
         gap: 16px;
-        font-size: 11.5px;
+        font-size: 12px;
         color: var(--text-light);
         font-family: var(--font-en);
     }
@@ -87,7 +91,7 @@
         align-items: center;
         gap: 5px;
         color: var(--text-light);
-        font-size: 11.5px;
+        font-size: 12px;
         text-decoration: none;
         padding: 3px 10px;
         border-radius: 3px;
@@ -228,7 +232,7 @@
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        font-size: 11.5px;
+        font-size: 12px;
         font-weight: 600;
         padding: 5px 12px;
         border-radius: 4px;
@@ -266,6 +270,23 @@
         border-bottom: 2px solid var(--gov-gold);
         position: relative;
         z-index: 100;
+        transition: all 0.3s ease;
+    }
+    
+    .sticky-navbar {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1030;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        animation: stickyFade 0.3s ease-in-out;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    @keyframes stickyFade {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
 
     .gov-navbar .container-fluid {
@@ -288,7 +309,7 @@
         align-items: center;
         gap: 6px;
         color: rgba(255, 255, 255, 0.9);
-        font-size: 13px;
+        font-size: 16px;
         font-weight: 500;
         padding: 11px 16px;
         text-decoration: none;
@@ -373,7 +394,7 @@
         align-items: center;
         gap: 8px;
         padding: 10px 16px;
-        font-size: 13px;
+        font-size: 15px;
         color: #1a1a1a;
         text-decoration: none;
         font-family: var(--font-bn);
@@ -608,10 +629,11 @@
                         <div class="sep"></div>
                     </li>
                     @guest
-                    <li><a href="{{ route('frontend.user.register') }}"><i class="fas fa-user-plus"></i> Citizen Register</a></li>
-                    <li>
-                        <div class="sep"></div>
-                    </li>
+                        <li><a href="{{ route('frontend.user.register') }}"><i class="fas fa-user-plus"></i> Citizen
+                                Register</a></li>
+                        <li>
+                            <div class="sep"></div>
+                        </li>
                     @endguest
                     <li>
                         <a href="{{ url('/') }}/login" class="btn-login">
@@ -630,17 +652,19 @@
 
                 {{-- Brand --}}
                 <div class="gov-brand">
-                    <img src="{{ asset('assets/images/logo/govt-bd-logo.png') }}" class="gov-emblem"
-                        alt="Government of Bangladesh Emblem" onerror="this.style.display='none'">
-                    <div class="gov-brand-divider d-none d-md-block"></div>
-                    <div class="gov-title-block">
-                        <p class="gov-title-bn">কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম</p>
-                        <p class="gov-title-en">Central Integrated Office Automation System</p>
-                        <p class="gov-subtitle">
-                            <i class="fas fa-map-marker-alt me-1" style="color:#c62828;font-size:10px;"></i>
-                            Local Government Division, Ministry of Local Government, Bangladesh
-                        </p>
-                    </div>
+                    <a href="{{ url('/') }}" style="display: flex; align-items: center; gap: 20px; text-decoration: none;">
+                        <img src="{{ asset('assets/images/logo/govt-bd-logo.png') }}" class="gov-emblem"
+                            alt="Government of Bangladesh Emblem" onerror="this.style.display='none'">
+                        <div class="gov-brand-divider d-none d-md-block"></div>
+                        <div class="gov-title-block">
+                            <p class="gov-title-bn">কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম</p>
+                            <p class="gov-title-en">Central Integrated Office Automation System</p>
+                            <p class="gov-subtitle">
+                                <i class="fas fa-map-marker-alt me-1" style="color:#c62828;font-size:10px;"></i>
+                                Local Government Division, Ministry of Local Government, Bangladesh
+                            </p>
+                        </div>
+                    </a>
                 </div>
 
                 {{-- Right Side --}}
@@ -649,19 +673,7 @@
                         <i class="fas fa-phone-alt"></i>
                         Helpline: <strong>16100</strong>
                     </a>
-                    <div class="gov-access-btns">
-                        @guest
-                        <a href="{{ route('frontend.user.register') }}" class="gov-btn-citizen bg-danger border-danger">
-                            <i class="fas fa-user-plus"></i> নাগরিক নিবন্ধন
-                        </a>
-                        @endguest
-                        <a href="{{ url('/login') }}" class="gov-btn-citizen">
-                            <i class="fas fa-user"></i> নাগরিক লগইন
-                        </a>
-                        <a href="{{ url('/login') }}" class="gov-btn-admin">
-                            <i class="fas fa-shield-alt"></i> অ্যাডমিন লগইন
-                        </a>
-                    </div>
+
                 </div>
 
             </div>
@@ -727,7 +739,7 @@
                 <li class="gov-nav-spacer"></li>
 
                 @auth
-                    <li class="nav-login-btn">
+                    <li class="nav-login-btn mr-2">
                         <a href="{{ route('dashboard') }}">
                             <i class="fas fa-tachometer-alt"></i> Dashboard
                         </a>
@@ -738,7 +750,7 @@
                         </a>
                     </li>
                 @else
-                    <li class="nav-login-btn">
+                    <li class="nav-login-btn mr-2">
                         <a href="{{ route('frontend.user.register') }}" class="bg-[#cc0000] border-[#cc0000] text-white">
                             <i class="fas fa-user-plus"></i> নিবন্ধন
                         </a>
@@ -816,6 +828,30 @@
     </div>
 
 </div>{{-- .site-header --}}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const navbar = document.querySelector('.gov-navbar');
+        // calculate offset once the images load to be accurate
+        let stickyPos = navbar.offsetTop;
+        
+        window.addEventListener('resize', () => {
+            if(!navbar.classList.contains('sticky-navbar')){
+                stickyPos = navbar.offsetTop;
+            }
+        });
+
+        window.addEventListener('scroll', function() {
+            if (window.scrollY >= stickyPos) {
+                navbar.classList.add("sticky-navbar");
+                document.body.style.paddingTop = navbar.offsetHeight + 'px'; // prevent layout jump
+            } else {
+                navbar.classList.remove("sticky-navbar");
+                document.body.style.paddingTop = '0';
+            }
+        });
+    });
+</script>
 
 @push('script')
     <script>
