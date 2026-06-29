@@ -3,125 +3,12 @@
 @section('title', 'নাগরিক নিবন্ধন (Citizen Registration)')
 
 @push('style')
-    <style>
-        /* Premium Metallic & Slate Theme */
-        .register-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-            border-radius: 16px;
-        }
-
-        .form-header-banner {
-            background: #ffffff !important;
-            padding: 40px 32px;
-            border-radius: 12px;
-            color: #0f172a;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-        }
-
-        .form-section-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #0f172a;
-            border-bottom: 2px solid #cbd5e1;
-            padding-bottom: 10px;
-            margin-top: 32px;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .form-section-title i {
-            color: #f42a41;
-        }
-
-        .location-card {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-            border: 1.5px solid #cbd5e1;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: #334155;
-            transition: all 0.2s ease-in-out;
-            user-select: none;
-        }
-
-        .location-card:hover {
-            border-color: #006a4e;
-            background: #f0fdf4;
-        }
-
-        .location-card.active {
-            border-color: #006a4e !important;
-            background: linear-gradient(180deg, #e8f5e9 0%, #c8e6c9 100%) !important;
-            color: #006a4e !important;
-            box-shadow: 0 4px 10px rgba(0, 106, 78, 0.12);
-        }
-
-        /* Font size and Height Override */
-        #citizenRegisterForm,
-        #citizenRegisterForm input,
-        #citizenRegisterForm select,
-        #citizenRegisterForm label,
-        #citizenRegisterForm span,
-        #citizenRegisterForm button,
-        .select2-container--default .select2-selection--single,
-        .select2-results__option {
-            font-size: 16px !important;
-        }
-
-        #citizenRegisterForm input,
-        #citizenRegisterForm select {
-            height: 52px !important;
-            border-radius: 8px !important;
-            border: 1.5px solid #cbd5e1 !important;
-            background: #ffffff !important;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
-            padding: 12px 16px !important;
-            transition: all 0.2s ease-in-out !important;
-        }
-
-        #citizenRegisterForm input:focus,
-        #citizenRegisterForm select:focus {
-            border-color: #006a4e !important;
-            box-shadow: 0 0 0 4px rgba(0, 106, 78, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.02) !important;
-            outline: none !important;
-        }
-
-        /* Select2 Height Overrides */
-        .select2-container--default .select2-selection--single {
-            height: 52px !important;
-            padding: 12px 16px !important;
-            border-radius: 8px !important;
-            border: 1.5px solid #cbd5e1 !important;
-            background: #ffffff !important;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
-        }
-
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: normal !important;
-            padding-left: 0 !important;
-            color: #1e293b !important;
-        }
-
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: 50px !important;
-            right: 12px !important;
-        }
-    </style>
+    
 @endpush
 
 @section('content')
-    <div class="container mx-auto max-w-full w-full px-4 py-8">
-        <div class="register-card p-6 md:p-8 w-full">
+    <div class="container mx-auto max-w-100 w-100 px-4 py-8">
+        <div class="register-card p-3 md:p-8 w-100">
 
             <!-- Header -->
 
@@ -135,46 +22,46 @@
                         <i class="fas fa-user"></i> ব্যক্তিগত তথ্য (Personal Information)
                     </h3>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="row row-cols-1 row-cols-md-2 g-4">
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">পূর্ণ নাম (English) <span
-                                    class="text-red-500">*</span></label>
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">পূর্ণ নাম (English) <span
+                                    class="text-danger">*</span></label>
                             <input type="text" name="name" required
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#006a4e] focus:ring focus:ring-[#006a4e]/20"
+                                class="w-100 form-control"
                                 placeholder="Full Name in English">
-                            <span class="text-xs text-red-500 error-name"></span>
+                            <span class="fs-content text-danger error-name"></span>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">পূর্ণ নাম (বাংলা) <span
-                                    class="text-red-500">*</span></label>
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">পূর্ণ নাম (বাংলা) <span
+                                    class="text-danger">*</span></label>
                             <input type="text" name="bn_name" required
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#006a4e] focus:ring focus:ring-[#006a4e]/20"
+                                class="w-100 form-control"
                                 placeholder="বাংলায় পূর্ণ নাম">
-                            <span class="text-xs text-red-500 error-bn_name"></span>
+                            <span class="fs-content text-danger error-bn_name"></span>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">পিতার নাম (Father's Name)
-                                <span class="text-red-500">*</span></label>
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">পিতার নাম (Father's Name)
+                                <span class="text-danger">*</span></label>
                             <input type="text" name="father_name" required
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#006a4e] focus:ring focus:ring-[#006a4e]/20"
+                                class="w-100 form-control"
                                 placeholder="Father's Name">
-                            <span class="text-xs text-red-500 error-father_name"></span>
+                            <span class="fs-content text-danger error-father_name"></span>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">জন্ম তারিখ (Date of Birth)
-                                <span class="text-red-500">*</span></label>
-                            <div class="grid grid-cols-3 gap-2">
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">জন্ম তারিখ (Date of Birth)
+                                <span class="text-danger">*</span></label>
+                            <div class="row row-cols-3 g-2">
                                 <div>
                                     <input type="number" name="dob_day" min="1" max="31" required
-                                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#006a4e] focus:ring focus:ring-[#006a4e]/20"
+                                        class="w-100 form-control"
                                         placeholder="দিন (Day)">
                                 </div>
                                 <div>
                                     <select name="dob_month" required
-                                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#006a4e] focus:ring focus:ring-[#006a4e]/20">
+                                        class="w-100 form-control">
                                         <option value="">মাস (Month)</option>
                                         <option value="1">জানুয়ারি (Jan)</option>
                                         <option value="2">ফেব্রুয়ারি (Feb)</option>
@@ -192,50 +79,50 @@
                                 </div>
                                 <div>
                                     <input type="number" name="dob_year" min="1900" max="{{ date('Y') }}" required
-                                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#006a4e] focus:ring focus:ring-[#006a4e]/20"
+                                        class="w-100 form-control"
                                         placeholder="বছর (Yr)">
                                 </div>
                             </div>
-                            <span class="text-xs text-red-500 error-dob"></span>
+                            <span class="fs-content text-danger error-dob"></span>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">জাতীয় পরিচয়পত্র নম্বর (NID
-                                Number) <span class="text-red-500">*</span></label>
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">জাতীয় পরিচয়পত্র নম্বর (NID
+                                Number) <span class="text-danger">*</span></label>
                             <input type="text" name="nid_no" required
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#006a4e] focus:ring focus:ring-[#006a4e]/20"
+                                class="w-100 form-control"
                                 placeholder="National ID Card Number">
-                            <span class="text-xs text-red-500 error-nid_no"></span>
+                            <span class="fs-content text-danger error-nid_no"></span>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">মোবাইল নম্বর (Mobile Number)
-                                <span class="text-red-500">*</span></label>
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">মোবাইল নম্বর (Mobile Number)
+                                <span class="text-danger">*</span></label>
                             <input type="text" name="mobile" required
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#006a4e] focus:ring focus:ring-[#006a4e]/20"
+                                class="w-100 form-control"
                                 placeholder="01XXXXXXXXX">
-                            <span class="text-xs text-red-500 error-mobile"></span>
+                            <span class="fs-content text-danger error-mobile"></span>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">ইমেইল ঠিকানা (Email Address)
-                                <span class="text-red-500">*</span></label>
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">ইমেইল ঠিকানা (Email Address)
+                                <span class="text-danger">*</span></label>
                             <input type="email" name="email" required
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#006a4e] focus:ring focus:ring-[#006a4e]/20"
+                                class="w-100 form-control"
                                 placeholder="example@domain.com">
-                            <span class="text-xs text-red-500 error-email"></span>
+                            <span class="fs-content text-danger error-email"></span>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">লিঙ্গ (Gender) <span
-                                    class="text-red-500">*</span></label>
-                            <select name="gender" required class="form-control select2 select2bs4 w-full">
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">লিঙ্গ (Gender) <span
+                                    class="text-danger">*</span></label>
+                            <select name="gender" required class="form-control select2 select2bs4 w-100">
                                 <option value="">নির্বাচন করুন</option>
                                 <option value="1">পুরুষ (Male)</option>
                                 <option value="2">মহিলা (Female)</option>
                                 <option value="3">অন্যান্য (Other)</option>
                             </select>
-                            <span class="text-xs text-red-500 error-gender"></span>
+                            <span class="fs-content text-danger error-gender"></span>
                         </div>
                     </div>
                 </div>
@@ -247,134 +134,134 @@
                     </h3>
 
                     <!-- Location Type Radio Card Selection -->
-                    <div class="mb-6">
-                        <label class="block text-xs font-bold text-gray-700 uppercase mb-3">স্থানের ধরণ (Location Type)
-                            <span class="text-red-500">*</span></label>
-                        <div class="flex flex-wrap gap-4">
+                    <div class="mb-3">
+                        <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-3">স্থানের ধরণ (Location Type)
+                            <span class="text-danger">*</span></label>
+                        <div class="d-d-flex flex-wrap gap-3">
                             <label class="location-card active">
                                 <input type="radio" name="location_type" value="union_type" checked class="d-none">
-                                <i class="fas fa-warehouse text-sm"></i>
+                                <i class="fas fa-warehouse fs-content"></i>
                                 <span>ইউনিয়ন (Union)</span>
                             </label>
                             <label class="location-card">
                                 <input type="radio" name="location_type" value="pos_type" class="d-none">
-                                <i class="fas fa-building text-sm"></i>
+                                <i class="fas fa-building fs-content"></i>
                                 <span>পৌরসভা (Pourashava)</span>
                             </label>
                             <label class="location-card">
                                 <input type="radio" name="location_type" value="city_type" class="d-none">
-                                <i class="fas fa-city text-sm"></i>
+                                <i class="fas fa-city fs-content"></i>
                                 <span>সিটি কর্পোরেশন (City Corporation)</span>
                             </label>
                         </div>
                     </div>
 
                     <!-- Dropdowns Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">বিভাগ (Division)</label>
-                            <select name="division_id" id="division_id" class="form-control select2 select2bs4 w-full">
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">বিভাগ (Division)</label>
+                            <select name="division_id" id="division_id" class="form-control select2 select2bs4 w-100">
                                 <option value="">নির্বাচন করুন</option>
                                 @foreach($divisions as $division)
                                     <option value="{{ $division->id }}">{{ $division->name }}</option>
                                 @endforeach
                             </select>
-                            <span class="text-xs text-red-500 error-division_id"></span>
+                            <span class="fs-content text-danger error-division_id"></span>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">জেলা (District)</label>
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">জেলা (District)</label>
                             <select name="district_id" id="district_id" disabled
-                                class="form-control select2 select2bs4 w-full">
+                                class="form-control select2 select2bs4 w-100">
                                 <option value="">নির্বাচন করুন</option>
                             </select>
-                            <span class="text-xs text-red-500 error-district_id"></span>
+                            <span class="fs-content text-danger error-district_id"></span>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">উপজেলা/থানা (Thana)</label>
-                            <select name="thana_id" id="thana_id" disabled class="form-control select2 select2bs4 w-full">
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">উপজেলা/থানা (Thana)</label>
+                            <select name="thana_id" id="thana_id" disabled class="form-control select2 select2bs4 w-100">
                                 <option value="">নির্বাচন করুন</option>
                             </select>
-                            <span class="text-xs text-red-500 error-thana_id"></span>
+                            <span class="fs-content text-danger error-thana_id"></span>
                         </div>
 
                         <!-- Union Selection Box -->
                         <div class="union-box">
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">ইউনিয়ন (Union)</label>
-                            <select name="union_id" id="union_id" disabled class="form-control select2 select2bs4 w-full"
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">ইউনিয়ন (Union)</label>
+                            <select name="union_id" id="union_id" disabled class="form-control select2 select2bs4 w-100"
                                 data-type="union">
                                 <option value="">নির্বাচন করুন</option>
                             </select>
-                            <span class="text-xs text-red-500 error-union_id"></span>
+                            <span class="fs-content text-danger error-union_id"></span>
                         </div>
 
                         <!-- Pourashava Selection Box -->
-                        <div class="pos-box hidden">
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">পৌরসভা (Pourashava)</label>
-                            <select name="pos_id" id="pos_id" disabled class="form-control select2 select2bs4 w-full"
+                        <div class="pos-box d-none">
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">পৌরসভা (Pourashava)</label>
+                            <select name="pos_id" id="pos_id" disabled class="form-control select2 select2bs4 w-100"
                                 data-type="pourashova">
                                 <option value="">নির্বাচন করুন</option>
                             </select>
-                            <span class="text-xs text-red-500 error-pos_id"></span>
+                            <span class="fs-content text-danger error-pos_id"></span>
                         </div>
 
                         <!-- City Corporation Selection Box -->
-                        <div class="city-box hidden">
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">সিটি কর্পোরেশন (City
+                        <div class="city-box d-none">
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">সিটি কর্পোরেশন (City
                                 Corp)</label>
-                            <select name="city_id" id="city_id" disabled class="form-control select2 select2bs4 w-full"
+                            <select name="city_id" id="city_id" disabled class="form-control select2 select2bs4 w-100"
                                 data-type="City">
                                 <option value="">নির্বাচন করুন</option>
                             </select>
-                            <span class="text-xs text-red-500 error-city_id"></span>
+                            <span class="fs-content text-danger error-city_id"></span>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">পোস্ট অফিস (Post
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">পোস্ট অফিস (Post
                                 Office)</label>
                             <select name="post_office_id" id="post_office_id" disabled
-                                class="form-control select2 select2bs4 w-full">
+                                class="form-control select2 select2bs4 w-100">
                                 <option value="">নির্বাচন করুন</option>
                             </select>
-                            <span class="text-xs text-red-500 error-post_office_id"></span>
+                            <span class="fs-content text-danger error-post_office_id"></span>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">গ্রাম/মহল্লা
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">গ্রাম/মহল্লা
                                 (Village)</label>
                             <select name="village_id" id="village_id" disabled
-                                class="form-control select2 select2bs4 w-full">
+                                class="form-control select2 select2bs4 w-100">
                                 <option value="">নির্বাচন করুন</option>
                             </select>
-                            <span class="text-xs text-red-500 error-village_id"></span>
+                            <span class="fs-content text-danger error-village_id"></span>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">ওয়ার্ড নম্বর (Ward
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">ওয়ার্ড নম্বর (Ward
                                 No)</label>
                             <input type="number" name="ward_id"
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#006a4e] focus:ring focus:ring-[#006a4e]/20"
+                                class="w-100 form-control"
                                 placeholder="1-9">
-                            <span class="text-xs text-red-500 error-ward_id"></span>
+                            <span class="fs-content text-danger error-ward_id"></span>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">রোড/রাস্তা
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">রোড/রাস্তা
                                 (Road/Street)</label>
                             <input type="text" name="road"
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#006a4e] focus:ring focus:ring-[#006a4e]/20"
+                                class="w-100 form-control"
                                 placeholder="Road Name/No">
-                            <span class="text-xs text-red-500 error-road"></span>
+                            <span class="fs-content text-danger error-road"></span>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">হোল্ডিং নম্বর (House/Holding
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">হোল্ডিং নম্বর (House/Holding
                                 No)</label>
                             <input type="text" name="house"
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#006a4e] focus:ring focus:ring-[#006a4e]/20"
+                                class="w-100 form-control"
                                 placeholder="Holding/House No">
-                            <span class="text-xs text-red-500 error-house"></span>
+                            <span class="fs-content text-danger error-house"></span>
                         </div>
                     </div>
                 </div>
@@ -385,34 +272,34 @@
                         <i class="fas fa-lock"></i> নিরাপত্তা পাসওয়ার্ড (Account Security)
                     </h3>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="row row-cols-1 row-cols-md-2 g-4">
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">পাসওয়ার্ড (Password) <span
-                                    class="text-red-500">*</span></label>
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">পাসওয়ার্ড (Password) <span
+                                    class="text-danger">*</span></label>
                             <input type="password" name="password" required
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#006a4e] focus:ring focus:ring-[#006a4e]/20"
+                                class="w-100 form-control"
                                 placeholder="কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড">
-                            <span class="text-xs text-red-500 error-password"></span>
+                            <span class="fs-content text-danger error-password"></span>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">পাসওয়ার্ড নিশ্চিত করুন
-                                (Confirm Password) <span class="text-red-500">*</span></label>
+                            <label class="d-d-block fs-content fw-bold text-dark text-text-uppercase mb-2">পাসওয়ার্ড নিশ্চিত করুন
+                                (Confirm Password) <span class="text-danger">*</span></label>
                             <input type="password" name="password_confirmation" required
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#006a4e] focus:ring focus:ring-[#006a4e]/20"
+                                class="w-100 form-control"
                                 placeholder="আবারো পাসওয়ার্ডটি লিখুন">
-                            <span class="text-xs text-red-500 error-password_confirmation"></span>
+                            <span class="fs-content text-danger error-password_confirmation"></span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Submit buttons -->
-                <div class="pt-6 border-t border-gray-100 flex items-center justify-between gap-4">
-                    <a href="{{ url('/') }}" class="text-sm font-semibold text-gray-600 hover:text-gray-900 transition">
+                <div class="pt-6 border-t border-gray-100 d-d-flex align-align-items-center justify-content-between gap-3">
+                    <a href="{{ url('/') }}" class="fs-content fw-bold text-secondary hover:text-gray-900 transition">
                         ফিরে যান
                     </a>
                     <button type="submit"
-                        class="inline-flex items-center gap-2 rounded-lg bg-[#006a4e] px-6 py-3 text-base font-bold text-white shadow hover:bg-[#00523b] transition">
+                        class="inline-d-d-flex align-align-items-center gap-2 rounded-3 bg-gov-green px-6 py-3 fs-content fw-bold text-white shadow hover:bg-[#00523b] transition">
                         নিবন্ধন সম্পন্ন করুন
                         <i class="fas fa-arrow-right"></i>
                     </button>
@@ -445,14 +332,14 @@
                 $('#union_id, #pos_id, #city_id, #village_id').html('<option value="">নির্বাচন করুন</option>').prop('disabled', true).trigger('change');
 
                 if (val === 'union_type') {
-                    $('.union-box').removeClass('hidden');
-                    $('.pos-box, .city-box').addClass('hidden');
+                    $('.union-box').removeClass('d-none');
+                    $('.pos-box, .city-box').addClass('d-none');
                 } else if (val === 'pos_type') {
-                    $('.pos-box').removeClass('hidden');
-                    $('.union-box, .city-box').addClass('hidden');
+                    $('.pos-box').removeClass('d-none');
+                    $('.union-box, .city-box').addClass('d-none');
                 } else if (val === 'city_type') {
-                    $('.city-box').removeClass('hidden');
-                    $('.union-box, .pos-box').addClass('hidden');
+                    $('.city-box').removeClass('d-none');
+                    $('.union-box, .pos-box').addClass('d-none');
                 }
 
                 // Trigger district re-load to populate unions/pourashavas
@@ -581,7 +468,7 @@
                 let btn = form.find('button[type="submit"]');
 
                 // Clear errors
-                form.find('.text-red-500[class*="error-"]').text('');
+                form.find('.text-danger[class*="error-"]').text('');
 
                 $.ajax({
                     type: "POST",

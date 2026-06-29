@@ -2,131 +2,20 @@
 @section('title', 'ব্যক্তিগত আগ্নেয়াস্ত্র লাইসেন্স আবেদন ফরম')
 
 @push('style')
-<style>
-    /* Premium Smart Form Design System matching Bangladesh Gov Palette */
-    .gov-form-container {
-        max-width: 1100px;
-        margin: 0 auto;
-        background: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border-top: 5px solid #006a4e;
-        overflow: hidden;
-    }
 
-    .gov-header {
-        background: linear-gradient(135deg, #006a4e 0%, #00523b 100%);
-        color: #ffffff;
-        padding: 24px 30px;
-        border-bottom: 3px solid #f42a41;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .gov-header h2 {
-        font-size: 1.6rem;
-        font-weight: 700;
-        margin: 0;
-        letter-spacing: 0.5px;
-    }
-
-    .gov-body {
-        padding: 35px;
-    }
-
-    .gov-body label:not(.form-check-label) {
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: #334155;
-        margin-bottom: 8px;
-        display: block;
-    }
-
-    .gov-body .form-control:not(.custom-file-input) {
-        border-radius: 8px !important;
-        border: 1px solid #cbd5e1 !important;
-        height: 44px !important;
-        font-size: 0.95rem !important;
-        color: #1e293b !important;
-        background-color: #ffffff;
-        box-shadow: none !important;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .gov-body .form-control:focus:not(.custom-file-input) {
-        border-color: #006a4e !important;
-        box-shadow: 0 0 0 3px rgba(0, 106, 78, 0.15) !important;
-    }
-
-    .section-title {
-        font-size: 1.1rem;
-        font-weight: 750;
-        color: #006a4e;
-        border-bottom: 2px solid #e2e8f0;
-        padding-bottom: 8px;
-        margin-top: 35px;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .section-title i {
-        color: #f42a41;
-    }
-
-    .btn-gov-submit {
-        background-color: #006a4e;
-        color: #ffffff;
-        font-weight: 600;
-        padding: 12px 30px;
-        border-radius: 8px;
-        border: none;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .btn-gov-submit:hover {
-        background-color: #00523b;
-        color: #ffffff;
-        box-shadow: 0 4px 12px rgba(0, 82, 59, 0.2);
-    }
-
-    .btn-gov-cancel {
-        background-color: #f1f5f9;
-        color: #475569;
-        font-weight: 600;
-        padding: 12px 30px;
-        border-radius: 8px;
-        border: 1px solid #cbd5e1;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .btn-gov-cancel:hover {
-        background-color: #e2e8f0;
-        color: #1e293b;
-    }
-
-    .error-text {
-        font-size: 0.8rem;
-        color: #f42a41;
-        margin-top: 4px;
-        font-weight: 500;
-    }
-</style>
 @endpush
 
 @section('content')
 <div class="container py-8">
-    <div class="gov-form-container">
+    <div class="bg-white rounded-3 shadow-sm border-top border-5 border-success p-3">
         <!-- Header -->
-        <div class="gov-header">
-            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white text-[#006a4e]">
+        <div class="d-d-flex align-align-items-center gap-3 border-bottom border-3 border-danger pb-3 mb-3">
+            <div class="d-d-flex h-12 w-12 align-align-items-center justify-content-center rounded-full bg-white text-gov-green">
                 <i class="fas fa-user-shield text-2xl"></i>
             </div>
             <div>
                 <h2>ব্যক্তিগত আগ্নেয়াস্ত্র লাইসেন্স আবেদন ফরম</h2>
-                <p class="text-xs text-green-100 mt-1">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার - কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম</p>
+                <p class="fs-content text-green-100 mt-1">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার - কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম</p>
             </div>
         </div>
 
@@ -137,7 +26,7 @@
 
                 <!-- 1. Primary Details -->
                 <h5 class="section-title"><i class="fas fa-file-alt"></i> আবেদনের প্রাথমিক তথ্য</h5>
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-6">
                         <label for="district_magistrate">জেলা ম্যাজিস্ট্রেট <span class="text-danger">*</span></label>
                         <input type="text" name="district_magistrate" class="form-control" id="district_magistrate" required placeholder="যেমন: ঢাকা">
@@ -157,7 +46,7 @@
 
                 <!-- 2. Personal Details -->
                 <h5 class="section-title"><i class="fas fa-user"></i> আবেদনকারীর বিবরণ</h5>
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-4">
                         <label for="applicant_name">আবেদনকারীর নাম বাংলায় <span class="text-danger">*</span></label>
                         <input type="text" name="applicant_name" class="form-control" id="applicant_name" required placeholder="বাংলায় পুরো নাম ও ডাকনাম">
@@ -175,7 +64,7 @@
                     </div>
                 </div>
 
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-3">
                         <label for="dob">জন্ম তারিখ <span class="text-danger">*</span></label>
                         <input type="date" name="dob" class="form-control" id="dob" required>
@@ -203,7 +92,7 @@
                     </div>
                 </div>
 
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-6">
                         <label for="phone">মোবাইল নম্বর <span class="text-danger">*</span></label>
                         <input type="text" name="phone" class="form-control" id="phone" required placeholder="মোবাইল নম্বর">
@@ -216,7 +105,7 @@
                     </div>
                 </div>
 
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-6">
                         <label for="father_name">পিতার নাম <span class="text-danger">*</span></label>
                         <input type="text" name="father_name" class="form-control" id="father_name" required placeholder="পিতার নাম">
@@ -229,7 +118,7 @@
                     </div>
                 </div>
 
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-6">
                         <label for="mother_name">মাতার নাম <span class="text-danger">*</span></label>
                         <input type="text" name="mother_name" class="form-control" id="mother_name" required placeholder="মাতার নাম">
@@ -242,7 +131,7 @@
                     </div>
                 </div>
 
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-4">
                         <label for="marital_status">বৈবাহিক অবস্থা <span class="text-danger">*</span></label>
                         <select name="marital_status" class="form-control" id="marital_status" required>
@@ -271,7 +160,7 @@
                     </div>
                 </div>
 
-                <div class="row g-4 mb-4" id="spouse_details_div" style="display: none;">
+                <div class="row g-4 mb-3" id="spouse_details_div" style="display: none;">
                     <div class="col-md-6">
                         <label for="spouse_name">স্বামী/স্ত্রীর নাম</label>
                         <input type="text" name="spouse_name" class="form-control" id="spouse_name" placeholder="স্বামী/স্ত্রীর নাম">
@@ -286,7 +175,7 @@
 
                 <!-- 3. Address Details -->
                 <h5 class="section-title"><i class="fas fa-map-marker-alt"></i> ঠিকানা</h5>
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-6">
                         <label for="present_address">বর্তমান ঠিকানা <span class="text-danger">*</span></label>
                         <textarea name="present_address" class="form-control" id="present_address" rows="3" style="height: auto !important;" required placeholder="বর্তমান যোগাযোগের ঠিকানা"></textarea>
@@ -301,7 +190,7 @@
 
                 <!-- 4. Profession & Income -->
                 <h5 class="section-title"><i class="fas fa-briefcase"></i> পেশা ও আয়</h5>
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-4">
                         <label for="profession_details">পেশার বিবরণ <span class="text-danger">*</span></label>
                         <input type="text" name="profession_details" class="form-control" id="profession_details" required placeholder="পেশা বা ব্যবসায়ের বিবরণ">
@@ -319,7 +208,7 @@
                     </div>
                 </div>
 
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-6">
                         <label for="profession_address">প্রতিষ্ঠানের নাম ও ঠিকানা</label>
                         <textarea name="profession_address" class="form-control" id="profession_address" rows="2" style="height: auto !important;" placeholder="কর্মস্থল বা প্রতিষ্ঠানের নাম ও ঠিকানা"></textarea>
@@ -332,7 +221,7 @@
                     </div>
                 </div>
 
-                <div class="row mb-4">
+                <div class="row mb-3">
                     <div class="col-md-12">
                         <label for="tax_history_details">পূর্ববর্তী ৩ কর বছরের আয়করের বিবরণ</label>
                         <textarea name="tax_history_details" class="form-control" id="tax_history_details" rows="2" style="height: auto !important;" placeholder="কর বছর এবং করের পরিমাণসহ বিবরণ দিন (যেমন: ২০২২-২৩: ৫০,০০০ টাকা)"></textarea>
@@ -342,7 +231,7 @@
 
                 <!-- 5. Government Employee fields -->
                 <h5 class="section-title"><i class="fas fa-user-tie"></i> সরকারি কর্মচারী সংক্রান্ত</h5>
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-6">
                         <label for="is_govt_employee">আবেদনকারী কি একজন সরকারি কর্মচারী? <span class="text-danger">*</span></label>
                         <select name="is_govt_employee" class="form-control" id="is_govt_employee" required>
@@ -353,7 +242,7 @@
                     </div>
                 </div>
 
-                <div id="govt_employee_details_div" style="display: none;" class="mb-4">
+                <div id="govt_employee_details_div" style="display: none;" class="mb-3">
                     <div class="row g-4 mb-3">
                         <div class="col-md-4">
                             <label for="cadre_service_name">ক্যাডার/সার্ভিসের নাম</label>
@@ -382,7 +271,7 @@
 
                 <!-- 6. Previous Firearm details -->
                 <h5 class="section-title"><i class="fas fa-history"></i> পূর্ববর্তী অস্ত্রের বিবরণ</h5>
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-6">
                         <label for="duty_free_import">ইতঃপূর্বে শুল্কমুক্ত সুবিধায় বিদেশ হতে অস্ত্র আমদানি করেছেন কি?</label>
                         <input type="text" name="duty_free_import" class="form-control" id="duty_free_import" placeholder="আমদানি করে থাকলে অস্ত্রের বিবরণ, অন্যথায় 'না' লিখুন">
@@ -398,7 +287,7 @@
                     </div>
                 </div>
 
-                <div id="cancellation_details_div" style="display: none;" class="mb-4">
+                <div id="cancellation_details_div" style="display: none;" class="mb-3">
                     <div class="row g-4">
                         <div class="col-md-6">
                             <label for="cancelled_weapon_type">বাতিলকৃত অস্ত্রের ধরণ</label>
@@ -415,7 +304,7 @@
 
                 <!-- 7. Weapon Requirements & Affidavit -->
                 <h5 class="section-title"><i class="fas fa-crosshairs"></i> চাহিত অস্ত্র ও হলফনামা</h5>
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-4">
                         <label for="weapon_details">চাহিত আগ্নেয়াস্ত্রের ধরণ <span class="text-danger">*</span></label>
                         <select name="weapon_details" class="form-control select2" id="weapon_details" required>
@@ -436,7 +325,7 @@
                     </div>
                 </div>
 
-                <div class="row mb-4">
+                <div class="row mb-3">
                     <div class="col-md-12">
                         <label for="necessity_reason">কী কারণে চাহিত আগ্নেয়াস্ত্র লাইসেন্সের প্রয়োজন <span class="text-danger">*</span></label>
                         <textarea name="necessity_reason" class="form-control" id="necessity_reason" rows="3" style="height: auto !important;" required placeholder="অস্ত্র লাইসেন্সের যৌক্তিকতা ব্যাখ্যা করুন"></textarea>
@@ -444,7 +333,7 @@
                     </div>
                 </div>
 
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-6">
                         <label for="affidavit_attached">হলফনামা প্রদান করা হয়েছে কি? <span class="text-danger">*</span></label>
                         <select name="affidavit_attached" class="form-control" id="affidavit_attached" required>
@@ -464,7 +353,7 @@
                 </div>
 
                 <!-- Footer Buttons -->
-                <div class="d-flex justify-content-end gap-3 mt-8 border-t pt-4">
+                <div class="d-d-flex justify-content-end gap-3 mt-8 border-t pt-4">
                     <a href="{{ route('frontend.gun-license.select') }}" class="btn btn-gov-cancel">বাতিল করুন</a>
                     <button type="submit" class="btn btn-gov-submit">আবেদন সম্পন্ন করুন</button>
                 </div>

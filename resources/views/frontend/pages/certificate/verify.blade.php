@@ -13,7 +13,7 @@
             <form action="{{ route('certificate.verify') }}" method="GET">
                
 
-                <div class="row align-items-center">
+                <div class="row align-align-items-center">
                     <div class="col-md-6">
                         <label>সনদ নং প্রদান করুন</label>
                         <input type="text" name="system_id" class="form-control"
@@ -21,7 +21,7 @@
                                value="{{ old('system_id', $system_id ?? '') }}">
                     </div>
 
-                    <div class="col-md-3 mt-4">
+                    <div class="col-md-3 mt-3">
                         <button class="btn btn-success w-100">
                             🔍 অনুসন্ধান করুন
                         </button>
@@ -31,7 +31,7 @@
             </form>
 
             @if(isset($data))
-                <div class="mt-4 p-3 bg-light border rounded">
+                <div class="mt-3 p-3 bg-light border rounded">
                     <strong>সনদ নং:</strong> {{ $data->system_id }}  
                     <span>
                       সনদটি {{$data->created_at}}  তারিখে {{$data->user->name}}, পিতা: {{$data->user->familyInfo->father_name_bn}}, মাতা: : {{$data->user->familyInfo->mother_name_bn}}, জন্ম তারিখ: {{$data->user->people->date_of_birth??''}} কে: {{$data->user->institute->union->bn_name ?? '' }} এর চেয়ারম্যান কর্তৃক প্রদান করা হয়েছে।
@@ -39,7 +39,7 @@
                     </span>
                 </div>
             @elseif(isset($system_id))
-                <div class="alert alert-danger mt-4">
+                <div class="alert alert-danger mt-3">
                     কোনো তথ্য পাওয়া যায়নি!
                 </div>
             @endif

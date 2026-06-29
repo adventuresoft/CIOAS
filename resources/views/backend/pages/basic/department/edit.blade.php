@@ -11,7 +11,8 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.department.index') }}">Basic Settings</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.department.index') }}">Basic
+                                Settings</a></li>
                         <li class="breadcrumb-item active">Edit Department</li>
                     </ol>
                 </div>
@@ -29,7 +30,7 @@
                     data-redirect-url="{{ route('basic-settings.department.index') }}">
                     @csrf
                     @method('PUT')
-                    
+
                     <div class="cioas-panel">
                         <div class="cioas-panel-header">
                             <h3 class="cioas-panel-title"><i class="fas fa-edit"></i> Edit Department</h3>
@@ -39,8 +40,8 @@
                                 <div class="col-md-6">
                                     <div class="md-field">
                                         <label for="name">Name <span class="text-danger">*</span></label>
-                                        <input type="text" name="name" placeholder="Department Name"
-                                            class="form-control" id="name" value="{{ $department->name }}" required>
+                                        <input type="text" name="name" placeholder="Department Name" class="form-control"
+                                            id="name" value="{{ $department->name }}" required>
                                         <small class="text-danger error name_error"></small>
                                     </div>
                                 </div>
@@ -69,56 +70,3 @@
         </div>
     </section>
 @endsection
-
-@push('script')
-    <script>
-        $(document).ready(function() {
-            let isSubmitting = false;
-            $('#FormSubmit').on('submit', function(e) {
-                e.preventDefault();
-
-                if (isSubmitting) return;
-                isSubmitting = true;
-
-                let form = $(this);
-                let formData = new FormData(this);
-                let url = form.data('url');
-
-                $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: formData,
-                    dataType: "json",
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    beforeSend: function() {
-                        $('#btnSave').prop('disabled', true);
-                        $('.error').text('');
-                    },
-                    success: function(response) {
-                        toastr.success(response.message);
-                        setTimeout(function() {
-                            window.location.href = form.data('redirect-url');
-                        }, 1500);
-                    },
-                    error: function(xhr) {
-                        isSubmitting = false;
-                        $('#btnSave').prop('disabled', false);
-                        let err = xhr.responseJSON;
-                        if (err && err.errors) {
-                            $.each(err.errors, function(key, value) {
-                                toastr.error(value[0]);
-                                form.find("." + key + "_error").text(value[0]);
-                            });
-                        } else if (err && err.message) {
-                            toastr.error(err.message);
-                        } else {
-                            toastr.error('Failed to update data.');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-@endpush

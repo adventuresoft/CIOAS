@@ -1,0 +1,383 @@
+/* Google Fonts & Local Fallbacks */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
+
+/* Basic Typography */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+}
+
+/* Kalpurush font mapping for Bengali Text */
+/* We define it specifically for Bengali elements, falling back to Hind Siliguri if Kalpurush isn't installed */
+.font-kalpurush {
+    font-family: 'Inter', 'Kalpurush', 'Hind Siliguri', sans-serif !important;
+}
+
+/* Custom Font Sizes Requested by User */
+.fs-top-header {
+    font-size: 14px !important;
+}
+
+.fs-header {
+    font-size: 14px !important;
+}
+
+.fs-card-title {
+    font-size: 14px !important;
+}
+
+.fs-content {
+    font-size: 12px !important;
+}
+
+.fs-button {
+    font-size: 12px !important;
+}
+
+/* Form elements - 14px for better readability */
+label {
+    font-size: 14px !important;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 6px;
+}
+
+input,
+select,
+.form-control,
+.form-select,
+.custom-file-input {
+    font-size: 14px !important;
+    padding: 10px 14px !important;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease-in-out;
+}
+
+.form-control:focus,
+.form-select:focus,
+.custom-file-input:focus {
+    border-color: #006a4e !important;
+    box-shadow: 0 0 0 3px rgba(0, 106, 78, 0.15) !important;
+}
+
+/* Maintain 12px for standard content paragraphs */
+p {
+    font-size: 12px !important;
+}
+
+/* Custom Colors & Utilities */
+.bg-gov-green {
+    background-color: #006a4e !important;
+}
+
+.bg-gov-top {
+    background-color: #006a4e !important;
+}
+
+.text-gov-green {
+    color: #006a4e !important;
+}
+
+.text-gov-dark {
+    color: #004d26 !important;
+}
+
+.border-gov-green {
+    border-color: #006a4e !important;
+}
+
+.border-gov-gold {
+    border-color: #f0a500 !important;
+}
+
+/* Custom shadows & cards */
+.gov-card {
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: block;
+}
+
+.gov-card>* {
+    position: relative;
+    z-index: 1;
+}
+
+.gov-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 106, 78, 0.1);
+    border-color: rgba(0, 106, 78, 0.2);
+}
+
+.icon-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #006a4e;
+    color: #ffffff;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 106, 78, 0.2);
+}
+
+.gov-card:hover .icon-circle {
+    transform: scale(1.05);
+    background: #00523b;
+}
+
+.btn-gov {
+    background: #006a4e;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.btn-gov:hover {
+    background: #00523b;
+    color: white;
+}
+
+/* Header Specific Styles */
+.top-nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    transition: 0.2s;
+}
+
+.top-nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.main-nav-link {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    text-decoration: none;
+    padding: 12px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    transition: 0.2s;
+}
+
+.main-nav-link:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.main-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 16px;
+    right: 16px;
+    height: 2px;
+    background-color: #f0a500;
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
+    border-radius: 2px;
+}
+
+.main-nav-link:hover::after,
+.nav-item.active .main-nav-link::after {
+    transform: scaleX(1);
+}
+
+.nav-item.active .main-nav-link {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dropdown */
+.gov-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    min-width: 200px;
+    border-top: 2px solid #f0a500;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-radius: 0 0 8px 8px;
+    z-index: 200;
+    overflow: hidden;
+}
+
+.nav-item:hover .gov-dropdown {
+    display: block;
+}
+
+.dropdown-item-gov {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    color: #1a1a1a;
+    text-decoration: none;
+    border-bottom: 1px solid #f5f5f5;
+    transition: 0.2s;
+}
+
+.dropdown-item-gov:hover {
+    background-color: #e8f5e9;
+    color: #006633;
+    padding-left: 22px;
+}
+
+/* Utilities */
+.gap-1 {
+    gap: 0.25rem !important;
+}
+
+.gap-2 {
+    gap: 0.5rem !important;
+}
+
+.gap-3 {
+    gap: 1rem !important;
+}
+
+.gap-4 {
+    gap: 1.5rem !important;
+}
+
+.gap-5 {
+    gap: 3rem !important;
+}
+/* Form UI Components from User Design */
+.location-type-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 24px;
+    background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    color: #475569;
+    transition: all 0.2s ease-in-out;
+    margin-bottom: 0;
+    user-select: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.location-type-card:hover {
+    border-color: #006a4e;
+    background: #f0fdf4;
+    color: #006a4e;
+}
+
+.location-type-card.active {
+    border-color: #006a4e !important;
+    background: #e6f4ea !important;
+    color: #006a4e !important;
+    box-shadow: 0 0 0 3px rgba(0, 106, 78, 0.15);
+}
+
+.location-type-card .location-icon {
+    font-size: 16px;
+    color: #64748b;
+    transition: color 0.2s ease-in-out;
+}
+
+.location-type-card.active .location-icon {
+    color: #006a4e !important;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 750;
+    color: #006a4e;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 8px;
+    margin-top: 35px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title i {
+    color: #f42a41;
+}
+
+.btn-gov-submit {
+    background-color: #006a4e;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 12px 30px;
+    border-radius: 8px;
+    border: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-gov-submit:hover {
+    background-color: #00523b;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 82, 59, 0.2);
+}
+
+.btn-gov-cancel {
+    background-color: #f1f5f9;
+    color: #475569;
+    font-weight: 600;
+    padding: 12px 30px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-gov-cancel:hover {
+    background-color: #e2e8f0;
+    color: #1e293b;
+}
+
+.error-text {
+    font-size: 12px;
+    color: #f42a41;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+/* Select2 Custom Theme */
+.select2-container--default .select2-selection--single {
+    border-radius: 8px !important;
+    border: 1px solid #cbd5e1 !important;
+    height: 44px !important;
+    transition: all 0.2s ease-in-out;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 42px !important;
+    padding-left: 12px !important;
+    color: #1e293b !important;
+    font-size: 14px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 42px !important;
+    right: 8px !important;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #006a4e !important;
+    box-shadow: 0 0 0 3px rgba(0, 106, 78, 0.15) !important;
+}

@@ -499,7 +499,7 @@
 
 
                                             <div class="text-center">
-                                                <input type="hidden" name="union_id" value="3503">
+                                                <input type="d-none" name="union_id" value="3503">
                                                 <a href="{{ url('/') }}" class="btn btn-secondary">Cancel</a>
                                                 <button type="reset" class="btn btn-danger">Reset</button>
                                                 <button type="submit" class="btn btn-success">Submit</button>

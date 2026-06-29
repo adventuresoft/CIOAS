@@ -2,192 +2,21 @@
 @section('title', 'জমি অনুসন্ধান')
 
 @push('style')
-<style>
-    .gov-form-container {
-        max-width: 1100px;
-        margin: 0 auto;
-        background: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border-top: 5px solid #006a4e;
-        overflow: hidden;
-        margin-bottom: 30px;
-    }
 
-    .gov-header {
-        background: linear-gradient(135deg, #006a4e 0%, #00523b 100%);
-        color: #ffffff;
-        padding: 24px 30px;
-        border-bottom: 3px solid #f42a41;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 15px;
-    }
-
-    .gov-header h2 {
-        font-size: 1.6rem;
-        font-weight: 700;
-        margin: 0;
-        letter-spacing: 0.5px;
-    }
-
-    .gov-body {
-        padding: 35px;
-    }
-
-    .gov-body label {
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: #334155;
-        margin-bottom: 8px;
-        display: block;
-    }
-
-    .gov-body .form-control {
-        border-radius: 8px !important;
-        border: 1px solid #cbd5e1 !important;
-        height: 44px !important;
-        font-size: 0.95rem !important;
-        color: #1e293b !important;
-        background-color: #ffffff;
-        box-shadow: none !important;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .gov-body .form-control:focus {
-        border-color: #006a4e !important;
-        box-shadow: 0 0 0 3px rgba(0, 106, 78, 0.15) !important;
-    }
-
-    /* Select2 Custom Theme */
-    .gov-body .select2-container--default .select2-selection--single {
-        border-radius: 8px !important;
-        border: 1px solid #cbd5e1 !important;
-        height: 44px !important;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .gov-body .select2-container--default .select2-selection--single .select2-selection__rendered {
-        line-height: 42px !important;
-        padding-left: 12px !important;
-        color: #1e293b !important;
-    }
-
-    .gov-body .select2-container--default .select2-selection--single .select2-selection__arrow {
-        height: 42px !important;
-        right: 8px !important;
-    }
-
-    .gov-body .select2-container--default.select2-container--focus .select2-selection--single {
-        border-color: #006a4e !important;
-    }
-
-    .btn-gov-submit {
-        background-color: #006a4e;
-        color: #ffffff;
-        font-weight: 600;
-        padding: 12px 30px;
-        border-radius: 8px;
-        border: none;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .btn-gov-submit:hover {
-        background-color: #00523b;
-        color: #ffffff;
-        box-shadow: 0 4px 12px rgba(0, 82, 59, 0.2);
-    }
-
-    .btn-gov-cancel {
-        background-color: #f1f5f9;
-        color: #475569;
-        font-weight: 600;
-        padding: 12px 30px;
-        border-radius: 8px;
-        border: 1px solid #cbd5e1;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .btn-gov-cancel:hover {
-        background-color: #e2e8f0;
-        color: #1e293b;
-    }
-
-    /* Results Table styling */
-    .results-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    .results-table th, .results-table td {
-        border: 1px solid #e2e8f0;
-        padding: 12px 15px;
-        text-align: left;
-        font-size: 0.9rem;
-    }
-
-    .results-table th {
-        background-color: #f8fafc;
-        color: #0f766e;
-        font-weight: 700;
-    }
-
-    .results-table tbody tr:hover {
-        background-color: #f1f5f9;
-    }
-
-    @media print {
-        body * {
-            visibility: hidden;
-        }
-        #print-section, #print-section * {
-            visibility: visible;
-        }
-        #print-section {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        .no-print {
-            display: none !important;
-        }
-        .gov-form-container {
-            box-shadow: none;
-            border-top: none;
-        }
-        .gov-header {
-            color: #000;
-            background: none !important;
-            border-bottom: 2px solid #000;
-        }
-        .gov-header h2 {
-            color: #000;
-        }
-        .results-table th {
-            background-color: #eee !important;
-            color: #000 !important;
-        }
-    }
-</style>
 @endpush
 
 @section('content')
 <div class="container py-8">
-    <div class="gov-form-container no-print">
+    <div class="bg-white rounded-3 shadow-sm border-top border-5 border-success p-3 no-print">
         <!-- Header -->
-        <div class="gov-header">
-            <div class="d-flex align-items-center gap-3">
-                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white text-[#006a4e]">
+        <div class="d-d-flex align-align-items-center gap-3 border-bottom border-3 border-danger pb-3 mb-3">
+            <div class="d-d-flex align-align-items-center gap-3">
+                <div class="d-d-flex h-12 w-12 align-align-items-center justify-content-center rounded-full bg-white text-gov-green">
                     <i class="fas fa-search text-2xl"></i>
                 </div>
                 <div>
                     <h2>জমি অনুসন্ধান</h2>
-                    <p class="text-xs text-green-100 mt-1">অনুমোদিত জমির তালিকা এবং বিস্তারিত তথ্য অনুসন্ধান</p>
+                    <p class="fs-content text-green-100 mt-1">অনুমোদিত জমির তালিকা এবং বিস্তারিত তথ্য অনুসন্ধান</p>
                 </div>
             </div>
         </div>
@@ -195,7 +24,7 @@
         <!-- Form Body -->
         <div class="gov-body">
             <form action="{{ route('frontend.land.search') }}" method="GET">
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-3">
                         <label for="record">রেকর্ড</label>
                         <select class="form-control select2" name="record" id="record">
@@ -228,7 +57,7 @@
                     </div>
                 </div>
 
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-3">
                         <label for="dag_no">দাগ নং</label>
                         <input type="text" name="dag_no" value="{{ request('dag_no') }}" class="form-control" id="dag_no" placeholder="দাগ নং">
@@ -248,7 +77,7 @@
                 </div>
 
                 <!-- Footer Buttons -->
-                <div class="d-flex justify-content-end gap-3 mt-4 border-t pt-4">
+                <div class="d-d-flex justify-content-end gap-3 mt-3 border-t pt-4">
                     <a href="{{ route('frontend.land.search') }}" class="btn btn-gov-cancel">রিসেট</a>
                     <button type="submit" class="btn btn-gov-submit"><i class="fas fa-search mr-1"></i> অনুসন্ধান করুন</button>
                 </div>
@@ -257,17 +86,17 @@
     </div>
 
     @if($lands !== null)
-    <div class="gov-form-container" id="print-section">
-        <div class="gov-header flex justify-between items-center no-print">
+    <div class="bg-white rounded-3 shadow-sm border-top border-5 border-success p-3" id="print-section">
+        <div class="d-d-flex align-align-items-center gap-3 border-bottom border-3 border-danger pb-3 mb-3 d-d-flex justify-content-between align-align-items-center no-print">
             <div>
                 <h2>অনুসন্ধান ফলাফল</h2>
-                <p class="text-xs text-green-100 mt-1">মোট {{ count($lands) }} টি তথ্য পাওয়া গেছে</p>
+                <p class="fs-content text-green-100 mt-1">মোট {{ count($lands) }} টি তথ্য পাওয়া গেছে</p>
             </div>
             <button onclick="window.print()" class="btn btn-light"><i class="fas fa-print"></i> প্রিন্ট করুন</button>
         </div>
         
         <div class="gov-body">
-            <div class="text-center mb-4 d-none d-print-block">
+            <div class="text-center mb-3 d-none d-print-d-d-block">
                 <h3 style="font-weight: bold; font-size: 20px;">জমি অনুসন্ধান ফলাফল</h3>
                 <p style="margin: 0; font-size: 14px;">কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম</p>
                 <hr style="border-top: 1px solid #000; margin-top: 10px; margin-bottom: 20px;">

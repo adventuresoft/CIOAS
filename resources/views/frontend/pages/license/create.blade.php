@@ -2,229 +2,20 @@
 @section('title', 'নতুন লাইসেন্সের আবেদন')
 
 @push('style')
-<style>
-    /* Premium Smart Form Design System matching Bangladesh Gov Palette */
-    .gov-form-container {
-        max-width: 1100px;
-        margin: 0 auto;
-        background: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border-top: 5px solid #006a4e;
-        overflow: hidden;
-    }
 
-    .gov-header {
-        background: linear-gradient(135deg, #006a4e 0%, #00523b 100%);
-        color: #ffffff;
-        padding: 24px 30px;
-        border-bottom: 3px solid #f42a41;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .gov-header h2 {
-        font-size: 1.6rem;
-        font-weight: 700;
-        margin: 0;
-        letter-spacing: 0.5px;
-    }
-
-    .gov-body {
-        padding: 35px;
-    }
-
-    .gov-body label:not(.form-check-label) {
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: #334155;
-        margin-bottom: 8px;
-        display: block;
-    }
-
-    .gov-body .form-control:not(.custom-file-input) {
-        border-radius: 8px !important;
-        border: 1px solid #cbd5e1 !important;
-        height: 44px !important;
-        font-size: 0.95rem !important;
-        color: #1e293b !important;
-        background-color: #ffffff;
-        box-shadow: none !important;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .gov-body .form-control:focus:not(.custom-file-input) {
-        border-color: #006a4e !important;
-        box-shadow: 0 0 0 3px rgba(0, 106, 78, 0.15) !important;
-    }
-
-    /* Select2 Custom Theme */
-    .gov-body .select2-container--default .select2-selection--single {
-        border-radius: 8px !important;
-        border: 1px solid #cbd5e1 !important;
-        height: 44px !important;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .gov-body .select2-container--default .select2-selection--single .select2-selection__rendered {
-        line-height: 42px !important;
-        padding-left: 12px !important;
-        color: #1e293b !important;
-    }
-
-    .gov-body .select2-container--default .select2-selection--single .select2-selection__arrow {
-        height: 42px !important;
-        right: 8px !important;
-    }
-
-    .gov-body .select2-container--default.select2-container--focus .select2-selection--single {
-        border-color: #006a4e !important;
-    }
-
-    /* Location type Cards */
-    .location-type-card {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 24px;
-        background: #ffffff;
-        border: 1.5px solid #cbd5e1;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 0.9rem;
-        color: #475569;
-        transition: all 0.2s ease-in-out;
-        margin-bottom: 0;
-        user-select: none;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-
-    .location-type-card:hover {
-        border-color: #006a4e;
-        background: #f0fdf4;
-        color: #006a4e;
-    }
-
-    .location-type-card.active {
-        border-color: #006a4e !important;
-        background: #e6f4ea !important;
-        color: #006a4e !important;
-        box-shadow: 0 0 0 3px rgba(0, 106, 78, 0.15);
-    }
-
-    .location-type-card .location-icon {
-        font-size: 1.05rem;
-        color: #64748b;
-        transition: color 0.2s ease-in-out;
-    }
-
-    .location-type-card.active .location-icon {
-        color: #006a4e !important;
-    }
-
-    /* Custom File Input */
-    .custom-file {
-        height: 44px !important;
-    }
-
-    .custom-file-label {
-        border-radius: 8px !important;
-        border: 1.5px solid #cbd5e1 !important;
-        height: 44px !important;
-        line-height: 32px !important;
-        padding-left: 12px !important;
-        font-size: 0.95rem !important;
-        color: #64748b !important;
-        background: #ffffff !important;
-        display: flex;
-        align-items: center;
-        box-shadow: none !important;
-    }
-
-    .custom-file-label::after {
-        height: 41px !important;
-        line-height: 30px !important;
-        border-radius: 0 7px 7px 0 !important;
-        background-color: #f1f5f9 !important;
-        border-left: 1.5px solid #cbd5e1 !important;
-        color: #475569 !important;
-        font-weight: 600 !important;
-        padding: 4px 18px !important;
-        display: flex;
-        align-items: center;
-        content: "Browse" !important;
-    }
-
-    .section-title {
-        font-size: 1.1rem;
-        font-weight: 750;
-        color: #006a4e;
-        border-bottom: 2px solid #e2e8f0;
-        padding-bottom: 8px;
-        margin-top: 35px;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .section-title i {
-        color: #f42a41;
-    }
-
-    .btn-gov-submit {
-        background-color: #006a4e;
-        color: #ffffff;
-        font-weight: 600;
-        padding: 12px 30px;
-        border-radius: 8px;
-        border: none;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .btn-gov-submit:hover {
-        background-color: #00523b;
-        color: #ffffff;
-        box-shadow: 0 4px 12px rgba(0, 82, 59, 0.2);
-    }
-
-    .btn-gov-cancel {
-        background-color: #f1f5f9;
-        color: #475569;
-        font-weight: 600;
-        padding: 12px 30px;
-        border-radius: 8px;
-        border: 1px solid #cbd5e1;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .btn-gov-cancel:hover {
-        background-color: #e2e8f0;
-        color: #1e293b;
-    }
-
-    .error-text {
-        font-size: 0.8rem;
-        color: #f42a41;
-        margin-top: 4px;
-        font-weight: 500;
-    }
-</style>
 @endpush
 
 @section('content')
 <div class="container py-8">
-    <div class="gov-form-container">
+    <div class="bg-white rounded-3 shadow-sm border-top border-5 border-success p-3">
         <!-- Header -->
-        <div class="gov-header">
-            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white text-[#006a4e]">
+        <div class="d-d-flex align-align-items-center gap-3 border-bottom border-3 border-danger pb-3 mb-3">
+            <div class="d-d-flex h-12 w-12 align-align-items-center justify-content-center rounded-full bg-white text-gov-green">
                 <i class="fas fa-file-signature text-2xl"></i>
             </div>
             <div>
                 <h2>লাইসেন্স আবেদন ফরম</h2>
-                <p class="text-xs text-green-100 mt-1">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার - কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম</p>
+                <p class="fs-content text-green-100 mt-1">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার - কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম</p>
             </div>
         </div>
 
@@ -232,10 +23,10 @@
         <div class="gov-body">
             <form id="publicLicenseForm" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" name="id" value="">
+                <input type="d-none" name="id" value="">
 
                 <!-- Organization Name -->
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-6">
                         <label for="name">প্রতিষ্ঠানের নাম (English) <span class="text-danger">*</span></label>
                         <input type="text" required name="name" placeholder="Enter Organization Name" class="form-control" id="name">
@@ -249,7 +40,7 @@
                 </div>
 
                 <!-- Category, Subcategory, Type -->
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-4">
                         <label for="organization_category_id">ক্যাটেগরি <span class="text-danger">*</span></label>
                         <select class="form-control select2" name="organization_category_id" id="organization_category_id" required>
@@ -280,7 +71,7 @@
                 </div>
 
                 <!-- Organization Details (RJSC, Owners, Capital, Est. Year, Application Type) -->
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-4 d-none" id="rjsc_reg_no_div">
                         <label for="rjsc_reg_no">RJSC রেজিস্ট্রেশন নম্বর</label>
                         <input type="text" name="rjsc_reg_no" placeholder="RJSC Reg. No." class="form-control" id="rjsc_reg_no">
@@ -320,10 +111,10 @@
                 <h5 class="section-title"><i class="fas fa-map-marked-alt"></i> নিবন্ধিত ঠিকানা (Registered Address)</h5>
 
                 <!-- Registered Address Location Type -->
-                <div class="row align-items-center mb-4 pt-2">
+                <div class="row align-align-items-center mb-3 pt-2">
                     <label class="col-md-2 font-weight-bold">ঠিকানার ধরন:</label>
                     <div class="col-md-10">
-                        <div class="d-flex align-items-center flex-wrap gap-3">
+                        <div class="d-d-flex align-align-items-center flex-wrap gap-3">
                             <label class="location-type-card">
                                 <input type="radio" name="location_type" value="city_type" class="location-type-radio d-none">
                                 <i class="fas fa-city location-icon"></i>
@@ -345,7 +136,7 @@
                 </div>
 
                 <!-- Registered Address Details -->
-                <div class="present_address_filed d-none mb-4">
+                <div class="present_address_filed d-none mb-3">
                     <div class="row g-4 mb-3">
                         <div class="col-md-4">
                             <label for="division_id">বিভাগ</label>
@@ -449,10 +240,10 @@
                 <h5 class="section-title"><i class="fas fa-building"></i> কর্পোরেট অফিস/ফ্যাক্টরি ঠিকানা</h5>
 
                 <!-- Corporate Office Address Location Type -->
-                <div class="row align-items-center mb-4 pt-2">
+                <div class="row align-align-items-center mb-3 pt-2">
                     <label class="col-md-2 font-weight-bold">ঠিকানার ধরন:</label>
                     <div class="col-md-10">
-                        <div class="d-flex align-items-center flex-wrap gap-3">
+                        <div class="d-d-flex align-align-items-center flex-wrap gap-3">
                             <label class="location-type-card office-location-type-card">
                                 <input type="radio" name="office_location_type" value="city_type" class="office-location-type-radio d-none">
                                 <i class="fas fa-city location-icon"></i>
@@ -474,7 +265,7 @@
                 </div>
 
                 <!-- Corporate Office Address Details -->
-                <div class="office_address_field d-none mb-4">
+                <div class="office_address_field d-none mb-3">
                     <div class="row g-4 mb-3">
                         <div class="col-md-4">
                             <label for="office_division_id">বিভাগ</label>
@@ -576,7 +367,7 @@
 
                 <!-- Section: Logo Upload -->
                 <h5 class="section-title"><i class="fas fa-image"></i> লোগো আপলোড (Organization Logo)</h5>
-                <div class="row align-items-center mb-4">
+                <div class="row align-align-items-center mb-3">
                     <div class="col-md-4">
                         <label for="hotel_logo" class="font-weight-bold">প্রতিষ্ঠানের লোগো / ছবি:</label>
                     </div>
@@ -588,10 +379,10 @@
 
                 <!-- Section: Premises Ownership -->
                 <h5 class="section-title"><i class="fas fa-home"></i> প্রাঙ্গণ মালিকানা বিবরণী (Premises Ownership)</h5>
-                <div class="row align-items-center mb-4 pt-2">
+                <div class="row align-align-items-center mb-3 pt-2">
                     <label class="col-md-2 font-weight-bold">মালিকানার ধরন:</label>
                     <div class="col-md-10">
-                        <div class="d-flex align-items-center flex-wrap gap-3">
+                        <div class="d-d-flex align-align-items-center flex-wrap gap-3">
                             <label class="location-type-card premises-ownership-card">
                                 <input type="radio" name="premises_ownership" value="rented" class="premises-ownership-radio d-none">
                                 <i class="fas fa-file-contract location-icon"></i>
@@ -608,37 +399,31 @@
                 </div>
 
                 <!-- Owned Premises Docs -->
-                <div class="premises-docs premises-docs-owned d-none mb-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="premises-docs premises-docs-owned d-none mb-3">
+                    <div class="d-d-flex justify-content-between align-align-items-center mb-3">
                         <h6 class="font-weight-bold text-dark m-0"><i class="fas fa-file-alt text-success mr-1"></i> মালিকানাধীন প্রাঙ্গণের প্রামাণিক দলিলপত্র</h6>
                         <button type="button" class="btn btn-sm btn-outline-success add-doc-row" data-target="owned">
                             <i class="fas fa-plus mr-1"></i> Add Document
                         </button>
                     </div>
                     <div class="premises-docs-owned-list">
-                        <div class="row align-items-center mb-2 premises-doc-row">
+                        <div class="row align-align-items-center mb-2 premises-doc-row">
                             <div class="col-md-5 mb-2 mb-md-0">
                                 <input type="text" name="owned_document_name[]" class="form-control" value="Proof of Land Ownership" readonly>
                             </div>
                             <div class="col-md-5 mb-2 mb-md-0">
-                                <div class="custom-file">
-                                    <input type="file" name="owned_document_file[]" class="custom-file-input">
-                                    <label class="custom-file-label">Choose file...</label>
-                                </div>
+                                <input type="file" name="owned_document_file[]" class="form-control">
                             </div>
                             <div class="col-md-2 text-end">
-                                <span class="text-muted text-xs">Mandatory</span>
+                                <span class="text-muted fs-content">Mandatory</span>
                             </div>
                         </div>
-                        <div class="row align-items-center mb-2 premises-doc-row">
+                        <div class="row align-align-items-center mb-2 premises-doc-row">
                             <div class="col-md-5 mb-2 mb-md-0">
                                 <input type="text" name="owned_document_name[]" class="form-control" value="Building Approval Certificate" readonly>
                             </div>
                             <div class="col-md-5 mb-2 mb-md-0">
-                                <div class="custom-file">
-                                    <input type="file" name="owned_document_file[]" class="custom-file-input">
-                                    <label class="custom-file-label">Choose file...</label>
-                                </div>
+                                <input type="file" name="owned_document_file[]" class="form-control">
                             </div>
                             <div class="col-md-2 text-end">
                                 <button type="button" class="btn btn-outline-danger btn-sm remove-doc-row"><i class="fas fa-trash-alt"></i></button>
@@ -648,33 +433,30 @@
                 </div>
 
                 <!-- Rented Premises Docs -->
-                <div class="premises-docs premises-docs-rented d-none mb-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="premises-docs premises-docs-rented d-none mb-3">
+                    <div class="d-d-flex justify-content-between align-align-items-center mb-3">
                         <h6 class="font-weight-bold text-dark m-0"><i class="fas fa-file-contract text-success mr-1"></i> ভাড়া নেয়া প্রাঙ্গণের প্রামাণিক চুক্তি ও দলিলপত্র</h6>
                         <button type="button" class="btn btn-sm btn-outline-success add-doc-row" data-target="rented">
                             <i class="fas fa-plus mr-1"></i> Add Document
                         </button>
                     </div>
                     <div class="premises-docs-rented-list">
-                        <div class="row align-items-center mb-2 premises-doc-row">
+                        <div class="row align-align-items-center mb-2 premises-doc-row">
                             <div class="col-md-5 mb-2 mb-md-0">
                                 <input type="text" name="rented_document_name[]" class="form-control" value="Rental Agreement Document" readonly>
                             </div>
                             <div class="col-md-5 mb-2 mb-md-0">
-                                <div class="custom-file">
-                                    <input type="file" name="rented_document_file[]" class="custom-file-input">
-                                    <label class="custom-file-label">Choose file...</label>
-                                </div>
+                                <input type="file" name="rented_document_file[]" class="form-control">
                             </div>
                             <div class="col-md-2 text-end">
-                                <span class="text-muted text-xs">Mandatory</span>
+                                <span class="text-muted fs-content">Mandatory</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Footer Buttons -->
-                <div class="d-flex justify-content-end gap-3 mt-8 border-t pt-4">
+                <div class="d-d-flex justify-content-end gap-3 mt-8 border-t pt-4">
                     <a href="{{ route('home') }}" class="btn btn-gov-cancel">বাতিল করুন</a>
                     <button type="submit" class="btn btn-gov-submit">আবেদন সম্পন্ন করুন</button>
                 </div>
@@ -1037,15 +819,12 @@ $(document).ready(function() {
         let target = $(this).data('target');
         let list = $(`.premises-docs-${target}-list`);
         let newRow = `
-            <div class="row align-items-center mb-2 premises-doc-row">
+            <div class="row align-align-items-center mb-2 premises-doc-row">
                 <div class="col-md-5 mb-2 mb-md-0">
                     <input type="text" name="${target}_document_name[]" class="form-control" placeholder="Enter Document Name" required>
                 </div>
                 <div class="col-md-5 mb-2 mb-md-0">
-                    <div class="custom-file">
-                        <input type="file" name="${target}_document_file[]" class="custom-file-input" required>
-                        <label class="custom-file-label">Choose file...</label>
-                    </div>
+                    <input type="file" name="${target}_document_file[]" class="form-control" required>
                 </div>
                 <div class="col-md-2 text-end">
                     <button type="button" class="btn btn-outline-danger btn-sm remove-doc-row"><i class="fas fa-trash-alt"></i></button>

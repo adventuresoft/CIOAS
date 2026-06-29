@@ -2,131 +2,20 @@
 @section('title', 'ব্যাংক/আর্থিক প্রতিষ্ঠান আগ্নেয়াস্ত্র লাইসেন্স আবেদন ফরম')
 
 @push('style')
-<style>
-    /* Premium Smart Form Design System matching Bangladesh Gov Palette */
-    .gov-form-container {
-        max-width: 1100px;
-        margin: 0 auto;
-        background: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border-top: 5px solid #006a4e;
-        overflow: hidden;
-    }
 
-    .gov-header {
-        background: linear-gradient(135deg, #006a4e 0%, #00523b 100%);
-        color: #ffffff;
-        padding: 24px 30px;
-        border-bottom: 3px solid #f42a41;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .gov-header h2 {
-        font-size: 1.6rem;
-        font-weight: 700;
-        margin: 0;
-        letter-spacing: 0.5px;
-    }
-
-    .gov-body {
-        padding: 35px;
-    }
-
-    .gov-body label:not(.form-check-label) {
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: #334155;
-        margin-bottom: 8px;
-        display: block;
-    }
-
-    .gov-body .form-control:not(.custom-file-input) {
-        border-radius: 8px !important;
-        border: 1px solid #cbd5e1 !important;
-        height: 44px !important;
-        font-size: 0.95rem !important;
-        color: #1e293b !important;
-        background-color: #ffffff;
-        box-shadow: none !important;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .gov-body .form-control:focus:not(.custom-file-input) {
-        border-color: #006a4e !important;
-        box-shadow: 0 0 0 3px rgba(0, 106, 78, 0.15) !important;
-    }
-
-    .section-title {
-        font-size: 1.1rem;
-        font-weight: 750;
-        color: #006a4e;
-        border-bottom: 2px solid #e2e8f0;
-        padding-bottom: 8px;
-        margin-top: 35px;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .section-title i {
-        color: #f42a41;
-    }
-
-    .btn-gov-submit {
-        background-color: #006a4e;
-        color: #ffffff;
-        font-weight: 600;
-        padding: 12px 30px;
-        border-radius: 8px;
-        border: none;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .btn-gov-submit:hover {
-        background-color: #00523b;
-        color: #ffffff;
-        box-shadow: 0 4px 12px rgba(0, 82, 59, 0.2);
-    }
-
-    .btn-gov-cancel {
-        background-color: #f1f5f9;
-        color: #475569;
-        font-weight: 600;
-        padding: 12px 30px;
-        border-radius: 8px;
-        border: 1px solid #cbd5e1;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .btn-gov-cancel:hover {
-        background-color: #e2e8f0;
-        color: #1e293b;
-    }
-
-    .error-text {
-        font-size: 0.8rem;
-        color: #f42a41;
-        margin-top: 4px;
-        font-weight: 500;
-    }
-</style>
 @endpush
 
 @section('content')
 <div class="container py-8">
-    <div class="gov-form-container">
+    <div class="bg-white rounded-3 shadow-sm border-top border-5 border-success p-3">
         <!-- Header -->
-        <div class="gov-header">
-            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white text-[#006a4e]">
+        <div class="d-d-flex align-align-items-center gap-3 border-bottom border-3 border-danger pb-3 mb-3">
+            <div class="d-d-flex h-12 w-12 align-align-items-center justify-content-center rounded-full bg-white text-gov-green">
                 <i class="fas fa-university text-2xl"></i>
             </div>
             <div>
                 <h2>ব্যাংক/আর্থিক প্রতিষ্ঠানের আগ্নেয়াস্ত্র লাইসেন্স আবেদন ফরম</h2>
-                <p class="text-xs text-green-100 mt-1">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার - কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম (পরিশিষ্ট-৬)</p>
+                <p class="fs-content text-green-100 mt-1">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার - কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম (পরিশিষ্ট-৬)</p>
             </div>
         </div>
 
@@ -137,7 +26,7 @@
 
                 <!-- 1. Institution Details -->
                 <h5 class="section-title"><i class="fas fa-building"></i> প্রতিষ্ঠানের বিবরণ</h5>
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-4">
                         <label for="org_name">প্রতিষ্ঠানের নাম <span class="text-danger">*</span></label>
                         <input type="text" name="org_name" class="form-control" id="org_name" required placeholder="প্রতিষ্ঠানের নাম">
@@ -154,7 +43,7 @@
                     </div>
                 </div>
 
-                <div class="row mb-4">
+                <div class="row mb-3">
                     <div class="col-md-12">
                         <label for="org_address">প্রতিষ্ঠানের ঠিকানা</label>
                         <textarea name="org_address" class="form-control" id="org_address" rows="2" style="height: auto !important;" placeholder="প্রতিষ্ঠানের ঠিকানা"></textarea>
@@ -162,7 +51,7 @@
                     </div>
                 </div>
 
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-6">
                         <label for="phone">মোবাইল নম্বর <span class="text-danger">*</span></label>
                         <input type="text" name="phone" class="form-control" id="phone" required placeholder="মোবাইল নম্বর">
@@ -177,7 +66,7 @@
 
                 <!-- 2. Security & Activities -->
                 <h5 class="section-title"><i class="fas fa-shield-alt"></i> নিরাপত্তা ও কার্যক্রম</h5>
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-4">
                         <label for="vault_limit">প্রতিষ্ঠানের সিন্দুক সীমা <span class="text-danger">*</span></label>
                         <select name="vault_limit" class="form-control select2" id="vault_limit" required>
@@ -203,7 +92,7 @@
                     </div>
                 </div>
 
-                <div class="row mb-4">
+                <div class="row mb-3">
                     <div class="col-md-12">
                         <label for="current_security_description">বর্তমানে কিভাবে নিরাপত্তা রক্ষা করা হচ্ছে</label>
                         <textarea name="current_security_description" class="form-control" id="current_security_description" rows="2" style="height: auto !important;" placeholder="বর্তমান নিরাপত্তা ব্যবস্থার বিবরণ"></textarea>
@@ -213,7 +102,7 @@
 
                 <!-- 3. Management & Tax -->
                 <h5 class="section-title"><i class="fas fa-users"></i> ব্যবস্থাপনা ও আয়কর</h5>
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-6">
                         <label for="owner_or_ceo_details">মালিক/নির্বাহী প্রধানের নাম, বর্তমান ঠিকানা ও স্থায়ী ঠিকানা</label>
                         <textarea name="owner_or_ceo_details" class="form-control" id="owner_or_ceo_details" rows="2" style="height: auto !important;" placeholder="প্রধান নির্বাহীর বিস্তারিত তথ্য"></textarea>
@@ -226,7 +115,7 @@
                     </div>
                 </div>
 
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-6">
                         <label for="tax_details">আয়কর সংক্রান্ত তথ্যাদির বিস্তারিত বিবরণ</label>
                         <textarea name="tax_details" class="form-control" id="tax_details" rows="2" style="height: auto !important;" placeholder="টিআইএন (TIN) ও আয়কর সংক্রান্ত তথ্য"></textarea>
@@ -234,17 +123,14 @@
                     </div>
                     <div class="col-md-6">
                         <label for="rental_agreement_details">ভাড়াকৃত বাড়ির ক্ষেত্রে বাড়ি ভাড়ার চুক্তি পত্র</label>
-                        <div class="custom-file">
-                            <input type="file" name="rental_agreement_details" class="custom-file-input" id="rental_agreement_details" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-                            <label class="custom-file-label" for="rental_agreement_details">Choose file...</label>
-                        </div>
+                        <input type="file" name="rental_agreement_details" class="form-control" id="rental_agreement_details" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
                         <small class="error-text error rental_agreement_details_error"></small>
                     </div>
                 </div>
 
                 <!-- 4. Weapon Requirements -->
                 <h5 class="section-title"><i class="fas fa-crosshairs"></i> আগ্নেয়াস্ত্রের প্রয়োজনীয়তা</h5>
-                <div class="row g-4 mb-4">
+                <div class="row g-4 mb-3">
                     <div class="col-md-4">
                         <label for="weapon_count_requested">প্রার্থীত আগ্নেয়াস্ত্রের সংখ্যা <span class="text-danger">*</span></label>
                         <input type="number" name="weapon_count_requested" class="form-control" id="weapon_count_requested" value="1" min="1" required>
@@ -269,7 +155,7 @@
                     </div>
                 </div>
 
-                <div class="row mb-4">
+                <div class="row mb-3">
                     <div class="col-md-12">
                         <label for="existing_weapons_details">বর্তমানে প্রতিষ্ঠানে যে সকল আগ্নেয়াস্ত্র আছে তার বিবরণ</label>
                         <textarea name="existing_weapons_details" class="form-control" id="existing_weapons_details" rows="2" style="height: auto !important;" placeholder="পূর্বে নেওয়া আগ্নেয়াস্ত্রের বিবরণ (যদি থাকে)"></textarea>
@@ -280,8 +166,8 @@
                 <!-- 5. Guard Details -->
                 <h5 class="section-title"><i class="fas fa-user-shield"></i> গার্ডের জীবন বৃত্তান্ত</h5>
                 <div id="guards_container">
-                    <div class="guard-block border p-4 mb-4 rounded bg-light position-relative" data-index="0">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="guard-d-block border p-3 mb-3 rounded bg-light position-relative" data-index="0">
+                        <div class="d-d-flex justify-content-between align-align-items-center mb-3">
                             <h6 class="font-weight-bold text-success mb-0"><i class="fas fa-user"></i> গার্ড #১</h6>
                         </div>
 
@@ -353,7 +239,7 @@
                 </div>
 
                 <!-- Footer Buttons -->
-                <div class="d-flex justify-content-end gap-3 mt-8 border-t pt-4">
+                <div class="d-d-flex justify-content-end gap-3 mt-8 border-t pt-4">
                     <a href="{{ route('frontend.gun-license.select') }}" class="btn btn-gov-cancel">বাতিল করুন</a>
                     <button type="submit" class="btn btn-gov-submit">আবেদন সম্পন্ন করুন</button>
                 </div>
@@ -408,8 +294,8 @@ $(document).ready(function() {
     let guardIndex = 1;
     $('#add_more_guard').on('click', function() {
         let template = `
-        <div class="guard-block border p-4 mb-4 rounded bg-light position-relative" data-index="${guardIndex}">
-            <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="guard-d-block border p-3 mb-3 rounded bg-light position-relative" data-index="${guardIndex}">
+            <div class="d-d-flex justify-content-between align-align-items-center mb-3">
                 <h6 class="font-weight-bold text-success mb-0"><i class="fas fa-user"></i> গার্ড #${guardIndex + 1}</h6>
                 <button type="button" class="btn btn-sm btn-outline-danger remove-guard"><i class="fas fa-trash-alt"></i> মুছুন</button>
             </div>
@@ -477,18 +363,18 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '.remove-guard', function() {
-        $(this).closest('.guard-block').remove();
+        $(this).closest('.guard-d-block').remove();
         reIndexGuards();
     });
 
     function reIndexGuards() {
         guardIndex = 0;
-        $('#guards_container .guard-block').each(function() {
-            let block = $(this);
-            block.attr('data-index', guardIndex);
-            block.find('h6').html(`<i class="fas fa-user"></i> গার্ড #${guardIndex + 1}`);
+        $('#guards_container .guard-d-block').each(function() {
+            let d-d-block = $(this);
+            d-d-block.attr('data-index', guardIndex);
+            d-d-block.find('h6').html(`<i class="fas fa-user"></i> গার্ড #${guardIndex + 1}`);
             
-            block.find('input, select, textarea').each(function() {
+            d-d-block.find('input, select, textarea').each(function() {
                 let input = $(this);
                 let name = input.attr('name');
                 if (name) {
@@ -497,7 +383,7 @@ $(document).ready(function() {
                 }
             });
             
-            block.find('.error-text').each(function() {
+            d-d-block.find('.error-text').each(function() {
                 let errorSpan = $(this);
                 let classList = errorSpan.attr('class').split(' ');
                 let newClassList = classList.map(cls => {

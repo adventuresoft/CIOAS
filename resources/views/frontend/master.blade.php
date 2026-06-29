@@ -17,9 +17,8 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('plugins')}}/select2/css/select2.min.css">
     <link rel="stylesheet" href="{{ asset('plugins')}}/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-     <script src="https://cdn.tailwindcss.com"></script>
-
     
+    <link rel="stylesheet" href="{{ asset('frontend/css/custom-bootstrap.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('assets/style/global.css') }}" />
     <style type="text/css">
         html,body{
@@ -55,6 +54,7 @@
             border-radius: .25rem;
             appearance: none;
         }
+
     </style>
 
     @stack('style')
@@ -67,10 +67,10 @@
         </form>
     @endauth
 
-    <div class="wrap">
+    <div style="background-color: #f4faeb;">
         @include('frontend.layouts.header')
         <!-- Main Content Section -->
-        <section id="main-content" class="max-w-7xl mx-auto">
+        <section id="main-content" class="container pt-3">
             @yield('content')
         </section>
         <!-- Footer Top Section-->

@@ -13,9 +13,9 @@
                     <div class="col-md-6">
 
                         <form action="https://api.mobireach.com.bd/SendTextMessage" method="GET">
-                            <input class="form-control" type="hidden" name="Username" value="advsoft"/>
-                            <input class="form-control" type="hidden" name="Password" value="Dhaka@0088"/>
-                            <input class="form-control" type="hidden" name="From" value="8801847050122"/>
+                            <input class="form-control" type="d-none" name="Username" value="advsoft"/>
+                            <input class="form-control" type="d-none" name="Password" value="Dhaka@0088"/>
+                            <input class="form-control" type="d-none" name="From" value="8801847050122"/>
                             <input class="form-control" type="text" name="To" value="" />
                             <input class="form-control" type="text" name="Message" value=""/>
                             <input class="btn btn-success" type="submit" value="Submit" />
