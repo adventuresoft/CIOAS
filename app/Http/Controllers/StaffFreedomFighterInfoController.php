@@ -82,7 +82,7 @@ class StaffFreedomFighterInfoController extends Controller
                     $data['status'] = true;
                     $data['message'] = "Freedom fighter information submitted successfully!";
                     $data['code'] = 200;
-                    $data['redirect_url'] = route('staff.julyFigher', $request->user_id);
+                    $data['redirect_url'] = route('staff.julyFighter', $request->user_id);
                     return $data;
                 } catch (\Throwable $th) {
                     $data['status'] = false;
@@ -97,14 +97,14 @@ class StaffFreedomFighterInfoController extends Controller
 
     }
 
-    public function julyFigher($id)
+    public function julyFighter($id)
     {
         $data['user'] = User::with('freedomFighterInfo')->find($id);
         $data['religions'] = Religion::where('status', true)->get();
-        return view('backend.pages.staff.tabs.july_figher', $data);
+        return view('backend.pages.staff.tabs.july_fighter', $data);
     }
 
-    public function julyFigherStore(Request $request)
+    public function julyFighterStore(Request $request)
     {
         $validate = Validator::make($request->all(), [
             'user_id' => 'required',

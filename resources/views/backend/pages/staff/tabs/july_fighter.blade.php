@@ -26,18 +26,18 @@
                             <h3 class="card-title">
                                 @include('backend.pages.staff.tabs.tab_header', [
                                     'user' => $user,
-                                    'active_tab' => 'july_figher',
+                                    'active_tab' => 'july_fighter',
                                 ])
                             </h3>
                         </div>
 
-                        <form class="form-horizontal" id="peopleJulyFigherForm" method="POST" enctype="multipart/form-data" novalidate>
+                        <form class="form-horizontal" id="peopleJulyFighterForm" method="POST" enctype="multipart/form-data" novalidate>
                             @csrf
                             <input type="hidden" name="user_id" value="{{ $user->id }}">
 
                             <div class="card-body">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Is July Figher?</label>
+                                    <label class="col-sm-3 col-form-label">Is July Fighter?</label>
                                     <div class="col-sm-9 px-2">
                                         <label for="july-fighter-no">
                                             <input type="radio" value="0" {{ (isset($user->freedomFighterInfo->is_july_fighter) ? (($user->freedomFighterInfo->is_july_fighter == 0) ? 'checked' : '') : 'checked') }} id="july-fighter-no" name="is_july_fighter">
@@ -88,6 +88,14 @@
                                             <small class="text-danger error july_contribution_description-error july_contribution_description_error"></small>
                                         </div>
                                     </div>
+
+                                    <div class="form-group row">
+                                        <label for="july_fighter_id" class="col-sm-3 col-form-label">July Fighter ID</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="july_fighter_id" value="{{ $user->freedomFighterInfo->july_fighter_id ?? '' }}" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="Enter July Fighter ID" class="form-control" id="july_fighter_id">
+                                            <small class="text-danger error july_fighter_id-error july_fighter_id_error"></small>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -113,7 +121,7 @@
 @push('script')
     <script>
         $(document).ready(function() {
-            $('#peopleJulyFigherForm').on('submit', function(e) {
+            $('#peopleJulyFighterForm').on('submit', function(e) {
                 e.preventDefault();
                 let thisForm = $(this);
 
@@ -132,7 +140,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: "{{ route('staff.julyFigherStore') }}",
+                        url: "{{ route('staff.julyFighterStore') }}",
                         data: new FormData(thisForm[0]),
                         dataType: 'json',
                         contentType: false,

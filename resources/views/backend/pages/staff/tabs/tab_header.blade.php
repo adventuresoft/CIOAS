@@ -99,7 +99,7 @@
         'property' => ['label' => 'PROPERTY', 'icon' => 'fas fa-building', 'route' => 'staff.property'],
         'disability' => ['label' => 'DISABILITY', 'icon' => 'fas fa-wheelchair', 'route' => 'staff.disability'],
         'freedom' => ['label' => 'FREEDOM FIGHTER', 'icon' => 'fas fa-medal', 'route' => 'staff.freedom'],
-        'july_figher' => ['label' => 'JULY FIGHER', 'icon' => 'fas fa-flag', 'route' => 'staff.julyFigher'],
+        'july_fighter' => ['label' => 'JULY FIGHTER', 'icon' => 'fas fa-flag', 'route' => 'staff.julyFighter'],
     ];
 
     $step_keys = array_keys($steps);
