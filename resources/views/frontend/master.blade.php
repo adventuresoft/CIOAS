@@ -70,7 +70,7 @@
     <div class="wrap">
         @include('frontend.layouts.header')
         <!-- Main Content Section -->
-        <section id="main-content" class="p-5">
+        <section id="main-content" class="max-w-7xl mx-auto">
             @yield('content')
         </section>
         <!-- Footer Top Section-->

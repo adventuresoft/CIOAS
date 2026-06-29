@@ -1,643 +1,66 @@
 <style>
-    /* ═══════════════════════════════════════════════
-       CIOAS — Government-Style Header
-       Bangladesh Gov Office aesthetic + Material Design
-    ═══════════════════════════════════════════════ */
-
     @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
-    /* ── Variables ── */
-    :root {
-        --gov-green: #006633;
-        --gov-green-dark: #004d26;
-        --gov-green-mid: #007a3d;
-        --gov-red: #cc0000;
-        --gov-gold: #f0a500;
-        --top-bar-bg: #00521a;
-        --nav-bg: #006633;
-        --nav-border: #007a3d;
-        --text-white: #ffffff;
-        --text-light: rgba(255, 255, 255, 0.82);
-        --font-bn: 'Hind Siliguri', sans-serif;
-        --font-en: 'Inter', sans-serif;
-    }
-
-    /* ── Reset for header ── */
-    .site-header * {
-        box-sizing: border-box;
-    }
-
-    .site-header {
-        font-family: var(--font-en);
-    }
-    
-    .site-header .container-fluid {
-        font-size: 12px;
-    }
-
-    /* ══ 1. TOP UTILITY BAR ══ */
-    .gov-top-bar {
-        background: var(--top-bar-bg);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        padding: 5px 0;
-    }
-
-    .gov-top-bar .container-fluid {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
-
-    .gov-top-bar-inner {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-    }
-
-    /* Date & Time */
-    .gov-datetime {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        font-size: 12px;
-        color: var(--text-light);
-        font-family: var(--font-en);
-    }
-
-    .gov-datetime span {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .gov-datetime i {
-        opacity: 0.7;
-        font-size: 10px;
-    }
-
-    /* Top right links */
-    .gov-top-links {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    .gov-top-links li a {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        color: var(--text-light);
-        font-size: 12px;
-        text-decoration: none;
-        padding: 3px 10px;
-        border-radius: 3px;
-        transition: background 0.2s, color 0.2s;
-        font-family: var(--font-en);
-    }
-
-    .gov-top-links li a:hover {
-        background: rgba(255, 255, 255, 0.12);
-        color: #fff;
-    }
-
-    .gov-top-links .sep {
-        width: 1px;
-        height: 12px;
-        background: rgba(255, 255, 255, 0.2);
-    }
-
-    .gov-top-links .btn-login {
-        background: rgba(255, 255, 255, 0.12);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #fff !important;
-        font-weight: 500;
-    }
-
-    .gov-top-links .btn-login:hover {
-        background: rgba(255, 255, 255, 0.22) !important;
-    }
-
-    /* ══ 2. MAIN HEADER (Emblem + Title) ══ */
-    .gov-main-header {
-        background: #fff;
-        border-bottom: 3px solid var(--gov-green);
-        padding: 14px 0;
-        position: relative;
-    }
-
-    .gov-main-header .container-fluid {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
-
-    .gov-brand {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .gov-emblem {
-        width: 72px;
-        height: 72px;
-        flex-shrink: 0;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
-        transition: transform 0.3s ease;
-    }
-
-    .gov-emblem:hover {
-        transform: scale(1.04);
-    }
-
-    .gov-title-block {
-        flex: 1;
-    }
-
-    .gov-title-bn {
-        font-family: var(--font-bn);
-        font-size: 22px;
-        font-weight: 700;
-        color: var(--gov-green-dark);
-        line-height: 1.2;
-        margin: 0 0 2px;
-        letter-spacing: 0.2px;
-    }
-
-    .gov-title-en {
-        font-family: var(--font-en);
-        font-size: 15px;
-        font-weight: 600;
-        color: #1a237e;
-        margin: 0 0 3px;
-        line-height: 1.3;
-    }
-
-    .gov-subtitle {
-        font-family: var(--font-en);
-        font-size: 12px;
-        color: #757575;
-        margin: 0;
-        line-height: 1.5;
-    }
-
-    /* Divider line between emblem and title */
-    .gov-brand-divider {
-        width: 2px;
-        height: 60px;
-        background: linear-gradient(to bottom, transparent, var(--gov-green), transparent);
-        flex-shrink: 0;
-    }
-
-    /* Right side of main header */
-    .gov-header-right {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 6px;
-    }
-
-    .gov-helpline {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: #fff3e0;
-        border: 1px solid #ffe0b2;
-        border-radius: 6px;
-        padding: 6px 14px;
-        font-size: 12px;
-        color: #e65100;
-        font-weight: 600;
-        text-decoration: none;
-        transition: background 0.2s;
-    }
-
-    .gov-helpline:hover {
-        background: #ffe0b2;
-    }
-
-    .gov-helpline i {
-        font-size: 14px;
-    }
-
-    .gov-access-btns {
-        display: flex;
-        gap: 6px;
-    }
-
-    .gov-access-btns a {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        font-size: 12px;
-        font-weight: 600;
-        padding: 5px 12px;
-        border-radius: 4px;
-        text-decoration: none;
-        transition: all 0.2s;
-        font-family: var(--font-bn);
-    }
-
-    .gov-btn-citizen {
-        background: var(--gov-green);
-        color: #fff;
-        border: 1px solid var(--gov-green-dark);
-    }
-
-    .gov-btn-citizen:hover {
-        background: var(--gov-green-dark);
-        color: #fff;
-    }
-
-    .gov-btn-admin {
-        background: #1a237e;
-        color: #fff;
-        border: 1px solid #0d1057;
-    }
-
-    .gov-btn-admin:hover {
-        background: #0d1057;
-        color: #fff;
-    }
-
-    /* ══ 3. NAVIGATION BAR ══ */
-    .gov-navbar {
-        background: var(--nav-bg);
-        border-top: 1px solid var(--nav-border);
-        border-bottom: 2px solid var(--gov-gold);
-        position: relative;
-        z-index: 100;
-        transition: all 0.3s ease;
-    }
-    
     .sticky-navbar {
         position: fixed !important;
         top: 0;
         left: 0;
         width: 100%;
         z-index: 1030;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         animation: stickyFade 0.3s ease-in-out;
         -webkit-font-smoothing: antialiased;
     }
 
     @keyframes stickyFade {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-
-    .gov-navbar .container-fluid {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
-
-    .gov-nav-list {
-        display: flex;
-        align-items: center;
-        gap: 0;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    .gov-nav-list>li>a {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        color: rgba(255, 255, 255, 0.9);
-        font-size: 16px;
-        font-weight: 500;
-        padding: 11px 16px;
-        text-decoration: none;
-        position: relative;
-        transition: color 0.2s, background 0.2s;
-        font-family: var(--font-bn);
-        white-space: nowrap;
-        letter-spacing: 0.2px;
-    }
-
-    .gov-nav-list>li>a::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 16px;
-        right: 16px;
-        height: 2px;
-        background: var(--gov-gold);
-        transform: scaleX(0);
-        transition: transform 0.25s ease;
-        border-radius: 2px;
-    }
-
-    .gov-nav-list>li>a:hover,
-    .gov-nav-list>li.active>a {
-        color: #fff;
-        background: rgba(255, 255, 255, 0.08);
-    }
-
-    .gov-nav-list>li>a:hover::after,
-    .gov-nav-list>li.active>a::after {
-        transform: scaleX(1);
-    }
-
-    .gov-nav-list>li>a i {
-        font-size: 12px;
-        opacity: 0.85;
-    }
-
-    /* Home icon link */
-    .gov-nav-home a {
-        padding: 11px 14px !important;
-        font-size: 16px !important;
-    }
-
-    /* Dropdown */
-    .gov-nav-list .has-dropdown {
-        position: relative;
-    }
-
-    .gov-nav-list .has-dropdown>a .caret-icon {
-        font-size: 9px;
-        margin-left: 2px;
-        opacity: 0.7;
-        transition: transform 0.2s;
-    }
-
-    .gov-nav-list .has-dropdown:hover>a .caret-icon {
-        transform: rotate(180deg);
-    }
-
-    .gov-dropdown {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: #fff;
-        border-radius: 0 0 8px 8px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-        min-width: 200px;
-        z-index: 200;
-        border-top: 2px solid var(--gov-gold);
-        overflow: hidden;
-    }
-
-    .gov-nav-list .has-dropdown:hover .gov-dropdown {
-        display: block;
-    }
-
-    .gov-dropdown a {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 16px;
-        font-size: 15px;
-        color: #1a1a1a;
-        text-decoration: none;
-        font-family: var(--font-bn);
-        transition: background 0.18s, color 0.18s;
-        border-bottom: 1px solid #f5f5f5;
-    }
-
-    .gov-dropdown a:last-child {
-        border-bottom: none;
-    }
-
-    .gov-dropdown a:hover {
-        background: #e8f5e9;
-        color: var(--gov-green);
-        padding-left: 22px;
-    }
-
-    .gov-dropdown a i {
-        color: var(--gov-green);
-        font-size: 11px;
-    }
-
-    /* Right push in navbar */
-    .gov-nav-spacer {
-        flex: 1;
-    }
-
-    .gov-nav-list .nav-login-btn a {
-        background: rgba(255, 255, 255, 0.12);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        border-radius: 4px;
-        padding: 7px 14px !important;
-        font-size: 12px !important;
-        margin: 4px 0;
-    }
-
-    .gov-nav-list .nav-login-btn a:hover {
-        background: rgba(255, 255, 255, 0.2) !important;
-    }
-
-    .gov-nav-list .nav-login-btn a::after {
-        display: none;
-    }
-
-    /* ══ 4. MOBILE ══ */
-    .gov-mobile-toggle {
-        display: none;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 8px;
-        color: #fff;
-        font-size: 22px;
-    }
-
-    .gov-mobile-drawer {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 280px;
-        height: 100vh;
-        background: #fff;
-        z-index: 9999;
-        transform: translateX(-100%);
-        transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
-        overflow-y: auto;
-    }
-
-    .gov-mobile-drawer.open {
-        transform: translateX(0);
-    }
-
-    .gov-drawer-overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 9998;
-        backdrop-filter: blur(2px);
-    }
-
-    .gov-drawer-overlay.open {
-        display: block;
-    }
-
-    .gov-drawer-header {
-        background: var(--gov-green);
-        padding: 16px 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .gov-drawer-header span {
-        color: #fff;
-        font-weight: 600;
-        font-size: 14px;
-        font-family: var(--font-bn);
-    }
-
-    .gov-drawer-close {
-        background: rgba(255, 255, 255, 0.15);
-        border: none;
-        cursor: pointer;
-        color: #fff;
-        font-size: 18px;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background 0.2s;
-    }
-
-    .gov-drawer-close:hover {
-        background: rgba(255, 255, 255, 0.25);
-    }
-
-    .gov-drawer-body {
-        padding: 12px 0;
-    }
-
-    .gov-drawer-link {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 12px 20px;
-        font-size: 14px;
-        color: #1a1a1a;
-        text-decoration: none;
-        border-bottom: 1px solid #f5f5f5;
-        font-family: var(--font-bn);
-        transition: background 0.18s, color 0.18s;
-    }
-
-    .gov-drawer-link i {
-        width: 18px;
-        text-align: center;
-        color: var(--gov-green);
-    }
-
-    .gov-drawer-link:hover {
-        background: #e8f5e9;
-        color: var(--gov-green);
-    }
-
-    .gov-drawer-section {
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        color: #9e9e9e;
-        padding: 14px 20px 6px;
-    }
-
-    /* ══ Responsive ══ */
-    @media (max-width: 991px) {
-        .gov-navbar .gov-nav-list {
-            display: none;
+        from {
+            opacity: 0;
         }
 
-        .gov-mobile-toggle {
-            display: flex;
-        }
-
-        .gov-navbar .container-fluid {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 6px 20px;
-        }
-
-        .gov-navbar-brand-mobile {
-            color: #fff;
-            font-size: 14px;
-            font-weight: 600;
-            font-family: var(--font-bn);
-        }
-
-        .gov-header-right {
-            display: none;
-        }
-
-        .gov-title-bn {
-            font-size: 16px;
-        }
-
-        .gov-title-en {
-            font-size: 12px;
-        }
-
-        .gov-emblem {
-            width: 52px;
-            height: 52px;
-        }
-
-        .gov-brand-divider {
-            height: 44px;
-        }
-
-        .gov-datetime {
-            display: none;
-        }
-    }
-
-    @media (max-width: 575px) {
-        .gov-top-links {
-            display: none;
+        to {
+            opacity: 1;
         }
     }
 </style>
 
-<div class="site-header">
+<div class="font-['Inter',_sans-serif]">
 
     {{-- ══ TOP UTILITY BAR ══ --}}
-    <div class="gov-top-bar">
-        <div class="container-fluid">
-            <div class="gov-top-bar-inner">
-                <div class="gov-datetime">
-                    <span><i class="far fa-calendar-alt"></i> <span id="govDate"></span></span>
-                    <span><i class="far fa-clock"></i> <span id="govTime"></span></span>
+    <div class="bg-[#00521a] border-b border-white/10 py-1.5">
+        <div class="container-fluid max-w-7xl mx-auto text-[12px]">
+            <div class="flex items-center justify-between gap-3">
+                <div class="hidden md:flex items-center gap-4 text-[12px] text-white/80 font-['Inter',_sans-serif]">
+                    <span class="flex items-center gap-1.5"><i class="far fa-calendar-alt opacity-70 text-[10px]"></i>
+                        <span id="govDate"></span></span>
+                    <span class="flex items-center gap-1.5"><i class="far fa-clock opacity-70 text-[10px]"></i> <span
+                            id="govTime"></span></span>
                 </div>
-                <ul class="gov-top-links">
-                    <li><a href="{{ url('/') }}"><i class="fas fa-home"></i> Home</a></li>
+                <ul class="hidden sm:flex items-center gap-1.5 m-0 p-0 list-none">
+                    <li><a href="{{ url('/') }}"
+                            class="inline-flex items-center gap-1.5 text-white/80 text-[12px] no-underline py-[3px] px-2.5 rounded-[3px] transition-colors duration-200 font-['Inter',_sans-serif] hover:bg-white/10 hover:text-white"><i
+                                class="fas fa-home opacity-70 text-[10px]"></i> Home</a></li>
                     <li>
-                        <div class="sep"></div>
+                        <div class="w-[1px] h-3 bg-white/20"></div>
                     </li>
-                    <li><a href="#" title="Sitemap"><i class="fas fa-sitemap"></i> Sitemap</a></li>
+                    <li><a href="#" title="Sitemap"
+                            class="inline-flex items-center gap-1.5 text-white/80 text-[12px] no-underline py-[3px] px-2.5 rounded-[3px] transition-colors duration-200 font-['Inter',_sans-serif] hover:bg-white/10 hover:text-white"><i
+                                class="fas fa-sitemap opacity-70 text-[10px]"></i> Sitemap</a></li>
                     <li>
-                        <div class="sep"></div>
+                        <div class="w-[1px] h-3 bg-white/20"></div>
                     </li>
                     @guest
-                        <li><a href="{{ route('frontend.user.register') }}"><i class="fas fa-user-plus"></i> Citizen
+                        <li><a href="{{ route('frontend.user.register') }}"
+                                class="inline-flex items-center gap-1.5 text-white/80 text-[12px] no-underline py-[3px] px-2.5 rounded-[3px] transition-colors duration-200 font-['Inter',_sans-serif] hover:bg-white/10 hover:text-white"><i
+                                    class="fas fa-user-plus opacity-70 text-[10px]"></i> Citizen
                                 Register</a></li>
                         <li>
-                            <div class="sep"></div>
+                            <div class="w-[1px] h-3 bg-white/20"></div>
                         </li>
                     @endguest
                     <li>
-                        <a href="{{ url('/') }}/login" class="btn-login">
-                            <i class="fas fa-sign-in-alt"></i> System Login
+                        <a href="{{ url('/') }}/login"
+                            class="inline-flex items-center gap-1.5 text-[12px] no-underline py-[3px] px-2.5 rounded-[3px] transition-colors duration-200 font-['Inter',_sans-serif] bg-white/10 border border-white/20 text-white !font-medium hover:!bg-white/20">
+                            <i class="fas fa-sign-in-alt opacity-70 text-[10px]"></i> System Login
                         </a>
                     </li>
                 </ul>
@@ -646,21 +69,29 @@
     </div>
 
     {{-- ══ MAIN HEADER — Emblem + Title ══ --}}
-    <div class="gov-main-header">
-        <div class="container-fluid">
+    <div class="bg-white border-b-[3px] border-[#006633] py-3.5 relative">
+        <div class="container-fluid max-w-7xl mx-auto text-[12px]">
             <div class="d-flex align-items-center justify-content-between">
 
                 {{-- Brand --}}
-                <div class="gov-brand">
-                    <a href="{{ url('/') }}" style="display: flex; align-items: center; gap: 20px; text-decoration: none;">
-                        <img src="{{ asset('assets/images/logo/govt-bd-logo.png') }}" class="gov-emblem"
+                <div class="flex items-center gap-5">
+                    <a href="{{ url('/') }}" class="flex items-center gap-5 no-underline">
+                        <img src="{{ asset('assets/images/logo/govt-bd-logo.png') }}"
+                            class="w-[52px] h-[52px] lg:w-[72px] lg:h-[72px] shrink-0 drop-shadow-md transition-transform duration-300 hover:scale-[1.04]"
                             alt="Government of Bangladesh Emblem" onerror="this.style.display='none'">
-                        <div class="gov-brand-divider d-none d-md-block"></div>
-                        <div class="gov-title-block">
-                            <p class="gov-title-bn">কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম</p>
-                            <p class="gov-title-en">Central Integrated Office Automation System</p>
-                            <p class="gov-subtitle">
-                                <i class="fas fa-map-marker-alt me-1" style="color:#c62828;font-size:10px;"></i>
+                        <div
+                            class="w-[2px] h-[44px] lg:h-[60px] bg-gradient-to-b from-transparent via-[#006633] to-transparent shrink-0 hidden md:block">
+                        </div>
+                        <div class="flex-1">
+                            <p
+                                class="font-['Hind_Siliguri',_sans-serif] text-[16px] lg:text-[22px] font-bold text-[#004d26] leading-tight m-0 mb-[2px] tracking-[0.2px]">
+                                কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম</p>
+                            <p
+                                class="font-['Inter',_sans-serif] text-[12px] lg:text-[15px] font-semibold text-[#1a237e] m-0 mb-[3px] leading-snug">
+                                Central Integrated Office Automation System</p>
+                            <p
+                                class="font-['Inter',_sans-serif] text-[12px] text-[#757575] m-0 leading-relaxed hidden sm:block">
+                                <i class="fas fa-map-marker-alt me-1 text-[#c62828] text-[10px]"></i>
                                 Local Government Division, Ministry of Local Government, Bangladesh
                             </p>
                         </div>
@@ -668,12 +99,12 @@
                 </div>
 
                 {{-- Right Side --}}
-                <div class="gov-header-right">
-                    <a href="tel:16100" class="gov-helpline">
-                        <i class="fas fa-phone-alt"></i>
+                <div class="hidden lg:flex flex-col items-end gap-1.5">
+                    <a href="tel:16100"
+                        class="inline-flex items-center gap-2 bg-[#fff3e0] border border-[#ffe0b2] rounded-md px-3.5 py-1.5 text-[12px] text-[#e65100] font-semibold no-underline transition-colors hover:bg-[#ffe0b2]">
+                        <i class="fas fa-phone-alt text-[14px]"></i>
                         Helpline: <strong>16100</strong>
                     </a>
-
                 </div>
 
             </div>
@@ -681,82 +112,101 @@
     </div>
 
     {{-- ══ NAVIGATION BAR ══ --}}
-    <nav class="gov-navbar">
-        <div class="container-fluid">
+    <nav class="gov-navbar bg-[#006633] relative z-[100] transition-all duration-300">
+        <div
+            class="container-fluid max-w-7xl mx-auto flex items-center justify-between lg:block py-1.5 lg:py-0 text-[12px]">
             {{-- Desktop nav --}}
-            <ul class="gov-nav-list">
-                <li class="gov-nav-home">
-                    <a href="{{ url('/') }}" title="হোম">
-                        <i class="fas fa-home"></i>
+            <ul class="hidden lg:flex items-center m-0 p-0 list-none">
+                <li class="group [&.active>a]:text-white [&.active>a]:bg-white/10">
+                    <a href="{{ url('/') }}" title="হোম"
+                        class="flex items-center gap-1.5 text-white/90 text-[16px] font-medium py-[11px] px-[14px] no-underline relative transition-colors duration-200 font-['Hind_Siliguri',_sans-serif] whitespace-nowrap tracking-[0.2px] hover:text-white hover:bg-white/10 after:absolute after:bottom-0 after:left-4 after:right-4 after:h-[2px] after:bg-[#f0a500] after:scale-x-0 after:transition-transform after:duration-250 after:rounded-sm group-hover:after:scale-x-100 group-[.active]:after:scale-x-100">
+                        <i class="fas fa-home opacity-85 text-[12px]"></i>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('frontend.miscase.index') }}">
-                        <i class="fas fa-gavel"></i> মিসকেস তালিকা
+                <li class="group [&.active>a]:text-white [&.active>a]:bg-white/10">
+                    <a href="{{ route('frontend.miscase.index') }}"
+                        class="flex items-center gap-1.5 text-white/90 text-[16px] font-medium py-[11px] px-4 no-underline relative transition-colors duration-200 font-['Hind_Siliguri',_sans-serif] whitespace-nowrap tracking-[0.2px] hover:text-white hover:bg-white/10 after:absolute after:bottom-0 after:left-4 after:right-4 after:h-[2px] after:bg-[#f0a500] after:scale-x-0 after:transition-transform after:duration-250 after:rounded-sm group-hover:after:scale-x-100 group-[.active]:after:scale-x-100">
+                        <i class="fas fa-gavel opacity-85 text-[12px]"></i> মিসকেস তালিকা
                     </a>
                 </li>
-                <li class="has-dropdown">
-                    <a href="#">
-                        <i class="fas fa-calendar-check"></i> অ্যাপয়েন্টমেন্ট
-                        <i class="fas fa-chevron-down caret-icon"></i>
+                <li class="group relative [&.active>a]:text-white [&.active>a]:bg-white/10">
+                    <a href="#"
+                        class="flex items-center gap-1.5 text-white/90 text-[16px] font-medium py-[11px] px-4 no-underline relative transition-colors duration-200 font-['Hind_Siliguri',_sans-serif] whitespace-nowrap tracking-[0.2px] hover:text-white hover:bg-white/10 after:absolute after:bottom-0 after:left-4 after:right-4 after:h-[2px] after:bg-[#f0a500] after:scale-x-0 after:transition-transform after:duration-250 after:rounded-sm group-hover:after:scale-x-100 group-[.active]:after:scale-x-100">
+                        <i class="fas fa-calendar-check opacity-85 text-[12px]"></i> অ্যাপয়েন্টমেন্ট
+                        <i
+                            class="fas fa-chevron-down text-[9px] ml-[2px] opacity-70 transition-transform duration-200 group-hover:rotate-180"></i>
                     </a>
-                    <div class="gov-dropdown">
-                        <a href="{{ route('appointment.officers') }}">
-                            <i class="fas fa-user-tie"></i> অফিসার নির্বাচন
+                    <div
+                        class="hidden group-hover:block absolute top-full left-0 bg-white rounded-b-lg shadow-[0_8px_24px_rgba(0,0,0,0.15)] min-w-[200px] z-[200] border-t-2 border-[#f0a500] overflow-hidden">
+                        <a href="{{ route('appointment.officers') }}"
+                            class="flex items-center gap-2 px-4 py-2.5 text-[15px] text-[#1a1a1a] no-underline font-['Hind_Siliguri',_sans-serif] transition-all duration-150 border-b border-[#f5f5f5] last:border-0 hover:bg-[#e8f5e9] hover:text-[#006633] hover:pl-[22px]">
+                            <i class="fas fa-user-tie text-[#006633] text-[11px]"></i> অফিসার নির্বাচন
                         </a>
-                        <a href="{{ url('/login') }}">
-                            <i class="fas fa-list-alt"></i> আমার বুকিং
-                        </a>
-                    </div>
-                </li>
-                <li class="has-dropdown">
-                    <a href="#">
-                        <i class="fas fa-gavel"></i> আইন ও বিধিমালা
-                        <i class="fas fa-chevron-down caret-icon"></i>
-                    </a>
-                    <div class="gov-dropdown">
-                        <a href="{{ route('inquiry.index') }}">
-                            <i class="fas fa-desktop"></i> জিজ্ঞাসা
+                        <a href="{{ url('/login') }}"
+                            class="flex items-center gap-2 px-4 py-2.5 text-[15px] text-[#1a1a1a] no-underline font-['Hind_Siliguri',_sans-serif] transition-all duration-150 border-b border-[#f5f5f5] last:border-0 hover:bg-[#e8f5e9] hover:text-[#006633] hover:pl-[22px]">
+                            <i class="fas fa-list-alt text-[#006633] text-[11px]"></i> আমার বুকিং
                         </a>
                     </div>
                 </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-bell"></i> নোটিশ বোর্ড
+                <li class="group relative [&.active>a]:text-white [&.active>a]:bg-white/10">
+                    <a href="#"
+                        class="flex items-center gap-1.5 text-white/90 text-[16px] font-medium py-[11px] px-4 no-underline relative transition-colors duration-200 font-['Hind_Siliguri',_sans-serif] whitespace-nowrap tracking-[0.2px] hover:text-white hover:bg-white/10 after:absolute after:bottom-0 after:left-4 after:right-4 after:h-[2px] after:bg-[#f0a500] after:scale-x-0 after:transition-transform after:duration-250 after:rounded-sm group-hover:after:scale-x-100 group-[.active]:after:scale-x-100">
+                        <i class="fas fa-gavel opacity-85 text-[12px]"></i> আইন ও বিধিমালা
+                        <i
+                            class="fas fa-chevron-down text-[9px] ml-[2px] opacity-70 transition-transform duration-200 group-hover:rotate-180"></i>
+                    </a>
+                    <div
+                        class="hidden group-hover:block absolute top-full left-0 bg-white rounded-b-lg shadow-[0_8px_24px_rgba(0,0,0,0.15)] min-w-[200px] z-[200] border-t-2 border-[#f0a500] overflow-hidden">
+                        <a href="{{ route('inquiry.index') }}"
+                            class="flex items-center gap-2 px-4 py-2.5 text-[15px] text-[#1a1a1a] no-underline font-['Hind_Siliguri',_sans-serif] transition-all duration-150 border-b border-[#f5f5f5] last:border-0 hover:bg-[#e8f5e9] hover:text-[#006633] hover:pl-[22px]">
+                            <i class="fas fa-desktop text-[#006633] text-[11px]"></i> জিজ্ঞাসা
+                        </a>
+                    </div>
+                </li>
+                <li class="group [&.active>a]:text-white [&.active>a]:bg-white/10">
+                    <a href="#"
+                        class="flex items-center gap-1.5 text-white/90 text-[16px] font-medium py-[11px] px-4 no-underline relative transition-colors duration-200 font-['Hind_Siliguri',_sans-serif] whitespace-nowrap tracking-[0.2px] hover:text-white hover:bg-white/10 after:absolute after:bottom-0 after:left-4 after:right-4 after:h-[2px] after:bg-[#f0a500] after:scale-x-0 after:transition-transform after:duration-250 after:rounded-sm group-hover:after:scale-x-100 group-[.active]:after:scale-x-100">
+                        <i class="fas fa-bell opacity-85 text-[12px]"></i> নোটিশ বোর্ড
                     </a>
                 </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-photo-video"></i> গ্যালারি
+                <li class="group [&.active>a]:text-white [&.active>a]:bg-white/10">
+                    <a href="#"
+                        class="flex items-center gap-1.5 text-white/90 text-[16px] font-medium py-[11px] px-4 no-underline relative transition-colors duration-200 font-['Hind_Siliguri',_sans-serif] whitespace-nowrap tracking-[0.2px] hover:text-white hover:bg-white/10 after:absolute after:bottom-0 after:left-4 after:right-4 after:h-[2px] after:bg-[#f0a500] after:scale-x-0 after:transition-transform after:duration-250 after:rounded-sm group-hover:after:scale-x-100 group-[.active]:after:scale-x-100">
+                        <i class="fas fa-photo-video opacity-85 text-[12px]"></i> গ্যালারি
                     </a>
                 </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-phone-volume"></i> যোগাযোগ
+                <li class="group [&.active>a]:text-white [&.active>a]:bg-white/10">
+                    <a href="#"
+                        class="flex items-center gap-1.5 text-white/90 text-[16px] font-medium py-[11px] px-4 no-underline relative transition-colors duration-200 font-['Hind_Siliguri',_sans-serif] whitespace-nowrap tracking-[0.2px] hover:text-white hover:bg-white/10 after:absolute after:bottom-0 after:left-4 after:right-4 after:h-[2px] after:bg-[#f0a500] after:scale-x-0 after:transition-transform after:duration-250 after:rounded-sm group-hover:after:scale-x-100 group-[.active]:after:scale-x-100">
+                        <i class="fas fa-phone-volume opacity-85 text-[12px]"></i> যোগাযোগ
                     </a>
                 </li>
 
-                <li class="gov-nav-spacer"></li>
+                <li class="flex-1"></li>
 
                 @auth
-                    <li class="nav-login-btn mr-2">
-                        <a href="{{ route('dashboard') }}">
+                    <li class="mr-2">
+                        <a href="{{ route('dashboard') }}"
+                            class="bg-white/10 border border-white/25 rounded px-3.5 py-1.5 text-[12px] my-1 hover:bg-white/20 text-white/90 no-underline font-['Hind_Siliguri',_sans-serif] inline-block">
                             <i class="fas fa-tachometer-alt"></i> Dashboard
                         </a>
                     </li>
-                    <li class="nav-login-btn">
-                        <a href="#" onclick="logoutUser()">
+                    <li>
+                        <a href="#" onclick="logoutUser()"
+                            class="bg-white/10 border border-white/25 rounded px-3.5 py-1.5 text-[12px] my-1 hover:bg-white/20 text-white/90 no-underline font-['Hind_Siliguri',_sans-serif] inline-block">
                             <i class="fas fa-sign-out-alt"></i> লগআউট
                         </a>
                     </li>
                 @else
-                    <li class="nav-login-btn mr-2">
-                        <a href="{{ route('frontend.user.register') }}" class="bg-[#cc0000] border-[#cc0000] text-white">
+                    <li class="mr-2">
+                        <a href="{{ route('frontend.user.register') }}"
+                            class="bg-[#cc0000] border border-[#cc0000] text-white rounded px-3.5 py-1.5 text-[12px] my-1 hover:bg-white/20 hover:text-white/90 no-underline font-['Hind_Siliguri',_sans-serif] inline-block">
                             <i class="fas fa-user-plus"></i> নিবন্ধন
                         </a>
                     </li>
-                    <li class="nav-login-btn">
-                        <a href="{{ url('/login') }}">
+                    <li>
+                        <a href="{{ url('/login') }}"
+                            class="bg-white/10 border border-white/25 rounded px-3.5 py-1.5 text-[12px] my-1 hover:bg-white/20 text-white/90 no-underline font-['Hind_Siliguri',_sans-serif] inline-block">
                             <i class="fas fa-sign-in-alt"></i> লগইন
                         </a>
                     </li>
@@ -764,64 +214,84 @@
             </ul>
 
             {{-- Mobile: brand + toggle --}}
-            <span class="gov-navbar-brand-mobile d-md-none">CIOAS</span>
-            <button class="gov-mobile-toggle" id="govDrawerToggle" aria-label="Open menu">
+            <span class="lg:hidden text-white text-[14px] font-semibold font-['Hind_Siliguri',_sans-serif]">CIOAS</span>
+            <button class="lg:hidden bg-transparent border-0 cursor-pointer p-2 text-white text-[22px]"
+                id="govDrawerToggle" aria-label="Open menu">
                 <i class="fas fa-bars" id="govHamburger"></i>
             </button>
         </div>
     </nav>
 
     {{-- ══ MOBILE DRAWER ══ --}}
-    <div class="gov-drawer-overlay" id="govDrawerOverlay"></div>
-    <div class="gov-mobile-drawer" id="govMobileDrawer">
-        <div class="gov-drawer-header">
-            <span>&#x2463; মেনু</span>
-            <button class="gov-drawer-close" id="govDrawerClose"><i class="fas fa-times"></i></button>
+    <div class="hidden fixed inset-0 bg-black/50 z-[9998] backdrop-blur-[2px] [&.open]:block" id="govDrawerOverlay">
+    </div>
+    <div class="fixed top-0 left-0 w-[280px] h-screen bg-white z-[9999] -translate-x-full transition-transform duration-300 shadow-[4px_0_20px_rgba(0,0,0,0.2)] overflow-y-auto [&.open]:translate-x-0"
+        id="govMobileDrawer">
+        <div class="bg-[#006633] p-4 flex items-center justify-between">
+            <span class="text-white font-semibold text-[14px] font-['Hind_Siliguri',_sans-serif]">&#x2463; মেনু</span>
+            <button
+                class="bg-white/15 border-0 cursor-pointer text-white text-[18px] w-8 h-8 rounded-full flex items-center justify-center transition-colors hover:bg-white/25"
+                id="govDrawerClose"><i class="fas fa-times"></i></button>
         </div>
-        <div class="gov-drawer-body">
-            <div class="gov-drawer-section">Navigation</div>
-            <a href="{{ url('/') }}" class="gov-drawer-link">
-                <i class="fas fa-home"></i> হোম
+        <div class="py-3">
+            <div class="text-[10px] font-bold tracking-[1.5px] uppercase text-[#9e9e9e] px-5 pt-3.5 pb-1.5">Navigation
+            </div>
+            <a href="{{ url('/') }}"
+                class="flex items-center gap-2.5 px-5 py-3 text-[14px] text-[#1a1a1a] no-underline border-b border-[#f5f5f5] font-['Hind_Siliguri',_sans-serif] transition-all hover:bg-[#e8f5e9] hover:text-[#006633]">
+                <i class="fas fa-home w-[18px] text-center text-[#006633]"></i> হোম
             </a>
-            <a href="{{ route('frontend.miscase.index') }}" class="gov-drawer-link">
-                <i class="fas fa-gavel"></i> মিসকেস তালিকা
+            <a href="{{ route('frontend.miscase.index') }}"
+                class="flex items-center gap-2.5 px-5 py-3 text-[14px] text-[#1a1a1a] no-underline border-b border-[#f5f5f5] font-['Hind_Siliguri',_sans-serif] transition-all hover:bg-[#e8f5e9] hover:text-[#006633]">
+                <i class="fas fa-gavel w-[18px] text-center text-[#006633]"></i> মিসকেস তালিকা
             </a>
-            <a href="{{ url('/') }}" class="gov-drawer-link">
-                <i class="fas fa-info-circle"></i> আমাদের সম্পর্কে
+            <a href="{{ url('/') }}"
+                class="flex items-center gap-2.5 px-5 py-3 text-[14px] text-[#1a1a1a] no-underline border-b border-[#f5f5f5] font-['Hind_Siliguri',_sans-serif] transition-all hover:bg-[#e8f5e9] hover:text-[#006633]">
+                <i class="fas fa-info-circle w-[18px] text-center text-[#006633]"></i> আমাদের সম্পর্কে
             </a>
-            <a href="{{ route('appointment.officers') }}" class="gov-drawer-link">
-                <i class="fas fa-calendar-check"></i> অ্যাপয়েন্টমেন্ট বুকিং
+            <a href="{{ route('appointment.officers') }}"
+                class="flex items-center gap-2.5 px-5 py-3 text-[14px] text-[#1a1a1a] no-underline border-b border-[#f5f5f5] font-['Hind_Siliguri',_sans-serif] transition-all hover:bg-[#e8f5e9] hover:text-[#006633]">
+                <i class="fas fa-calendar-check w-[18px] text-center text-[#006633]"></i> অ্যাপয়েন্টমেন্ট বুকিং
             </a>
-            <a href="#" class="gov-drawer-link">
-                <i class="fas fa-gavel"></i> আইন ও বিধিমালা
+            <a href="#"
+                class="flex items-center gap-2.5 px-5 py-3 text-[14px] text-[#1a1a1a] no-underline border-b border-[#f5f5f5] font-['Hind_Siliguri',_sans-serif] transition-all hover:bg-[#e8f5e9] hover:text-[#006633]">
+                <i class="fas fa-gavel w-[18px] text-center text-[#006633]"></i> আইন ও বিধিমালা
             </a>
-            <a href="#" class="gov-drawer-link">
-                <i class="fas fa-bell"></i> নোটিশ বোর্ড
+            <a href="#"
+                class="flex items-center gap-2.5 px-5 py-3 text-[14px] text-[#1a1a1a] no-underline border-b border-[#f5f5f5] font-['Hind_Siliguri',_sans-serif] transition-all hover:bg-[#e8f5e9] hover:text-[#006633]">
+                <i class="fas fa-bell w-[18px] text-center text-[#006633]"></i> নোটিশ বোর্ড
             </a>
-            <a href="#" class="gov-drawer-link">
-                <i class="fas fa-photo-video"></i> গ্যালারি
+            <a href="#"
+                class="flex items-center gap-2.5 px-5 py-3 text-[14px] text-[#1a1a1a] no-underline border-b border-[#f5f5f5] font-['Hind_Siliguri',_sans-serif] transition-all hover:bg-[#e8f5e9] hover:text-[#006633]">
+                <i class="fas fa-photo-video w-[18px] text-center text-[#006633]"></i> গ্যালারি
             </a>
-            <a href="#" class="gov-drawer-link">
-                <i class="fas fa-phone-volume"></i> যোগাযোগ
+            <a href="#"
+                class="flex items-center gap-2.5 px-5 py-3 text-[14px] text-[#1a1a1a] no-underline border-b border-[#f5f5f5] font-['Hind_Siliguri',_sans-serif] transition-all hover:bg-[#e8f5e9] hover:text-[#006633]">
+                <i class="fas fa-phone-volume w-[18px] text-center text-[#006633]"></i> যোগাযোগ
             </a>
 
-            <div class="gov-drawer-section">Account</div>
+            <div class="text-[10px] font-bold tracking-[1.5px] uppercase text-[#9e9e9e] px-5 pt-3.5 pb-1.5">Account
+            </div>
             @auth
-                <a href="{{ route('dashboard') }}" class="gov-drawer-link">
-                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                <a href="{{ route('dashboard') }}"
+                    class="flex items-center gap-2.5 px-5 py-3 text-[14px] text-[#1a1a1a] no-underline border-b border-[#f5f5f5] font-['Hind_Siliguri',_sans-serif] transition-all hover:bg-[#e8f5e9] hover:text-[#006633]">
+                    <i class="fas fa-tachometer-alt w-[18px] text-center text-[#006633]"></i> Dashboard
                 </a>
-                <a href="#" onclick="logoutUser()" class="gov-drawer-link">
-                    <i class="fas fa-sign-out-alt"></i> লগআউট
+                <a href="#" onclick="logoutUser()"
+                    class="flex items-center gap-2.5 px-5 py-3 text-[14px] text-[#1a1a1a] no-underline border-b border-[#f5f5f5] font-['Hind_Siliguri',_sans-serif] transition-all hover:bg-[#e8f5e9] hover:text-[#006633]">
+                    <i class="fas fa-sign-out-alt w-[18px] text-center text-[#006633]"></i> লগআউট
                 </a>
             @else
-                <a href="{{ route('frontend.user.register') }}" class="gov-drawer-link">
-                    <i class="fas fa-user-plus"></i> নাগরিক নিবন্ধন
+                <a href="{{ route('frontend.user.register') }}"
+                    class="flex items-center gap-2.5 px-5 py-3 text-[14px] text-[#1a1a1a] no-underline border-b border-[#f5f5f5] font-['Hind_Siliguri',_sans-serif] transition-all hover:bg-[#e8f5e9] hover:text-[#006633]">
+                    <i class="fas fa-user-plus w-[18px] text-center text-[#006633]"></i> নাগরিক নিবন্ধন
                 </a>
-                <a href="{{ url('/login') }}" class="gov-drawer-link">
-                    <i class="fas fa-user"></i> নাগরিক লগইন
+                <a href="{{ url('/login') }}"
+                    class="flex items-center gap-2.5 px-5 py-3 text-[14px] text-[#1a1a1a] no-underline border-b border-[#f5f5f5] font-['Hind_Siliguri',_sans-serif] transition-all hover:bg-[#e8f5e9] hover:text-[#006633]">
+                    <i class="fas fa-user w-[18px] text-center text-[#006633]"></i> নাগরিক লগইন
                 </a>
-                <a href="{{ url('/login') }}" class="gov-drawer-link">
-                    <i class="fas fa-shield-alt"></i> অ্যাডমিন লগইন
+                <a href="{{ url('/login') }}"
+                    class="flex items-center gap-2.5 px-5 py-3 text-[14px] text-[#1a1a1a] no-underline border-b border-[#f5f5f5] font-['Hind_Siliguri',_sans-serif] transition-all hover:bg-[#e8f5e9] hover:text-[#006633]">
+                    <i class="fas fa-shield-alt w-[18px] text-center text-[#006633]"></i> অ্যাডমিন লগইন
                 </a>
             @endauth
         </div>
@@ -830,18 +300,18 @@
 </div>{{-- .site-header --}}
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const navbar = document.querySelector('.gov-navbar');
         // calculate offset once the images load to be accurate
         let stickyPos = navbar.offsetTop;
-        
+
         window.addEventListener('resize', () => {
-            if(!navbar.classList.contains('sticky-navbar')){
+            if (!navbar.classList.contains('sticky-navbar')) {
                 stickyPos = navbar.offsetTop;
             }
         });
 
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             if (window.scrollY >= stickyPos) {
                 navbar.classList.add("sticky-navbar");
                 document.body.style.paddingTop = navbar.offsetHeight + 'px'; // prevent layout jump
@@ -895,7 +365,7 @@
         // ── Mark active nav item ──
         (function () {
             const currentPath = window.location.pathname;
-            document.querySelectorAll('.gov-nav-list > li > a').forEach(link => {
+            document.querySelectorAll('nav ul > li > a').forEach(link => {
                 if (link.getAttribute('href') && link.getAttribute('href') !== '#' &&
                     currentPath === new URL(link.href, window.location.origin).pathname) {
                     link.closest('li').classList.add('active');
