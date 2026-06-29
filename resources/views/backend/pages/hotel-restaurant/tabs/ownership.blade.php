@@ -2,6 +2,31 @@
 
 @section('title', 'Organization Create')
 
+@push('style')
+<style>
+    .card-body.bg-light {
+        background-color: #f8f9fc !important;
+    }
+    .form-control, .select2-container--default .select2-selection--single {
+        background-color: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 0.5rem 0.75rem;
+    }
+    .form-control:focus {
+        background-color: #ffffff;
+        border-color: #0f766e;
+        box-shadow: 0 0 0 0.2rem rgba(15, 118, 110, 0.25);
+    }
+    label {
+        font-weight: 500;
+        color: #475569;
+        font-size: 0.9rem;
+        margin-bottom: 0.4rem;
+    }
+</style>
+@endpush
+
 @section('content')
 
     <section class="content-header">
@@ -27,20 +52,20 @@
             <div class="row">
                 <div class="col-md-12">
 
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <a href="{{ route('hotel-restaurant.edit', $organization->id) }}">
-                                    <span class="text-dark">Hotel & Restaurant Information</span>
+                    <div class="card shadow-sm border-0 rounded-4">
+                        <div class="card-header bg-white border-bottom py-3">
+                            <h3 class="card-title m-0 fw-bold fs-5">
+                                <a href="{{ route('hotel-restaurant.edit', $organization->id) }}" class="text-secondary text-decoration-none mr-3 pb-2">
+                                    <i class="fas fa-building mr-1"></i> Hotel & Restaurant Info
                                 </a>
-                                <span class="text-secondary">|</span>
-                                <a href="{{ route('hotelRestaurant-ownership.edit', $organization->id) }}">
-                                    <span class="text-light">Ownership Information</span>
+                                <span class="text-muted fw-light">|</span>
+                                <a href="{{ route('hotelRestaurant-ownership.edit', $organization->id) }}" class="text-success text-decoration-none ml-3 border-bottom border-success border-3 pb-2">
+                                    <i class="fas fa-users mr-1"></i> Ownership Info
                                 </a>
                             </h3>
                         </div>
 
-                        <div class="card-body">
+                        <div class="card-body bg-light p-4">
 
                             {{-- ================= OWNERSHIP SECTION ================= --}}
                             <div>
@@ -62,15 +87,15 @@
                                             'present_thanas' => $present_thanas[$i] ?? [],
                                         ])
                                     @endfor
-                                    <div class="row">
+                                    <div class="d-flex justify-content-end gap-3 mt-4">
                                         <a href="{{ route('hotel-restaurant.edit', $organization->id) }}"
-                                            class="btn btn-danger float-right">
-                                            Hotel & Restaurant Info
+                                            class="btn btn-outline-secondary px-4 fw-medium">
+                                            <i class="fas fa-arrow-left mr-2"></i> Back to Hotel Info
                                         </a>
 
-                                        <div class="col-sm-9">
-                                            <button type="submmit" class="btn btn-info">Submit</button>
-                                        </div>
+                                        <button type="submit" class="btn btn-success px-5 fw-medium" style="background-color: #0f766e; border-color: #0f766e;">
+                                            <i class="fas fa-save mr-2"></i> Save Ownership
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -80,12 +105,10 @@
                         <div class="card-footer">
 
                             @if ($organization->organization_ownership_type_id == 2)
-                                <div class="row mb-1" id="add-owner-section">
-                                    <div class="col-sm-3">
-                                        <button type="button" id="addMoreOwner" class="btn btn-primary">
-                                            Add More Owner
-                                        </button>
-                                    </div>
+                                <div class="text-center mt-3" id="add-owner-section">
+                                    <button type="button" id="addMoreOwner" class="btn btn-outline-success px-4 rounded-pill fw-medium">
+                                        <i class="fas fa-plus-circle mr-2"></i> Add More Owner
+                                    </button>
                                 </div>
                             @endif
 

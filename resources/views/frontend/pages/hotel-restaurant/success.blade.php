@@ -2,51 +2,59 @@
 @section('title', 'আবেদন সফল - হোটেল ও রেস্তোরাঁ')
 
 @section('content')
-<div class="container py-12">
-    <div class="max-w-2xl mx-auto bg-white rounded-4 shadow-lg border-t-4 border-[#006a4e] overflow-d-none">
-        
-        <!-- Header -->
-        <div class="bg-gradient-to-r from-[#006a4e] to-[#00523b] p-3 text-white text-center border-b border-[#f42a41]/20">
-            <div class="inline-d-d-flex h-16 w-16 align-align-items-center justify-content-center rounded-full bg-white text-gov-green mb-3 shadow-md">
-                <i class="fas fa-check-circle text-3xl"></i>
-            </div>
-            <h2 class="text-2xl fw-bold">আবেদন সম্পন্ন হয়েছে!</h2>
-            <p class="fs-content text-green-100 mt-1">কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম</p>
-        </div>
+    <div class="container pt-2 pb-3">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="bg-white rounded-3 shadow-sm border-top border-5 border-success overflow-hidden">
+                    <!-- Header -->
+                    <div class="p-4 text-center"
+                        style="background: linear-gradient(135deg, #006a4e, #00523b); border-bottom: 3px solid #f42a41;">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-white text-success rounded-circle shadow mb-3"
+                            style="width: 70px; height: 70px; font-size: 35px;">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h4 class="text-white fw-bold mb-1">আবেদন সম্পন্ন হয়েছে!</h4>
+                        <p class="mb-0 text-white-50">কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম</p>
+                    </div>
 
-        <!-- Success Message -->
-        <div class="p-8 text-center">
-            @if ($application_id)
-                <div class="bg-green-50 rounded-3 p-3 border border-green-100 mb-3">
-                    <p class="fs-content text-muted fw-bold mb-2">আপনার আবেদন আইডি (Application ID):</p>
-                    <span class="text-3xl font-extrabold text-gov-green tracking-wider select-all">{{ $application_id }}</span>
+                    <!-- Success Message -->
+                    <div class="p-4 p-md-5 text-center">
+                        @if ($application_id)
+                            <div class="rounded p-4 mb-4 border border-success" style="background-color: #f0fdf4;">
+                                <p class="text-muted fw-bold mb-2">আপনার আবেদন আইডি (Application ID):</p>
+                                <h3 class="fw-bolder text-success mb-0 user-select-all" style="letter-spacing: 1px;">
+                                    {{ $application_id }}
+                                </h3>
+                            </div>
+
+                            <h5 class="fw-bold text-dark mb-3">আবেদনটি সফলভাবে জমা দেওয়া হয়েছে</h5>
+                            <p class="text-secondary mb-4">
+                                ভবিষ্যতের অনুসন্ধান ও অবস্থা যাচাইয়ের জন্য দয়া করে আবেদন আইডিটি সংরক্ষণ করুন। আপনার
+                                আবেদনটির পরবর্তী অগ্রগতি যথাসময়ে অবহিত করা হবে।
+                            </p>
+                        @else
+                            <h5 class="fw-bold text-danger mb-3">কোনো রেকর্ড পাওয়া যায়নি</h5>
+                            <p class="text-secondary mb-4">দুঃখিত, কোনো সঠিক আবেদন রেকর্ড খুঁজে পাওয়া যায়নি।</p>
+                        @endif
+
+                        <!-- Navigation Links -->
+                        <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mt-4">
+                            <a href="{{ route('home') }}" class="btn btn-outline-secondary px-4 py-2 fw-medium">
+                                <i class="fas fa-home me-2"></i> হোম পেজে ফিরে যান
+                            </a>
+                            <a href="{{ route('frontend.hotel-restaurant.create') }}"
+                                class="btn btn-success px-4 py-2 fw-medium" style="background-color: #006a4e;">
+                                <i class="fas fa-plus me-2"></i> নতুন আবেদন করুন
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Footer Info -->
+                    <div class="bg-light p-3 text-center text-muted border-top">
+                        <small>ধন্যবাদ, আমাদের সেবার সাথে থাকার জন্য।</small>
+                    </div>
                 </div>
-                
-                <h4 class="fs-card-title fw-bold text-gray-800 mb-3">আবেদনটি সফলভাবে জমা দেওয়া হয়েছে</h4>
-                <p class="fs-content text-secondary leading-relaxed mb-3">
-                    ভবিষ্যতের অনুসন্ধান ও অবস্থা যাচাইয়ের জন্য দয়া করে আবেদন আইডিটি সংরক্ষণ করুন। আপনার আবেদনটির পরবর্তী অগ্রগতি যথাসময়ে অবহিত করা হবে।
-                </p>
-            @else
-                <h4 class="fs-card-title fw-bold text-red-600 mb-3">কোনো রেকর্ড পাওয়া যায়নি</h4>
-                <p class="fs-content text-secondary mb-3">দুঃখিত, কোনো সঠিক আবেদন রেকর্ড খুঁজে পাওয়া যায়নি।</p>
-            @endif
-
-            <!-- Navigation Links -->
-            <div class="d-d-flex flex-columnumn sm:flex-row justify-content-center gap-3">
-                <a href="{{ route('home') }}" class="inline-d-d-flex align-align-items-center justify-content-center px-6 py-3 border border-gray-300 rounded-3 fs-content font-medium text-dark bg-white hover:bg-light shadow-sm transition">
-                    <i class="fas fa-home mr-2 text-gray-400"></i> হোম পেজে ফিরে যান
-                </a>
-                <a href="{{ route('frontend.hotel-restaurant.create') }}" class="inline-d-d-flex align-align-items-center justify-content-center px-6 py-3 border border-transparent rounded-3 fs-content font-medium text-white bg-gov-green hover:bg-[#00523b] shadow-sm transition">
-                    <i class="fas fa-plus mr-2"></i> নতুন আবেদন করুন
-                </a>
             </div>
         </div>
-
-        <!-- Footer Info -->
-        <div class="bg-light px-8 py-4 border-t border-gray-100 text-center fs-content text-muted">
-            ধন্যবাদ, আমাদের সেবার সাথে থাকার জন্য।
-        </div>
-
     </div>
-</div>
 @endsection

@@ -219,34 +219,26 @@ class UserDashboardController extends Controller
             ->orderBy('id', 'desc')->get();
 
         // Query Hotel Restaurants
-        $hotels = HotelRestaurant::whereHas('ownership', function ($q) use ($mobile, $nid) {
-            $q->where('mobile', $mobile)->orWhere('nid', $nid);
+        $hotels = HotelRestaurant::whereHas('ownership', function ($q) use ($mobile) {
+            $q->where('mobile', $mobile);
         })->orderBy('id', 'desc')->get();
 
         // Query Gun Applications (Person, Org, OtherOrg)
         $personGuns = PersonGunApplication::where('phone', $mobile)
-            ->orWhere('nid_no', $nid)
-            ->orWhere('email', $email)
             ->orderBy('id', 'desc')->get();
 
         $orgGuns = OrgGunApplication::where('phone', $mobile)
-            ->orWhere('email', $email)
             ->orderBy('id', 'desc')->get();
 
         $otherOrgGuns = OtherOrgGunApplication::where('phone', $mobile)
-            ->orWhere('email', $email)
             ->orderBy('id', 'desc')->get();
 
         // Query Inquiries
         $inquiries = Inquiry::where('mobile_number', $mobile)
-            ->orWhere('email', $email)
-            ->orWhere('nid_number', $nid)
             ->orderBy('id', 'desc')->get();
 
         // Query Appointments
         $appointments = AppointmentBooking::where('phone', $mobile)
-            ->orWhere('email', $email)
-            ->orWhere('nid_number', $nid)
             ->orderBy('id', 'desc')->get();
 
         // Consolidate Applications

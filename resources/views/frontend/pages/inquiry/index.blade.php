@@ -59,7 +59,7 @@
                 <div class="row g-4 mb-3">
                     <div class="col-md-4">
                         <label for="mobile_number">মোবাইল নম্বর <span class="text-danger">*</span></label>
-                        <input type="text" required name="mobile_number" placeholder="মোবাইল নম্বর" class="form-control" id="mobile_number">
+                        <input type="text" required name="mobile_number" placeholder="মোবাইল নম্বর" class="form-control" id="mobile_number" value="{{ Auth::check() ? Auth::user()->mobile : '' }}" {{ Auth::check() ? 'readonly' : '' }}>
                     </div>
                     <div class="col-md-4">
                         <label for="email">ই-মেইল</label>

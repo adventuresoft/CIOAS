@@ -88,7 +88,7 @@
                                                 <label>Phone Number <span class="req">*</span></label>
                                                 <input type="text" name="phone" class="mat-input"
                                                     value="{{ auth()->check() ? auth()->user()->mobile : '' }}"
-                                                    placeholder="01XXXXXXXXX" required>
+                                                    placeholder="01XXXXXXXXX" required {{ auth()->check() ? 'readonly' : '' }}>
                                             </div>
                                         </div>
                                     </div>

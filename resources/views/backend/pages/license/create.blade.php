@@ -24,7 +24,6 @@
                 </div>
                 <form class="form-horizontal" id="licenseForm" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="id" value="">
                     @include('backend.pages.license.forms.license', ['license' => null])
                     <div class="card-footer">
                         <a href="{{ route('license.index') }}" class="btn btn-default">Cancel</a>

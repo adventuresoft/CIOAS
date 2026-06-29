@@ -1,7 +1,8 @@
-<div class="card card-dark">
-    <div class="card-header">
-        <h3 class="card-title"> {{ $organization->no_of_owner ? 'Owner Information' : 'Director Information' }} -
-            {{ $ownership->name ?? $index + 1 }}</h3>
+<div class="card shadow-sm border mb-4" style="border-radius: 8px;">
+    <div class="card-header bg-white border-bottom py-3">
+        <h5 class="card-title text-dark fw-bold m-0" style="font-size: 1.1rem;">
+            <i class="fas fa-user-tie text-success mr-2"></i> {{ $organization->no_of_owner ? 'Owner Information' : 'Director Information' }} - {{ $ownership->name ?? $index + 1 }}
+        </h5>
     </div>
 
     @if (!empty($ownership))
@@ -160,8 +161,8 @@
         </div>
 
         <!-- Permanent Address Section -->
-        <div class="card-header">
-            <h6 class="card-title p-0 m-0">Permanent Address</h6>
+        <div class="card-header bg-light border-bottom mt-4 mb-3 rounded-0">
+            <h6 class="card-title text-dark fw-bold m-0"><i class="fas fa-home text-muted mr-2"></i> Permanent Address</h6>
         </div>
         <div class="card-body p-0 m-0">
             <!-- Row 3: Division, District, Thana -->
@@ -298,8 +299,8 @@
         </div>
 
         <!-- Present Address Section -->
-        <div class="card-header">
-            <h6 class="card-title p-0 m-0">Present Address</h6>
+        <div class="card-header bg-light border-bottom mt-4 mb-3 rounded-0">
+            <h6 class="card-title text-dark fw-bold m-0"><i class="fas fa-map-marker-alt text-muted mr-2"></i> Present Address</h6>
         </div>
         <div class="card-body p-0 m-0">
             <!--Row 3: Division, District, Thana -->
