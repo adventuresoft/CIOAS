@@ -111,6 +111,9 @@ class StaffFreedomFighterInfoController extends Controller
             'is_july_fighter' => 'required',
             'july_type_id' => 'nullable',
             'july_fighter_id' => 'nullable',
+            'july_incident_location' => 'nullable|string|max:255',
+            'july_injury_details' => 'nullable|string|max:255',
+            'july_contribution_description' => 'nullable|string',
         ]);
 
         if ($validate->fails()) {
@@ -128,6 +131,9 @@ class StaffFreedomFighterInfoController extends Controller
                     'is_july_fighter' => $request->is_july_fighter ?? false,
                     'july_type_id' => $request->is_july_fighter ? $request->july_type_id : null,
                     'july_fighter_id' => $request->is_july_fighter ? $request->july_fighter_id : null,
+                    'july_incident_location' => $request->is_july_fighter ? $request->july_incident_location : null,
+                    'july_injury_details' => $request->is_july_fighter ? $request->july_injury_details : null,
+                    'july_contribution_description' => $request->is_july_fighter ? $request->july_contribution_description : null,
                 ]);
 
                 $staff = \App\Models\Staff::where('user_id', $request->user_id)->first();

@@ -23,6 +23,9 @@ class FreedomFighterInfo extends Model
     'july_area_id',
     'july_designation_id',
     'july_fighter_id',
-    'july_commander_name'
+    'july_commander_name',
+    'july_incident_location',
+    'july_injury_details',
+    'july_contribution_description'
     ];
 }

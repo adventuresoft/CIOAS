@@ -1048,11 +1048,15 @@
 
             @if(isset($user->freedomFighterInfo) && ($user->freedomFighterInfo->is_july_fighter ?? false))
                 <div class="section-header">জুলাই যোদ্ধা তথ্য / July Fighter Information</div>
-                <div class="info-row"><span class="info-label">Type :</span><span
-                        class="info-value">{{ freedom_fighter_constant_option('type')[$user->freedomFighterInfo->july_type_id ?? ''] ?? '' }}</span>
+                <div class="info-row"><span class="info-label">Fighter Category :</span><span
+                        class="info-value">{{ freedom_fighter_constant_option('july_category')[$user->freedomFighterInfo->july_type_id ?? ''] ?? '' }}</span>
                 </div>
-                <div class="info-row"><span class="info-label">July Fighter ID :</span><span
-                        class="info-value">{{ $user->freedomFighterInfo->july_fighter_id ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Movement/Incident Location :</span><span
+                        class="info-value">{{ $user->freedomFighterInfo->july_incident_location ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Injury Details :</span><span
+                        class="info-value">{{ $user->freedomFighterInfo->july_injury_details ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Contribution Description :</span><span
+                        class="info-value">{{ $user->freedomFighterInfo->july_contribution_description ?? '' }}</span></div>
             @endif
 
             {{-- Signature Area like Certificate --}}

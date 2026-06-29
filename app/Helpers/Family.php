@@ -13,8 +13,6 @@ if(! function_exists('family_constant_option')){
                 2 => 'Married',
                 3 => 'Widowed',
                 4 => 'Divorced',
-                5 => 'Separated',
-                6 => 'Engaged',
             ]
         ];
         if ($option_name) {

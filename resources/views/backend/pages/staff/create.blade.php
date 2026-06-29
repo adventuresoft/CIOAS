@@ -13,39 +13,45 @@
                         </div>
 
                         <div class="cioas-panel-body">
-                            <!-- Row 1: Name and Bangla Name -->
+                            <!-- Row 1: Name, Bangla Name, NID No. -->
                             <div class="form-group row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <label for="name">Name <span class="text-danger" title="Required"
                                             data-toggle="tooltip">*</span></label>
                                     <input type="text" required value="" class="form-control" name="name" id="name"
-                                        placeholder="Name English">
+                                        placeholder="Name English" style="text-transform:uppercase">
                                     <small class="error name-error text-danger"></small>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <label for="bn_name">Name Bangla <span class="text-danger" title="Required"
                                             data-toggle="tooltip">*</span></label>
                                     <input type="text" required value="" class="form-control" name="bn_name"
-                                        id="bn_name" placeholder="Name Bangla">
+                                        id="bn_name" placeholder="Name Bangla" data-bangla-only="true">
                                     <small class="error bn_name-error text-danger"></small>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="nid">NID No.</label>
+                                    <input type="text" value="" name="nid" placeholder="NID No." class="form-control"
+                                        id="nid" inputmode="numeric" maxlength="17">
+                                    <span class="error nid-error text-danger"></span>
                                 </div>
                             </div>
 
-                            <!-- Row 2: Date of Birth, Age, Birth Place -->
+                            <!-- Row 2: Date of Birth, Age, Birth Place, Birth Reg. No. -->
                             <div class="form-group row">
-                                <div class="col-sm-4">
+                                <div class="col-sm-3">
                                     <label for="date_of_birth">Date of Birth</label>
                                     <input type="date" value="" name="date_of_birth" class="form-control"
                                         id="date_of_birth">
                                     <small class="error date_of_birth-error text-danger"></small>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-2">
                                     <label for="age">Age</label>
                                     <input type="text" value="" class="form-control" id="age" readonly
-                                        placeholder="Auto calculated">
+                                        placeholder="Auto">
                                     <small class="error age-error text-danger"></small>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-3">
                                     <label for="birth_place">Birth Place</label>
                                     <select name="birth_place" class="form-control" id="birth_place">
                                         <option value="">Select Birth Place</option>
@@ -57,38 +63,21 @@
                                     </select>
                                     <small class="error birth_place-error text-danger"></small>
                                 </div>
+                                <div class="col-sm-4">
+                                    <label for="birth_certificate">Birth Reg. No.</label>
+                                    <input type="text" value="" name="birth_certificate" placeholder="Birth Reg. No."
+                                        class="form-control" id="birth_certificate" inputmode="numeric" maxlength="17">
+                                    <small class="error birth_certificate-error text-danger"></small>
+                                </div>
                             </div>
 
                             <!-- Row 3: Gender, Religion, Blood Group -->
+                            <!-- Row 3: Gender, Religion, Blood Group, Mobile No., Email -->
                             <div class="form-group row">
-                                <div class="col-sm-4">
-                                    <label for="gender">Gender</label>
-                                    <select name="gender" class="form-control" id="gender">
-                                        <option value="">Select Gender</option>
-                                        @if (count(people_constant_option('gender')))
-                                            @foreach (people_constant_option('gender') as $key => $item)
-                                                <option value="{{ $key }}">{{ $item }}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    <small class="error gender-error text-danger"></small>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label for="religion">Religion</label>
-                                    <select name="religion" class="form-control" id="religion">
-                                        <option value="">Select Religion</option>
-                                        @if (count($religions))
-                                            @foreach ($religions as $religion)
-                                                <option value="{{ $religion->id }}">{{ $religion->name }}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    <small class="error religion-error text-danger"></small>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label for="blood_group">Blood Group</label>
+                                <div class="col-sm-1">
+                                    <label for="blood_group" style="white-space:nowrap; font-size:0.95rem;">Blood Group</label>
                                     <select name="blood_group" class="form-control" id="blood_group">
-                                        <option value="">Select Blood Group</option>
+                                        <option value="">Select</option>
                                         @if (count(people_constant_option('blood_group')))
                                             @foreach (people_constant_option('blood_group') as $key => $item)
                                                 <option value="{{ $key }}">{{ $item }}</option>
@@ -97,39 +86,47 @@
                                     </select>
                                     <small class="error blood_group-error text-danger"></small>
                                 </div>
-                            </div>
-
-                            <!-- Row 4: Birth Reg. No., NID No. -->
-                            <div class="form-group row">
-                                <div class="col-sm-6">
-                                    <label for="birth_certificate">Birth Reg. No.</label>
-                                    <input type="text" value="" name="birth_certificate" placeholder="Birth Reg. No."
-                                        class="form-control" id="birth_certificate">
-                                    <small class="error birth_certificate-error text-danger"></small>
+                                <div class="col-sm-2">
+                                    <label for="gender" style="display:block; text-align:center;">Gender</label>
+                                    <select name="gender" class="form-control" id="gender">
+                                        <option value="">Select</option>
+                                        @if (count(people_constant_option('gender')))
+                                            @foreach (people_constant_option('gender') as $key => $item)
+                                                <option value="{{ $key }}">{{ $item }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <small class="error gender-error text-danger"></small>
                                 </div>
-                                <div class="col-sm-6">
-                                    <label for="nid">NID No.</label>
-                                    <input type="text" value="" name="nid" placeholder="NID No." class="form-control"
-                                        id="nid">
-                                    <span class="error nid-error text-danger"></span>
+                                <div class="col-sm-2">
+                                    <label for="religion">Religion</label>
+                                    <select name="religion" class="form-control" id="religion">
+                                        <option value="">Select</option>
+                                        @if (count($religions))
+                                            @foreach ($religions as $religion)
+                                                <option value="{{ $religion->id }}">{{ $religion->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <small class="error religion-error text-danger"></small>
                                 </div>
-                            </div>
-
-                            <!-- Row 5: Mobile No., Email -->
-                            <div class="form-group row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-2">
                                     <label for="mobile">Mobile No.</label>
                                     <input type="tel" value="" required name="mobile" placeholder="Mobile"
-                                        class="form-control" id="mobile">
+                                        class="form-control" id="mobile" inputmode="numeric" maxlength="11">
                                     <small class="error mobile-error text-danger"></small>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-5">
                                     <label for="email">Email</label>
                                     <input type="email" value="" name="email" placeholder="Email" class="form-control"
                                         id="email">
                                     <small class="error email-error text-danger"></small>
                                 </div>
                             </div>
+
+
+
+
 
                             <!-- Row 6: Photo -->
                             <div class="form-group row">
@@ -185,6 +182,20 @@
             $("#peoplePersonalForm").on('submit', function (e) {
                 e.preventDefault();
                 let thisForm = $(this);
+
+                // Validate NID No. length
+                let nidVal = $('#nid').val();
+                if (nidVal.length > 0 && nidVal.length < 10) {
+                    $('.nid-error').text('NID No. must be at least 10 digits.');
+                    return;
+                }
+                // Validate Birth Reg. No. length
+                let birthCertVal = $('#birth_certificate').val();
+                if (birthCertVal.length > 0 && birthCertVal.length < 10) {
+                    $('.birth_certificate-error').text('Birth Reg. No. must be at least 10 digits.');
+                    return;
+                }
+
                 $.ajax({
                     type: "POST",
                     url: "{{ route('staff.store') }}",
@@ -218,6 +229,43 @@
             // Birth place change handler
             $('#birth_place').on('change', function (e) {
                 e.preventDefault();
+            });
+
+            // Name field: English only + auto uppercase
+            $('#name').on('input', function () {
+                let val = $(this).val();
+                // Remove any non-English characters (allow letters, spaces, dots, hyphens)
+                let cleaned = val.replace(/[^a-zA-Z\s.\-']/g, '');
+                // Convert to uppercase
+                cleaned = cleaned.toUpperCase();
+                if (val !== cleaned) {
+                    let pos = this.selectionStart - (val.length - cleaned.length);
+                    $(this).val(cleaned);
+                    this.setSelectionRange(pos, pos);
+                }
+            });
+
+            // Name Bangla field: Bangla only
+            $('#bn_name').on('input', function () {
+                let val = $(this).val();
+                // Allow Bangla Unicode block (\u0980-\u09FF), spaces, and Bangla punctuation
+                let cleaned = val.replace(/[^\u0980-\u09FF\s]/g, '');
+                if (val !== cleaned) {
+                    let pos = this.selectionStart - (val.length - cleaned.length);
+                    $(this).val(cleaned);
+                    this.setSelectionRange(pos, pos);
+                }
+            });
+
+            // NID No., Birth Reg. No. & Mobile No.: digits only
+            $('#nid, #birth_certificate, #mobile').on('input', function () {
+                let val = $(this).val();
+                let cleaned = val.replace(/[^0-9]/g, '');
+                if (val !== cleaned) {
+                    let pos = this.selectionStart - (val.length - cleaned.length);
+                    $(this).val(cleaned);
+                    this.setSelectionRange(pos, pos);
+                }
             });
         });
 

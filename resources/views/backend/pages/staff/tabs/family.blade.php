@@ -36,19 +36,19 @@
                             <input type="hidden" name="user_id" value="{{$user->id}}">
 
                             <div class="card-body">
-                                <!-- Row 1: Father's Name, Father's Name Bangla, Father's Live Status -->
+                                <!-- Row 1: Father's Name, Father's Name in Bangla, Father's Live Status, Father's ID -->
                                 <div class="form-group row">
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <label for="fatherName">Father's Name</label>
-                                        <input type="text" name="father_name" value="{{$user->familyInfo->father_name ?? ''}}" class="form-control" id="fatherName" placeholder="Father's Name">
+                                        <input type="text" name="father_name" value="{{$user->familyInfo->father_name ?? ''}}" class="form-control" id="fatherName" placeholder="Father's Name" style="text-transform:uppercase">
                                         <small class="text-danger error father_name_error"></small>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <label for="father_name_bn">Father's Name in Bangla</label>
                                         <input type="text" name="father_name_bn" value="{{$user->familyInfo->father_name_bn ?? ''}}" class="form-control" id="father_name_bn" placeholder="পিতার নাম">
                                         <small class="text-danger error father_name_bn_error"></small>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-2">
                                         <label for="fathersLiveStatus">Father's Live Status</label>
                                         <select name="father_live_status" class="form-control" id="fathersLiveStatus">
                                             @foreach (family_constant_option('live_status') as $key => $live_status)
@@ -57,21 +57,26 @@
                                         </select>
                                         <small class="text-danger error father_live_status_error"></small>
                                     </div>
+                                    <div class="col-sm-4">
+                                        <label for="fatherNID">Father's ID</label>
+                                        <input type="text" name="father_nid" class="form-control" id="fatherNID" value="{{$user->familyInfo->father_nid ?? ''}}" placeholder="Father's NID">
+                                        <small class="text-danger error father_nid_error"></small>
+                                    </div>
                                 </div>
 
-                                <!-- Row 3: Mother's Name, Mother's Name Bangla, Mother's Live Status -->
+                                <!-- Row 3: Mother's Name, Mother's Name in Bangla, Mother's Live Status, Mother's ID -->
                                 <div class="form-group row">
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <label for="motherName">Mother's Name</label>
-                                        <input type="text" class="form-control" name="mother_name" id="motherName" value="{{$user->familyInfo->mother_name ??''}}" placeholder="Mother's Name">
+                                        <input type="text" class="form-control" name="mother_name" id="motherName" value="{{$user->familyInfo->mother_name ??''}}" placeholder="Mother's Name" style="text-transform:uppercase">
                                         <small class="text-danger error mother_name_error"></small>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <label for="mother_name_bn">Mother's Name in Bangla</label>
                                         <input type="text" class="form-control" name="mother_name_bn" id="mother_name_bn" value="{{$user->familyInfo->mother_name_bn ??''}}" placeholder="মাতার নাম">
                                         <small class="text-danger error mother_name_bn_error"></small>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-2">
                                         <label for="motherLiveStatus">Mother's Live Status</label>
                                         <select name="mother_live_status" class="form-control" id="motherLiveStatus">
                                             @foreach (family_constant_option('live_status') as $key => $live_status)
@@ -80,16 +85,7 @@
                                         </select>
                                         <small class="text-danger error mother_live_status_error"></small>
                                     </div>
-                                </div>
-
-                                <!-- Row 4: Father's ID & Mother's ID -->
-                                <div class="form-group row">
-                                    <div class="col-sm-6">
-                                        <label for="fatherNID">Father's ID</label>
-                                        <input type="text" name="father_nid" class="form-control" id="fatherNID" value="{{$user->familyInfo->father_nid ?? ''}}" placeholder="Father's NID">
-                                        <small class="text-danger error father_nid_error"></small>
-                                    </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <label for="motherNID">Mother's ID</label>
                                         <input type="text" name="mother_nid" class="form-control" id="motherNID" value="{{$user->familyInfo->mother_nid ?? ''}}" placeholder="Mother's NID">
                                         <small class="text-danger error mother_nid_error"></small>
@@ -243,6 +239,49 @@
                     $('.have_children_content').removeClass('d-none');
                 } else {
                     $('.have_children_content').addClass('d-none');
+                }
+            });
+            // Father's Name: English only + auto uppercase
+            $('#fatherName').on('input', function () {
+                let val = $(this).val();
+                let cleaned = val.replace(/[^a-zA-Z\s.\-']/g, '').toUpperCase();
+                if (val !== cleaned) {
+                    let pos = this.selectionStart - (val.length - cleaned.length);
+                    $(this).val(cleaned);
+                    this.setSelectionRange(pos, pos);
+                }
+            });
+
+            // Father's Name in Bangla: Bangla only
+            $('#father_name_bn').on('input', function () {
+                let val = $(this).val();
+                let cleaned = val.replace(/[^\u0980-\u09FF\s]/g, '');
+                if (val !== cleaned) {
+                    let pos = this.selectionStart - (val.length - cleaned.length);
+                    $(this).val(cleaned);
+                    this.setSelectionRange(pos, pos);
+                }
+            });
+
+            // Mother's Name: English only + auto uppercase
+            $('#motherName').on('input', function () {
+                let val = $(this).val();
+                let cleaned = val.replace(/[^a-zA-Z\s.\-']/g, '').toUpperCase();
+                if (val !== cleaned) {
+                    let pos = this.selectionStart - (val.length - cleaned.length);
+                    $(this).val(cleaned);
+                    this.setSelectionRange(pos, pos);
+                }
+            });
+
+            // Mother's Name in Bangla: Bangla only
+            $('#mother_name_bn').on('input', function () {
+                let val = $(this).val();
+                let cleaned = val.replace(/[^\u0980-\u09FF\s]/g, '');
+                if (val !== cleaned) {
+                    let pos = this.selectionStart - (val.length - cleaned.length);
+                    $(this).val(cleaned);
+                    this.setSelectionRange(pos, pos);
                 }
             });
         });
