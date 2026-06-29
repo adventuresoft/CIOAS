@@ -193,20 +193,20 @@
                     </li>
                     <li>
                         <a href="#" onclick="logoutUser()"
-                            class="bg-white/10 border border-white/25 rounded px-3.5 py-1.5 text-[12px] my-1 hover:bg-white/20 text-white/90 no-underline font-['Hind_Siliguri',_sans-serif] inline-block">
+                            class="bg-white/10 border border-white/25 rounded px-3.5 py-1.5 text-[14px] my-1 hover:bg-white/20 text-white/90 no-underline font-['kalpurush',_sans-serif] inline-block">
                             <i class="fas fa-sign-out-alt"></i> লগআউট
                         </a>
                     </li>
                 @else
                     <li class="mr-2">
                         <a href="{{ route('frontend.user.register') }}"
-                            class="bg-[#cc0000] border border-[#cc0000] text-white rounded px-3.5 py-1.5 text-[12px] my-1 hover:bg-white/20 hover:text-white/90 no-underline font-['Hind_Siliguri',_sans-serif] inline-block">
+                            class="bg-[#0f766e] border border-[#0f766e] text-white rounded px-3.5 py-1.5 text-[14px] my-1 hover:bg-white/20 hover:text-white/90 no-underline font-['kalpurush',_sans-serif] inline-block">
                             <i class="fas fa-user-plus"></i> নিবন্ধন
                         </a>
                     </li>
                     <li>
                         <a href="{{ url('/login') }}"
-                            class="bg-white/10 border border-white/25 rounded px-3.5 py-1.5 text-[12px] my-1 hover:bg-white/20 text-white/90 no-underline font-['Hind_Siliguri',_sans-serif] inline-block">
+                            class="bg-white/10 border border-white/25 rounded px-3.5 py-1.5 text-[12px] my-1 hover:bg-white/20 text-white/90 no-underline font-['kalpurush',_sans-serif] inline-block">
                             <i class="fas fa-sign-in-alt"></i> লগইন
                         </a>
                     </li>

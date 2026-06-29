@@ -9,6 +9,13 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
+@font-face {
+  font-family: 'kalpurush';
+  src: url('../bangla-font/kalpurush%20ANSI.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* nav bar  */
 .navbar {
   background-color: #fff;
@@ -31,7 +38,8 @@ body {
 }
 
 .nav-links li a {
-  color: #1f2937; /* text-gray-800 */
+  color: #1f2937;
+  /* text-gray-800 */
 }
 
 .nav-links li a.text-white {
@@ -39,7 +47,8 @@ body {
 }
 
 .nav-links li a:hover {
-  color: green; /* hover:text-amber-600 */
+  color: green;
+  /* hover:text-amber-600 */
 }
 
 .nav-item {
@@ -50,12 +59,14 @@ body {
   font-family: "Open Sans", sans-serif;
   font-weight: 700;
   color: black;
-  font-size: 1.25rem; /* text-xl */
+  font-size: 1.25rem;
+  /* text-xl */
   transition: color 0.3s;
 }
 
 .nav-link:hover {
-  color: #f59e0b; /* hover:text-amber-600 */
+  color: #f59e0b;
+  /* hover:text-amber-600 */
 }
 
 
@@ -91,10 +102,12 @@ body {
   0% {
     transform: translateX(100%);
   }
+
   100% {
     transform: translateX(-100%);
   }
 }
+
 .animate-marquee {
   display: inline-block;
   min-width: 100%;

@@ -24,6 +24,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Force HTTPS in production to prevent mixed content blocking (CSS/JS not loading)
+        if (config('app.env') === 'production' || strpos(config('app.url'), 'https://') !== false) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
          Paginator::useBootstrap();
         Schema::defaultStringLength(191);
         $mainPath = database_path('migrations');
