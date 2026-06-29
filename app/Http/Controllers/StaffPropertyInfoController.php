@@ -104,7 +104,13 @@ class StaffPropertyInfoController extends Controller
                 'silver_type' => 'nullable',
                 'silver_quantity' => 'nullable',
                 'silver_price' => 'nullable',
-                'silver_ownership_status' => 'nullable'
+                'silver_ownership_status' => 'nullable',
+                'land_price' => 'nullable',
+                'house_information' => 'nullable',
+                'land_information' => 'nullable',
+                'diamond_information' => 'nullable',
+                'gold_information' => 'nullable',
+                'silver_information' => 'nullable'
             ]);
 
             if ($validate->fails()) {
@@ -127,7 +133,8 @@ class StaffPropertyInfoController extends Controller
                     'house_area' => $request->house_area,
                     'house_land_quantity' => $request->house_land_quantity,
                     'house_price' => $request->house_price ?? 0.00,
-                    'house_ownership_status' => $request->house_ownership_status,
+                    'house_ownership_status' => $request->house_information ?? $request->house_ownership_status,
+                    'house_information' => $request->house_information ?? $request->house_ownership_status,
                     'house_address' => $request->house_address,
                     'land' => $request->land ?? 0,
                     'land_district_id' => $request->land_district_id,
@@ -139,13 +146,11 @@ class StaffPropertyInfoController extends Controller
                     'land_rs' => $request->land_rs,
                     'land_sa' => $request->land_sa,
                     'land_cs' => $request->land_cs,
-
-
                     'land_quantity' => $request->land_quantity,
+                    'land_price' => $request->land_price ?? 0.00,
                     'land_type' => $request->land_type,
-                    'land_ownership_status' => $request->land_ownership_status,
-                    'land_type' => $request->land_type,
-                    'land_ownership_status' => $request->land_ownership_status,
+                    'land_ownership_status' => $request->land_information ?? $request->land_ownership_status,
+                    'land_information' => $request->land_information ?? $request->land_ownership_status,
                     'flat' => $request->flat ?? 0,
                     'flat_district_id' => $request->flat_district_id,
                     'flat_thana_id' => $request->flat_thana_id,
@@ -160,18 +165,20 @@ class StaffPropertyInfoController extends Controller
                     'diamond_type' => $request->diamond_type,
                     'diamond_quantity' => $request->diamond_quantity,
                     'diamond_price' => $request->diamond_price ?? 0.00,
-                    'diamond_ownership_status' => $request->diamond_ownership_status,
-
+                    'diamond_ownership_status' => $request->diamond_information ?? $request->diamond_ownership_status,
+                    'diamond_information' => $request->diamond_information ?? $request->diamond_ownership_status,
                     'gold' => $request->gold ?? 0,
                     'gold_type' => $request->gold_type,
                     'gold_quantity' => $request->gold_quantity,
                     'gold_price' => $request->gold_price ?? 0.00,
-                    'gold_ownership_status' => $request->gold_ownership_status,
+                    'gold_ownership_status' => $request->gold_information ?? $request->gold_ownership_status,
+                    'gold_information' => $request->gold_information ?? $request->gold_ownership_status,
                     'silver' => $request->silver ?? 0,
                     'silver_type' => $request->silver_type,
                     'silver_quantity' => $request->silver_quantity,
                     'silver_price' => $request->silver_price ?? 0.00,
-                    'silver_ownership_status' => $request->silver_ownership_status
+                    'silver_ownership_status' => $request->silver_information ?? $request->silver_ownership_status,
+                    'silver_information' => $request->silver_information ?? $request->silver_ownership_status
                 ]);
 
 

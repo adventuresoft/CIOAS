@@ -22,7 +22,7 @@ if(! function_exists('freedom_fighter_constant_option')){
                 2 => 'Bir Uttom',
                 3 => 'Bir Bikrom',
                 4 => 'Bir Protik',
-                5 => 'Others'
+                5 => 'FREEDOM FIGHTER'
             ]
             ,
             
@@ -31,7 +31,10 @@ if(! function_exists('freedom_fighter_constant_option')){
                 2 => 'Help',
             ],
 
-          
+            'july_category' => [
+                1 => 'Martyr (শহীদ)',
+                2 => 'Injured (আহত)',
+            ],
 
         ];
         if ($option_name) {

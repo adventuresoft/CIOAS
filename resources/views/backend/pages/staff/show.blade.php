@@ -583,6 +583,14 @@
                     <div class="info-row"><span class="info-label">House :</span><span
                             class="info-value">{{ $user->addressInfo->permanentHouse->house ?? $user->addressInfo->permanent_house ?? '' }}</span>
                     </div>
+                    <div class="info-row"><span class="info-label">House (Bangla) :</span><span
+                            class="info-value">{{ $user->addressInfo->permanent_house_bn ?? '' }}</span>
+                    </div>
+                    @if(optional($user->addressInfo)->is_same_as_permanent == 1)
+                        <div class="mt-3">
+                            <span style="color: #5b4bdf; font-weight: bold;"><i class="fas fa-check-square mr-1"></i> Same as Permanent Address</span>
+                        </div>
+                    @endif
                 </div>
                 <div class="col">
                     <h6 class="mb-2 font-weight-bold">বর্তমান ঠিকানা / Present Address</h6>
@@ -608,6 +616,9 @@
                     </div>
                     <div class="info-row"><span class="info-label">House :</span><span
                             class="info-value">{{ $user->addressInfo->presentHouse->house ?? $user->addressInfo->present_house ?? '' }}</span>
+                    </div>
+                    <div class="info-row"><span class="info-label">House (Bangla) :</span><span
+                            class="info-value">{{ $user->addressInfo->present_house_bn ?? '' }}</span>
                     </div>
                 </div>
             </div>
@@ -851,9 +862,9 @@
                                 <div class="info-row"><span class="info-label">House Price :</span><span
                                         class="info-value">{{ $formatCurrency($property->house_price) }}</span></div>
                             @endif
-                            @if($hasText($property->house_ownership_status))
-                                <div class="info-row"><span class="info-label">Owner Information :</span><span
-                                        class="info-value">{{ $property->house_ownership_status }}</span></div>
+                            @if($hasText($property->house_information ?? $property->house_ownership_status))
+                                <div class="info-row"><span class="info-label">House Information :</span><span
+                                        class="info-value">{{ $property->house_information ?? $property->house_ownership_status }}</span></div>
                             @endif
                             @if($hasText($property->house_address))
                                 <div class="info-row"><span class="info-label">House Address :</span><span
@@ -873,9 +884,13 @@
                                 <div class="info-row"><span class="info-label">Land Type :</span><span
                                         class="info-value">{{ $property->land_type }}</span></div>
                             @endif
-                            @if($hasText($property->land_ownership_status))
-                                <div class="info-row"><span class="info-label">Owner Information :</span><span
-                                        class="info-value">{{ $property->land_ownership_status }}</span></div>
+                            @if($hasAmount($property->land_price))
+                                <div class="info-row"><span class="info-label">Land Price :</span><span
+                                        class="info-value">{{ $formatCurrency($property->land_price) }}</span></div>
+                            @endif
+                            @if($hasText($property->land_information ?? $property->land_ownership_status))
+                                <div class="info-row"><span class="info-label">Land Information :</span><span
+                                        class="info-value">{{ $property->land_information ?? $property->land_ownership_status }}</span></div>
                             @endif
                             @if(!empty($landLocationParts))
                                 <div class="info-row"><span class="info-label">Location :</span><span
@@ -957,9 +972,9 @@
                                 <div class="info-row"><span class="info-label">Price :</span><span
                                         class="info-value">{{ $formatCurrency($property->gold_price) }}</span></div>
                             @endif
-                            @if($hasText($property->gold_ownership_status))
-                                <div class="info-row"><span class="info-label">Owner Information :</span><span
-                                        class="info-value">{{ $property->gold_ownership_status }}</span></div>
+                            @if($hasText($property->gold_information ?? $property->gold_ownership_status))
+                                <div class="info-row"><span class="info-label">Gold Information :</span><span
+                                        class="info-value">{{ $property->gold_information ?? $property->gold_ownership_status }}</span></div>
                             @endif
                         </div>
                     @endif
@@ -979,9 +994,9 @@
                                 <div class="info-row"><span class="info-label">Price :</span><span
                                         class="info-value">{{ $formatCurrency($property->diamond_price) }}</span></div>
                             @endif
-                            @if($hasText($property->diamond_ownership_status))
-                                <div class="info-row"><span class="info-label">Owner Information :</span><span
-                                        class="info-value">{{ $property->diamond_ownership_status }}</span></div>
+                            @if($hasText($property->diamond_information ?? $property->diamond_ownership_status))
+                                <div class="info-row"><span class="info-label">Diamond Information :</span><span
+                                        class="info-value">{{ $property->diamond_information ?? $property->diamond_ownership_status }}</span></div>
                             @endif
                         </div>
                     @endif
@@ -1001,9 +1016,9 @@
                                 <div class="info-row"><span class="info-label">Price :</span><span
                                         class="info-value">{{ $formatCurrency($property->silver_price) }}</span></div>
                             @endif
-                            @if($hasText($property->silver_ownership_status))
-                                <div class="info-row"><span class="info-label">Owner Information :</span><span
-                                        class="info-value">{{ $property->silver_ownership_status }}</span></div>
+                            @if($hasText($property->silver_information ?? $property->silver_ownership_status))
+                                <div class="info-row"><span class="info-label">Silver Information :</span><span
+                                        class="info-value">{{ $property->silver_information ?? $property->silver_ownership_status }}</span></div>
                             @endif
                         </div>
                     @endif
@@ -1048,9 +1063,15 @@
 
             @if(isset($user->freedomFighterInfo) && ($user->freedomFighterInfo->is_july_fighter ?? false))
                 <div class="section-header">জুলাই যোদ্ধা তথ্য / July Fighter Information</div>
-                <div class="info-row"><span class="info-label">Type :</span><span
-                        class="info-value">{{ freedom_fighter_constant_option('type')[$user->freedomFighterInfo->july_type_id ?? ''] ?? '' }}</span>
+                <div class="info-row"><span class="info-label">Fighter Category :</span><span
+                        class="info-value">{{ freedom_fighter_constant_option('july_category')[$user->freedomFighterInfo->july_type_id ?? ''] ?? '' }}</span>
                 </div>
+                <div class="info-row"><span class="info-label">Movement/Incident Location :</span><span
+                        class="info-value">{{ $user->freedomFighterInfo->july_incident_location ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Injury Details :</span><span
+                        class="info-value">{{ $user->freedomFighterInfo->july_injury_details ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Contribution Description :</span><span
+                        class="info-value">{{ $user->freedomFighterInfo->july_contribution_description ?? '' }}</span></div>
                 <div class="info-row"><span class="info-label">July Fighter ID :</span><span
                         class="info-value">{{ $user->freedomFighterInfo->july_fighter_id ?? '' }}</span></div>
             @endif

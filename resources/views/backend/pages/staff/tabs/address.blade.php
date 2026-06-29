@@ -144,6 +144,16 @@
                                         <small class="text-danger error permanent_house_bn_error"></small>
                                     </div>
                                 </div>
+
+                                <!-- Same as Permanent Address Checkbox -->
+                                <div class="form-group row mt-3">
+                                    <div class="col-sm-12">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="is_same_as_permanent" name="is_same_as_permanent" value="1" {{ ($user->addressInfo->is_same_as_permanent ?? 0) == 1 ? 'checked' : '' }}>
+                                            <label class="custom-control-label font-weight-bold" style="cursor: pointer; color: #5b4bdf;" for="is_same_as_permanent">Same as Permanent Address</label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Present Address Section -->
@@ -456,6 +466,7 @@
                     success: function(response) {
                         district_id.html(response);
                         district_id.prop("disabled", false);
+                        if ($('#is_same_as_permanent').is(':checked')) { syncPresentAddress(); }
                     },
                     error: function(xhr, status, error) {
                         district_id.prop("disabled", false);
@@ -485,6 +496,7 @@
                     success: function(response) {
                         permanent_thana_id.html(response);
                         permanent_thana_id.prop("disabled", false);
+                        if ($('#is_same_as_permanent').is(':checked')) { syncPresentAddress(); }
                     },
                     error: function(xhr, status, error) {
                         permanent_thana_id.prop("disabled", false);
@@ -514,6 +526,7 @@
                     success: function(response) {
                         permanent_union_id.html(response);
                         permanent_union_id.prop("disabled", false);
+                        if ($('#is_same_as_permanent').is(':checked')) { syncPresentAddress(); }
                     },
                     error: function(xhr, status, error) {
                         permanent_union_id.prop("disabled", false);
@@ -546,6 +559,7 @@
                         if(response.roadOptions) {
                             $("#permanent_road").html(response.roadOptions);
                         }
+                        if ($('#is_same_as_permanent').is(':checked')) { syncPresentAddress(); }
                     },
                     error: function(xhr, status, error) {
                         permanent_village_id.prop("disabled", false);
@@ -557,6 +571,53 @@
                 permanent_village_id.html('<option value="">Select Village</option>');
                 permanent_village_id.prop("disabled", true);
             }
+        });
+
+        function syncPresentAddress() {
+            if ($('#is_same_as_permanent').is(':checked')) {
+                if ($('#permanent_district_id').val() && !$('#present_district_id option[value="' + $('#permanent_district_id').val() + '"]').length) {
+                    $('#present_district_id').html($('#permanent_district_id').html());
+                }
+                if ($('#permanent_thana_id').val() && !$('#present_thana_id option[value="' + $('#permanent_thana_id').val() + '"]').length) {
+                    $('#present_thana_id').html($('#permanent_thana_id').html());
+                }
+                if ($('#permanent_union_id').val() && !$('#present_union_id option[value="' + $('#permanent_union_id').val() + '"]').length) {
+                    $('#present_union_id').html($('#permanent_union_id').html());
+                }
+                if ($('#permanent_village_id').val() && !$('#present_village_id option[value="' + $('#permanent_village_id').val() + '"]').length) {
+                    $('#present_village_id').html($('#permanent_village_id').html());
+                }
+
+                $('#present_division_id').val($('#permanent_division_id').val()).trigger('change.select2');
+                $('#present_district_id').val($('#permanent_district_id').val()).trigger('change.select2');
+                $('#present_thana_id').val($('#permanent_thana_id').val()).trigger('change.select2');
+                $('#present_post_office_id').val($('#permanent_post_office_id').val()).trigger('change.select2');
+                $('#present_union_id').val($('#permanent_union_id').val()).trigger('change.select2');
+                $('#present_village_id').val($('#permanent_village_id').val()).trigger('change.select2');
+                $('#present_ward_id').val($('#permanent_ward_id').val()).trigger('change.select2');
+
+                $('#present_road').val($('#permanent_road').val());
+                $('#present_house').val($('#permanent_house').val());
+                $('#present_house_bn').val($('#permanent_house_bn').val());
+
+                $('#present_division_id, #present_district_id, #present_thana_id, #present_post_office_id, #present_union_id, #present_village_id, #present_ward_id, #present_road, #present_house, #present_house_bn').prop('disabled', true);
+            } else {
+                $('#present_division_id, #present_district_id, #present_thana_id, #present_post_office_id, #present_union_id, #present_village_id, #present_ward_id, #present_road, #present_house, #present_house_bn').prop('disabled', false);
+            }
+        }
+
+        $(document).on('change', '#is_same_as_permanent', function() {
+            syncPresentAddress();
+        });
+
+        $(document).on('change input', '#permanent_division_id, #permanent_district_id, #permanent_thana_id, #permanent_post_office_id, #permanent_union_id, #permanent_village_id, #permanent_ward_id, #permanent_road, #permanent_house, #permanent_house_bn', function() {
+            if ($('#is_same_as_permanent').is(':checked')) {
+                syncPresentAddress();
+            }
+        });
+
+        $(document).ready(function() {
+            syncPresentAddress();
         });
     </script>
 @endpush

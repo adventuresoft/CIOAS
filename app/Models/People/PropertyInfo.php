@@ -60,7 +60,13 @@ class PropertyInfo extends Model
     'silver_type',
     'silver_quantity',
     'silver_price',
-    'silver_ownership_status'
+    'silver_ownership_status',
+    'land_price',
+    'house_information',
+    'land_information',
+    'diamond_information',
+    'gold_information',
+    'silver_information'
     ];
 
 

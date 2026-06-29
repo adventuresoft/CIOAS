@@ -297,8 +297,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
     Route::get('/staff/freedom/{userID}', [StaffFreedomFighterInfoController::class, 'create'])->name('staff.freedom');
     Route::post('/staff/freedom-store', [StaffFreedomFighterInfoController::class, 'store'])->name('staff.freedomStore');
-    Route::get('/staff/july-figher/{userID}', [StaffFreedomFighterInfoController::class, 'julyFigher'])->name('staff.julyFigher');
-    Route::post('/staff/july-figher-store', [StaffFreedomFighterInfoController::class, 'julyFigherStore'])->name('staff.julyFigherStore');
+    Route::get('/staff/july-fighter/{userID}', [StaffFreedomFighterInfoController::class, 'julyFighter'])->name('staff.julyFighter');
+    Route::post('/staff/july-fighter-store', [StaffFreedomFighterInfoController::class, 'julyFighterStore'])->name('staff.julyFighterStore');
 
     Route::get('/staff/education/{userID}', [StaffEducationalInfoController::class, 'create'])->name('staff.education');
     Route::post('/staff/education-store', [StaffEducationalInfoController::class, 'store'])->name('staff.educationStore');

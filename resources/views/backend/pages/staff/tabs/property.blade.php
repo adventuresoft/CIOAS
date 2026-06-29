@@ -79,7 +79,7 @@
 
         .toggle-button {
             position: relative;
-            top: 50%;
+            margin: 0 auto;
             width: 74px;
             height: 36px;
             overflow: hidden;
@@ -162,12 +162,11 @@
         }
 
         .property-section-card {
-            border: 1px solid #e8ecf4;
-            border-radius: 14px;
-            padding: 16px 16px 4px;
-            background: #fafbff;
-            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
-            margin-bottom: 18px;
+            border: none;
+            padding: 0;
+            background: transparent;
+            box-shadow: none;
+            margin-bottom: 0;
         }
 
         .property-section-card .section-title {
@@ -241,146 +240,160 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6 mb-3 mb-md-0">
                                             <label for="cash_amount" class="col-form-label font-weight-bold">Cash Amount</label>
-                                            <input type="number" class="form-control form-control-sm" value="{{ $user->propertyInfos->cash_amount ?? '' }}" name="cash_amount" id="cash_amount" placeholder="Cash Amount">
+                                            <input type="number" class="form-control" value="{{ $user->propertyInfos->cash_amount ?? '' }}" name="cash_amount" id="cash_amount" placeholder="Cash Amount">
                                         </div>
                                         <div class="col-md-6">
                                             <label for="tin_number" class="col-form-label font-weight-bold">E-TIN</label>
-                                            <input type="text" name="tin_number" value="{{ $user->propertyInfos->tin_number ?? '' }}" class="form-control form-control-sm" id="tin_number">
+                                            <input type="text" name="tin_number" value="{{ $user->propertyInfos->tin_number ?? '' }}" class="form-control" id="tin_number" placeholder="">
                                         </div>
                                     </div>
 
-                                    <div class="property-choice-grid mb-4">
-                                        <div class="row">
-                                            <div class="col-6 col-md-2 mb-2">
-                                                <input type="checkbox" class="d-none property-toggle-input" name="house" id="house" value="1" data-target="#house-property" {{ $user->propertyInfos ? ($user->propertyInfos->house ? 'checked' : '') : '' }}>
-                                                <label for="house" class="btn btn-outline-primary btn-block property-toggle-label">House</label>
+                                    <div class="row property-choice-grid mt-4">
+                                        <!-- House Column -->
+                                        <div class="col-xl col-lg-4 col-md-6 col-12 mb-4 px-2">
+                                            <div class="text-center font-weight-bold mb-2" style="font-size: 15px; color: #1e293b;">
+                                                <i class="fas fa-home mr-1"></i> Have any house?
                                             </div>
-                                            <div class="col-6 col-md-2 mb-2">
-                                                <input type="checkbox" class="d-none property-toggle-input" name="land" id="land" value="1" data-target="#land-property" {{ $user->propertyInfos ? ($user->propertyInfos->land ? 'checked' : '') : '' }}>
-                                                <label for="land" class="btn btn-outline-primary btn-block property-toggle-label">Land</label>
+                                            <div class="d-flex justify-content-center mb-3">
+                                                <div class="toggle-button toggle-button-1 r mx-auto" style="top: auto;">
+                                                    <input type="checkbox" class="checkbox property-toggle-input" name="house" id="house" value="1" data-target="#house-property" {{ $user->propertyInfos ? ($user->propertyInfos->house ? 'checked' : '') : '' }}>
+                                                    <div class="knobs"></div>
+                                                    <div class="layer"></div>
+                                                </div>
                                             </div>
-                                            <div class="col-6 col-md-2 mb-2">
-                                                <input type="checkbox" class="d-none property-toggle-input" name="gold" id="gold" value="1" data-target="#gold-property" {{ $user->propertyInfos ? ($user->propertyInfos->gold ? 'checked' : '') : '' }}>
-                                                <label for="gold" class="btn btn-outline-primary btn-block property-toggle-label">Gold</label>
-                                            </div>
-                                            <div class="col-6 col-md-2 mb-2">
-                                                <input type="checkbox" class="d-none property-toggle-input" name="diamond" id="diamond" value="1" data-target="#diamond-property" {{ $user->propertyInfos ? ($user->propertyInfos->diamond ? 'checked' : '') : '' }}>
-                                                <label for="diamond" class="btn btn-outline-primary btn-block property-toggle-label">Diamond</label>
-                                            </div>
-                                            <div class="col-6 col-md-2 mb-2">
-                                                <input type="checkbox" class="d-none property-toggle-input" name="silver" id="silver" value="1" data-target="#silver-property" {{ $user->propertyInfos ? ($user->propertyInfos->silver ? 'checked' : '') : '' }}>
-                                                <label for="silver" class="btn btn-outline-primary btn-block property-toggle-label">Silver</label>
+                                            <div id="house-property" class="property-section-card {{ $user->propertyInfos ? ($user->propertyInfos->house ? '' : 'd-none') : 'd-none' }}">
+                                                <div class="form-group mb-2">
+                                                    <label for="house_type" class="font-weight-bold mb-1" style="font-size: 13px; color: #334155;">House Type</label>
+                                                    <input type="text" name="house_type" value="{{ $user->propertyInfos->house_type ?? '' }}" placeholder="House Type" class="form-control" id="house_type">
+                                                </div>
+                                                <div class="form-group mb-2">
+                                                    <label for="house_land_quantity" class="font-weight-bold mb-1" style="font-size: 13px; color: #334155;">Land Quantity (in Acre)</label>
+                                                    <input type="text" name="house_land_quantity" value="{{ $user->propertyInfos->house_land_quantity ?? '' }}" placeholder="0.0000" class="form-control" id="house_land_quantity">
+                                                </div>
+                                                <div class="form-group mb-2">
+                                                    <label for="house_price" class="font-weight-bold mb-1" style="font-size: 13px; color: #334155;">House Price</label>
+                                                    <input type="number" step="any" name="house_price" value="{{ $user->propertyInfos->house_price ?? '' }}" placeholder="0.00" class="form-control" id="house_price">
+                                                </div>
+                                                <div class="form-group mb-2">
+                                                    <label for="house_information" class="font-weight-bold mb-1" style="font-size: 13px; color: #334155;">House Information</label>
+                                                    <textarea name="house_information" rows="3" placeholder="House Information" class="form-control" id="house_information">{{ $user->propertyInfos->house_information ?? $user->propertyInfos->house_ownership_status ?? '' }}</textarea>
+                                                </div>
                                             </div>
                                         </div>
-                                        <small class="text-muted d-block mt-1">Select a property type to enter its details.</small>
-                                    </div>
 
-                                    <div id="house-property" class="property-section-card {{ $user->propertyInfos ? ($user->propertyInfos->house ? '' : 'd-none') : 'd-none' }}">
-                                        <div class="section-title">House information</div>
-                                        <div class="form-group row">
-                                            <label for="house_land_quantity" class="col-sm-3 col-form-label">Land Quantity :</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="house_land_quantity" value="{{ $user->propertyInfos->house_land_quantity ?? '' }}" placeholder="Land Quantity" class="form-control form-control-sm" id="house_land_quantity">
+                                        <!-- Land Column -->
+                                        <div class="col-xl col-lg-4 col-md-6 col-12 mb-4 px-2">
+                                            <div class="text-center font-weight-bold mb-2" style="font-size: 15px; color: #1e293b;">
+                                                <i class="fas fa-mountain mr-1"></i> Have any land?
+                                            </div>
+                                            <div class="d-flex justify-content-center mb-3">
+                                                <div class="toggle-button toggle-button-1 r mx-auto" style="top: auto;">
+                                                    <input type="checkbox" class="checkbox property-toggle-input" name="land" id="land" value="1" data-target="#land-property" {{ $user->propertyInfos ? ($user->propertyInfos->land ? 'checked' : '') : '' }}>
+                                                    <div class="knobs"></div>
+                                                    <div class="layer"></div>
+                                                </div>
+                                            </div>
+                                            <div id="land-property" class="property-section-card {{ $user->propertyInfos ? ($user->propertyInfos->land ? '' : 'd-none') : 'd-none' }}">
+                                                <div class="form-group mb-2">
+                                                    <label for="land_type" class="font-weight-bold mb-1" style="font-size: 13px; color: #334155;">Land Type</label>
+                                                    <input type="text" name="land_type" value="{{ $user->propertyInfos->land_type ?? '' }}" placeholder="Land Type" class="form-control" id="land_type">
+                                                </div>
+                                                <div class="form-group mb-2">
+                                                    <label for="land_quantity" class="font-weight-bold mb-1" style="font-size: 13px; color: #334155;">Land Quantity (in Acre)</label>
+                                                    <input type="text" name="land_quantity" value="{{ $user->propertyInfos->land_quantity ?? '' }}" placeholder="0.0000" class="form-control" id="land_quantity">
+                                                </div>
+                                                <div class="form-group mb-2">
+                                                    <label for="land_price" class="font-weight-bold mb-1" style="font-size: 13px; color: #334155;">Land Price</label>
+                                                    <input type="number" step="any" name="land_price" value="{{ $user->propertyInfos->land_price ?? '' }}" placeholder="0.00" class="form-control" id="land_price">
+                                                </div>
+                                                <div class="form-group mb-2">
+                                                    <label for="land_information" class="font-weight-bold mb-1" style="font-size: 13px; color: #334155;">Land Information</label>
+                                                    <textarea name="land_information" rows="3" placeholder="Land Information" class="form-control" id="land_information">{{ $user->propertyInfos->land_information ?? $user->propertyInfos->land_ownership_status ?? '' }}</textarea>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group row">
-                                            <label for="house_type" class="col-sm-3 col-form-label">House Type :</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="house_type" value="{{ $user->propertyInfos->house_type ?? '' }}" placeholder="House Type" class="form-control form-control-sm" id="house_type">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="house_ownership_status" class="col-sm-3 col-form-label">Owner Information :</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="house_ownership_status" value="{{ $user->propertyInfos->house_ownership_status ?? '' }}" placeholder="Owner Information" class="form-control form-control-sm" id="house_ownership_status">
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <div id="land-property" class="property-section-card {{ $user->propertyInfos ? ($user->propertyInfos->land ? '' : 'd-none') : 'd-none' }}">
-                                        <div class="section-title">Land information</div>
-                                        <div class="form-group row">
-                                            <label for="land_quantity" class="col-sm-3 col-form-label">Land Quantity :</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="land_quantity" value="{{ $user->propertyInfos->land_quantity ?? '' }}" placeholder="Land Quantity" class="form-control form-control-sm" id="land_quantity">
+                                        <!-- Diamond Column -->
+                                        <div class="col-xl col-lg-4 col-md-6 col-12 mb-4 px-2">
+                                            <div class="text-center font-weight-bold mb-2" style="font-size: 15px; color: #1e293b;">
+                                                <i class="fas fa-gem mr-1"></i> Have any diamond?
+                                            </div>
+                                            <div class="d-flex justify-content-center mb-3">
+                                                <div class="toggle-button toggle-button-1 r mx-auto" style="top: auto;">
+                                                    <input type="checkbox" class="checkbox property-toggle-input" name="diamond" id="diamond" value="1" data-target="#diamond-property" {{ $user->propertyInfos ? ($user->propertyInfos->diamond ? 'checked' : '') : '' }}>
+                                                    <div class="knobs"></div>
+                                                    <div class="layer"></div>
+                                                </div>
+                                            </div>
+                                            <div id="diamond-property" class="property-section-card {{ $user->propertyInfos ? ($user->propertyInfos->diamond ? '' : 'd-none') : 'd-none' }}">
+                                                <div class="form-group mb-2">
+                                                    <label for="diamond_quantity" class="font-weight-bold mb-1" style="font-size: 13px; color: #334155;">Diamond Quantity (in gram)</label>
+                                                    <input type="text" name="diamond_quantity" value="{{ $user->propertyInfos->diamond_quantity ?? '' }}" placeholder="0.00" class="form-control" id="diamond_quantity">
+                                                </div>
+                                                <div class="form-group mb-2">
+                                                    <label for="diamond_price" class="font-weight-bold mb-1" style="font-size: 13px; color: #334155;">Diamond Price</label>
+                                                    <input type="number" step="any" name="diamond_price" value="{{ $user->propertyInfos->diamond_price ?? '' }}" placeholder="0.00" class="form-control" id="diamond_price">
+                                                </div>
+                                                <div class="form-group mb-2">
+                                                    <label for="diamond_information" class="font-weight-bold mb-1" style="font-size: 13px; color: #334155;">Diamond Information</label>
+                                                    <textarea name="diamond_information" rows="3" placeholder="Diamond Information" class="form-control" id="diamond_information">{{ $user->propertyInfos->diamond_information ?? $user->propertyInfos->diamond_ownership_status ?? '' }}</textarea>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group row">
-                                            <label for="land_type" class="col-sm-3 col-form-label">Land Type :</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="land_type" value="{{ $user->propertyInfos->land_type ?? '' }}" placeholder="Land Type" class="form-control form-control-sm" id="land_type">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="land_ownership_status" class="col-sm-3 col-form-label">Owner Information :</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="land_ownership_status" value="{{ $user->propertyInfos->land_ownership_status ?? '' }}" placeholder="Owner Information" class="form-control form-control-sm" id="land_ownership_status">
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <div id="gold-property" class="property-section-card {{ $user->propertyInfos ? ($user->propertyInfos->gold ? '' : 'd-none') : 'd-none' }}">
-                                        <div class="section-title">Gold information</div>
-                                        <div class="form-group row">
-                                            <label for="gold_quantity" class="col-sm-3 col-form-label">Gold Quantity :</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="gold_quantity" value="{{ $user->propertyInfos->gold_quantity ?? '' }}" placeholder="Gold Quantity" class="form-control form-control-sm" id="gold_quantity">
+                                        <!-- Gold Column -->
+                                        <div class="col-xl col-lg-4 col-md-6 col-12 mb-4 px-2">
+                                            <div class="text-center font-weight-bold mb-2" style="font-size: 15px; color: #1e293b;">
+                                                <i class="fas fa-coins mr-1"></i> Have any gold?
+                                            </div>
+                                            <div class="d-flex justify-content-center mb-3">
+                                                <div class="toggle-button toggle-button-1 r mx-auto" style="top: auto;">
+                                                    <input type="checkbox" class="checkbox property-toggle-input" name="gold" id="gold" value="1" data-target="#gold-property" {{ $user->propertyInfos ? ($user->propertyInfos->gold ? 'checked' : '') : '' }}>
+                                                    <div class="knobs"></div>
+                                                    <div class="layer"></div>
+                                                </div>
+                                            </div>
+                                            <div id="gold-property" class="property-section-card {{ $user->propertyInfos ? ($user->propertyInfos->gold ? '' : 'd-none') : 'd-none' }}">
+                                                <div class="form-group mb-2">
+                                                    <label for="gold_quantity" class="font-weight-bold mb-1" style="font-size: 13px; color: #334155;">Gold Quantity (in gram)</label>
+                                                    <input type="text" name="gold_quantity" value="{{ $user->propertyInfos->gold_quantity ?? '' }}" placeholder="0.00" class="form-control" id="gold_quantity">
+                                                </div>
+                                                <div class="form-group mb-2">
+                                                    <label for="gold_price" class="font-weight-bold mb-1" style="font-size: 13px; color: #334155;">Gold Price</label>
+                                                    <input type="number" step="any" name="gold_price" value="{{ $user->propertyInfos->gold_price ?? '' }}" placeholder="0.00" class="form-control" id="gold_price">
+                                                </div>
+                                                <div class="form-group mb-2">
+                                                    <label for="gold_information" class="font-weight-bold mb-1" style="font-size: 13px; color: #334155;">Gold Information</label>
+                                                    <textarea name="gold_information" rows="3" placeholder="Gold Information" class="form-control" id="gold_information">{{ $user->propertyInfos->gold_information ?? $user->propertyInfos->gold_ownership_status ?? '' }}</textarea>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group row">
-                                            <label for="gold_price" class="col-sm-3 col-form-label">Gold Price :</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="gold_price" value="{{ $user->propertyInfos->gold_price ?? '' }}" placeholder="Gold Price" class="form-control form-control-sm" id="gold_price">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="gold_ownership_status" class="col-sm-3 col-form-label">Owner Information :</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="gold_ownership_status" value="{{ $user->propertyInfos->gold_ownership_status ?? '' }}" placeholder="Owner Information" class="form-control form-control-sm" id="gold_ownership_status">
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <div id="diamond-property" class="property-section-card {{ $user->propertyInfos ? ($user->propertyInfos->diamond ? '' : 'd-none') : 'd-none' }}">
-                                        <div class="section-title">Diamond information</div>
-                                        <div class="form-group row">
-                                            <label for="diamond_quantity" class="col-sm-3 col-form-label">Diamond Quantity :</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="diamond_quantity" value="{{ $user->propertyInfos->diamond_quantity ?? '' }}" placeholder="Diamond Quantity" class="form-control form-control-sm" id="diamond_quantity">
+                                        <!-- Silver Column -->
+                                        <div class="col-xl col-lg-4 col-md-6 col-12 mb-4 px-2">
+                                            <div class="text-center font-weight-bold mb-2" style="font-size: 15px; color: #1e293b;">
+                                                <i class="fas fa-key mr-1"></i> Have any silver?
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="diamond_price" class="col-sm-3 col-form-label">Diamond Price :</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="diamond_price" value="{{ $user->propertyInfos->diamond_price ?? '' }}" placeholder="Diamond Price" class="form-control form-control-sm" id="diamond_price">
+                                            <div class="d-flex justify-content-center mb-3">
+                                                <div class="toggle-button toggle-button-1 r mx-auto" style="top: auto;">
+                                                    <input type="checkbox" class="checkbox property-toggle-input" name="silver" id="silver" value="1" data-target="#silver-property" {{ $user->propertyInfos ? ($user->propertyInfos->silver ? 'checked' : '') : '' }}>
+                                                    <div class="knobs"></div>
+                                                    <div class="layer"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="diamond_ownership_status" class="col-sm-3 col-form-label">Owner Information :</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="diamond_ownership_status" value="{{ $user->propertyInfos->diamond_ownership_status ?? '' }}" placeholder="Owner Information" class="form-control form-control-sm" id="diamond_ownership_status">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div id="silver-property" class="property-section-card {{ $user->propertyInfos ? ($user->propertyInfos->silver ? '' : 'd-none') : 'd-none' }}">
-                                        <div class="section-title">Silver information</div>
-                                        <div class="form-group row">
-                                            <label for="silver_quantity" class="col-sm-3 col-form-label">Silver Quantity :</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="silver_quantity" value="{{ $user->propertyInfos->silver_quantity ?? '' }}" placeholder="Silver Quantity" class="form-control form-control-sm" id="silver_quantity">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="silver_price" class="col-sm-3 col-form-label">Silver Price :</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="silver_price" value="{{ $user->propertyInfos->silver_price ?? '' }}" placeholder="Silver Price" class="form-control form-control-sm" id="silver_price">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="silver_ownership_status" class="col-sm-3 col-form-label">Owner Information :</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="silver_ownership_status" value="{{ $user->propertyInfos->silver_ownership_status ?? '' }}" placeholder="Owner Information" class="form-control form-control-sm" id="silver_ownership_status">
+                                            <div id="silver-property" class="property-section-card {{ $user->propertyInfos ? ($user->propertyInfos->silver ? '' : 'd-none') : 'd-none' }}">
+                                                <div class="form-group mb-2">
+                                                    <label for="silver_quantity" class="font-weight-bold mb-1" style="font-size: 13px; color: #334155;">Silver Quantity (in gram)</label>
+                                                    <input type="text" name="silver_quantity" value="{{ $user->propertyInfos->silver_quantity ?? '' }}" placeholder="0.00" class="form-control" id="silver_quantity">
+                                                </div>
+                                                <div class="form-group mb-2">
+                                                    <label for="silver_price" class="font-weight-bold mb-1" style="font-size: 13px; color: #334155;">Silver Price</label>
+                                                    <input type="number" step="any" name="silver_price" value="{{ $user->propertyInfos->silver_price ?? '' }}" placeholder="0.00" class="form-control" id="silver_price">
+                                                </div>
+                                                <div class="form-group mb-2">
+                                                    <label for="silver_information" class="font-weight-bold mb-1" style="font-size: 13px; color: #334155;">Silver Information</label>
+                                                    <textarea name="silver_information" rows="3" placeholder="Silver Information" class="form-control" id="silver_information">{{ $user->propertyInfos->silver_information ?? $user->propertyInfos->silver_ownership_status ?? '' }}</textarea>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -441,7 +454,7 @@
 
                 if (isProperty) {
                     content.removeClass('d-none');
-                    content.find('.property-choice-grid :input').prop('disabled', false);
+                    content.find('#cash_amount, #tin_number, .property-toggle-input').prop('disabled', false);
                     content.find('.property-section-card').each(function() {
                         let toggle = content.find('.property-toggle-input[data-target="#' + this.id + '"]');
                         if (toggle.length) {
@@ -450,7 +463,7 @@
                     });
                 } else {
                     content.addClass('d-none');
-                    content.find('.property-choice-grid :input, .property-section-card :input').prop('disabled', true);
+                    content.find(':input').prop('disabled', true);
                 }
             }
 

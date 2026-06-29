@@ -146,6 +146,25 @@ class StaffAddressInfoController extends Controller
             }
         
             $result = DB::transaction(function () use ($request) {
+                if ($request->is_same_as_permanent == 1) {
+                    $request->merge([
+                        'present_division_id' => $request->permanent_division_id,
+                        'present_district_id' => $request->permanent_district_id,
+                        'present_thana_id' => $request->permanent_thana_id,
+                        'present_post_office_id' => $request->permanent_post_office_id,
+                        'present_union_id' => $request->permanent_union_id,
+                        'present_village_id' => $request->permanent_village_id,
+                        'present_ward_id' => $request->permanent_ward_id,
+                        'present_village_area_id' => $request->permanent_village_area_id,
+                        'present_road' => $request->permanent_road,
+                        'present_house' => $request->permanent_house,
+                        'present_house_bn' => $request->permanent_house_bn,
+                        'present_flat' => $request->permanent_flat,
+                        'present_area' => $request->permanent_area,
+                        'present_area_bn' => $request->permanent_area_bn,
+                    ]);
+                }
+
                 $permanent_division_id = $request->permanent_division_id;
                 $permanent_district_id = $request->permanent_district_id;
                 $permanent_thana_id = $request->permanent_thana_id;
@@ -179,6 +198,7 @@ class StaffAddressInfoController extends Controller
                 $peopleFamily = AddressInfo::updateOrCreate([
                     'user_id' => $request->user_id
                 ], [
+                    'is_same_as_permanent' => $request->is_same_as_permanent ? 1 : 0,
                     'permanent_division_id' => $permanent_division_id,
                     'permanent_district_id' => $permanent_district_id,
                     'permanent_thana_id' => $permanent_thana_id,
@@ -189,6 +209,7 @@ class StaffAddressInfoController extends Controller
                     'permanent_village_area_id' => $request->permanent_village_area_id,
                     'permanent_road' => $request->permanent_road,
                     'permanent_house' => $request->permanent_house,
+                    'permanent_house_bn' => $request->permanent_house_bn,
                     'permanent_flat' => $request->permanent_flat,
                     'permanent_area' => $request->permanent_area,
                     'permanent_area_bn' => $request->permanent_area_bn,
@@ -203,6 +224,7 @@ class StaffAddressInfoController extends Controller
 
                     'present_road' => $request->present_road,
                     'present_house' => $request->present_house,
+                    'present_house_bn' => $request->present_house_bn,
                     'present_area' => $request->present_area,
                     'present_area_bn' => $request->present_area_bn,
                     'present_flat' => $request->present_flat,
