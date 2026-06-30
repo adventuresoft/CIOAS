@@ -115,7 +115,7 @@
                                             <option value="">Select Ward</option>
                                             @if ($wards)
                                                 @foreach ($wards as $ward)
-                                                    <option value="{{$ward->id}}" {{$user->addressInfo ? (($user->addressInfo->permanent_ward_id == $ward->id) ? 'selected' : '' ) : ''}}>{{$ward->en_ward_no}}</option>
+                                                    <option value="{{$ward->id}}" {{$user->addressInfo ? (($user->addressInfo->permanent_ward_id == $ward->id) ? 'selected' : '' ) : ''}}>{{$ward->name}}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -233,7 +233,7 @@
                                             <option value="">Select Ward</option>
                                             @if ($wards)
                                                 @foreach ($wards as $ward)
-                                                    <option value="{{$ward->id}}" {{$user->addressInfo ? (($user->addressInfo->present_ward_id == $ward->id) ? 'selected' : '' ) : ''}}>{{$ward->en_ward_no}}</option>
+                                                    <option value="{{$ward->id}}" {{$user->addressInfo ? (($user->addressInfo->present_ward_id == $ward->id) ? 'selected' : '' ) : ''}}>{{$ward->name}}</option>
                                                 @endforeach
                                             @endif
                                         </select>

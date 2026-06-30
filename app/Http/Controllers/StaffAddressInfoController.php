@@ -11,7 +11,7 @@ use App\Models\Religion;
 use App\Models\Road;
 use App\Models\Thana;
 use App\Models\Union;
-use App\Models\UnionWard;
+use App\Models\Ward;
 use App\Models\PostOffice;
 use App\Models\User;
 use App\Models\VillageArea;
@@ -61,14 +61,13 @@ class StaffAddressInfoController extends Controller
         $data['presentVillageAreas'] = [];
         $data['present_villages'] = [];
         $data['permanent_villages'] = [];
-        $data['wards'] = [];
+        $data['wards'] = Ward::all();
         $data['permanent_houses'] = [];
         $data['roads'] = [];
         $data['post_officeses'] = [];
 
         if(isset($institute?->institute_type_id) && $institute->institute_type_id == 1) {
             $data['villages'] = Village::where('union_id', $institute->union_id)->get();
-            $data['wards'] = UnionWard::where('status', true)->get();
             $data['roads'] = Road::where('institute_id',  $institute->id)->latest()->get();
             $data['post_officeses']=PostOffice::latest()->get();
             
