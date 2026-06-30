@@ -154,14 +154,19 @@
 
         /* Signature area */
         .signature-area {
-            margin-top: 40px;
+            margin-top: 60px;
             display: flex;
             justify-content: space-between;
             text-align: center;
-            border-top: 1px dashed #aaa;
-            padding-top: 25px;
+            padding-top: 15px;
             page-break-inside: avoid;
             break-inside: avoid;
+        }
+
+        /* Hide default component duplicate buttons since we have custom action buttons */
+        #cancelPageButton,
+        #printPageButton {
+            display: none !important;
         }
 
         .sig-block {
@@ -437,34 +442,7 @@
 @section('title', 'Staff Information Details')
 
 @section('content')
-    <div class="people-certificate-page">
-        <div class="people-certificate-content">
-
-            {{-- Header with Logos --}}
-            @php
-                $headerUnion = $user->addressInfo?->presentUnion ?? $user->institute?->union;
-            @endphp
-            <div class="header-logos">
-                <img src="{{ asset('images/dhaka.png') }}" alt="City Logo">
-                <div class="union-header">
-                    <h5 class="mb-0">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার</h5>
-                    <div class="union-title-bn">{{ $headerUnion?->bn_name ?? '' }}</div>
-                    <div class="union-title-en">{{ $headerUnion?->name ?? '' }}</div>
-                    <p class="union-address">
-                        থানাঃ {{ $headerUnion?->thana?->bn_name ?? '' }},
-                        জেলাঃ {{ $headerUnion?->thana?->district?->bn_name ?? '' }},
-                        বাংলাদেশ।
-                    </p>
-                </div>
-                <img src="{{ asset('images/govt-bd-logo.png') }}" alt="Govt Logo">
-            </div>
-
-
-            {{-- Citizen Title (centered) --}}
-            <div class="citizen-title">
-                <h4>কর্মচারীর তথ্য বিবরণী</h4>
-                <p>Staff Information Record</p>
-            </div>
+    <x-print-view title="কর্মচারীর তথ্য বিবরণী (Staff Information Record)">
 
             {{-- Photo and ID block --}}
             <div class="photo-badge">
@@ -1077,7 +1055,7 @@
             @endif
 
             {{-- Signature Area like Certificate --}}
-            <div class="signature-area" style="margin-top: 100px;">
+            <div class="signature-area" style="margin-top: 60px;">
                 <div class="sig-block">
                     <div class="sig-line"></div>
                     স্বাক্ষর / Signature
@@ -1090,29 +1068,29 @@
                     <div class="sig-line"></div>
                     কর্তৃপক্ষ / Authority
                 </div>
+            </div> <!-- End signature-area -->
+
+            <div class="text-center mt-4 pt-2 small text-muted" style="font-size: 13px; font-weight: 500;">
+                ইস্যুর তারিখ / Issue Date: {{ date('d/m/Y') }}
             </div>
-            <div class="text-center mt-3 small text-muted">ইস্যুর তারিখ: {{ date('d/m/Y') }}</div>
-        </div>
-    </div>
+    </x-print-view>
 
-    {{-- Print Buttons --}}
+    {{-- Professional Action Control Bar --}}
     <div class="no-print text-center my-4">
-
-
-        <button class="btn btn-success px-5 py-2 btn-print-custom" onclick="window.print()"><i class="fa fa-print"></i>
-            Print / প্রিন্ট</button>
-        <a href="{{ route('staff.index') }}" class="btn btn-secondary px-5 py-2 ms-3"><i class="fa fa-arrow-left"></i> Back
-            to List</a>
+        <button class="btn btn-success px-4 py-2 shadow-sm" style="border-radius: 6px; font-weight: 600;" onclick="window.print()">
+            <i class="fa fa-print me-1"></i> Print / প্রিন্ট
+        </button>
+        <a href="{{ route('staff.index') }}" class="btn btn-secondary px-4 py-2 ms-2 shadow-sm" style="border-radius: 6px; font-weight: 600;">
+            <i class="fa fa-arrow-left me-1"></i> Back to List
+        </a>
 
         @if(empty($people->approved_id))
-
-            <a href="{{ route('staff.approve', $people->user_id) }}" class="btn btn-primary px-5 py-2 ms-3"
+            <a href="{{ route('staff.approve', $people->user_id) }}" class="btn btn-primary px-4 py-2 ms-2 shadow-sm"
+                style="border-radius: 6px; font-weight: 600;"
                 onclick="return confirm('আপনি কি নিশ্চিত অনুমোদন করতে চান?')">
-                <i class="fa fa-check"></i> Approve
+                <i class="fa fa-check me-1"></i> Approve
             </a>
-
         @endif
-
     </div>
 @endsection
 

@@ -181,6 +181,26 @@
         gap: 8px;
     }
 
+    /* Signature area */
+    .signature-area {
+        margin-top: 60px;
+        display: flex;
+        justify-content: space-between;
+        text-align: center;
+        padding-top: 15px;
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .sig-block {
+        width: 30%;
+    }
+
+    .sig-line {
+        border-top: 1px solid #000;
+        margin: 30px 0 5px;
+    }
+
     @media (max-width: 992px) {
         .photo-badge {
             flex-direction: column;
@@ -215,86 +235,7 @@
 @endpush
 
 @section('content')
-<section class="content cioas-page pt-5">
-    <div class="container-fluid">
-        <div class="cioas-shell">
-            <div class="cioas-panel">
-                <div class="cioas-panel-body">
-                    <div class="people-certificate-page border-0 shadow-none">
-    <div class="people-certificate-content">
-        @php
-            $fallbackHeaderUnion = \App\Models\Institute::with('union.thana.district')
-                ->whereNotNull('union_id')
-                ->first()?->union;
-
-            $headerUnion = $ownerOrganization?->Union
-                ?? $ownerOrganization?->institute?->union
-                ?? $ownerUser?->addressInfo?->presentUnion
-                ?? $ownerUser?->addressInfo?->permanentUnion
-                ?? $ownerUser?->institute?->union
-                ?? auth()->user()?->institute?->union
-                ?? $fallbackHeaderUnion;
-
-            $headerThana = $ownerOrganization?->Thana
-                ?? $headerUnion?->thana
-                ?? $ownerOrganization?->officeThana
-                ?? $ownerUser?->addressInfo?->presentThana
-                ?? $ownerUser?->addressInfo?->permanentThana
-                ?? auth()->user()?->institute?->union?->thana
-                ?? $fallbackHeaderUnion?->thana;
-
-            $headerDistrict = $ownerOrganization?->District
-                ?? $headerThana?->district
-                ?? $ownerOrganization?->officeDistrict
-                ?? $ownerUser?->addressInfo?->presentDistrict
-                ?? $ownerUser?->addressInfo?->permanentDistrict
-                ?? auth()->user()?->institute?->union?->thana?->district
-                ?? $fallbackHeaderUnion?->thana?->district;
-
-            $presentAddress = collect([
-                $ownerUser?->addressInfo?->presentDistrict?->name ?? '',
-                $ownerUser?->addressInfo?->presentThana?->name ?? '',
-                $ownerUser?->addressInfo?->presentUnion?->name ?? '',
-                $ownerUser?->addressInfo?->presentPostoffice?->bn_name ?? $ownerUser?->addressInfo?->presentPostoffice?->name ?? '',
-                $ownerUser?->addressInfo?->presentVillage?->bn_name ?? $ownerUser?->addressInfo?->presentVillage?->en_name ?? '',
-                $ownerUser?->addressInfo?->presentWard?->en_ward_no ?? '',
-                $ownerUser?->addressInfo?->present_area ?? $ownerUser?->addressInfo?->present_area_bn ?? '',
-                $ownerUser?->addressInfo?->presentRoad?->name ?? $ownerUser?->addressInfo?->present_road ?? '',
-                $ownerUser?->addressInfo?->presentHouse?->house ?? $ownerUser?->addressInfo?->present_house ?? '',
-            ])->filter()->implode(', ');
-
-            $permanentAddress = collect([
-                $ownerUser?->addressInfo?->permanentDistrict?->name ?? '',
-                $ownerUser?->addressInfo?->permanentThana?->name ?? '',
-                $ownerUser?->addressInfo?->permanentUnion?->name ?? '',
-                $ownerUser?->addressInfo?->permanentPostOffice?->bn_name ?? $ownerUser?->addressInfo?->permanentPostOffice?->name ?? '',
-                $ownerUser?->addressInfo?->permanentVillage?->bn_name ?? $ownerUser?->addressInfo?->permanentVillage?->en_name ?? '',
-                $ownerUser?->addressInfo?->permanentWard?->en_ward_no ?? '',
-                $ownerUser?->addressInfo?->permanent_area ?? $ownerUser?->addressInfo?->permanent_area_bn ?? '',
-                $ownerUser?->addressInfo?->permanentRoad?->name ?? $ownerUser?->addressInfo?->permanent_road ?? '',
-                $ownerUser?->addressInfo?->permanentHouse?->house ?? $ownerUser?->addressInfo?->permanent_house ?? '',
-            ])->filter()->implode(', ');
-        @endphp
-
-        <div class="header-logos">
-            <img src="{{ asset('images/dhaka.png') }}" alt="City Logo">
-            <div class="union-header">
-                <h5 class="mb-0">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার</h5>
-                <div class="union-title-bn">{{ $headerDistrict?->bn_name ?? '' }}</div>
-                <div class="union-title-en">{{ $headerDistrict?->name ?? '' }}</div>
-                <p class="union-address">
-                    জেলাঃ {{ $headerDistrict?->bn_name ?? $headerDistrict?->name ?? '' }},
-                    বিভাগঃ {{ $headerDistrict?->Division?->bn_name ?? $headerDistrict?->Division?->name ?? '' }},
-                    বাংলাদেশ।
-                </p>
-            </div>
-            <img src="{{ asset('images/govt-bd-logo.png') }}" alt="Govt Logo">
-        </div>
-
-        <div class="citizen-title">
-            <h4 class="mb-0">যানবাহনের তথ্য</h4>
-            <h4>Vehicle Details</h4>
-        </div>
+<x-print-view title="যানবাহনের তথ্য (Vehicle Details)">
 
         <div class="section-header">Vehicle Information</div>
         <div class="two-columns">
@@ -463,26 +404,44 @@
         </table>
 
 
-        <div class="action-row no-print">
-            <div>
-                <strong>Created:</strong> {{ $vehicle->created_at ? $vehicle->created_at->format('d-m-Y h:i A') : '--' }}
+        {{-- Signature Area like Certificate --}}
+        <div class="signature-area" style="margin-top: 60px;">
+            <div class="sig-block">
+                <div class="sig-line"></div>
+                স্বাক্ষর / Signature
             </div>
-            <div class="action-right">
-                <a href="{{ route('vehicle.index') }}" class="btn btn-secondary">Back</a>
-                <a href="{{ route('vehicle.edit', $vehicle->id) }}" class="btn btn-primary">Edit</a>
-                <button type="button" class="btn btn-info" onclick="window.print()">Print</button>
-                @if((int)($vehicle->status ?? 0) !== 1)
-                    <button type="button" class="btn btn-success" id="approveVehicleBtn"><i class="fa fa-check"></i> Approve</button>
-                @endif
+            <div class="sig-block">
+                <div class="sig-line"></div>
+                সীল / Seal
             </div>
+            <div class="sig-block">
+                <div class="sig-line"></div>
+                কর্তৃপক্ষ / Authority
+            </div>
+        </div> <!-- End signature-area -->
+
+        <div class="text-center mt-4 pt-2 small text-muted" style="font-size: 13px; font-weight: 500;">
+            ইস্যুর তারিখ / Issue Date: {{ date('d/m/Y') }}
         </div>
-    </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+</x-print-view>
+
+{{-- Professional Action Control Bar --}}
+<div class="no-print text-center my-4">
+    <button type="button" class="btn btn-success px-4 py-2 shadow-sm" style="border-radius: 6px; font-weight: 600;" onclick="window.print()">
+        <i class="fa fa-print me-1"></i> Print / প্রিন্ট
+    </button>
+    <a href="{{ route('vehicle.index') }}" class="btn btn-secondary px-4 py-2 ms-2 shadow-sm" style="border-radius: 6px; font-weight: 600;">
+        <i class="fa fa-arrow-left me-1"></i> Back to List
+    </a>
+    <a href="{{ route('vehicle.edit', $vehicle->id) }}" class="btn btn-info px-4 py-2 ms-2 shadow-sm text-white" style="border-radius: 6px; font-weight: 600;">
+        <i class="fa fa-edit me-1"></i> Edit
+    </a>
+    @if((int)($vehicle->status ?? 0) !== 1)
+        <button type="button" class="btn btn-primary px-4 py-2 ms-2 shadow-sm" style="border-radius: 6px; font-weight: 600;" id="approveVehicleBtn">
+            <i class="fa fa-check me-1"></i> Approve
+        </button>
+    @endif
+</div>
 @endsection
 
 @push('script')

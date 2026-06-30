@@ -62,27 +62,30 @@ class VillageController extends Controller
         $villageOptions = '<option value=""> Select ' . ($request->id ? ucfirst($request->id) : '') . ' Village</option>';
 
 
-        if (count($villages)) {
+        if ($villages && count($villages)) {
             foreach ($villages as $village) {
                 $villageOptions .= '<option value="' . $village->id . '">' . $village->en_name . '</option>';
             }
         }
 
 
-        // $roadOptions = '<option value="">Select Road</option>';
-        // $institute   = Institute::where('union_id', $union_id)->first();
-        // if ($institute) {
-        //     $roads = Road::where('institute_id', $institute->id)->get();
-        //     if (count($roads)) {
-        //         foreach ($roads as $road) {
-        //             $roadOptions .= '<option value="' . $road->id . '">' . $road->name . '</option>';
-        //         }
-        //     }
-        // }
+        $roadOptions = '<option value="">Select Road</option>';
+        if ($type == 'union' && $id) {
+            $institute = Institute::where('union_id', $id)->first();
+            if ($institute) {
+                $roads = Road::where('institute_id', $institute->id)->get();
+                if ($roads && count($roads)) {
+                    foreach ($roads as $road) {
+                        $roadOptions .= '<option value="' . $road->id . '">' . $road->name . '</option>';
+                    }
+                }
+            }
+        }
 
-        // $data['villageOptions'] = $villageOptions;
-        // $data['roadOptions']    = $roadOptions;
-        return $villageOptions;
+        return response()->json([
+            'villageOptions' => $villageOptions,
+            'roadOptions'    => $roadOptions,
+        ]);
     }
 
     public function index(\App\DataTables\BasicSettings\VillageDataTable $dataTable)
