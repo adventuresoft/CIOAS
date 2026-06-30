@@ -7,6 +7,7 @@ use App\DataTables\MouzaDataTable;
 use App\Models\Mouza;
 use App\Models\District;
 use App\Models\Upazila;
+use App\Models\LandRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -36,6 +37,7 @@ class MouzaController extends Controller
     public function create()
     {
         $data['districts'] = District::latest()->get();
+        $data['land_records'] = LandRecord::all();
         return view('backend.pages.basic.mouza.create', $data);
     }
 
@@ -53,7 +55,7 @@ class MouzaController extends Controller
                 'bn_name'     => 'required|max:255',
                 'district_id' => 'required|exists:districts,id',
                 'upazila_id'  => 'required|exists:upazilas,id',
-                'record'      => 'required|in:CS,SA,RS,City/BRS',
+                'record'      => 'required|exists:land_records,id',
                 'code'        => 'nullable|max:255',
                 'order'       => 'nullable|integer',
                 'status'      => 'required|in:0,1',
@@ -112,6 +114,7 @@ class MouzaController extends Controller
     {
         $data['mouza']     = Mouza::find($id);
         $data['districts'] = District::latest()->get();
+        $data['land_records'] = LandRecord::all();
         if ($data['mouza']) {
             $data['upazilas'] = Upazila::where('district_id', $data['mouza']->district_id)->get();
         } else {
@@ -135,7 +138,7 @@ class MouzaController extends Controller
                 'bn_name'     => 'required|max:255',
                 'district_id' => 'required|exists:districts,id',
                 'upazila_id'  => 'required|exists:upazilas,id',
-                'record'      => 'required|in:CS,SA,RS,City/BRS',
+                'record'      => 'required|exists:land_records,id',
                 'code'        => 'nullable|max:255',
                 'order'       => 'nullable|integer',
                 'status'      => 'required|in:0,1',

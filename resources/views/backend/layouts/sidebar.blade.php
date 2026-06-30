@@ -489,8 +489,8 @@
                 {{-- @if (has_module_access('miscase') || has_module_access('miscases')) --}}
                 <li
                     class="nav-item
-                                                                         @if ($subMenu == 'MisCase' || $subMenu == 'MisCaseList') menu-open @endif">
-                    <a href="#" class="nav-link @if ($mainMenu == 'MisCase') active @endif ">
+                                                                         @if ($subMenu == 'MisCase' || $subMenu == 'MisCaseCreate' || $subMenu == 'MisCaseList' || $subMenu == 'CaseOrder' || $subMenu == 'CaseOrderList' || $subMenu == 'CaseOrderCreate' || $subMenu == 'CaseDateEdit' || $subMenu == 'HearingNotice') menu-open @endif">
+                    <a href="#" class="nav-link @if ($mainMenu == 'MisCase' || $mainMenu == 'CaseOrder') active @endif ">
                         <i class="nav-icon fas fa-briefcase"></i>
                         <p>
                             Missed Case
@@ -519,25 +519,7 @@
                             </a>
                         </li>
                         {{-- @endif --}}
-                    </ul>
-                </li>
-                {{-- @endif --}}
-
-
-                <li
-                    class="nav-item
-                                                                         @if ($subMenu == 'CaseOrder' || $subMenu == 'CaseOrderList' || $subMenu == 'CaseOrderCreate' || $subMenu == 'CaseDateEdit' || $subMenu == 'HearingNotice') menu-open @endif">
-                    <a href="#" class="nav-link @if ($mainMenu == 'CaseOrder') active @endif ">
-                        <i class="nav-icon fas fa-briefcase"></i>
-                        <p>
-                            Case Order
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        {{-- @if (has_sub_module_access('miscase', 'create') || has_sub_module_access('miscases',
-                        'create')) --}}
-
+                        
                         <li class="nav-item">
                             <a href="{{ route('caseorder.index') }}"
                                 class="nav-link @if ($subMenu == 'CaseOrderList') active @endif">
@@ -553,10 +535,7 @@
                                 <p>New Case Order</p>
                             </a>
                         </li>
-                        {{-- @endif --}}
 
-                        {{-- @if (has_sub_module_access('miscase', 'read') || has_sub_module_access('miscases', 'read'))
-                        --}}
                         <li class="nav-item">
                             <a href="{{ route('caseorder.dateEditList') }}"
                                 class="nav-link @if ($subMenu == 'CaseDateEdit') active @endif">
@@ -564,7 +543,6 @@
                                 <p>Case Date Edit</p>
                             </a>
                         </li>
-                        {{-- @endif --}}
 
                         <li class="nav-item">
                             <a href="{{ route('caseorder.hearingNotice') }}"

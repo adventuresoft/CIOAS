@@ -31,10 +31,11 @@
                                     <div class="col-sm-9">
                                         <select class="form-control select2" name="record" id="record">
                                             <option value="">Select Record</option>
-                                            <option value="CS" @if($upazila->record == 'CS') selected @endif>CS</option>
-                                            <option value="SA" @if($upazila->record == 'SA') selected @endif>SA</option>
-                                            <option value="RS" @if($upazila->record == 'RS') selected @endif>RS</option>
-                                            <option value="City/BRS" @if($upazila->record == 'City/BRS') selected @endif>City/BRS</option>
+                                            @if ($land_records)
+                                                @foreach ($land_records as $land_record)
+                                                    <option value="{{ $land_record->id }}" @if($upazila->record == $land_record->id) selected @endif>{{ $land_record->name }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                         <small class="text-danger error record_error"></small>
                                     </div>

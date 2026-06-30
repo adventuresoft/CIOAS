@@ -5,6 +5,7 @@ namespace App\Http\Controllers\BasicSettings;
 use App\Http\Controllers\Controller;
 use App\Models\Upazila;
 use App\Models\District;
+use App\Models\LandRecord;
 use App\DataTables\UpazilaDataTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -34,6 +35,7 @@ class UpazilaController extends Controller
     public function create()
     {
         $data['districts'] = District::latest()->get();
+        $data['land_records'] = LandRecord::all();
         return view('backend.pages.basic.upazila.create', $data);
     }
 
@@ -51,7 +53,7 @@ class UpazilaController extends Controller
                 'bn_name'     => 'required|max:255',
                 'district_id' => 'required|exists:districts,id',
                 'code'        => 'nullable|max:255',
-                'record'      => 'nullable|in:CS,SA,RS,City/BRS',
+                'record'      => 'nullable|exists:land_records,id',
                 'status'      => 'required|in:0,1',
             ]);
 
@@ -106,6 +108,7 @@ class UpazilaController extends Controller
     {
         $data['upazila']   = Upazila::find($id);
         $data['districts'] = District::latest()->get();
+        $data['land_records'] = LandRecord::all();
         return view('backend.pages.basic.upazila.edit', $data);
     }
 
@@ -124,7 +127,7 @@ class UpazilaController extends Controller
                 'bn_name'     => 'required|max:255',
                 'district_id' => 'required|exists:districts,id',
                 'code'        => 'nullable|max:255',
-                'record'      => 'nullable|in:CS,SA,RS,City/BRS',
+                'record'      => 'nullable|exists:land_records,id',
                 'status'      => 'required|in:0,1',
             ]);
 

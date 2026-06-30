@@ -538,52 +538,7 @@
             </div>
         @endif
 
-        {{-- Address Information (Only if populated) --}}
-        @if($user->addressInfo)
-            <div class="section-header">ঠিকানার তথ্য / Address Information</div>
-            <div class="two-columns">
-                <div class="col">
-                    <h6 class="mb-2 font-weight-bold" style="color: #17a2b8;">স্থায়ী ঠিকানা / Permanent Address</h6>
-                    <div class="info-row"><span class="info-label">District :</span><span
-                            class="info-value">{{ $user->addressInfo->permanentDistrict->name ?? optional(optional($user->addressInfo)->permanentVillage)->district->name ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">Thana :</span><span
-                            class="info-value">{{ $user->addressInfo->permanentThana->name ?? optional(optional($user->addressInfo)->permanentVillage)->thana->name ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">Union :</span><span
-                            class="info-value">{{ $user->addressInfo->permanentUnion->name ?? optional(optional($user->addressInfo)->permanentVillage)->union->name ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">Post Office :</span><span
-                            class="info-value">{{ $user->addressInfo->permanentPostoffice->name ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Village :</span><span
-                            class="info-value">{{ optional(optional($user->addressInfo)->permanentVillage)->en_name ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">Ward :</span><span
-                            class="info-value">{{ optional(optional($user->addressInfo)->permanentWard)->en_ward_no ?? '' }}</span>
-                    </div>
-                </div>
-                <div class="col">
-                    <h6 class="mb-2 font-weight-bold" style="color: #17a2b8;">বর্তমান ঠিকানা / Present Address</h6>
-                    <div class="info-row"><span class="info-label">District :</span><span
-                            class="info-value">{{ $user->addressInfo->presentDistrict->name ?? optional(optional($user->addressInfo)->presentVillage)->district->name ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">Thana :</span><span
-                            class="info-value">{{ $user->addressInfo->presentThana->name ?? optional(optional($user->addressInfo)->presentVillage)->thana->name ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">Union :</span><span
-                            class="info-value">{{ $user->addressInfo->presentUnion->name ?? optional(optional($user->addressInfo)->presentVillage)->union->name ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">Post Office :</span><span
-                            class="info-value">{{ $user->addressInfo->presentPostoffice->name ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Village :</span><span
-                            class="info-value">{{ optional(optional($user->addressInfo)->presentVillage)->en_name ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">Ward :</span><span
-                            class="info-value">{{ optional(optional($user->addressInfo)->presentWard)->en_ward_no ?? '' }}</span>
-                    </div>
-                </div>
-            </div>
-        @endif
+
 
         {{-- Education Section as Table (Only if populated) --}}
         @if($user->educationInfos && count($user->educationInfos) > 0)

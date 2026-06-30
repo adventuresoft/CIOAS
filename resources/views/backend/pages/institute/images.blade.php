@@ -15,9 +15,9 @@
                         <div class="cioas-panel-header">
                             <h3 class="cioas-panel-title">
                                 <i class="fas fa-images"></i> 
-                                <a class="linked" href="{{route('institute.edit', $institute->id)}}"> <span class="text-light">Institute Create Info |</span></a>   
-                                <a class="linked" href="{{route('instituteA.adminCreate', $institute->id)}}"> <span class="text-light">Institutional Admin |</span>  </a>
-                                <span class="text-light">Institutional Images</span>
+                                <a class="linked" href="{{route('institute.edit', $institute->id)}}"> <span>Institute Create Info |</span></a>   
+                                <a class="linked" href="{{route('instituteA.adminCreate', $institute->id)}}"> <span>Institutional Admin |</span>  </a>
+                                <span>Institutional Images</span>
                             </h3>
                         </div>
 

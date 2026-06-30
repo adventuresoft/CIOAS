@@ -267,8 +267,8 @@ class InstituteController extends Controller
 
         $result = DB::transaction(function () use ($id) {
             try {
-                Institute::where('id', $id)->delete();
                 User::where('institute_id', $id)->delete();
+                Institute::where('id', $id)->delete();
                 $data['status'] = true;
                 $data['code'] = 200;
                 $data['message'] = "Institute Deleted Successfully!";

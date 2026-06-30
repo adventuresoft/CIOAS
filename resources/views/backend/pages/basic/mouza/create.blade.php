@@ -24,10 +24,11 @@
                                 <div class="col-sm-9">
                                     <select name="record" id="record" class="form-control select2" required>
                                         <option value="" disabled selected>Select Record</option>
-                                        <option value="CS">CS</option>
-                                        <option value="SA">SA</option>
-                                        <option value="RS">RS</option>
-                                        <option value="City/BRS">City/BRS</option>
+                                        @if ($land_records)
+                                            @foreach ($land_records as $land_record)
+                                                <option value="{{ $land_record->id }}">{{ $land_record->name }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                     <small class="text-danger error record_error"></small>
                                 </div>

@@ -25,10 +25,11 @@
                                 <div class="col-sm-9">
                                     <select name="record" id="record" class="form-control select2" required>
                                         <option value="" disabled>Select Record</option>
-                                        <option value="CS" {{ $mouza->record == 'CS' ? 'selected' : '' }}>CS</option>
-                                        <option value="SA" {{ $mouza->record == 'SA' ? 'selected' : '' }}>SA</option>
-                                        <option value="RS" {{ $mouza->record == 'RS' ? 'selected' : '' }}>RS</option>
-                                        <option value="City/BRS" {{ $mouza->record == 'City/BRS' ? 'selected' : '' }}>City/BRS</option>
+                                        @if ($land_records)
+                                            @foreach ($land_records as $land_record)
+                                                <option value="{{ $land_record->id }}" {{ $mouza->record == $land_record->id ? 'selected' : '' }}>{{ $land_record->name }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                     <small class="text-danger error record_error"></small>
                                 </div>

@@ -6,28 +6,24 @@
 
     <section class="content cioas-page pt-5">
         <div class="container-fluid">
-            <div class="cioas-shell">
-                <form class="form-horizontal" id="instituteForm" method="POST" enctype="multipart/form-data">
-                    @csrf
-
-                    <input type="hidden" name="institute_id" value="{{ $institute->id }}">
-                    <input type="hidden" name="user_id" value="{{ $institute->superUser->id ?? 0 }}">
-
+            <form class="form-horizontal" id="instituteForm" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="institute_id" value="{{ $institute->id }}">
+                <input type="hidden" name="user_id" value="{{ $institute->superUser->id ?? 0 }}">
+                <div class="cioas-shell">
                     <div class="cioas-panel">
                         <div class="cioas-panel-header">
                             <h3 class="cioas-panel-title">
                                 <i class="fas fa-user-shield"></i> 
-                                <a class="linked" href="{{ route('institute.edit', $institute->id) }}"> <span
-                                        class="text-light">Institute Create Info |</span></a>
-                                <span class="text-light">Institutional Admin |</span>
-                                <a class="linked" href="{{ route('instituteA.imagesCreate', $institute->id) }}"> <span
-                                        class="text-light">Institutional Images</span> </a>
+                                <a class="linked" href="{{ route('institute.edit', $institute->id) }}"> <span>Institute Create Info |</span></a>
+                                <span>Institutional Admin |</span>
+                                <a class="linked" href="{{ route('instituteA.imagesCreate', $institute->id) }}"> <span>Institutional Images</span> </a>
                             </h3>
                         </div>
 
                         <div class="cioas-panel-body">
-                            <div class="form-group row">
-                                <label for="name" class="col-sm-2 col-form-label">Admin Name <span
+                            <div class="form-group row mb-4">
+                                <label for="name" class="col-sm-2 col-form-label text-dark font-weight-bold">Admin Name <span
                                         class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
                                 <div class="col-sm-9">
                                     <input type="text" id="name" value="{{ $institute->superUser->name ?? '' }}"
@@ -37,8 +33,8 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label for="email" class="col-sm-2 col-form-label">Email <span class="text-danger"
+                            <div class="form-group row mb-4">
+                                <label for="email" class="col-sm-2 col-form-label text-dark font-weight-bold">Email <span class="text-danger"
                                         title="Required" data-toggle="tooltip">*</span></label>
                                 <div class="col-sm-9">
                                     <input type="email" id="email"
@@ -49,8 +45,8 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label for="mobile" class="col-sm-2 col-form-label">Mobile <span class="text-danger"
+                            <div class="form-group row mb-4">
+                                <label for="mobile" class="col-sm-2 col-form-label text-dark font-weight-bold">Mobile <span class="text-danger"
                                         title="Required" data-toggle="tooltip">*</span></label>
                                 <div class="col-sm-9">
                                     <input type="text" id="mobile"
@@ -61,8 +57,8 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label for="department_id" class="col-sm-2 col-form-label">Department</label>
+                            <div class="form-group row mb-4">
+                                <label for="department_id" class="col-sm-2 col-form-label text-dark font-weight-bold">Department</label>
                                 <div class="col-sm-9">
                                     <select name="department_id" id="department_id" class="form-control">
                                         <option value="">-- Select Department --</option>
@@ -74,8 +70,8 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label for="section_id" class="col-sm-2 col-form-label">Section</label>
+                            <div class="form-group row mb-4">
+                                <label for="section_id" class="col-sm-2 col-form-label text-dark font-weight-bold">Section</label>
                                 <div class="col-sm-9">
                                     <select name="section_id" id="section_id" class="form-control">
                                         <option value="">-- Select Section --</option>
@@ -87,8 +83,8 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label for="password" class="col-sm-2 col-form-label">Password <span class="text-danger"
+                            <div class="form-group row mb-4">
+                                <label for="password" class="col-sm-2 col-form-label text-dark font-weight-bold">Password <span class="text-danger"
                                         title="Required" data-toggle="tooltip">*</span></label>
                                 <div class="col-sm-9">
                                     <input type="password" id="password" placeholder="Keep empty to unchange"
@@ -97,14 +93,16 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="cioas-actions">
-                            <a href="{{ route('institute.index') }}" class="btn btn-default mr-2">Cancel</a>
+                    <div class="cioas-panel mt-3">
+                        <div class="cioas-panel-body d-flex justify-content-end align-items-center">
+                            <a href="{{ route('institute.index') }}" class="btn btn-link text-muted font-weight-bold mr-3" style="text-decoration: none;">Cancel</a>
                             <button type="submit" class="btn btn-material btn-material-primary">Update</button>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </section>
     <!-- /.content -->

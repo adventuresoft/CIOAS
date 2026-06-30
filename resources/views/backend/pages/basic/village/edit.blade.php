@@ -50,6 +50,21 @@
                                 </div>
                             </div>
                             
+                            <div class="form-group row mb-4 thana_list">
+                                <label for="thana_id" class="col-sm-3 col-form-label text-dark font-weight-bold">Thana <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <select name="thana_id" id="thana_id" class="form-control select2">
+                                        <option value="" disabled selected>Select Thana</option>
+                                        @if ($thanas)
+                                            @foreach ($thanas as $thana)
+                                                <option value="{{ $thana->id }}" @if ($thana->id == $village->thana_id) selected @endif>{{ $thana->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <small class="text-danger error thana_id_error"></small>
+                                </div>
+                            </div>
+
                             <div class="form-group row mb-4 location_cat">
                                 <label class="col-sm-3 col-form-label text-dark font-weight-bold">Location Type <span class="text-danger">*</span></label>
                                 <div class="col-sm-9 d-flex align-items-center">
@@ -83,21 +98,6 @@
                                         @endif
                                     </select>
                                     <small class="text-danger error city_corporation_id_error"></small>
-                                </div>
-                            </div>
-
-                            <div class="form-group row mb-4 thana_list {{ $village->location_type == 'union_type' ? '' : 'd-none' }}">
-                                <label for="thana_id" class="col-sm-3 col-form-label text-dark font-weight-bold">Thana <span class="text-danger">*</span></label>
-                                <div class="col-sm-9">
-                                    <select name="thana_id" id="thana_id" class="form-control select2">
-                                        <option value="" disabled selected>Select Thana</option>
-                                        @if ($thanas)
-                                            @foreach ($thanas as $thana)
-                                                <option value="{{ $thana->id }}" @if ($thana->id == $village->thana_id) selected @endif>{{ $thana->name }}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    <small class="text-danger error thana_id_error"></small>
                                 </div>
                             </div>
 
@@ -240,6 +240,7 @@
                 
                 if (district_id) {
                     $('.location_cat').removeClass('d-none');
+                    $('.thana_list').removeClass('d-none');
                     
                     // Load Thanas
                     $.ajax({
@@ -277,17 +278,14 @@
                     $('.city_type').removeClass('d-none');
                     $('.union_type').addClass('d-none');
                     $('.pos_type').addClass('d-none');
-                    $('.thana_list').addClass('d-none');
                 } else if (val == 'union_type') {
                     $('.union_type').removeClass('d-none');
                     $('.city_type').addClass('d-none');
                     $('.pos_type').addClass('d-none');
-                    $('.thana_list').removeClass('d-none');
                 } else if (val == 'pos_type') {
                     $('.pos_type').removeClass('d-none');
                     $('.city_type').addClass('d-none');
                     $('.union_type').addClass('d-none');
-                    $('.thana_list').addClass('d-none');
                 }
             });
 

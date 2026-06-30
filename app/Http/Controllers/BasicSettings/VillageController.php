@@ -118,7 +118,7 @@ class VillageController extends Controller
 
         try {
             $validate = Validator::make($request->all(), [
-                'en_name' => 'required',
+                'en_name' => 'required|unique:villages,en_name',
                 'bn_name' => 'required',
                 'division_id' => 'required',
                 'district_id' => 'required',
@@ -144,14 +144,14 @@ class VillageController extends Controller
 
             $village->division_id = $request->division_id;
             $village->district_id = $request->district_id;
-            $village->thana_id = $request->thana_id;
+            $village->thana_id = $request->thana_id ?? 0;
             $village->union_id = $request->union_id ?? 0;
             $village->pourashava_id = $request->pourashava_id ?? 0;
-            $village->post_office_id = $request->post_office_id ?? 0;
+            $village->pos_id = $request->post_office_id ?? 0;
             $village->city_id = $request->city_corporation_id ?? 0;
             $village->location_type = $request->location_type ?? 0;
-            $village->status = $request->status ? $request->status : true;
-            $village->created_by = Auth::id();
+            $village->status = $request->status ? $request->status : 0;
+            $village->created_by = Auth::user()->id;
 
             $village->save();
             $data['status'] = true;
@@ -160,8 +160,8 @@ class VillageController extends Controller
 
         } catch (\Throwable $th) {
             $data['status'] = false;
-            $data['message'] = "Something went wrong! Please try again...";
-            $data['errors'] = $th;
+            $data['message'] = $th->getMessage() . ' at line ' . $th->getLine();
+            $data['errors'] = (string) $th;
             return response(json_encode($data, JSON_PRETTY_PRINT), 500)->header('Content-Type', 'application/json');
         }
 
@@ -208,7 +208,7 @@ class VillageController extends Controller
     {
         try {
             $validate = Validator::make($request->all(), [
-                'en_name' => 'required',
+                'en_name' => 'required|unique:villages,en_name,' . $id,
                 'bn_name' => 'required',
                 'division_id' => 'required',
                 'district_id' => 'required',
@@ -236,10 +236,10 @@ class VillageController extends Controller
 
                 $village->division_id = $request->division_id;
                 $village->district_id = $request->district_id;
-                $village->thana_id = $request->thana_id;
+                $village->thana_id = $request->thana_id ?? 0;
                 $village->union_id = $request->union_id ?? 0;
                 $village->pourashava_id = $request->pourashava_id ?? 0;
-                $village->post_office_id = $request->post_office_id ?? 0;
+                $village->pos_id = $request->post_office_id ?? 0;
                 $village->city_id = $request->city_corporation_id ?? 0;
                 $village->location_type = $request->location_type ?? 0;
 

@@ -53,15 +53,15 @@
                                         <th>District</th>
                                         <td>{{ $village->district->name ?? '' }}</td>
                                     </tr>
+                                    <tr>
+                                        <th>Thana</th>
+                                        <td>{{ $village->thana->name ?? '' }}</td>
+                                    </tr>
                                     
                                     @if($village->location_type == 'union_type')
                                         <tr>
                                             <th>Location Type</th>
                                             <td><span class="badge bg-info">Union</span></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Thana</th>
-                                            <td>{{ $village->thana->name ?? '' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Union</th>
