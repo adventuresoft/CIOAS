@@ -20,6 +20,7 @@ use App\Models\License\License;
 use App\Models\HotelRestaurant\HotelRestaurant;
 use App\Models\HotelRestaurant\HotelCategory;
 use App\Models\HotelRestaurant\HotelRestaurantOwnership;
+use App\Models\LicenseOwnership;
 use App\Models\PersonGunApplication;
 use App\Models\OrgGunApplication;
 use App\Models\OtherOrgGunApplication;
@@ -40,7 +41,7 @@ class HomeController extends Controller
         $data['total_unions'] = Union::count();
         $data['total_pourashavas'] = Pourashava::count();
         $data['total_city_corporations'] = CityCorporation::count();
-        
+
         $data["wards"] = [];
         $data["ownership_types"] = [];
         return view('frontend.pages.index', $data);
@@ -64,22 +65,22 @@ class HomeController extends Controller
     public function testHttpRequest()
     {
         $response = Http::get('https://api.github.com/octocat', [
-            'key1' => "test", 
+            'key1' => "test",
             'key2' => 'Test',
         ]);
-        
+
         if ($response->failed()) {
             $data['status'] = false;
             $data['message'] = "failed";
             $data['response'] = $response;
             return response()->json($data, 500);
-           // return failure
+            // return failure
         } else {
             $data['status'] = true;
             $data['message'] = "success";
             $data['response'] = $response;
             return response()->json($data, 500);
-           // return success
+            // return success
         }
     }
 
@@ -235,6 +236,39 @@ class HomeController extends Controller
 
         $license = License::create($payload);
 
+        // Process Ownerships
+        if ($request->has('owner_name') && is_array($request->owner_name)) {
+            foreach ($request->owner_name as $key => $ownerName) {
+                if (empty($ownerName)) continue;
+
+                $photoName = null;
+                if ($request->hasFile("owner_photo.$key")) {
+                    $photoName = $this->uploadFile($request->file("owner_photo")[$key], 'uploads/license/owners/photo/', 'photo_');
+                }
+
+                $signatureName = null;
+                if ($request->hasFile("owner_signature.$key")) {
+                    $signatureName = $this->uploadFile($request->file("owner_signature")[$key], 'uploads/license/owners/signature/', 'sign_');
+                }
+
+                LicenseOwnership::create([
+                    'application_id' => $application_id, // License applications link by application_id commonly or license->id, let's use application_id as defined in migration
+                    'name' => $ownerName,
+                    'nid' => $request->owner_nid[$key] ?? null,
+                    'gender' => $request->owner_gender[$key] ?? null,
+                    'religion' => $request->owner_religion[$key] ?? null,
+                    'mobile' => $request->owner_mobile[$key] ?? null,
+                    'email' => $request->owner_email[$key] ?? null,
+                    'father_name' => $request->owner_father_name[$key] ?? null,
+                    'mother_name' => $request->owner_mother_name[$key] ?? null,
+                    'present_road' => $request->owner_present_address[$key] ?? null,
+                    'permanent_road' => $request->owner_permanent_address[$key] ?? null,
+                    'photo' => $photoName,
+                    'signature' => $signatureName,
+                ]);
+            }
+        }
+
         return response()->json([
             'status' => true,
             'message' => 'License application submitted successfully!',
@@ -259,13 +293,13 @@ class HomeController extends Controller
 
     public function hotelRestaurantForm()
     {
-        $data['types']           = OwnerShipType::where('status', true)->latest()->get();
-        $data['categories']      = HotelCategory::where('status', true)->latest()->get();
+        $data['types'] = OwnerShipType::where('status', true)->latest()->get();
+        $data['categories'] = HotelCategory::where('status', true)->latest()->get();
 
 
-        $data['divisions']       = Division::where('status', true)->get();
-        $data['post_officeses']  = PostOffice::latest()->get();
-        $data['villages']        = Village::where('status', true)->get();
+        $data['divisions'] = Division::where('status', true)->get();
+        $data['post_officeses'] = PostOffice::latest()->get();
+        $data['villages'] = Village::where('status', true)->get();
 
         $data["wards"] = [];
         $data["ownership_types"] = [];
@@ -283,55 +317,55 @@ class HomeController extends Controller
     public function hotelRestaurantStore(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'name'                        => 'required|max:190',
-            'bn_name'                     => 'nullable|max:190',
-            'organization_category_id'    => 'nullable|integer',
+            'name' => 'required|max:190',
+            'bn_name' => 'nullable|max:190',
+            'organization_category_id' => 'nullable|integer',
             'organization_subcategory_id' => 'nullable|integer',
-            'organization_type_id'        => 'nullable|integer',
-            'rjsc_reg_no'                 => 'nullable|max:190',
-            'no_of_owner'                 => 'nullable|integer',
-            'capital'                     => 'nullable|numeric',
-            'establish_year'              => 'nullable|integer|min:1900|max:' . date('Y'),
-            'application_type'            => 'nullable|in:new,old',
-            'remarks'                     => 'nullable|max:500',
-            'division_id'                 => 'nullable|integer',
-            'district_id'                 => 'nullable|integer',
-            'thana_id'                    => 'nullable|integer',
-            'post_office_id'              => 'nullable|integer',
-            'union_id'                    => 'nullable|integer',
-            'village_id'                  => 'nullable|integer',
-            'city_id'                     => 'nullable|integer',
-            'pos_id'                      => 'nullable|integer',
-            'ward_id'                     => 'nullable|integer',
-            'road'                        => 'nullable|max:190',
-            'house'                       => 'nullable|max:190',
-            'house_bn'                    => 'nullable|max:190',
-            'office_division_id'          => 'nullable|integer',
-            'office_district_id'          => 'nullable|integer',
-            'office_thana_id'             => 'nullable|integer',
-            'office_post_office_id'       => 'nullable|integer',
-            'office_village_id'           => 'nullable|integer',
-            'office_union_id'             => 'nullable|integer',
-            'office_city_id'              => 'nullable|integer',
-            'office_pos_id'               => 'nullable|integer',
-            'office_ward_id'              => 'nullable|integer',
-            'office_road'                 => 'nullable|max:190',
-            'office_house'                => 'nullable|max:190',
-            'office_house_bn'             => 'nullable|max:190',
-            'no_of_dir'                   => 'nullable|integer',
-            'location_type'               => 'nullable',
-            'office_location_type'        => 'nullable',
-            'premises_ownership'          => 'nullable|in:owned,rented',
-            'hotel_logo'                  => 'nullable|image|max:2048',
-            'owned_document_file.*'       => 'nullable|file|max:2048',
-            'rented_document_file.*'      => 'nullable|file|max:2048',
+            'organization_type_id' => 'nullable|integer',
+            'rjsc_reg_no' => 'nullable|max:190',
+            'no_of_owner' => 'nullable|integer',
+            'capital' => 'nullable|numeric',
+            'establish_year' => 'nullable|integer|min:1900|max:' . date('Y'),
+            'application_type' => 'nullable|in:new,old',
+            'remarks' => 'nullable|max:500',
+            'division_id' => 'nullable|integer',
+            'district_id' => 'nullable|integer',
+            'thana_id' => 'nullable|integer',
+            'post_office_id' => 'nullable|integer',
+            'union_id' => 'nullable|integer',
+            'village_id' => 'nullable|integer',
+            'city_id' => 'nullable|integer',
+            'pos_id' => 'nullable|integer',
+            'ward_id' => 'nullable|integer',
+            'road' => 'nullable|max:190',
+            'house' => 'nullable|max:190',
+            'house_bn' => 'nullable|max:190',
+            'office_division_id' => 'nullable|integer',
+            'office_district_id' => 'nullable|integer',
+            'office_thana_id' => 'nullable|integer',
+            'office_post_office_id' => 'nullable|integer',
+            'office_village_id' => 'nullable|integer',
+            'office_union_id' => 'nullable|integer',
+            'office_city_id' => 'nullable|integer',
+            'office_pos_id' => 'nullable|integer',
+            'office_ward_id' => 'nullable|integer',
+            'office_road' => 'nullable|max:190',
+            'office_house' => 'nullable|max:190',
+            'office_house_bn' => 'nullable|max:190',
+            'no_of_dir' => 'nullable|integer',
+            'location_type' => 'nullable',
+            'office_location_type' => 'nullable',
+            'premises_ownership' => 'nullable|in:owned,rented',
+            'hotel_logo' => 'nullable|image|max:2048',
+            'owned_document_file.*' => 'nullable|file|max:2048',
+            'rented_document_file.*' => 'nullable|file|max:2048',
         ]);
 
         if ($validate->fails()) {
             return response()->json([
-                'status'  => false,
+                'status' => false,
                 'message' => 'Sorry! Invalid Entry.',
-                'errors'  => $validate->errors(),
+                'errors' => $validate->errors(),
             ], 400);
         }
 
@@ -342,7 +376,7 @@ class HomeController extends Controller
 
         $document_files = null;
         if ($request->hasFile('owned_document_file') || $request->hasFile('rented_document_file')) {
-            $files             = $request->file('owned_document_file') ?? $request->file('rented_document_file');
+            $files = $request->file('owned_document_file') ?? $request->file('rented_document_file');
             $uploadedDocuments = [];
 
             foreach ($files as $file) {
@@ -359,57 +393,90 @@ class HomeController extends Controller
         $application_id = $this->generateHotelApplicationId();
 
         $payload = [
-            'institute_id'          => \Illuminate\Support\Facades\Auth::user()->institute_id ?? 0,
-            'name'                  => $request->name,
-            'bn_name'               => $request->bn_name,
-            'application_id'        => $application_id,
-            'hotel_category_id'     => $request->organization_category_id,
-            'hotel_subcategory_id'  => $request->organization_subcategory_id,
-            'hotel_type_id'         => $request->organization_type_id,
-            'rjsc_reg_no'           => $request->rjsc_reg_no,
-            'no_of_owner'           => $request->no_of_owner,
-            'no_of_dir'             => $request->no_of_dir,
-            'capital'               => $request->capital,
-            'establish_year'        => $request->establish_year,
-            'application_type'      => $request->application_type,
-            'premises_ownership'    => $request->premises_ownership,
-            'division_id'           => $request->division_id,
-            'district_id'           => $request->district_id,
-            'thana_id'              => $request->thana_id,
-            'post_office_id'        => $request->post_office_id,
-            'union_id'              => $request->union_id,
-            'village_id'            => $request->village_id,
-            'city_id'               => $request->city_id,
-            'pos_id'                => $request->pos_id,
-            'ward_id'               => $request->ward_id,
-            'road'                  => $request->road,
-            'house'                 => $request->house,
-            'house_bn'              => $request->house_bn,
-            'office_division_id'    => $request->office_division_id,
-            'office_district_id'    => $request->office_district_id,
-            'office_thana_id'       => $request->office_thana_id,
+            'institute_id' => \Illuminate\Support\Facades\Auth::user()->institute_id ?? 0,
+            'name' => $request->name,
+            'bn_name' => $request->bn_name,
+            'application_id' => $application_id,
+            'hotel_category_id' => $request->organization_category_id,
+            'hotel_subcategory_id' => $request->organization_subcategory_id,
+            'hotel_type_id' => $request->organization_type_id,
+            'rjsc_reg_no' => $request->rjsc_reg_no,
+            'no_of_owner' => $request->no_of_owner,
+            'no_of_dir' => $request->no_of_dir,
+            'capital' => $request->capital,
+            'establish_year' => $request->establish_year,
+            'application_type' => $request->application_type,
+            'premises_ownership' => $request->premises_ownership,
+            'division_id' => $request->division_id,
+            'district_id' => $request->district_id,
+            'thana_id' => $request->thana_id,
+            'post_office_id' => $request->post_office_id,
+            'union_id' => $request->union_id,
+            'village_id' => $request->village_id,
+            'city_id' => $request->city_id,
+            'pos_id' => $request->pos_id,
+            'ward_id' => $request->ward_id,
+            'road' => $request->road,
+            'house' => $request->house,
+            'house_bn' => $request->house_bn,
+            'office_division_id' => $request->office_division_id,
+            'office_district_id' => $request->office_district_id,
+            'office_thana_id' => $request->office_thana_id,
             'office_post_office_id' => $request->office_post_office_id,
-            'office_union_id'       => $request->office_union_id,
-            'office_village_id'     => $request->office_village_id,
-            'office_city_id'        => $request->office_city_id,
-            'office_pos_id'         => $request->office_pos_id,
-            'office_ward_id'        => $request->office_ward_id,
-            'office_road'           => $request->office_road,
-            'office_house'          => $request->office_house,
-            'office_house_bn'       => $request->office_house_bn,
-            'location_type'         => $request->location_type,
-            'office_location_type'  => $request->office_location_type,
-            'document_files'        => $document_files,
-            'hotel_logo'            => $logoName,
-            'status'                => 0,
+            'office_union_id' => $request->office_union_id,
+            'office_village_id' => $request->office_village_id,
+            'office_city_id' => $request->office_city_id,
+            'office_pos_id' => $request->office_pos_id,
+            'office_ward_id' => $request->office_ward_id,
+            'office_road' => $request->office_road,
+            'office_house' => $request->office_house,
+            'office_house_bn' => $request->office_house_bn,
+            'location_type' => $request->location_type,
+            'office_location_type' => $request->office_location_type,
+            'document_files' => $document_files,
+            'hotel_logo' => $logoName,
+            'status' => 0,
         ];
 
         $organization = HotelRestaurant::create($payload);
 
+        // Process Ownerships
+        if ($request->has('owner_name') && is_array($request->owner_name)) {
+            foreach ($request->owner_name as $key => $ownerName) {
+                if (empty($ownerName)) continue;
+
+                $photoName = null;
+                if ($request->hasFile("owner_photo.$key")) {
+                    $photoName = $this->uploadFile($request->file("owner_photo")[$key], 'uploads/hotel/owners/photo/', 'photo_');
+                }
+
+                $signatureName = null;
+                if ($request->hasFile("owner_signature.$key")) {
+                    $signatureName = $this->uploadFile($request->file("owner_signature")[$key], 'uploads/hotel/owners/signature/', 'sign_');
+                }
+
+                HotelRestaurantOwnership::create([
+                    'hotel_restaurant_id' => $organization->id,
+                    'name' => $ownerName,
+                    'nid' => $request->owner_nid[$key] ?? null,
+                    'gender' => $request->owner_gender[$key] ?? null,
+                    'religion' => $request->owner_religion[$key] ?? null,
+                    'mobile' => $request->owner_mobile[$key] ?? null,
+                    'email' => $request->owner_email[$key] ?? null,
+                    'father_name' => $request->owner_father_name[$key] ?? null,
+                    'mother_name' => $request->owner_mother_name[$key] ?? null,
+                    'present_road' => $request->owner_present_address[$key] ?? null,
+                    'permanent_road' => $request->owner_permanent_address[$key] ?? null,
+                    'image' => $photoName, // using image field instead of photo
+                    // add signature if table supports it (or omit for now)
+                ]);
+            }
+        }
+
         return response()->json([
-            'status'       => true,
-            'message'      => 'Organization saved successfully!',
-            'result'       => $organization,
+            'status' => true,
+            'message' => 'Organization saved successfully!',
+            'result' => $organization,
             'redirect_url' => route('frontend.hotel-restaurant.success', $application_id),
         ], 200);
     }
@@ -527,10 +594,10 @@ class HomeController extends Controller
         $last = PersonGunApplication::whereDate('created_at', Carbon::today())
             ->orderBy('id', 'desc')
             ->first();
-        
+
         $newSerial = 1;
         if ($last && preg_match('/-(\d+)$/', $last->tracking_no, $matches)) {
-            $newSerial = ((int)$matches[1]) + 1;
+            $newSerial = ((int) $matches[1]) + 1;
         }
         $trackingNo = 'PG-' . $datePart . '-' . str_pad($newSerial, 5, '0', STR_PAD_LEFT);
 
@@ -677,7 +744,7 @@ class HomeController extends Controller
 
         $newSerial = 1;
         if ($last && preg_match('/-(\d+)$/', $last->tracking_no, $matches)) {
-            $newSerial = ((int)$matches[1]) + 1;
+            $newSerial = ((int) $matches[1]) + 1;
         }
         $trackingNo = 'OG-' . $datePart . '-' . str_pad($newSerial, 5, '0', STR_PAD_LEFT);
 
@@ -820,7 +887,7 @@ class HomeController extends Controller
 
         $newSerial = 1;
         if ($last && preg_match('/-(\d+)$/', $last->tracking_no, $matches)) {
-            $newSerial = ((int)$matches[1]) + 1;
+            $newSerial = ((int) $matches[1]) + 1;
         }
         $trackingNo = 'OOG-' . $datePart . '-' . str_pad($newSerial, 5, '0', STR_PAD_LEFT);
 

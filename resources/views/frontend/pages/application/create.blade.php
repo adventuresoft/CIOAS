@@ -144,7 +144,7 @@
                                                         <input type="tel" pattern="(01){1}[3-9]{1}\d{8}"
                                                             title="Mobile number with 01 and remaing 9 digit with 0-9"
                                                             placeholder="01........." required name="mobile"
-                                                            class="form-control" id="mobile">
+                                                            class="form-control" id="mobile" value="{{ Auth::check() ? Auth::user()->mobile : '' }}" {{ Auth::check() ? 'readonly' : '' }}>
                                                         <small class="error mobile-error text-danger"></small>
                                                     </div>
                                                 </div>

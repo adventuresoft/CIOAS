@@ -72,7 +72,7 @@
                     </div>
                     <div class="col-md-3">
                         <label for="mobile">মোবাইল নং</label>
-                        <input type="text" name="mobile" value="{{ request('mobile') }}" class="form-control" id="mobile" placeholder="মোবাইল">
+                        <input type="text" name="mobile" value="{{ request('mobile') ?? (Auth::check() ? Auth::user()->mobile : '') }}" class="form-control" id="mobile" placeholder="মোবাইল">
                     </div>
                 </div>
 
