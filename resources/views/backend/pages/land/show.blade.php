@@ -181,7 +181,7 @@
                         <ul style="margin: 0; padding-left: 20px;">
                             @foreach($land->documents as $doc)
                                 <li style="margin-bottom: 5px;">
-                                    <a href="{{ asset('storage/' . ($doc['file_path'] ?? '')) }}" target="_blank" style="color: #2563eb; text-decoration: none; font-weight: 600;">
+                                    <a href="{{ str_starts_with($doc['file_path'] ?? '', 'uploads/') ? asset($doc['file_path']) : asset('storage/' . ($doc['file_path'] ?? '')) }}" target="_blank" style="color: #2563eb; text-decoration: none; font-weight: 600;">
                                         <i class="fas fa-external-link-alt" style="font-size: 12px;"></i> Click to View
                                     </a>
                                 </li>

@@ -15,9 +15,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Traits\FileUploadTrait;
 
 class LandController extends Controller
 {
+    use FileUploadTrait;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -164,7 +167,7 @@ class LandController extends Controller
             if ($request->has('attachments')) {
                 foreach ($request->attachments as $attachment) {
                     if (isset($attachment['file']) && $attachment['file']->isValid()) {
-                        $path = $attachment['file']->store('lands', 'public');
+                        $path = $this->uploadFile($attachment['file'], 'uploads/lands/');
                         $documents[] = [
                             'document_name' => $attachment['name'] ?? null,
                             'file_path'     => $path
@@ -253,8 +256,8 @@ class LandController extends Controller
             'details.0.land_amount' => 'required|numeric|min:0',
             'details.0.possession_status' => 'required',
             'attachments' => 'nullable|array',
-            'attachments.*.name' => 'required_with:attachments|string',
-            'attachments.*.file' => 'nullable|file|max:5120',
+            'attachments.*.name' => 'required_with:attachments.*.file|nullable|string',
+            'attachments.*.file' => 'required_with:attachments.*.name|nullable|file|max:5120',
         ]);
 
         if ($validate->fails()) {
@@ -307,7 +310,7 @@ class LandController extends Controller
             if ($request->has('attachments')) {
                 foreach ($request->attachments as $attachment) {
                     if (isset($attachment['file']) && $attachment['file']->isValid()) {
-                        $path = $attachment['file']->store('lands', 'public');
+                        $path = $this->uploadFile($attachment['file'], 'uploads/lands/');
                         $documents[] = [
                             'document_name' => $attachment['name'] ?? null,
                             'file_path'     => $path
