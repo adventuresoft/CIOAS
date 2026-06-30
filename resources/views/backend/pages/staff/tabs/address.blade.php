@@ -614,16 +614,19 @@
 
         function syncPresentAddress() {
             if ($('#is_same_as_permanent').is(':checked')) {
-                if ($('#permanent_district_id').val() && !$('#present_district_id option[value="' + $('#permanent_district_id').val() + '"]').length) {
+                if ($('#permanent_district_id option').length > 1 && ($('#present_district_id option').length <= 1 || ($('#permanent_district_id').val() && !$('#present_district_id option[value="' + $('#permanent_district_id').val() + '"]').length))) {
                     $('#present_district_id').html($('#permanent_district_id').html());
                 }
-                if ($('#permanent_thana_id').val() && !$('#present_thana_id option[value="' + $('#permanent_thana_id').val() + '"]').length) {
+                if ($('#permanent_thana_id option').length > 1 && ($('#present_thana_id option').length <= 1 || ($('#permanent_thana_id').val() && !$('#present_thana_id option[value="' + $('#permanent_thana_id').val() + '"]').length))) {
                     $('#present_thana_id').html($('#permanent_thana_id').html());
                 }
-                if ($('#permanent_union_id').val() && !$('#present_union_id option[value="' + $('#permanent_union_id').val() + '"]').length) {
+                if ($('#permanent_post_office_id option').length > 1 && ($('#present_post_office_id option').length <= 1 || ($('#permanent_post_office_id').val() && !$('#present_post_office_id option[value="' + $('#permanent_post_office_id').val() + '"]').length))) {
+                    $('#present_post_office_id').html($('#permanent_post_office_id').html());
+                }
+                if ($('#permanent_union_id option').length > 1 && ($('#present_union_id option').length <= 1 || ($('#permanent_union_id').val() && !$('#present_union_id option[value="' + $('#permanent_union_id').val() + '"]').length))) {
                     $('#present_union_id').html($('#permanent_union_id').html());
                 }
-                if ($('#permanent_village_id').val() && !$('#present_village_id option[value="' + $('#permanent_village_id').val() + '"]').length) {
+                if ($('#permanent_village_id option').length > 1 && ($('#present_village_id option').length <= 1 || ($('#permanent_village_id').val() && !$('#present_village_id option[value="' + $('#permanent_village_id').val() + '"]').length))) {
                     $('#present_village_id').html($('#permanent_village_id').html());
                 }
 
