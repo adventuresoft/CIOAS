@@ -394,6 +394,7 @@
             e.preventDefault();
             let thana_id = $(this).val();
             let present_union_id = $('#present_union_id');
+            let present_post_office_id = $('#present_post_office_id');
             if (thana_id) {
                 $.ajax({
                     type: "GET",
@@ -412,9 +413,27 @@
                         toastr.error(responseText.message);
                     }
                 });
+
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('/get-postOffice-by-thana') }}/"+thana_id,
+                    beforeSend: function() {
+                        present_post_office_id.prop("disabled", true);
+                        present_post_office_id.html('<option value="">Loading...</option>');
+                    },
+                    success: function(response) {
+                        present_post_office_id.html(response);
+                        present_post_office_id.prop("disabled", false);
+                    },
+                    error: function(xhr, status, error) {
+                        present_post_office_id.prop("disabled", false);
+                    }
+                });
             } else {
                 present_union_id.html('<option value="">Select Union</option>');
                 present_union_id.prop("disabled", true);
+                present_post_office_id.html('<option value="">Select Post Office</option>');
+                present_post_office_id.prop("disabled", true);
             }
         });
 
@@ -515,6 +534,7 @@
             e.preventDefault();
             let thana_id = $(this).val();
             let permanent_union_id = $('#permanent_union_id');
+            let permanent_post_office_id = $('#permanent_post_office_id');
             if (thana_id) {
                 $.ajax({
                     type: "GET",
@@ -534,9 +554,28 @@
                         toastr.error(responseText.message);
                     }
                 });
+
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('/get-postOffice-by-thana') }}/"+thana_id,
+                    beforeSend: function() {
+                        permanent_post_office_id.prop("disabled", true);
+                        permanent_post_office_id.html('<option value="">Loading...</option>');
+                    },
+                    success: function(response) {
+                        permanent_post_office_id.html(response);
+                        permanent_post_office_id.prop("disabled", false);
+                        if ($('#is_same_as_permanent').is(':checked')) { syncPresentAddress(); }
+                    },
+                    error: function(xhr, status, error) {
+                        permanent_post_office_id.prop("disabled", false);
+                    }
+                });
             } else {
                 permanent_union_id.html('<option value="">Select Union</option>');
                 permanent_union_id.prop("disabled", true);
+                permanent_post_office_id.html('<option value="">Select Post Office</option>');
+                permanent_post_office_id.prop("disabled", true);
             }
         });
 

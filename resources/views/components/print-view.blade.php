@@ -237,19 +237,11 @@
 
         <!-- Pad Footer -->
         <div class="pad-footer">
-            <span>প্রতিবেদনটি জেনারেট করেছে: CIOAS | Powered by Adventure Soft</span>
+            <span>CIOAS | Powered by Adventure Soft</span>
             <span>তারিখ: {{ date('d/m/Y h:i A') }}</span>
         </div>
 
     </div>
 
-    <!-- Print Control Buttons -->
-    <div class="text-center mt-2 mb-4">
-        <button id="cancelPageButton" class="btn btn-danger btn-sm px-4" onclick="window.close();">
-            বন্ধ করুন
-        </button>
-        <button id="printPageButton" class="btn btn-success btn-sm px-4 ms-2" onclick="window.print();">
-            প্রিন্ট করুন
-        </button>
-    </div>
+   
 </div>
