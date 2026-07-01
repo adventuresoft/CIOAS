@@ -30,23 +30,7 @@ class StaffProfessionalInfoController extends Controller
      */
     public function create($id)
     {
-        $data['user'] = User::with(array(
-            'professionalInfos' => function ($q1) {
-                $q1->with(array(
-                    'subcategory' => function ($q2) {
-                        $q2->with(array(
-                            'category' => function ($q3) {
-                                $q3->with(array(
-                                    'type' => function ($q4) {
-                                        $q4->with('profession');
-                                    }
-                                ));
-                            }
-                        ));
-                    }
-                ));
-            }
-        ))->find($id);
+        $data['user'] = User::with('professionalInfos')->find($id);
         $data['professions'] = Profession::where('status', true)->get();
         $data['departments'] = \App\Models\Department\Department::all();
         // return response()->json($data,  200);

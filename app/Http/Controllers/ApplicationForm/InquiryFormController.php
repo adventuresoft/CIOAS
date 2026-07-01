@@ -22,7 +22,7 @@ class InquiryFormController extends Controller
     public function __construct()
     {
         $this->middleware('permission:inquiry.read')->only('FormList', 'show');
-        $this->middleware('permission:inquiry.create')->only('create', 'store');
+        $this->middleware('permission:inquiry.create')->only('create');
         $this->middleware('permission:inquiry.update')->only('update', 'edit');
         $this->middleware('permission:inquiry.delete')->only('destroy');
     }

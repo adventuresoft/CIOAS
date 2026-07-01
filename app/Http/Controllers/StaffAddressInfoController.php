@@ -40,7 +40,7 @@ class StaffAddressInfoController extends Controller
     {
         $user = User::with( 'institute')
         ->with(array('addressInfo' => function($address){
-            $address->with('presentUnion', 'permanentHouse', 'presentHouse', 'presentRoad', 'permanentRoad',  'presentVillage', 'presentDistrict', 'presentThana');
+            $address->with('presentUnion', 'permanentHouse', 'presentHouse', 'presentVillage', 'presentDistrict', 'presentThana');
         }))
         ->find($id);
 
@@ -68,7 +68,6 @@ class StaffAddressInfoController extends Controller
 
         if(isset($institute?->institute_type_id) && $institute->institute_type_id == 1) {
             $data['villages'] = Village::where('union_id', $institute->union_id)->get();
-            $data['roads'] = Road::where('institute_id',  $institute->id)->latest()->get();
             $data['post_officeses']=PostOffice::latest()->get();
             
         } else if (isset($institute?->institute_type_id) && $institute->institute_type_id == 2) {
@@ -92,13 +91,6 @@ class StaffAddressInfoController extends Controller
                 ->latest()
                 ->get();
             }
-            if (! empty($user->addressInfo->permanent_village_id)) {
-                $data['permanentVillageAreas'] = VillageArea::where('village_id', $user->addressInfo->permanent_village_id)->get();
-            }
-            if (! empty($user->addressInfo->present_village_id)) {
-                $data['presentVillageAreas'] = VillageArea::where('village_id', $user->addressInfo->present_village_id)->get();
-            }
-
         }
 
         // return response()->json($data, 200);
@@ -250,6 +242,7 @@ class StaffAddressInfoController extends Controller
 
             return response(json_encode($result, JSON_PRETTY_PRINT), $result['code'])->header('Content-Type', 'application/json');
         } catch (\Throwable $th) {
+            \Log::error($th->getMessage());
             $data['status'] = false;
             $data['message'] = "Something went wrong! Please try again...";
             $data['errors'] = [

@@ -42,8 +42,9 @@
         <div class="container-fluid">
             <div class="cioas-shell">
 
-                <form id="FormSubmit" method="POST" enctype="multipart/form-data" action="{{ route('land.update', $land->id) }}"
-                    data-url="{{ route('land.update', $land->id) }}" data-redirect-url="{{ route('land.index') }}">
+                <form id="FormSubmit" method="POST" enctype="multipart/form-data"
+                    action="{{ route('land.update', $land->id) }}" data-url="{{ route('land.update', $land->id) }}"
+                    data-redirect-url="{{ route('land.index') }}">
                     @csrf
                     @method('PUT')
                     <input type="hidden" name="approve" id="approve_input" value="0">
@@ -60,7 +61,9 @@
                                         <select name="land_type" id="land_type" class="form-control select2" required>
                                             <option value="">Select Land Type</option>
                                             @foreach($landTypes as $type)
-                                                <option value="{{ $type->id }}" @selected($land->land_type == $type->id)>{{ $type->bn_name }}</option>
+                                                <option value="{{ $type->id }}" @selected($land->land_type == $type->id)>
+                                                    {{ $type->bn_name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -71,7 +74,9 @@
                                         <select name="record_type" id="record_type" class="form-control select2" required>
                                             <option value="">Select Record</option>
                                             @foreach($records as $rec)
-                                                <option value="{{ $rec->id }}" @selected($land->record_type == $rec->id)>{{ $rec->name }}</option>
+                                                <option value="{{ $rec->id }}" @selected($land->record_type == $rec->id)>
+                                                    {{ $rec->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -83,7 +88,8 @@
                                         <select name="district_id" id="district_id" class="form-control select2" required>
                                             <option value="">Select District</option>
                                             @foreach($districts as $district)
-                                                <option value="{{ $district->id }}" @selected($land->district_id == $district->id)>{{ $district->name }}</option>
+                                                <option value="{{ $district->id }}"
+                                                    @selected($land->district_id == $district->id)>{{ $district->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -94,7 +100,9 @@
                                         <select name="upazila_id" id="upazila_id" class="form-control select2" required>
                                             <option value="">Select Upazila</option>
                                             @foreach($upazilas as $upazila)
-                                                <option value="{{ $upazila->id }}" @selected($land->upazila_id == $upazila->id)>{{ $upazila->name }}</option>
+                                                <option value="{{ $upazila->id }}" @selected($land->upazila_id == $upazila->id)>
+                                                    {{ $upazila->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -105,7 +113,9 @@
                                         <select name="mouza_id" id="mouza_id" class="form-control select2" required>
                                             <option value="">Select Mouza</option>
                                             @foreach($mouzas as $mouza)
-                                                <option value="{{ $mouza->id }}" @selected($land->mouza_id == $mouza->id)>{{ $mouza->name }}</option>
+                                                <option value="{{ $mouza->id }}" @selected($land->mouza_id == $mouza->id)>
+                                                    {{ $mouza->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -121,66 +131,108 @@
                         <div style="overflow-x: auto;">
                             <table style="width:100%; border-collapse:collapse; font-size:13px; font-family: inherit;">
                                 <thead>
-                                    <tr style="background: linear-gradient(135deg,#0f766e,#115e59); color:#fff; text-align:center;">
-                                        <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:80px;">দাগ নং <span style="color:#fca5a5;">*</span></th>
-                                        <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:80px;">খতিয়ান নং <span style="color:#fca5a5;">*</span></th>
-                                        <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:140px;">রেকর্ডীয় শ্রেণি <span style="color:#fca5a5;">*</span></th>
-                                        <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:140px;">বাস্তব শ্রেণি <span style="color:#fca5a5;">*</span></th>
-                                        <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:120px;">দাগে মোট জমি (একর) <span style="color:#fca5a5;">*</span></th>
-                                        <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:120px;">জমির পরিমাণ (একর) <span style="color:#fca5a5;">*</span></th>
-                                        <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:140px;">দখল সংক্রান্ত অবস্থা <span style="color:#fca5a5;">*</span></th>
-                                        <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:90px;">মামলা নং</th>
-                                        <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:120px;">গেজেট/প্রমাণক নং</th>
-                                        <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:160px;">মন্তব্য</th>
+                                    <tr
+                                        style="background: linear-gradient(135deg,#0f766e,#115e59); color:#fff; text-align:center;">
+                                        <th
+                                            style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:80px;">
+                                            দাগ নং <span style="color:#fca5a5;">*</span></th>
+                                        <th
+                                            style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:80px;">
+                                            খতিয়ান নং <span style="color:#fca5a5;">*</span></th>
+                                        <th
+                                            style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:140px;">
+                                            রেকর্ডীয় শ্রেণি <span style="color:#fca5a5;">*</span></th>
+                                        <th
+                                            style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:140px;">
+                                            বাস্তব শ্রেণি <span style="color:#fca5a5;">*</span></th>
+                                        <th
+                                            style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:120px;">
+                                            দাগে মোট জমি (একর) <span style="color:#fca5a5;">*</span></th>
+                                        <th
+                                            style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:120px;">
+                                            জমির পরিমাণ (একর) <span style="color:#fca5a5;">*</span></th>
+                                        <th
+                                            style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:140px;">
+                                            দখল সংক্রান্ত অবস্থা <span style="color:#fca5a5;">*</span></th>
+                                        <th
+                                            style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:90px;">
+                                            মামলা নং</th>
+                                        <th
+                                            style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:120px;">
+                                            গেজেট/প্রমাণক নং</th>
+                                        <th
+                                            style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:160px;">
+                                            মন্তব্য</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr style="background:#ffffff;">
                                         <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                            <input type="text" name="details[0][dag_no]" class="form-control form-control-sm" value="{{ $land->dag_no ?? '' }}" required>
+                                            <input type="text" name="details[0][dag_no]"
+                                                class="form-control form-control-sm" value="{{ $land->dag_no ?? '' }}"
+                                                required>
                                         </td>
                                         <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                            <input type="text" name="details[0][khatian_no]" class="form-control form-control-sm" value="{{ $land->khatian_no ?? '' }}" required>
+                                            <input type="text" name="details[0][khatian_no]"
+                                                class="form-control form-control-sm" value="{{ $land->khatian_no ?? '' }}"
+                                                required>
                                         </td>
                                         <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                            <select name="details[0][recorded_class]" class="form-control form-control-sm select2" required>
+                                            <select name="details[0][recorded_class]"
+                                                class="form-control form-control-sm select2" required>
                                                 <option value="">নির্বাচন করুন</option>
                                                 @foreach($recordGroups as $group)
-                                                    <option value="{{ $group->id }}" @selected($land->recorded_class == $group->id)>{{ $group->bn_name }}</option>
+                                                    <option value="{{ $group->id }}"
+                                                        @selected($land->recorded_class == $group->id)>{{ $group->bn_name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </td>
                                         <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                            <select name="details[0][actual_class]" class="form-control form-control-sm select2" required>
+                                            <select name="details[0][actual_class]"
+                                                class="form-control form-control-sm select2" required>
                                                 <option value="">নির্বাচন করুন</option>
                                                 @foreach($recordGroups as $group)
-                                                    <option value="{{ $group->id }}" @selected($land->actual_class == $group->id)>{{ $group->bn_name }}</option>
+                                                    <option value="{{ $group->id }}" @selected($land->actual_class == $group->id)>
+                                                        {{ $group->bn_name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </td>
                                         <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                            <input type="number" step="any" name="details[0][total_land]" class="form-control form-control-sm" value="{{ $land->total_land ?? '' }}" required>
+                                            <input type="number" step="any" name="details[0][total_land]"
+                                                class="form-control form-control-sm" value="{{ $land->total_land ?? '' }}"
+                                                required>
                                         </td>
                                         <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                            <input type="number" step="any" name="details[0][land_amount]" class="form-control form-control-sm" value="{{ $land->land_amount ?? '' }}" required>
+                                            <input type="number" step="any" name="details[0][land_amount]"
+                                                class="form-control form-control-sm" value="{{ $land->land_amount ?? '' }}"
+                                                required>
                                         </td>
                                         <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                            <select name="details[0][possession_status]" class="form-control form-control-sm select2" required>
+                                            <select name="details[0][possession_status]"
+                                                class="form-control form-control-sm select2" required>
                                                 <option value="">নির্বাচন করুন</option>
                                                 <option value="সরকার পক্ষে" @selected($land->possession_status == 'সরকার পক্ষে')>সরকার পক্ষে</option>
-                                                <option value="দখলে" @selected($land->possession_status == 'দখলে')>দখলে</option>
-                                                <option value="বেদখল" @selected($land->possession_status == 'বেদখল')>বেদখল</option>
-                                                <option value="অন্যান্য" @selected($land->possession_status == 'অন্যান্য')>অন্যান্য</option>
+                                                <option value="দখলে" @selected($land->possession_status == 'দখলে')>দখলে
+                                                </option>
+                                                <option value="বেদখল" @selected($land->possession_status == 'বেদখল')>বেদখল
+                                                </option>
+                                                <option value="অন্যান্য" @selected($land->possession_status == 'অন্যান্য')>
+                                                    অন্যান্য</option>
                                             </select>
                                         </td>
                                         <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                            <input type="text" name="details[0][case_no]" class="form-control form-control-sm" value="{{ $land->case_no ?? '' }}">
+                                            <input type="text" name="details[0][case_no]"
+                                                class="form-control form-control-sm" value="{{ $land->case_no ?? '' }}">
                                         </td>
                                         <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                            <input type="text" name="details[0][gazette_no]" class="form-control form-control-sm" value="{{ $land->gazette_no ?? '' }}">
+                                            <input type="text" name="details[0][gazette_no]"
+                                                class="form-control form-control-sm" value="{{ $land->gazette_no ?? '' }}">
                                         </td>
                                         <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                            <input type="text" name="details[0][remarks]" class="form-control form-control-sm" value="{{ $land->remarks ?? '' }}">
+                                            <input type="text" name="details[0][remarks]"
+                                                class="form-control form-control-sm" value="{{ $land->remarks ?? '' }}">
                                         </td>
                                     </tr>
                                 </tbody>
@@ -189,7 +241,8 @@
 
                         <div class="cioas-panel">
                             <div class="cioas-panel-header" style="cursor:pointer;" id="locationToggleHeader">
-                                <h3 class="cioas-panel-title"><i class="fas fa-map-marked-alt"></i> রেকর্ড অনুযায়ী অবস্থান তথ্য</h3>
+                                <h3 class="cioas-panel-title"><i class="fas fa-map-marked-alt"></i> রেকর্ড অনুযায়ী অবস্থান
+                                    তথ্য</h3>
                                 <button type="button" class="btn btn-sm btn-outline-info" id="locationToggleBtn">
                                     <i class="fas fa-chevron-down" id="locationToggleIcon"></i> দেখুন
                                 </button>
@@ -197,132 +250,149 @@
                             <div style="overflow-x: auto; display:none;" id="locationTableWrapper">
                                 <table style="width:100%; border-collapse:collapse; font-size:13px; font-family: inherit;">
                                     <thead>
-                                        <tr style="background: linear-gradient(135deg,#0f766e,#115e59); color:#fff; text-align:center;">
-                                            <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:75px;">রেকর্ড</th>
-                                            <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:140px;">জেলা</th>
-                                            <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:155px;">উপজেলা</th>
-                                            <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:155px;">মৌজা</th>
-                                            <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:80px;">দাগ নং</th>
-                                            <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:80px;">খতিয়ান</th>
-                                            <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:120px;">রেকর্ড শ্রেণি</th>
-                                            <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:85px;">মোট দাগ নং</th>
-                                            <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:100px;">মোট জমি (একর)</th>
-                                            <th style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:160px;">রেকর্ডীয় মালিকের নাম</th>
+                                        <tr
+                                            style="background: linear-gradient(135deg,#0f766e,#115e59); color:#fff; text-align:center;">
+                                            <th
+                                                style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:75px;">
+                                                রেকর্ড</th>
+                                            <th
+                                                style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:140px;">
+                                                জেলা</th>
+                                            <th
+                                                style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:155px;">
+                                                উপজেলা</th>
+                                            <th
+                                                style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:155px;">
+                                                মৌজা</th>
+                                            <th
+                                                style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:80px;">
+                                                দাগ নং</th>
+                                            <th
+                                                style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:80px;">
+                                                খতিয়ান</th>
+                                            <th
+                                                style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:120px;">
+                                                রেকর্ড শ্রেণি</th>
+                                            <th
+                                                style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:85px;">
+                                                মোট দাগ নং</th>
+                                            <th
+                                                style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:100px;">
+                                                মোট জমি (একর)</th>
+                                            <th
+                                                style="padding:10px 8px; white-space:nowrap; border:1px solid #0d6460; min-width:160px;">
+                                                রেকর্ডীয় মালিকের নাম</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($records as $recIndex => $rec)
-                                        @php
-                                            $savedLoc = collect($locationRows)->firstWhere('record_type', $rec->id) ?? collect($locationRows)->firstWhere('record', $rec->id) ?? [];
-                                            $rowBg = $recIndex % 2 === 0 ? '#ffffff' : '#f8fffe';
-                                        @endphp
-                                        <tr style="background:{{ $rowBg }}; transition: background 0.2s;" class="loc-row" data-record-id="{{ $rec->id }}" onmouseover="this.style.background='#e6f7f5'" onmouseout="this.style.background='{{ $rowBg }}'">
+                                            @php
+                                                $savedLoc = collect($locationRows)->firstWhere('record_type', $rec->id) ?? collect($locationRows)->firstWhere('record', $rec->id) ?? [];
+                                                $rowBg = $recIndex % 2 === 0 ? '#ffffff' : '#f8fffe';
+                                            @endphp
+                                            <tr style="background:{{ $rowBg }}; transition: background 0.2s;" class="loc-row"
+                                                data-record-id="{{ $rec->id }}" onmouseover="this.style.background='#e6f7f5'"
+                                                onmouseout="this.style.background='{{ $rowBg }}'">
 
-                                            {{-- Record badge --}}
-                                            <td style="padding:6px 8px; border:1px solid #e2e8f0; text-align:center; vertical-align:middle;">
-                                                <span style="display:inline-block; background:#0f766e; color:#fff; font-weight:700; font-size:11px; padding:3px 8px; border-radius:12px; white-space:nowrap; letter-spacing:.4px;">
-                                                    {{ $rec->name }}
-                                                </span>
-                                                <input type="hidden" name="location[{{ $recIndex }}][record]" value="{{ $rec->id }}">
-                                            </td>
+                                                {{-- Record badge --}}
+                                                <td
+                                                    style="padding:6px 8px; border:1px solid #e2e8f0; text-align:center; vertical-align:middle;">
+                                                    <span
+                                                        style="display:inline-block; background:#0f766e; color:#fff; font-weight:700; font-size:11px; padding:3px 8px; border-radius:12px; white-space:nowrap; letter-spacing:.4px;">
+                                                        {{ $rec->name }}
+                                                    </span>
+                                                    <input type="hidden" name="location[{{ $recIndex }}][record]"
+                                                        value="{{ $rec->id }}">
+                                                </td>
 
-                                            {{-- District --}}
-                                            <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                                <select name="location[{{ $recIndex }}][district_id]"
-                                                    id="loc_district_{{ $recIndex }}"
-                                                    data-row="{{ $recIndex }}"
-                                                    data-record="{{ $rec->id }}"
-                                                    data-selected-thana="{{ $savedLoc['upazila_id'] ?? $savedLoc['thana_id'] ?? '' }}"
-                                                    data-selected-mouza="{{ $savedLoc['mouza_id'] ?? '' }}"
-                                                    class="form-control form-control-sm select2 location-district">
-                                                    <option value="">-- জেলা নির্বাচন --</option>
-                                                    @foreach ($districts as $district)
-                                                        <option value="{{ $district->id }}" @selected((string)($savedLoc['district_id'] ?? '') === (string)$district->id)>
-                                                            {{ $district->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
+                                                {{-- District --}}
+                                                <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
+                                                    <select name="location[{{ $recIndex }}][district_id]"
+                                                        id="loc_district_{{ $recIndex }}" data-row="{{ $recIndex }}"
+                                                        data-record="{{ $rec->id }}"
+                                                        data-selected-thana="{{ $savedLoc['upazila_id'] ?? $savedLoc['thana_id'] ?? '' }}"
+                                                        data-selected-mouza="{{ $savedLoc['mouza_id'] ?? '' }}"
+                                                        class="form-control form-control-sm select2 location-district">
+                                                        <option value="">-- জেলা নির্বাচন --</option>
+                                                        @foreach ($districts as $district)
+                                                            <option value="{{ $district->id }}" @selected((string) ($savedLoc['district_id'] ?? '') === (string) $district->id)>
+                                                                {{ $district->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
 
-                                            {{-- Upazila --}}
-                                            <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                                <select name="location[{{ $recIndex }}][thana_id]"
-                                                    id="loc_thana_{{ $recIndex }}"
-                                                    data-row="{{ $recIndex }}"
-                                                    class="form-control form-control-sm select2 location-thana">
-                                                    <option value="">-- উপজেলা --</option>
-                                                </select>
-                                            </td>
+                                                {{-- Upazila --}}
+                                                <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
+                                                    <select name="location[{{ $recIndex }}][thana_id]"
+                                                        id="loc_thana_{{ $recIndex }}" data-row="{{ $recIndex }}"
+                                                        class="form-control form-control-sm select2 location-thana">
+                                                        <option value="">-- উপজেলা --</option>
+                                                    </select>
+                                                </td>
 
-                                            {{-- Mouza --}}
-                                            <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                                <select name="location[{{ $recIndex }}][mouza_id]"
-                                                    id="loc_mouza_{{ $recIndex }}"
-                                                    data-row="{{ $recIndex }}"
-                                                    class="form-control form-control-sm select2 location-mouza">
-                                                    <option value="">-- মৌজা --</option>
-                                                </select>
-                                            </td>
+                                                {{-- Mouza --}}
+                                                <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
+                                                    <select name="location[{{ $recIndex }}][mouza_id]"
+                                                        id="loc_mouza_{{ $recIndex }}" data-row="{{ $recIndex }}"
+                                                        class="form-control form-control-sm select2 location-mouza">
+                                                        <option value="">-- মৌজা --</option>
+                                                    </select>
+                                                </td>
 
-                                            {{-- Dag No --}}
-                                            <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                                <input type="number" name="location[{{ $recIndex }}][dag_no]"
-                                                    class="form-control form-control-sm"
-                                                    style="text-align:center;"
-                                                    value="{{ $savedLoc['dag_no'] ?? '' }}"
-                                                    placeholder="০" min="0">
-                                            </td>
+                                                {{-- Dag No --}}
+                                                <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
+                                                    <input type="number" name="location[{{ $recIndex }}][dag_no]"
+                                                        class="form-control form-control-sm" style="text-align:center;"
+                                                        value="{{ $savedLoc['dag_no'] ?? '' }}" placeholder="০" min="0">
+                                                </td>
 
-                                            {{-- Khatian --}}
-                                            <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                                <input type="number" name="location[{{ $recIndex }}][khatian]"
-                                                    class="form-control form-control-sm"
-                                                    style="text-align:center;"
-                                                    value="{{ $savedLoc['khatian_no'] ?? $savedLoc['khatian'] ?? '' }}"
-                                                    placeholder="০" min="0">
-                                            </td>
+                                                {{-- Khatian --}}
+                                                <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
+                                                    <input type="number" name="location[{{ $recIndex }}][khatian]"
+                                                        class="form-control form-control-sm" style="text-align:center;"
+                                                        value="{{ $savedLoc['khatian_no'] ?? $savedLoc['khatian'] ?? '' }}"
+                                                        placeholder="০" min="0">
+                                                </td>
 
-                                            {{-- Record Group --}}
-                                            <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                                <select name="location[{{ $recIndex }}][record_group]"
-                                                    id="loc_rg_{{ $recIndex }}"
-                                                    class="form-control form-control-sm select2">
-                                                    <option value="">-- শ্রেণি --</option>
-                                                    @foreach ($recordGroups as $group)
-                                                        <option value="{{ $group->id }}" @selected(($savedLoc['record_group'] ?? '') == $group->id)>
-                                                            {{ $group->bn_name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
+                                                {{-- Record Group --}}
+                                                <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
+                                                    <select name="location[{{ $recIndex }}][record_group]"
+                                                        id="loc_rg_{{ $recIndex }}"
+                                                        class="form-control form-control-sm select2">
+                                                        <option value="">-- শ্রেণি --</option>
+                                                        @foreach ($recordGroups as $group)
+                                                            <option value="{{ $group->id }}" @selected(($savedLoc['record_group'] ?? '') == $group->id)>
+                                                                {{ $group->bn_name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
 
-                                            {{-- Total Dag No --}}
-                                            <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                                <input type="number" name="location[{{ $recIndex }}][total_dag_no]"
-                                                    class="form-control form-control-sm"
-                                                    style="text-align:center;"
-                                                    value="{{ $savedLoc['total_dag_no'] ?? '' }}"
-                                                    placeholder="০" min="0">
-                                            </td>
+                                                {{-- Total Dag No --}}
+                                                <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
+                                                    <input type="number" name="location[{{ $recIndex }}][total_dag_no]"
+                                                        class="form-control form-control-sm" style="text-align:center;"
+                                                        value="{{ $savedLoc['total_dag_no'] ?? '' }}" placeholder="০" min="0">
+                                                </td>
 
-                                            {{-- Total Land --}}
-                                            <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                                <input type="number" name="location[{{ $recIndex }}][total_land]"
-                                                    class="form-control form-control-sm"
-                                                    style="text-align:center;"
-                                                    value="{{ $savedLoc['total_land'] ?? '' }}"
-                                                    placeholder="০.০০০০" min="0" step="0.0001">
-                                            </td>
+                                                {{-- Total Land --}}
+                                                <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
+                                                    <input type="number" name="location[{{ $recIndex }}][total_land]"
+                                                        class="form-control form-control-sm" style="text-align:center;"
+                                                        value="{{ $savedLoc['total_land'] ?? '' }}" placeholder="০.০০০০" min="0"
+                                                        step="0.0001">
+                                                </td>
 
-                                            {{-- Owner Name --}}
-                                            <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
-                                                <input type="text" name="location[{{ $recIndex }}][record_owner_name]"
-                                                    class="form-control form-control-sm"
-                                                    value="{{ $savedLoc['owner_name'] ?? $savedLoc['record_owner_name'] ?? '' }}"
-                                                    placeholder="মালিকের নাম">
-                                            </td>
+                                                {{-- Owner Name --}}
+                                                <td style="padding:5px 6px; border:1px solid #e2e8f0; vertical-align:middle;">
+                                                    <input type="text" name="location[{{ $recIndex }}][record_owner_name]"
+                                                        class="form-control form-control-sm"
+                                                        value="{{ $savedLoc['owner_name'] ?? $savedLoc['record_owner_name'] ?? '' }}"
+                                                        placeholder="মালিকের নাম">
+                                                </td>
 
-                                        </tr>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -338,57 +408,62 @@
                                         class="fas fa-plus"></i> Add More</button>
                             </div>
                             <div class="cioas-panel-body" id="file_wrap">
-                            @foreach($documentRows as $doc)
+                                @foreach($documentRows as $doc)
+                                    <div class="party-item" data-file-item>
+                                        <div class="party-item-top">
+                                            <span class="party-item-title">Attachment</span>
+                                            <button type="button" class="btn btn-sm btn-outline-danger remove-existing-file"
+                                                data-path="{{ $doc['file_path'] }}">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                            <input type="hidden" name="existing_documents[]" value="{{ $doc['file_path'] }}">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="md-field">
+                                                    <label>ফাইলের নাম / প্রমাণকের নাম</label>
+                                                    <input type="text" class="form-control md-control"
+                                                        value="{{ $doc['document_name'] ?? 'Document' }}" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="md-field">
+                                                    <label>বর্তমান ফাইল</label>
+                                                    <div>
+                                                        <a href="{{ str_starts_with($doc['file_path'] ?? '', 'uploads/') ? asset($doc['file_path']) : asset('storage/' . ($doc['file_path'] ?? '')) }}" target="_blank"
+                                                            class="btn btn-sm btn-info text-white">
+                                                            <i class="fas fa-eye"></i> View File
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
                                 <div class="party-item" data-file-item>
                                     <div class="party-item-top">
-                                        <span class="party-item-title">Attachment</span>
-                                        <button type="button" class="btn btn-sm btn-outline-danger remove-existing-file" data-path="{{ $doc['file_path'] }}">
+                                        <span class="party-item-title">New Attachment</span>
+                                        <button type="button" class="btn btn-sm btn-outline-danger remove-file">
                                             <i class="fas fa-times"></i>
                                         </button>
-                                        <input type="hidden" name="existing_documents[]" value="{{ $doc['file_path'] }}">
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="md-field">
                                                 <label>ফাইলের নাম / প্রমাণকের নাম</label>
-                                                <input type="text" class="form-control md-control" value="{{ $doc['document_name'] ?? 'Document' }}" readonly>
+                                                <input type="text" name="attachments[0][name]"
+                                                    class="form-control md-control">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="md-field">
-                                                <label>বর্তমান ফাইল</label>
-                                                <div>
-                                                    <a href="{{ asset('storage/' . $doc['file_path']) }}" target="_blank" class="btn btn-sm btn-info text-white">
-                                                        <i class="fas fa-eye"></i> View File
-                                                    </a>
-                                                </div>
+                                                <label>ফাইল নির্বাচন করুন</label>
+                                                <input type="file" name="attachments[0][file]"
+                                                    class="form-control md-control">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
-                            <div class="party-item" data-file-item>
-                                <div class="party-item-top">
-                                    <span class="party-item-title">New Attachment</span>
-                                    <button type="button" class="btn btn-sm btn-outline-danger remove-file">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="md-field">
-                                            <label>ফাইলের নাম / প্রমাণকের নাম</label>
-                                            <input type="text" name="attachments[0][name]" class="form-control md-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="md-field">
-                                            <label>ফাইল নির্বাচন করুন</label>
-                                            <input type="file" name="attachments[0][file]" class="form-control md-control">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             </div>
                         </div>
 
@@ -397,11 +472,7 @@
                                 <i class="fas fa-arrow-left"></i> Cancel
                             </a>
                             <button type="submit" class="btn btn-material btn-material-primary" id="btnSave">
-                                <i class="fas fa-save"></i> সংরক্ষণ করুন
-                            </button>
-                            <button type="button" class="btn btn-material btn-info" id="btnApprove" style="color:white">
-                                <i class="fas fa-check-double"></i> অনুমোদন করুন
-                            </button>
+                                <i class="fas fa-save"></i> Update Form
                         </div>
                 </form>
             </div>
@@ -530,26 +601,26 @@
                 loadMainUpazilas();
             });
 
-            $('#record_type').on('change', function () {
-                loadMainUpazilas();
-                
-                // Hide the location row that matches the selected record_type
-                let selectedRecordId = $(this).val();
-                
+            function hideLocationRow(recordId) {
                 // First show all and enable inputs
                 $('.loc-row').show().find('input, select').prop('disabled', false);
-                
-                if (selectedRecordId) {
+
+                if (recordId) {
                     // Hide the selected row and disable its inputs so they aren't submitted
-                    $('.loc-row[data-record-id="' + selectedRecordId + '"]')
+                    $('.loc-row[data-record-id="' + recordId + '"]')
                         .hide()
                         .find('input, select').prop('disabled', true);
                 }
+            }
+
+            $('#record_type').on('change', function () {
+                loadMainUpazilas();
+                hideLocationRow($(this).val());
             });
 
             // Trigger on load
             if ($('#record_type').val()) {
-                $('#record_type').trigger('change');
+                hideLocationRow($('#record_type').val());
             }
 
             // Dynamic Mouza loading
@@ -593,28 +664,28 @@
 
             function fileTemplate(index) {
                 return `
-                                <div class="party-item" data-file-item>
-                                    <div class="party-item-top">
-                                        <span class="party-item-title">Attachment</span>
-                                        <button type="button" class="btn btn-sm btn-outline-danger remove-file">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="md-field">
-                                                <label>ফাইলের নাম / প্রমাণকের নাম</label>
-                                                <input type="text" name="attachments[${index}][name]" class="form-control md-control">
+                                        <div class="party-item" data-file-item>
+                                            <div class="party-item-top">
+                                                <span class="party-item-title">Attachment</span>
+                                                <button type="button" class="btn btn-sm btn-outline-danger remove-file">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="md-field">
-                                                <label>ফাইল নির্বাচন করুন</label>
-                                                <input type="file" name="attachments[${index}][file]" class="form-control md-control">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="md-field">
+                                                        <label>ফাইলের নাম / প্রমাণকের নাম</label>
+                                                        <input type="text" name="attachments[${index}][name]" class="form-control md-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="md-field">
+                                                        <label>ফাইল নির্বাচন করুন</label>
+                                                        <input type="file" name="attachments[${index}][file]" class="form-control md-control">
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>`;
+                                        </div>`;
             }
 
             $(document).on('click', '.add-file', function () {
@@ -634,12 +705,12 @@
 
 
 
-            
+
             $(document).on('click', '.remove-existing-file', function () {
                 let docPath = $(this).data('path');
                 // Append a hidden input to tell server to remove this doc
                 $('#FormSubmit').append('<input type="hidden" name="remove_documents[]" value="' + docPath + '">');
-                
+
                 let wrap = $(this).closest('.cioas-panel-body');
                 if (wrap.find('[data-file-item]').length > 1) {
                     $(this).closest('[data-file-item]').remove();
@@ -648,48 +719,6 @@
                 }
             });
 
-            let isSubmitting = false;
-            $('#FormSubmit').on('submit', function (e) {
-                e.preventDefault();
-
-                if (isSubmitting) return;
-                isSubmitting = true;
-
-                let form = $(this);
-                let formData = new FormData(this);
-                let url = form.data('url');
-
-                $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: formData,
-                    dataType: "json",
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    beforeSend: function () {
-                        $('#btnSave, #btnApprove').prop('disabled', true);
-                    },
-                    success: function (response) {
-                        toastr.success(response.message);
-                        setTimeout(function () {
-                            window.location.href = form.data('redirect-url');
-                        }, 1500);
-                    },
-                    error: function (xhr) {
-                        isSubmitting = false;
-                        $('#btnSave, #btnApprove').prop('disabled', false);
-                        let err = xhr.responseJSON;
-                        if (err && err.errors) {
-                            $.each(err.errors, function (key, value) {
-                                toastr.error(value[0]);
-                            });
-                        } else {
-                            toastr.error(err.message || 'ডাটা সংরক্ষণ করতে ব্যর্থ হয়েছে।');
-                        }
-                    }
-                });
-            });
 
             $('#btnApprove').on('click', function () {
                 $('#approve_input').val('1');

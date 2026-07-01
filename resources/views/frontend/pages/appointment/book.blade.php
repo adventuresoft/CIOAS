@@ -6,24 +6,6 @@
 <style>
     * { font-family: 'Inter', sans-serif; }
 
-    /* ── Hero ── */
-    .book-hero {
-        background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
-        padding: 44px 0 68px;
-        position: relative;
-        overflow: hidden;
-    }
-    .book-hero::before {
-        content: ''; position: absolute;
-        top:-60px; right:-60px;
-        width:280px; height:280px;
-        border-radius:50%; background:rgba(255,255,255,0.05);
-    }
-    .book-hero h1 { color:#fff; font-size:1.75rem; font-weight:700; margin-bottom:6px; }
-    .book-hero p  { color:rgba(255,255,255,0.72); font-size:14px; }
-    .book-hero .breadcrumb-item, .book-hero .breadcrumb-item a { color:rgba(255,255,255,0.6); font-size:12px; text-decoration:none; }
-    .book-hero .breadcrumb-item.active { color:#fff; }
-    .book-hero .breadcrumb-item + .breadcrumb-item::before { color:rgba(255,255,255,0.35); }
 
     /* ── Layout ── */
     .book-section {
@@ -183,24 +165,9 @@
 @section('content')
 <div class="content-wrapper" style="background:#f5f6fa; min-height:100vh;">
 
-    {{-- Hero --}}
-    <div class="book-hero">
-        <div class="container">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-3">
-                    <li class="breadcrumb-item"><a href="{{ url('/') }}"><i class="fas fa-home"></i> Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('appointment.officers') }}">Officers</a></li>
-                    <li class="breadcrumb-item active">Book</li>
-                </ol>
-            </nav>
-            <h1><i class="fas fa-file-signature me-2"></i> Complete Your Booking</h1>
-            <p>Fill in your information below to confirm the appointment.</p>
-        </div>
-    </div>
-
     {{-- Content --}}
-    <div class="book-section">
-        <div class="container" style="margin-top:-16px;">
+    <div class="book-section" style="margin-top: 32px;">
+        <div class="container">
             <div class="row g-4">
 
                 {{-- Sidebar: Summary --}}
