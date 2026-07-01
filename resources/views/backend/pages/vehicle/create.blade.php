@@ -306,7 +306,7 @@
                             <div class="cioas-panel-body">
                                 <div class="form-group">
                                     <label for="driver_registration_no">Registration Number (Driver ID/Staff ID/System ID)</label>
-                                    <input type="text" name="driver_registration_no" value="{{ $vehicle->driver_registration_no ?? '' }}" class="form-control" id="driver_registration_no" placeholder="Enter Registration Number">
+                                    <input type="text" name="driver_registration_no" value="{{ old('driver_registration_no') }}" class="form-control" id="driver_registration_no" placeholder="Enter Registration Number">
                                     <div id="driver_info_display" class="mt-2 text-primary" style="display: none; font-weight: 500;">
                                         <i class="fas fa-user-check"></i> Driver Found: <span id="driver_name_display"></span> (<span id="driver_phone_display"></span>)
                                     </div>
@@ -336,9 +336,9 @@
                                         </thead>
                                         <tbody id="routeBody">
                                             <tr>
-                                                <td><input type="text" name="routes[0][from_point]" class="form-control" placeholder="From Point" required></td>
+                                                <td><input type="text" name="routes[0][from_point]" class="form-control" placeholder="From Point"></td>
                                                 <td><input type="text" name="routes[0][middle_point]" class="form-control" placeholder="Middle Point"></td>
-                                                <td><input type="text" name="routes[0][end_point]" class="form-control" placeholder="End Point" required></td>
+                                                <td><input type="text" name="routes[0][end_point]" class="form-control" placeholder="End Point"></td>
                                                 <td><button type="button" class="btn btn-danger btn-sm remove-route"><i class="fas fa-trash"></i></button></td>
                                             </tr>
                                         </tbody>
@@ -421,13 +421,22 @@ $(document).ready(function () {
     });
 
     // Toggle Route Allocation Section based on vehicle type
-    $type.on("change", function () {
-        if ($(this).val() === "Heavy Passenger Vehicle") {
+    function toggleRouteSection(selectedType) {
+        if (selectedType === "Heavy Passenger Vehicle") {
             $("#routeAllocationSection").slideDown();
+            $("#routeAllocationSection :input").prop("disabled", false);
         } else {
             $("#routeAllocationSection").slideUp();
+            $("#routeAllocationSection :input").prop("disabled", true);
         }
+    }
+
+    $type.on("change", function () {
+        toggleRouteSection($(this).val());
     });
+
+    // Initialize state on page load
+    toggleRouteSection($type.val());
 
 
 
@@ -478,9 +487,9 @@ $(document).ready(function () {
     $('#addRouteBtn').click(function() {
         let html = `
             <tr>
-                <td><input type="text" name="routes[${routeIndex}][from_point]" class="form-control" placeholder="From Point" required></td>
+                <td><input type="text" name="routes[${routeIndex}][from_point]" class="form-control" placeholder="From Point"></td>
                 <td><input type="text" name="routes[${routeIndex}][middle_point]" class="form-control" placeholder="Middle Point"></td>
-                <td><input type="text" name="routes[${routeIndex}][end_point]" class="form-control" placeholder="End Point" required></td>
+                <td><input type="text" name="routes[${routeIndex}][end_point]" class="form-control" placeholder="End Point"></td>
                 <td><button type="button" class="btn btn-danger btn-sm remove-route"><i class="fas fa-trash"></i></button></td>
             </tr>
         `;

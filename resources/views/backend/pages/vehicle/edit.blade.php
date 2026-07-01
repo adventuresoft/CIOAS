@@ -351,17 +351,17 @@
                                             @if($vehicle->routes->count() > 0)
                                                 @foreach($vehicle->routes as $index => $route)
                                                 <tr>
-                                                    <td><input type="text" name="routes[{{ $index }}][from_point]" value="{{ $route->from_point }}" class="form-control" placeholder="From Point" required></td>
+                                                    <td><input type="text" name="routes[{{ $index }}][from_point]" value="{{ $route->from_point }}" class="form-control" placeholder="From Point"></td>
                                                     <td><input type="text" name="routes[{{ $index }}][middle_point]" value="{{ $route->middle_point }}" class="form-control" placeholder="Middle Point"></td>
-                                                    <td><input type="text" name="routes[{{ $index }}][end_point]" value="{{ $route->end_point }}" class="form-control" placeholder="End Point" required></td>
+                                                    <td><input type="text" name="routes[{{ $index }}][end_point]" value="{{ $route->end_point }}" class="form-control" placeholder="End Point"></td>
                                                     <td><button type="button" class="btn btn-danger btn-sm remove-route"><i class="fas fa-trash"></i></button></td>
                                                 </tr>
                                                 @endforeach
                                             @else
                                                 <tr>
-                                                    <td><input type="text" name="routes[0][from_point]" value="" class="form-control" placeholder="From Point" required></td>
+                                                    <td><input type="text" name="routes[0][from_point]" value="" class="form-control" placeholder="From Point"></td>
                                                     <td><input type="text" name="routes[0][middle_point]" value="" class="form-control" placeholder="Middle Point"></td>
-                                                    <td><input type="text" name="routes[0][end_point]" value="" class="form-control" placeholder="End Point" required></td>
+                                                    <td><input type="text" name="routes[0][end_point]" value="" class="form-control" placeholder="End Point"></td>
                                                     <td><button type="button" class="btn btn-danger btn-sm remove-route"><i class="fas fa-trash"></i></button></td>
                                                 </tr>
                                             @endif
@@ -443,13 +443,22 @@ $(document).ready(function () {
     $category.val('{{ $vehicle->vehicle_category }}').trigger('change');
 
     // Toggle Route Allocation Section based on vehicle type
-    $type.on("change", function () {
-        if ($(this).val() === "Heavy Passenger Vehicle") {
+    function toggleRouteSection(selectedType) {
+        if (selectedType === "Heavy Passenger Vehicle") {
             $("#routeAllocationSection").slideDown();
+            $("#routeAllocationSection :input").prop("disabled", false);
         } else {
             $("#routeAllocationSection").slideUp();
+            $("#routeAllocationSection :input").prop("disabled", true);
         }
+    }
+
+    $type.on("change", function () {
+        toggleRouteSection($(this).val());
     });
+
+    // Initialize state on page load
+    toggleRouteSection($type.val());
 
 
     $type.on("change", function () {
@@ -507,9 +516,9 @@ $(document).ready(function () {
     $('#addRouteBtn').click(function() {
         let html = `
             <tr>
-                <td><input type="text" name="routes[${routeIndex}][from_point]" value="" class="form-control" placeholder="From Point" required></td>
+                <td><input type="text" name="routes[${routeIndex}][from_point]" value="" class="form-control" placeholder="From Point"></td>
                 <td><input type="text" name="routes[${routeIndex}][middle_point]" value="" class="form-control" placeholder="Middle Point"></td>
-                <td><input type="text" name="routes[${routeIndex}][end_point]" value="" class="form-control" placeholder="End Point" required></td>
+                <td><input type="text" name="routes[${routeIndex}][end_point]" value="" class="form-control" placeholder="End Point"></td>
                 <td><button type="button" class="btn btn-danger btn-sm remove-route"><i class="fas fa-trash"></i></button></td>
             </tr>
         `;

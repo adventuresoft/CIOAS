@@ -8,6 +8,7 @@ use App\Models\VehicleFee;
 use App\Models\Organization\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Validator;
 use App\DataTables\VehicleDataTable;
 
 class VehicleController extends Controller
@@ -72,9 +73,9 @@ class VehicleController extends Controller
             'in_issue_date' => 'nullable|date',
             'in_validity_date' => 'nullable|date',
             'routes' => 'nullable|array',
-            'routes.*.from_point' => 'required_with:routes|string',
+            'routes.*.from_point' => 'nullable|string',
             'routes.*.middle_point' => 'nullable|string',
-            'routes.*.end_point' => 'required_with:routes|string',
+            'routes.*.end_point' => 'nullable|string',
         ]);
 
         if ($validate->fails()) {
@@ -234,9 +235,9 @@ class VehicleController extends Controller
             'in_issue_date' => 'nullable|date',
             'in_validity_date' => 'nullable|date',
             'routes' => 'nullable|array',
-            'routes.*.from_point' => 'required_with:routes|string',
+            'routes.*.from_point' => 'nullable|string',
             'routes.*.middle_point' => 'nullable|string',
-            'routes.*.end_point' => 'required_with:routes|string',
+            'routes.*.end_point' => 'nullable|string',
         ]);
 
         if ($validate->fails()) {

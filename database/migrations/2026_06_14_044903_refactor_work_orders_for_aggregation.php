@@ -11,19 +11,29 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('inventory_work_orders', function (Blueprint $table) {
-            $table->dropColumn(['vendor_id', 'vendor_name', 'inventory_requisition_id']);
-        });
+        $columnsToDrop = [];
+        foreach (['vendor_id', 'vendor_name', 'inventory_requisition_id'] as $col) {
+            if (Schema::hasColumn('inventory_work_orders', $col)) {
+                $columnsToDrop[] = $col;
+            }
+        }
+        if (!empty($columnsToDrop)) {
+            Schema::table('inventory_work_orders', function (Blueprint $table) use ($columnsToDrop) {
+                $table->dropColumn($columnsToDrop);
+            });
+        }
 
-        Schema::create('inventory_requisition_work_order', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('inventory_requisition_id');
-            $table->unsignedBigInteger('inventory_work_order_id');
-            $table->timestamps();
+        if (!Schema::hasTable('inventory_requisition_work_order')) {
+            Schema::create('inventory_requisition_work_order', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('inventory_requisition_id');
+                $table->unsignedBigInteger('inventory_work_order_id');
+                $table->timestamps();
 
-            $table->foreign('inventory_requisition_id', 'irwo_req_id_foreign')->references('id')->on('inventory_requisitions')->onDelete('cascade');
-            $table->foreign('inventory_work_order_id', 'irwo_wo_id_foreign')->references('id')->on('inventory_work_orders')->onDelete('cascade');
-        });
+                $table->foreign('inventory_requisition_id', 'irwo_req_id_foreign')->references('id')->on('inventory_requisitions')->onDelete('cascade');
+                $table->foreign('inventory_work_order_id', 'irwo_wo_id_foreign')->references('id')->on('inventory_work_orders')->onDelete('cascade');
+            });
+        }
     }
 
     /**
