@@ -1,108 +1,126 @@
 @extends('frontend.master')
 
+@push('style')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <style>
+        /* Custom spacing for Datatables */
+        div.dataTables_wrapper div.dataTables_filter {
+            margin-bottom: 1rem;
+        }
+    </style>
+@endpush
+
 @section('content')
-<main>
-    <section class="bg-[#f0f4f8] pt-10 pb-16 md:pt-16">
-        <div class="container mx-auto max-w-screen-xl px-4">
-            <div class="mx-auto max-w-5xl text-center mb-10">
-                <h2 class="text-2xl fw-bold tracking-tight text-gov-green md:text-3xl border-b-4 border-[#f42a41] inline-d-d-block pb-2">
-                    মিসকেস তালিকা
-                </h2>
-                <p class="mt-3 fs-content text-dark md:fs-card-title">
-                    আপনার মিসকেস সম্পর্কিত তথ্য ও মামলার অবস্থা জানতে অনুসন্ধান করুন।
-                </p>
-            </div>
+    <main>
+        <section class="bg-[#f0f4f8] pt-10 pb-16 md:pt-16">
+            <div class="container mx-auto max-w-screen-xl px-4">
+                <div class="mx-auto max-w-5xl text-center mb-4">
+                    <h2 class="section-title text-success fs-3">
+                        মিসকেস তালিকা
+                    </h2>
+                    <p class="mt-2 fs-content text-dark">
+                        আপনার মিসকেস সম্পর্কিত তথ্য ও মামলার অবস্থা জানতে অনুসন্ধান করুন।
+                    </p>
+                </div>
 
-            <!-- Filter Section -->
-            <div class="mb-8 bg-white p-3 rounded-3 shadow-md border-t-4 border-[#006a4e]">
-                <form action="{{ route('frontend.miscase.index') }}" method="GET" class="d-d-flex flex-columnumn md:flex-row align-align-items-center gap-3 justify-content-center">
-                    <div class="w-100 md:w-1/3">
-                        <label for="date" class="d-d-block fs-content fw-bold text-dark mb-1">রুজুর তারিখ</label>
-                        <input type="date" id="date" name="date" value="{{ request('date') }}" class="w-100 rounded-2 border border-gray-300 px-4 py-2 text-gray-900 focus:border-[#006a4e] focus:ring-[#006a4e]">
-                    </div>
-                    <div class="w-100 md:w-auto mt-auto">
-                        <button type="submit" class="w-100 md:w-auto rounded-2 bg-gov-green px-6 py-2.5 fs-content fw-bold text-white shadow-sm hover:bg-[#00523b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006a4e] d-d-flex align-align-items-center justify-content-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                            অনুসন্ধান
-                        </button>
-                    </div>
-                    @if(request('date'))
-                    <div class="w-100 md:w-auto mt-auto">
-                        <a href="{{ route('frontend.miscase.index') }}" class="w-100 md:w-auto rounded-2 bg-light0 px-6 py-2.5 fs-content fw-bold text-white shadow-sm hover:bg-gray-600 d-d-flex align-align-items-center justify-content-center gap-2">
-                            রিসেট
-                        </a>
-                    </div>
-                    @endif
-                </form>
-            </div>
+                <!-- Filter Section -->
+                <div class="mb-4 bg-white p-4 rounded shadow-sm" style="border-top: 4px solid #10b981;">
+                    <form id="filterForm"
+                        class="d-flex flex-column flex-md-row align-items-end justify-content-center gap-3">
+                        <div class="form-group mb-0" style="min-width: 250px;">
+                            <label for="date" class="form-label fw-bold text-dark mb-2">রুজুর তারিখ</label>
+                            <input type="date" id="date" name="date" class="form-control">
+                        </div>
+                        <div class="form-group mb-0">
+                            <button type="submit" class="btn btn-success px-4 d-flex align-items-center gap-2">
+                                <i class="fas fa-search"></i>
+                                অনুসন্ধান
+                            </button>
+                        </div>
+                        <div class="form-group mb-0">
+                            <button type="button" id="resetBtn"
+                                class="btn btn-secondary px-4 d-flex align-items-center gap-2">
+                                <i class="fas fa-sync-alt"></i>
+                                রিসেট
+                            </button>
+                        </div>
+                    </form>
+                </div>
 
-            <!-- Table Section -->
-            <div class="overflow-x-auto bg-white rounded-3 shadow-md border border-gray-200">
-                <table class="min-w-100 divide-y divide-gray-200 fs-content">
-                    <thead class="bg-gov-green">
-                        <tr>
-                            <th scope="col" class="px-4 py-3.5 text-left fs-content fw-bold text-white">ক্রমিক নং</th>
-                            <th scope="col" class="px-4 py-3.5 text-left fs-content fw-bold text-white">কেস নং</th>
-                            <th scope="col" class="px-4 py-3.5 text-left fs-content fw-bold text-white">রুজুর তারিখ</th>
-                            <th scope="col" class="px-4 py-3.5 text-left fs-content fw-bold text-white">বাদী</th>
-                            <th scope="col" class="px-4 py-3.5 text-left fs-content fw-bold text-white">বিবাদী</th>
-                            <th scope="col" class="px-4 py-3.5 text-left fs-content fw-bold text-white">শুনানীর তারিখ</th>
-                            <th scope="col" class="px-4 py-3.5 text-left fs-content fw-bold text-white">মামলার অবস্থা</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
-                        @forelse($miscases as $key => $miscase)
-                        <tr class="hover:bg-light">
-                            <td class="whitespace-nowrap px-4 py-4 text-gray-900">{{ $miscases->firstItem() + $key }}</td>
-                            <td class="whitespace-nowrap px-4 py-4 text-gov-green fw-bold">{{ $miscase->case_no }}</td>
-                            <td class="whitespace-nowrap px-4 py-4 text-dark">
-                                {{ $miscase->case_date ? \Carbon\Carbon::parse($miscase->case_date)->format('d/m/Y') : '-' }}
-                            </td>
-                            <td class="px-4 py-4 text-dark">
-                                @if(is_array($miscase->plaintiffs))
-                                    @foreach($miscase->plaintiffs as $plaintiff)
-                                        <div class="mb-1">{{ $plaintiff['name'] ?? '' }}</div>
-                                    @endforeach
-                                @endif
-                            </td>
-                            <td class="px-4 py-4 text-dark">
-                                @if(is_array($miscase->defendants))
-                                    @foreach($miscase->defendants as $defendant)
-                                        <div class="mb-1">{{ $defendant['name'] ?? '' }}</div>
-                                    @endforeach
-                                @endif
-                            </td>
-                            <td class="whitespace-nowrap px-4 py-4 text-dark">
-                                {{ $miscase->next_hearing_date ? \Carbon\Carbon::parse($miscase->next_hearing_date)->format('d/m/Y') : '-' }}
-                            </td>
-                            <td class="whitespace-nowrap px-4 py-4">
-                                @if($miscase->status == 'running')
-                                    <span class="inline-d-d-flex rounded-full bg-blue-100 px-2 fs-content fw-bold leading-5 text-blue-800">চলমান</span>
-                                @elseif($miscase->status == 'resolved')
-                                    <span class="inline-d-d-flex rounded-full bg-green-100 px-2 fs-content fw-bold leading-5 text-green-800">নিষ্পন্ন</span>
-                                @else
-                                    <span class="inline-d-d-flex rounded-full bg-gray-100 px-2 fs-content fw-bold leading-5 text-gray-800">{{ ucfirst($miscase->status) }}</span>
-                                @endif
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="7" class="px-4 py-8 text-center text-muted">
-                                কোন মিসকেস তথ্য পাওয়া যায়নি।
-                            </td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                <!-- Table Section -->
+                <div class="table-responsive p-4">
+                    <table id="dataTable" class="table table-hover mb-0 w-100">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-center">ক্রমিক নং</th>
+                                <th scope="col">কেস নং</th>
+                                <th scope="col">রুজুর তারিখ</th>
+                                <th scope="col">বাদী</th>
+                                <th scope="col">বিবাদী</th>
+                                <th scope="col">শুনানীর তারিখ</th>
+                                <th scope="col" class="text-center">মামলার অবস্থা</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
-            
-            <div class="mt-6">
-                {{ $miscases->links() }}
-            </div>
-            
-        </div>
-    </section>
-</main>
+        </section>
+    </main>
 @endsection
+
+@push('script')
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var table = $('#dataTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('frontend.miscase.index') }}",
+                    data: function (d) {
+                        d.date = $('#date').val();
+                    }
+                },
+                columns: [
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, className: 'text-center align-middle' },
+                    { data: 'case_no', name: 'case_no', className: 'align-middle fw-bold text-success' },
+                    { data: 'case_date', name: 'case_date', className: 'align-middle' },
+                    { data: 'plaintiffs', name: 'plaintiffs', className: 'align-middle' },
+                    { data: 'defendants', name: 'defendants', className: 'align-middle' },
+                    { data: 'next_hearing_date', name: 'next_hearing_date', className: 'align-middle' },
+                    { data: 'status', name: 'status', className: 'text-center align-middle' }
+                ],
+                language: {
+                    "search": "খুঁজুন:",
+                    "lengthMenu": "প্রতি পৃষ্ঠায় _MENU_ টি রেকর্ড দেখান",
+                    "zeroRecords": "কোনো তথ্য পাওয়া যায়নি",
+                    "info": "মোট _PAGES_ পৃষ্ঠার মধ্যে _PAGE_ নম্বর পৃষ্ঠা দেখাচ্ছে",
+                    "infoEmpty": "কোনো রেকর্ড উপলব্ধ নেই",
+                    "infoFiltered": "(মোট _MAX_ টি রেকর্ড থেকে ফিল্টার করা হয়েছে)",
+                    "paginate": {
+                        "first": "প্রথম",
+                        "last": "শেষ",
+                        "next": "পরবর্তী",
+                        "previous": "পূর্ববর্তী"
+                    },
+                    "processing": "লোড হচ্ছে..."
+                }
+            });
+
+            $('#filterForm').on('submit', function (e) {
+                e.preventDefault();
+                table.draw();
+            });
+
+            $('#resetBtn').on('click', function (e) {
+                e.preventDefault();
+                $('#date').val('');
+                table.draw();
+            });
+        });
+    </script>
+@endpush

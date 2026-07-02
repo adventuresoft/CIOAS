@@ -1,4 +1,4 @@
-@extends('backend.master')
+@extends('backend.master', ['mainMenu' => 'Vehicle', 'subMenu' => 'VehicleRepairingCreate'])
 @section('title', 'Add Vehicle Repairing')
 @push('style')
     <!-- Select2 -->

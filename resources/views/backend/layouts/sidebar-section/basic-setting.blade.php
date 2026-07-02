@@ -1,4 +1,8 @@
-{{-- Basic Settings --}}
+{{-- Basic Settings
+     basic_setting.read  → সব sub-items দেখতে পারবে
+     basic_setting.create / update / delete → respective access
+     Superadmin / Developer → সব কিছু
+--}}
 <li class="nav-item
         @if (
             $subMenu == 'Pourashava' ||
@@ -28,7 +32,8 @@
     </a>
     <ul class="nav nav-treeview">
 
-        @if (has_module_access('pourashava'))
+        {{-- Pourashava --}}
+        @if (has_basic_setting_access('read'))
             <li class="nav-item">
                 <a href="{{ route('basic-settings.pourashava.index') }}"
                     class="nav-link {{ $subMenu == 'Pourashava' ? 'active' : '' }}">
@@ -38,7 +43,8 @@
             </li>
         @endif
 
-        @if (has_module_access('department'))
+        {{-- Departments --}}
+        @if (has_basic_setting_access('read'))
             <li class="nav-item">
                 <a href="{{ route('basic-settings.department.index') }}"
                     class="nav-link {{ $subMenu == 'Department' ? 'active' : '' }}">
@@ -48,7 +54,8 @@
             </li>
         @endif
 
-        @if (has_module_access('hotel-category'))
+        {{-- Hotel Category --}}
+        @if (has_basic_setting_access('read'))
             <li class="nav-item">
                 <a href="{{ route('basic-settings.hotel-category.index') }}"
                     class="nav-link {{ $subMenu == 'HotelCategory' ? 'active' : '' }}">
@@ -58,7 +65,8 @@
             </li>
         @endif
 
-        @if (has_module_access('license-category') || has_module_access('license_category') || has_module_access('basic-settings') || has_module_access('basic_settings'))
+        {{-- License Category --}}
+        @if (has_basic_setting_access('read'))
             <li class="nav-item">
                 <a href="{{ route('basic-settings.license-category.index') }}"
                     class="nav-link {{ $subMenu == 'LicenseCategory' ? 'active' : '' }}">
@@ -68,7 +76,8 @@
             </li>
         @endif
 
-        @if (has_module_access('village') || has_module_access('villages'))
+        {{-- Village --}}
+        @if (has_basic_setting_access('read'))
             <li class="nav-item">
                 <a href="{{ route('basic-settings.village.index') }}"
                     class="nav-link {{ $subMenu == 'Village' ? 'active' : '' }}">
@@ -78,7 +87,8 @@
             </li>
         @endif
 
-        @if (has_module_access('union') || has_module_access('unions'))
+        {{-- Union --}}
+        @if (has_basic_setting_access('read'))
             <li class="nav-item">
                 <a href="{{ route('basic-settings.union.index') }}"
                     class="nav-link {{ $subMenu == 'Union' ? 'active' : '' }} ">
@@ -88,7 +98,8 @@
             </li>
         @endif
 
-        @if (has_module_access('district'))
+        {{-- District --}}
+        @if (has_basic_setting_access('read'))
             <li class="nav-item">
                 <a href="{{ route('basic-settings.district.index') }}"
                     class="nav-link {{ $subMenu == 'District' ? 'active' : '' }}">
@@ -98,7 +109,8 @@
             </li>
         @endif
 
-        @if (has_module_access('thana'))
+        {{-- Thana --}}
+        @if (has_basic_setting_access('read'))
             <li class="nav-item">
                 <a href="{{ route('basic-settings.thana.index') }}"
                     class="nav-link {{ $subMenu == 'Thana' ? 'active' : '' }}">
@@ -108,7 +120,8 @@
             </li>
         @endif
 
-        @if (has_module_access('mouza'))
+        {{-- Mouza --}}
+        @if (has_basic_setting_access('read'))
             <li class="nav-item">
                 <a href="{{ route('basic-settings.mouza.index') }}"
                     class="nav-link {{ $subMenu == 'Mouza' ? 'active' : '' }}">
@@ -118,7 +131,8 @@
             </li>
         @endif
 
-        @if (has_module_access('upazila'))
+        {{-- Upazila --}}
+        @if (has_basic_setting_access('read'))
             <li class="nav-item">
                 <a href="{{ route('basic-settings.upazila.index') }}"
                     class="nav-link {{ $subMenu == 'Upazila' ? 'active' : '' }}">

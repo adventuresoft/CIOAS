@@ -1,4 +1,4 @@
-@extends('backend.master')
+@extends('backend.master', ['mainMenu' => 'Vehicle', 'subMenu' => 'VehicleFuelList'])
 @section('title', 'Vehicle Fuel Log')
 @push('css')
     <!-- DataTables -->

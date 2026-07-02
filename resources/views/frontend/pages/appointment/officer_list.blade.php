@@ -10,7 +10,7 @@
 
         /* ── Hero Banner ── */
         .appt-hero {
-            background: linear-gradient(135deg, #1a237e 0%, #283593 40%, #3949ab 100%);
+            background: linear-gradient(135deg, #064e3b 0%, #047857 40%, #10b981 100%);
             padding: 56px 0 72px;
             position: relative;
             overflow: hidden;
@@ -77,7 +77,7 @@
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: #3949ab;
+            color: #10b981;
             margin-bottom: 6px;
         }
 
@@ -88,8 +88,8 @@
         }
 
         .officer-count {
-            background: #e8eaf6;
-            color: #3949ab;
+            background: #ecfdf5;
+            color: #10b981;
             font-size: 12px;
             font-weight: 600;
             padding: 4px 12px;
@@ -114,7 +114,7 @@
 
         .officer-card-accent {
             height: 6px;
-            background: linear-gradient(90deg, #3949ab, #7986cb);
+            background: linear-gradient(90deg, #10b981, #3b82f6);
         }
 
         .officer-card-body {
@@ -133,7 +133,7 @@
             height: 120px;
             border-radius: 10px;
             object-fit: cover;
-            border: 3px solid #e8eaf6;
+            border: 3px solid #ecfdf5;
             box-shadow: 0 4px 12px rgba(57, 73, 171, 0.15);
         }
 
@@ -157,7 +157,7 @@
 
         .officer-designation {
             font-size: 12.5px;
-            color: #7986cb;
+            color: #34d399;
             font-weight: 500;
             margin-bottom: 6px;
         }
@@ -178,7 +178,7 @@
             display: block;
             width: 100%;
             padding: 10px 0;
-            background: linear-gradient(135deg, #3949ab, #5c6bc0);
+            background: linear-gradient(135deg, #10b981, #059669);
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -193,8 +193,8 @@
         }
 
         .btn-book:hover {
-            background: linear-gradient(135deg, #283593, #3949ab);
-            box-shadow: 0 6px 20px rgba(57, 73, 171, 0.35);
+            background: linear-gradient(135deg, #047857, #10b981);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
             color: #fff;
         }
 

@@ -76,8 +76,8 @@
         }
 
         .icon-blue {
-            background: #e8eaf6;
-            color: #3949ab;
+            background: #ecfdf5;
+            color: #10b981;
         }
 
         .icon-red {
@@ -99,7 +99,7 @@
 
         /* ── Date banner ── */
         .date-banner {
-            background: linear-gradient(135deg, #3949ab, #5c6bc0);
+            background: linear-gradient(135deg, #10b981, #059669);
             color: #fff;
             padding: 14px 24px;
             font-size: 15px;
@@ -151,7 +151,7 @@
             border-radius: 8px;
             border: 1.5px solid #c5cae9;
             background: #fff;
-            color: #3949ab;
+            color: #10b981;
             font-size: 13px;
             font-weight: 500;
             text-decoration: none;
@@ -164,7 +164,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, #3949ab, #5c6bc0);
+            background: linear-gradient(135deg, #10b981, #059669);
             opacity: 0;
             transition: opacity 0.22s;
         }
@@ -175,7 +175,7 @@
         }
 
         .time-chip:hover {
-            border-color: #3949ab;
+            border-color: #10b981;
             color: #fff;
             box-shadow: 0 4px 14px rgba(57, 73, 171, 0.3);
             transform: translateY(-1px);
@@ -261,7 +261,7 @@
         }
 
         .ui-widget-header {
-            background: #3949ab !important;
+            background: #10b981 !important;
             border: none !important;
             color: #fff !important;
             font-weight: 600 !important;
@@ -290,7 +290,7 @@
         .ui-state-hover,
         .ui-widget-content .ui-state-hover {
             background: #2980b9 !important;
-            color: #3949ab !important;
+            color: #10b981 !important;
             border-radius: 50% !important;
             cursor: pointer;
             border: 0px;
@@ -298,21 +298,21 @@
 
         .ui-state-highlight,
         .ui-widget-content .ui-state-highlight {
-            background: #3949ab !important;
+            background: #10b981 !important;
             color: #fff !important;
             border-radius: 50% !important;
         }
 
         .ui-state-active,
         .ui-widget-content .ui-state-active {
-            background: #283593 !important;
+            background: #047857 !important;
             color: #fff !important;
             border-radius: 50% !important;
             font-weight: 700 !important;
         }
 
         .ui-datepicker th {
-            color: #3949ab !important;
+            color: #10b981 !important;
             font-weight: 600 !important;
             font-size: 11px !important;
             text-transform: uppercase !important;
@@ -346,13 +346,13 @@
 
         /* ── Hint card ── */
         .hint-card {
-            background: #e8eaf6;
-            border-left: 3px solid #3949ab;
+            background: #ecfdf5;
+            border-left: 3px solid #10b981;
             border-radius: 8px;
             padding: 12px 16px;
             margin-top: 16px;
             font-size: 12.5px;
-            color: #3949ab;
+            color: #10b981;
         }
 
         .hint-card i {

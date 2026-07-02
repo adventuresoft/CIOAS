@@ -22,7 +22,7 @@
         overflow: hidden;
     }
     .book-panel-header {
-        background: linear-gradient(135deg, #3949ab, #5c6bc0);
+        background: linear-gradient(135deg, #10b981, #059669);
         padding: 20px 24px;
     }
     .book-panel-header h5 { color:#fff; font-size:15px; font-weight:700; margin:0; }
@@ -105,9 +105,9 @@
         outline: none;
     }
     .mat-input:focus {
-        border-color: #3949ab;
+        border-color: #10b981;
         background: #fff;
-        box-shadow: 0 0 0 3px rgba(57,73,171,0.1);
+        box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
     }
     .mat-input::placeholder { color: #bdbdbd; }
 
@@ -119,7 +119,7 @@
         gap: 10px;
         width: 100%;
         padding: 14px;
-        background: linear-gradient(135deg, #3949ab, #5c6bc0);
+        background: linear-gradient(135deg, #10b981, #059669);
         color: #fff;
         border: none;
         border-radius: 12px;
@@ -132,8 +132,8 @@
         overflow: hidden;
     }
     .btn-submit:hover {
-        background: linear-gradient(135deg, #283593, #3949ab);
-        box-shadow: 0 8px 24px rgba(57,73,171,0.35);
+        background: linear-gradient(135deg, #047857, #10b981);
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
         transform: translateY(-1px);
     }
     .btn-submit:disabled {
@@ -205,7 +205,7 @@
                     </div>
 
                     {{-- Help note --}}
-                    <div style="background:#e8eaf6; border-left:3px solid #3949ab; border-radius:8px; padding:14px 16px; font-size:12.5px; color:#3949ab; line-height:1.6;">
+                    <div style="background:#ecfdf5; border-left:3px solid #10b981; border-radius:8px; padding:14px 16px; font-size:12.5px; color:#10b981; line-height:1.6;">
                         <strong><i class="fas fa-info-circle me-1"></i> Important</strong><br>
                         Please bring a valid ID (NID/Birth Certificate) when visiting. Arrive 10 minutes before your scheduled time.
                     </div>
@@ -216,7 +216,7 @@
                 <div class="col-md-8 anim anim-d2">
                     <div class="form-panel">
                         <div class="form-panel-header">
-                            <h5><i class="fas fa-id-card me-2 text-primary"></i> Your Information</h5>
+                            <h5><i class="fas fa-id-card me-2" style="color: #10b981;"></i> Your Information</h5>
                             <p>All fields marked with <span style="color:#e53935;">*</span> are required.</p>
                         </div>
                         <div class="form-panel-body">
@@ -347,7 +347,7 @@
 
     // Focus effect for inputs
     document.querySelectorAll('.mat-input').forEach(el => {
-        el.addEventListener('focus', () => el.style.borderColor = '#3949ab');
+        el.addEventListener('focus', () => el.style.borderColor = '#10b981');
         el.addEventListener('blur', () => {
             if (!el.value) el.style.borderColor = '#e0e0e0';
         });

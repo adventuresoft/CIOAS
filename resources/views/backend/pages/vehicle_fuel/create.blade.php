@@ -1,4 +1,4 @@
-@extends('backend.master')
+@extends('backend.master', ['mainMenu' => 'Vehicle', 'subMenu' => 'VehicleFuelCreate'])
 @section('title', 'Add Vehicle Fuel')
 @push('style')
     <!-- Select2 -->

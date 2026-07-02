@@ -67,7 +67,9 @@
         </div>
     </div>
 
-    {{-- ══ MAIN HEADER — Emblem + Title ══ --}}
+    {{-- ══ STICKY WRAPPER ══ --}}
+    <div id="stickyHeaderContainer" class="w-100 z-3 bg-white">
+        {{-- ══ MAIN HEADER — Emblem + Title ══ --}}
     <div class="bg-white border-bottom border-3 border-gov-green py-3 position-relative">
         <div class="container fs-header">
             <div class="d-flex align-items-center justify-content-between">
@@ -277,27 +279,28 @@
             </div>
         </div>
     </div>
+    </div>{{-- #stickyHeaderContainer --}}
 
 </div>{{-- .site-header --}}
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const navbar = document.querySelector('.gov-navbar');
+        const stickyContainer = document.getElementById('stickyHeaderContainer');
         // calculate offset once the images load to be accurate
-        let stickyPos = navbar.offsetTop;
+        let stickyPos = stickyContainer.offsetTop;
 
         window.addEventListener('resize', () => {
-            if (!navbar.classList.contains('sticky-navbar')) {
-                stickyPos = navbar.offsetTop;
+            if (!stickyContainer.classList.contains('sticky-navbar')) {
+                stickyPos = stickyContainer.offsetTop;
             }
         });
 
         window.addEventListener('scroll', function () {
             if (window.scrollY >= stickyPos) {
-                navbar.classList.add("sticky-navbar");
-                document.body.style.paddingTop = navbar.offsetHeight + 'px'; // prevent layout jump
+                stickyContainer.classList.add("sticky-navbar");
+                document.body.style.paddingTop = stickyContainer.offsetHeight + 'px'; // prevent layout jump
             } else {
-                navbar.classList.remove("sticky-navbar");
+                stickyContainer.classList.remove("sticky-navbar");
                 document.body.style.paddingTop = '0';
             }
         });

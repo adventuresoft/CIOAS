@@ -49,13 +49,53 @@ class HomeController extends Controller
 
     public function miscaseList(Request $request)
     {
-        $query = MisCase::query();
+        if ($request->ajax()) {
+            $query = MisCase::query()->orderBy('created_at', 'desc');
 
-        if ($request->filled('date')) {
-            $query->whereDate('case_date', $request->date);
+            if ($request->filled('date')) {
+                $query->whereDate('case_date', $request->date);
+            }
+
+            return \Yajra\DataTables\Facades\DataTables::of($query)
+                ->addIndexColumn()
+                ->editColumn('case_date', function ($row) {
+                    return $row->case_date ? \Carbon\Carbon::parse($row->case_date)->format('d/m/Y') : '-';
+                })
+                ->addColumn('plaintiffs', function ($row) {
+                    $html = '';
+                    if (is_array($row->plaintiffs)) {
+                        foreach ($row->plaintiffs as $plaintiff) {
+                            $name = $plaintiff['name'] ?? '';
+                            $html .= '<div class="mb-1">' . htmlspecialchars($name) . '</div>';
+                        }
+                    }
+                    return $html;
+                })
+                ->addColumn('defendants', function ($row) {
+                    $html = '';
+                    if (is_array($row->defendants)) {
+                        foreach ($row->defendants as $defendant) {
+                            $name = $defendant['name'] ?? '';
+                            $html .= '<div class="mb-1">' . htmlspecialchars($name) . '</div>';
+                        }
+                    }
+                    return $html;
+                })
+                ->editColumn('next_hearing_date', function ($row) {
+                    return $row->next_hearing_date ? \Carbon\Carbon::parse($row->next_hearing_date)->format('d/m/Y') : '-';
+                })
+                ->editColumn('status', function ($row) {
+                    if ($row->status == 'running') {
+                        return '<span class="badge bg-primary px-3 py-2 rounded-pill fs-content">চলমান</span>';
+                    } elseif ($row->status == 'resolved') {
+                        return '<span class="badge bg-success px-3 py-2 rounded-pill fs-content">নিষ্পন্ন</span>';
+                    }
+                    return '<span class="badge bg-secondary px-3 py-2 rounded-pill fs-content">' . ucfirst($row->status) . '</span>';
+                })
+                ->rawColumns(['plaintiffs', 'defendants', 'status'])
+                ->make(true);
         }
 
-        $data['miscases'] = $query->orderBy('created_at', 'desc')->paginate(20);
         $data["wards"] = [];
         $data["ownership_types"] = [];
         return view('frontend.pages.miscase_list', $data);

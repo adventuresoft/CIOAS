@@ -1,5 +1,5 @@
 @php
-    $subMenu = $subMenu ?? '';
+    $subMenu  = $subMenu ?? '';
     $mainMenu = $mainMenu ?? '';
 @endphp
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -26,7 +26,8 @@
                     </a>
                 </li>
 
-                @if (has_module_access('application_form') || has_module_access('application-form'))
+                {{-- Application Letter / Form --}}
+                @if (has_module_access('application_letter') || has_module_access('application_form'))
                     <li class="nav-item @if ($mainMenu == 'Application Form') menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'Application Form') active @endif">
                             <i class="nav-icon fas fa-file-alt"></i>
@@ -36,7 +37,7 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            @if (has_sub_module_access('application_form', 'create') || has_sub_module_access('application-form', 'create'))
+                            @if (can_do('application_letter', 'create'))
                                 <li class="nav-item">
                                     <a href="{{ route('application-form.create') }}"
                                         class="nav-link @if ($subMenu == 'ApplicationFormCreate') active @endif">
@@ -45,7 +46,7 @@
                                     </a>
                                 </li>
                             @endif
-                            @if (has_sub_module_access('application_form', 'read') || has_sub_module_access('application-form', 'read'))
+                            @if (can_do('application_letter', 'read'))
                                 <li class="nav-item">
                                     <a href="{{ route('application-form.index') }}"
                                         class="nav-link @if ($subMenu == 'ApplicationFormList') active @endif">
@@ -58,11 +59,12 @@
                     </li>
                 @endif
 
-                {{-- sidebar --}}
-                @if (basic_settings_permissions())
+                {{-- Basic Settings --}}
+                @if (basic_settings_view())
                     @include('backend.layouts.sidebar-section.basic-setting')
                 @endif
 
+                {{-- Access Management --}}
                 @if (access_management_permission())
                     <li
                         class="nav-item has-treeview {{ isset($page) && ($page == 'role' || $page == 'permission' || $page == 'rolepermission' || $page == 'userper' || $page == 'roleuser' || $page == 'user') ? 'menu-open' : '' }}">
@@ -75,7 +77,7 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            @if (is_superadmin() || auth()->user()->can('users.read'))
+                            @if (is_superadmin() || auth()->user()->can('user.read') || auth()->user()->can('users.read'))
                                 <li class="nav-item ">
                                     <a href="{{ route('user.index') }}"
                                         class="nav-link {{ isset($page) && $page == 'user' ? 'active' : '' }}">
@@ -106,16 +108,9 @@
                     </li>
                 @endif
 
+                {{-- Institute Settings --}}
                 @if (institute_permissions())
-                    {{-- Institute Settings --}}
-                    <li
-                        class="nav-item
-                                                                                                                                                                                                @if (
-                                                                                                                                                                                                    $subMenu == 'InstituteCreate' ||
-                                                                                                                                                                                                    $subMenu == 'InstituteType' ||
-                                                                                                                                                                                                    $subMenu == 'InstituteCategory' ||
-                                                                                                                                                                                                    $subMenu == 'InstituteList'
-                                                                                                                                                                                                ) menu-open @endif">
+                    <li class="nav-item">
                         <a href="#" class="nav-link @if ($mainMenu == 'Institute') active @endif ">
                             <i class="nav-icon fas fa-university"></i>
                             <p>
@@ -145,7 +140,7 @@
                                 </li>
                             @endif
 
-                            @if (has_sub_module_access('institutions', 'create'))
+                            @if (can_do('institute', 'create'))
                                 <li class="nav-item">
                                     <a href="{{ route('institute.create') }}"
                                         class="nav-link @if ($subMenu == 'InstituteCreate') active @endif">
@@ -154,7 +149,7 @@
                                     </a>
                                 </li>
                             @endif
-                            @if (has_sub_module_access('institutions', 'read'))
+                            @if (can_do('institute', 'read'))
                                 <li class="nav-item">
                                     <a href="{{ route('institute.index') }}"
                                         class="nav-link @if ($subMenu == 'InstituteList') active @endif ">
@@ -167,7 +162,8 @@
                     </li>
                 @endif
 
-                @if (has_module_access('institutional-admin') || has_module_access('institutional_admin'))
+                {{-- Institutional Admins --}}
+                @if (can_do('institutional-admin', 'read') || can_do('institutional-admin', 'create'))
                     <li
                         class="nav-item @if ($subMenu == 'AdminCreate' || $subMenu == 'AdminList' || $subMenu == 'AdminShow') menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'Admin') active @endif">
@@ -178,20 +174,20 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            @if (has_sub_module_access('institutional_admin', 'create') || has_sub_module_access('institutional-admin', 'create'))
+                            @if (can_do('institutional-admin', 'create'))
                                 <li class="nav-item">
                                     <a href="{{ route('institutional-admin.create') }}"
-                                        class="nav-link  @if ($subMenu == 'AdminCreate') active @endif">
+                                        class="nav-link @if ($subMenu == 'AdminCreate') active @endif">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Create</p>
                                     </a>
                                 </li>
                             @endif
 
-                            @if (has_sub_module_access('institutional_admin', 'read') || has_sub_module_access('institutional-admin', 'read'))
+                            @if (can_do('institutional-admin', 'read'))
                                 <li class="nav-item">
                                     <a href="{{ route('institutional-admin.index') }}"
-                                        class="nav-link  @if ($subMenu == 'AdminList') active @endif">
+                                        class="nav-link @if ($subMenu == 'AdminList') active @endif">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>List</p>
                                     </a>
@@ -201,10 +197,8 @@
                     </li>
                 @endif
 
-
-
-                {{-- Staff Info --}}
-                @if (has_module_access('staff') || has_module_access('staffs'))
+                {{-- Staff Info (employee.* permission) --}}
+                @if (can_do('employee', 'read') || can_do('employee', 'create'))
                     <li class="nav-item @if (
                         $mainMenu == 'Staff' &&
                         ($subMenu == 'StaffCreate' ||
@@ -223,7 +217,7 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            @if (has_sub_module_access('staff', 'create') || has_sub_module_access('staffs', 'create'))
+                            @if (can_do('employee', 'create'))
                                 <li class="nav-item">
                                     <a href="{{ route('staff.create') }}"
                                         class="nav-link @if ($mainMenu == 'Staff' && ($subMenu == 'StaffCreate' || $subMenu == 'Create')) active @endif">
@@ -233,7 +227,7 @@
                                 </li>
                             @endif
 
-                            @if (has_sub_module_access('staff', 'read') || has_sub_module_access('staffs', 'read'))
+                            @if (can_do('employee', 'read'))
                                 <li class="nav-item">
                                     <a href="{{ route('staff.index') }}"
                                         class="nav-link @if ($mainMenu == 'Staff' && ($subMenu == 'StaffList' || $subMenu == 'Index')) active @endif">
@@ -262,86 +256,97 @@
                     </li>
                 @endif
 
-                <li class="nav-item  @if ($mainMenu == 'Inquiry') menu-open @endif ">
-                    <a href="{{ route('inquiry.formlist') }}"
-                        class="nav-link @if ($mainMenu == 'Inquiry') active @endif">
-                        <i class="nav-icon fas fa-question"></i>
-                        <p>
-                            Inquiries List
-                        </p>
-                    </a>
-                </li>
+                {{-- Inquiries --}}
+                @if (can_do('inquire', 'read') || can_do('inquire', 'create'))
+                    <li class="nav-item  @if ($mainMenu == 'Inquiry') menu-open @endif ">
+                        <a href="{{ route('inquiry.formlist') }}"
+                            class="nav-link @if ($mainMenu == 'Inquiry') active @endif">
+                            <i class="nav-icon fas fa-question"></i>
+                            <p>
+                                Inquiries List
+                            </p>
+                        </a>
+                    </li>
+                @endif
 
                 {{-- Appointment Management --}}
-                <li class="nav-item @if (isset($mainMenu) && $mainMenu == 'Appointment') menu-open @endif">
-                    <a href="#" class="nav-link @if (isset($mainMenu) && $mainMenu == 'Appointment') active @endif">
-                        <i class="nav-icon fas fa-calendar-check"></i>
-                        <p>
-                            Appointments
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('appointment.slots.index') }}"
-                                class="nav-link @if (isset($subMenu) && $subMenu == 'Slots') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Manage Slots</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('appointment.booking.index') }}"
-                                class="nav-link @if (isset($subMenu) && $subMenu == 'Bookings') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Bookings List</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                @if (can_do('appoinment', 'read') || can_do('appoinment', 'create'))
+                    <li class="nav-item @if (isset($mainMenu) && $mainMenu == 'Appointment') menu-open @endif">
+                        <a href="#" class="nav-link @if (isset($mainMenu) && $mainMenu == 'Appointment') active @endif">
+                            <i class="nav-icon fas fa-calendar-check"></i>
+                            <p>
+                                Appointments
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('appointment.slots.index') }}"
+                                    class="nav-link @if (isset($subMenu) && $subMenu == 'Slots') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Manage Slots</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('appointment.booking.index') }}"
+                                    class="nav-link @if (isset($subMenu) && $subMenu == 'Bookings') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Bookings List</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
 
                 {{-- Land Record Info --}}
-                <li class="nav-item @if ($mainMenu == 'Land') menu-open @endif">
-                    <a href="#" class="nav-link @if ($mainMenu == 'Land') active @endif">
-                        <i class="nav-icon fas fa-landmark"></i>
-                        <p>
-                            Land Record
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('land.create') }}"
-                                class="nav-link @if ($subMenu == 'LandCreate') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>New Land Entry</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('land.index') }}"
-                                class="nav-link @if ($subMenu == 'LandList') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Land Record List</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('land-cases.index') }}"
-                                class="nav-link @if ($subMenu == 'LandCaseList') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Land Case</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('land-allocations.index') }}"
-                                class="nav-link @if ($subMenu == 'LandAllocationList') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Allocation / Lease / Disposal</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                @if (can_do('land', 'read') || can_do('land', 'create'))
+                    <li class="nav-item @if ($mainMenu == 'Land') menu-open @endif">
+                        <a href="#" class="nav-link @if ($mainMenu == 'Land') active @endif">
+                            <i class="nav-icon fas fa-landmark"></i>
+                            <p>
+                                Land Record
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (can_do('land', 'create'))
+                                <li class="nav-item">
+                                    <a href="{{ route('land.create') }}"
+                                        class="nav-link @if ($subMenu == 'LandCreate') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>New Land Entry</p>
+                                    </a>
+                                </li>
+                            @endif
+                            @if (can_do('land', 'read'))
+                                <li class="nav-item">
+                                    <a href="{{ route('land.index') }}"
+                                        class="nav-link @if ($subMenu == 'LandList') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Land Record List</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('land-cases.index') }}"
+                                        class="nav-link @if ($subMenu == 'LandCaseList') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Land Case</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('land-allocations.index') }}"
+                                        class="nav-link @if ($subMenu == 'LandAllocationList') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Allocation / Lease / Disposal</p>
+                                    </a>
+                                </li>
+                            @endif
+                        </ul>
+                    </li>
+                @endif
 
                 {{-- Vehicle Info --}}
-                @if (has_module_access('vehicle') || has_module_access('vehicles'))
+                @if (can_do('vehicle', 'read') || can_do('vehicle', 'create'))
                     <li class="nav-item @if ($mainMenu == 'Vehicle') menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'Vehicle') active @endif">
                             <i class="nav-icon fas fa-car"></i>
@@ -351,7 +356,7 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            @if (has_sub_module_access('vehicle', 'create') || has_sub_module_access('vehicles', 'create'))
+                            @if (can_do('vehicle', 'create'))
                                 <li class="nav-item">
                                     <a href="{{ route('vehicle.create') }}"
                                         class="nav-link @if ($subMenu == 'VehicleCreate') active @endif">
@@ -360,7 +365,7 @@
                                     </a>
                                 </li>
                             @endif
-                            @if (has_sub_module_access('vehicle', 'read') || has_sub_module_access('vehicles', 'read'))
+                            @if (can_do('vehicle', 'read'))
                                 <li class="nav-item">
                                     <a href="{{ route('vehicle.index') }}"
                                         class="nav-link @if ($subMenu == 'VehicleList') active @endif">
@@ -388,11 +393,11 @@
                 @endif
 
                 {{-- License --}}
-                @if (has_module_access('license') || has_module_access('licenses'))
+                @if (can_do('license', 'read') || can_do('license', 'create'))
                     <li
                         class="nav-item
-                                                                                                                                                                                          @if ($subMenu == 'LicenseCreate' || $subMenu == 'LicenseList' || $subMenu == 'LicenseShow' || $subMenu == 'LicenseEdit') menu-open @endif
-                                                                                                                                                                                          ">
+                               @if ($subMenu == 'LicenseCreate' || $subMenu == 'LicenseList' || $subMenu == 'LicenseShow' || $subMenu == 'LicenseEdit') menu-open @endif
+                               ">
                         <a href="#" class="nav-link @if ($mainMenu == 'license') active @endif ">
                             <i class="nav-icon fas fa-id-card"></i>
                             <p>
@@ -401,7 +406,7 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            @if (has_sub_module_access('license', 'create') || has_sub_module_access('licenses', 'create'))
+                            @if (can_do('license', 'create'))
                                 <li class="nav-item">
                                     <a href="{{ route('license.create') }}"
                                         class="nav-link @if ($subMenu == 'LicenseCreate') active @endif">
@@ -411,7 +416,7 @@
                                 </li>
                             @endif
 
-                            @if (has_sub_module_access('license', 'read') || has_sub_module_access('licenses', 'read'))
+                            @if (can_do('license', 'read'))
                                 <li class="nav-item">
                                     <a href="{{ route('license.index') }}"
                                         class="nav-link @if ($subMenu == 'LicenseList') active @endif">
@@ -425,8 +430,7 @@
                 @endif
 
                 {{-- Hotel & Restaurant --}}
-                {{-- Hotel & Restaurant --}}
-                @if (has_module_access('hotel-restaurant') || has_module_access('hotel_restaurant'))
+                @if (can_do('hotel-restaurant', 'read') || can_do('hotel-restaurant', 'create'))
                     <li class="nav-item @if ($mainMenu == 'hotel_restaurant') menu-open @endif">
                         <a href="#" class="nav-link @if ($mainMenu == 'hotel_restaurant') active @endif ">
                             <i class="nav-icon fas fa-briefcase"></i>
@@ -436,7 +440,7 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            @if (has_sub_module_access('hotel-restaurant', 'create') || has_sub_module_access('hotel_restaurant', 'create'))
+                            @if (can_do('hotel-restaurant', 'create'))
                                 <li class="nav-item">
                                     <a href="{{ route('hotel-restaurant.create') }}"
                                         class="nav-link @if ($subMenu == 'HotelRestaurantCreate') active @endif">
@@ -446,7 +450,7 @@
                                 </li>
                             @endif
 
-                            @if (has_sub_module_access('hotel-restaurant', 'read') || has_sub_module_access('hotel_restaurant', 'read'))
+                            @if (can_do('hotel-restaurant', 'read'))
                                 <li class="nav-item">
                                     <a href="{{ route('hotel-restaurant.index') }}"
                                         class="nav-link @if ($subMenu == 'HotelRestaurantList') active @endif">
@@ -460,310 +464,337 @@
                 @endif
 
                 {{-- Gun License --}}
-                <li class="nav-item @if (isset($mainMenu) && $mainMenu == 'GunLicense') menu-open @endif">
-                    <a href="#" class="nav-link @if (isset($mainMenu) && $mainMenu == 'GunLicense') active @endif ">
-                        <i class="nav-icon fas fa-shield-alt"></i>
-                        <p>
-                            Gun License
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('gun-license.create') }}"
-                                class="nav-link @if (isset($subMenu) && $subMenu == 'GunLicenseCreate') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>আবেদন করুন</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('gun-license.index') }}"
-                                class="nav-link @if (isset($subMenu) && $subMenu == 'GunLicenseList') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>আবেদন তালিকা</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                {{-- Mis Case --}}
-                {{-- @if (has_module_access('miscase') || has_module_access('miscases')) --}}
-                <li
-                    class="nav-item
-                                                                         @if ($subMenu == 'MisCase' || $subMenu == 'MisCaseCreate' || $subMenu == 'MisCaseList' || $subMenu == 'CaseOrder' || $subMenu == 'CaseOrderList' || $subMenu == 'CaseOrderCreate' || $subMenu == 'CaseDateEdit' || $subMenu == 'HearingNotice') menu-open @endif">
-                    <a href="#" class="nav-link @if ($mainMenu == 'MisCase' || $mainMenu == 'CaseOrder') active @endif ">
-                        <i class="nav-icon fas fa-briefcase"></i>
-                        <p>
-                            Missed Case
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        {{-- @if (has_sub_module_access('miscase', 'create') || has_sub_module_access('miscases',
-                        'create')) --}}
-                        <li class="nav-item">
-                            <a href="{{ route('miscase.create') }}"
-                                class="nav-link @if ($subMenu == 'MisCaseCreate') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Create</p>
-                            </a>
-                        </li>
-                        {{-- @endif --}}
+                @if (can_do('gun', 'read') || can_do('gun', 'create'))
+                    <li class="nav-item @if (isset($mainMenu) && $mainMenu == 'GunLicense') menu-open @endif">
+                        <a href="#" class="nav-link @if (isset($mainMenu) && $mainMenu == 'GunLicense') active @endif ">
+                            <i class="nav-icon fas fa-shield-alt"></i>
+                            <p>
+                                Gun License
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (can_do('gun', 'create'))
+                                <li class="nav-item">
+                                    <a href="{{ route('gun-license.create') }}"
+                                        class="nav-link @if (isset($subMenu) && $subMenu == 'GunLicenseCreate') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>আবেদন করুন</p>
+                                    </a>
+                                </li>
+                            @endif
+                            @if (can_do('gun', 'read'))
+                                <li class="nav-item">
+                                    <a href="{{ route('gun-license.index') }}"
+                                        class="nav-link @if (isset($subMenu) && $subMenu == 'GunLicenseList') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>আবেদন তালিকা</p>
+                                    </a>
+                                </li>
+                            @endif
+                        </ul>
+                    </li>
+                @endif
 
-                        {{-- @if (has_sub_module_access('miscase', 'read') || has_sub_module_access('miscases', 'read'))
-                        --}}
-                        <li class="nav-item">
-                            <a href="{{ route('miscase.index') }}"
-                                class="nav-link @if ($subMenu == 'MisCaseList') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Missed Case List</p>
-                            </a>
-                        </li>
-                        {{-- @endif --}}
-                        
-                        <li class="nav-item">
-                            <a href="{{ route('caseorder.index') }}"
-                                class="nav-link @if ($subMenu == 'CaseOrderList') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>All Case Order</p>
-                            </a>
-                        </li>
+                {{-- Missed Case & Case Order --}}
+                @if (can_do('miss_case', 'read') || can_do('miss_case', 'create') || can_do('case_order', 'read') || can_do('case_order', 'create'))
+                    <li class="nav-item">
+                        <a href="#"
+                            class="nav-link @if ($mainMenu == 'MisCase' || $mainMenu == 'CaseOrder') active @endif ">
+                            <i class="nav-icon fas fa-briefcase"></i>
+                            <p>
+                                Missed Case
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (can_do('miss_case', 'create'))
+                                <li class="nav-item">
+                                    <a href="{{ route('miscase.create') }}"
+                                        class="nav-link @if ($subMenu == 'MisCaseCreate') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Create</p>
+                                    </a>
+                                </li>
+                            @endif
 
-                        <li class="nav-item">
-                            <a href="{{ route('caseorder.create') }}"
-                                class="nav-link @if ($subMenu == 'CaseOrderCreate') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>New Case Order</p>
-                            </a>
-                        </li>
+                            @if (can_do('miss_case', 'read'))
+                                <li class="nav-item">
+                                    <a href="{{ route('miscase.index') }}"
+                                        class="nav-link @if ($subMenu == 'MisCaseList') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Missed Case List</p>
+                                    </a>
+                                </li>
+                            @endif
 
-                        <li class="nav-item">
-                            <a href="{{ route('caseorder.dateEditList') }}"
-                                class="nav-link @if ($subMenu == 'CaseDateEdit') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Case Date Edit</p>
-                            </a>
-                        </li>
+                            @if (can_do('case_order', 'read') || can_do('case_order', 'create'))
+                                <li class="nav-item">
+                                    <a href="{{ route('caseorder.index') }}"
+                                        class="nav-link @if ($subMenu == 'CaseOrderList') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>All Case Order</p>
+                                    </a>
+                                </li>
+                            @endif
 
-                        <li class="nav-item">
-                            <a href="{{ route('caseorder.hearingNotice') }}"
-                                class="nav-link @if ($subMenu == 'HearingNotice') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Hearing Notice</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                            @if (can_do('case_order', 'create'))
+                                <li class="nav-item">
+                                    <a href="{{ route('caseorder.create') }}"
+                                        class="nav-link @if ($subMenu == 'CaseOrderCreate') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>New Case Order</p>
+                                    </a>
+                                </li>
+                            @endif
 
+                            @if (can_do('case_order', 'update'))
+                                <li class="nav-item">
+                                    <a href="{{ route('caseorder.dateEditList') }}"
+                                        class="nav-link @if ($subMenu == 'CaseDateEdit') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Case Date Edit</p>
+                                    </a>
+                                </li>
+                            @endif
+
+                            @if (can_do('case_order', 'read'))
+                                <li class="nav-item">
+                                    <a href="{{ route('caseorder.hearingNotice') }}"
+                                        class="nav-link @if ($subMenu == 'HearingNotice') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Hearing Notice</p>
+                                    </a>
+                                </li>
+                            @endif
+                        </ul>
+                    </li>
+                @endif
 
                 {{-- Inventory --}}
-                <li class="nav-item @if ($mainMenu == 'Inventory') menu-open @endif">
-                    <a href="#" class="nav-link @if ($mainMenu == 'Inventory') active @endif">
-                        <i class="nav-icon fas fa-boxes"></i>
-                        <p>
-                            Inventory
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item @if (
-                            $subMenu == 'InventoryRequisitionCreate' ||
-                            $subMenu == 'InventoryRequisitionList' ||
-                            $subMenu == 'InventoryStatus'
-                        ) menu-open @endif">
-                            <a href="#" class="nav-link @if (
+                @if (can_do('inventory', 'read') || can_do('inventory', 'create'))
+                    <li class="nav-item @if ($mainMenu == 'Inventory') menu-open @endif">
+                        <a href="#" class="nav-link @if ($mainMenu == 'Inventory') active @endif">
+                            <i class="nav-icon fas fa-boxes"></i>
+                            <p>
+                                Inventory
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item @if (
                                 $subMenu == 'InventoryRequisitionCreate' ||
                                 $subMenu == 'InventoryRequisitionList' ||
                                 $subMenu == 'InventoryStatus'
-                            ) active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>
-                                    Requisition
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview ml-3">
-                                <li class="nav-item">
-                                    <a href="{{ route('inventory.requisition.create') }}"
-                                        class="nav-link @if ($subMenu == 'InventoryRequisitionCreate') active @endif">
-                                        <i class="far fa-dot-circle nav-icon"></i>
-                                        <p>Add New Requisition</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('inventory.requisition.index') }}"
-                                        class="nav-link @if ($subMenu == 'InventoryRequisitionList') active @endif">
-                                        <i class="far fa-dot-circle nav-icon"></i>
-                                        <p>Requisition List</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('inventory.requisition.approve_list') }}"
-                                        class="nav-link @if ($subMenu == 'InventoryApproveList') active @endif">
-                                        <i class="far fa-dot-circle nav-icon"></i>
-                                        <p>Approve List</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                            ) menu-open @endif">
+                                <a href="#" class="nav-link @if (
+                                    $subMenu == 'InventoryRequisitionCreate' ||
+                                    $subMenu == 'InventoryRequisitionList' ||
+                                    $subMenu == 'InventoryStatus'
+                                ) active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>
+                                        Requisition
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview ml-3">
+                                    @if (can_do('inventory', 'create'))
+                                        <li class="nav-item">
+                                            <a href="{{ route('inventory.requisition.create') }}"
+                                                class="nav-link @if ($subMenu == 'InventoryRequisitionCreate') active @endif">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>Add New Requisition</p>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if (can_do('inventory', 'read'))
+                                        <li class="nav-item">
+                                            <a href="{{ route('inventory.requisition.index') }}"
+                                                class="nav-link @if ($subMenu == 'InventoryRequisitionList') active @endif">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>Requisition List</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('inventory.requisition.approve_list') }}"
+                                                class="nav-link @if ($subMenu == 'InventoryApproveList') active @endif">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>Approve List</p>
+                                            </a>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </li>
 
-                        <li class="nav-item @if (
-                            $subMenu == 'InventoryWorkOrderCreate' ||
-                            $subMenu == 'InventoryWorkOrderList' ||
-                            $subMenu == 'InventoryWorkOrderApproveList'
-                        ) menu-open @endif">
-                            <a href="#" class="nav-link @if (
+                            <li class="nav-item @if (
                                 $subMenu == 'InventoryWorkOrderCreate' ||
                                 $subMenu == 'InventoryWorkOrderList' ||
                                 $subMenu == 'InventoryWorkOrderApproveList'
-                            ) active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>
-                                    Work Order
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview ml-3">
-                                <li class="nav-item">
-                                    <a href="{{ route('inventory.work-order.create') }}"
-                                        class="nav-link @if ($subMenu == 'InventoryWorkOrderCreate') active @endif">
-                                        <i class="far fa-dot-circle nav-icon"></i>
-                                        <p>Add New Work Order</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('inventory.work-order.index') }}"
-                                        class="nav-link @if ($subMenu == 'InventoryWorkOrderList') active @endif">
-                                        <i class="far fa-dot-circle nav-icon"></i>
-                                        <p>Work Order List</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('inventory.work-order.approve_list') }}"
-                                        class="nav-link @if ($subMenu == 'InventoryWorkOrderApproveList') active @endif">
-                                        <i class="far fa-dot-circle nav-icon"></i>
-                                        <p>Approve List</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-
-
-                        <li
-                            class="nav-item @if (in_array($subMenu, ['InventoryVendorList', 'InventoryVendorCreate', 'InventoryVendorAssigned', 'InventoryQuotationCreate', 'InventoryQuotationList'])) menu-open @endif">
-                            <a href="#"
-                                class="nav-link @if (in_array($subMenu, ['InventoryVendorList', 'InventoryVendorCreate', 'InventoryVendorAssigned', 'InventoryQuotationCreate', 'InventoryQuotationList'])) active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>
-                                    Vendor
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('inventory.vendors.create') }}"
-                                        class="nav-link @if ($subMenu == 'InventoryVendorCreate') active @endif">
-                                        <i class="far fa-dot-circle nav-icon"></i>
-                                        <p>Create New Vendor</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('inventory.vendors.index') }}"
-                                        class="nav-link @if ($subMenu == 'InventoryVendorList') active @endif">
-                                        <i class="far fa-dot-circle nav-icon"></i>
-                                        <p>Vendor List</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('inventory.vendors.assigned') }}"
-                                        class="nav-link @if ($subMenu == 'InventoryVendorAssigned') active @endif">
-                                        <i class="far fa-dot-circle nav-icon"></i>
-                                        <p>Assigned Vendor</p>
-                                    </a>
-                                </li>
-                                @php
-                                    $isInventoryQuotation = in_array($subMenu, ['InventoryQuotationCreate', 'InventoryQuotationList']);
-                                @endphp
-                                <li class="nav-item @if ($isInventoryQuotation) menu-open @endif">
-                                    <a href="#" class="nav-link @if ($isInventoryQuotation) active @endif">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            Quotation
-                                            <i class="right fas fa-angle-left"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview ml-3">
+                            ) menu-open @endif">
+                                <a href="#" class="nav-link @if (
+                                    $subMenu == 'InventoryWorkOrderCreate' ||
+                                    $subMenu == 'InventoryWorkOrderList' ||
+                                    $subMenu == 'InventoryWorkOrderApproveList'
+                                ) active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>
+                                        Work Order
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview ml-3">
+                                    @if (can_do('inventory', 'create'))
                                         <li class="nav-item">
-                                            <a href="{{ route('inventory.quotation.create') }}"
-                                                class="nav-link @if ($subMenu == 'InventoryQuotationCreate') active @endif">
+                                            <a href="{{ route('inventory.work-order.create') }}"
+                                                class="nav-link @if ($subMenu == 'InventoryWorkOrderCreate') active @endif">
                                                 <i class="far fa-dot-circle nav-icon"></i>
-                                                <p>New Quotation</p>
+                                                <p>Add New Work Order</p>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if (can_do('inventory', 'read'))
+                                        <li class="nav-item">
+                                            <a href="{{ route('inventory.work-order.index') }}"
+                                                class="nav-link @if ($subMenu == 'InventoryWorkOrderList') active @endif">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>Work Order List</p>
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="{{ route('inventory.quotation.index') }}"
-                                                class="nav-link @if ($subMenu == 'InventoryQuotationList') active @endif">
+                                            <a href="{{ route('inventory.work-order.approve_list') }}"
+                                                class="nav-link @if ($subMenu == 'InventoryWorkOrderApproveList') active @endif">
                                                 <i class="far fa-dot-circle nav-icon"></i>
-                                                <p>Quotation List</p>
+                                                <p>Approve List</p>
                                             </a>
                                         </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
+                                    @endif
+                                </ul>
+                            </li>
 
-                        <li class="nav-item">
-                            <a href="{{ route('inventory.purchase_orders.index') }}"
-                                class="nav-link @if ($subMenu == 'InventoryPurchaseOrderList') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Receive Point</p>
-                            </a>
-                        </li>
+                            <li
+                                class="nav-item @if (in_array($subMenu, ['InventoryVendorList', 'InventoryVendorCreate', 'InventoryVendorAssigned', 'InventoryQuotationCreate', 'InventoryQuotationList'])) menu-open @endif">
+                                <a href="#"
+                                    class="nav-link @if (in_array($subMenu, ['InventoryVendorList', 'InventoryVendorCreate', 'InventoryVendorAssigned', 'InventoryQuotationCreate', 'InventoryQuotationList'])) active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>
+                                        Vendor
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    @if (can_do('inventory', 'create'))
+                                        <li class="nav-item">
+                                            <a href="{{ route('inventory.vendors.create') }}"
+                                                class="nav-link @if ($subMenu == 'InventoryVendorCreate') active @endif">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>Create New Vendor</p>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if (can_do('inventory', 'read'))
+                                        <li class="nav-item">
+                                            <a href="{{ route('inventory.vendors.index') }}"
+                                                class="nav-link @if ($subMenu == 'InventoryVendorList') active @endif">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>Vendor List</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('inventory.vendors.assigned') }}"
+                                                class="nav-link @if ($subMenu == 'InventoryVendorAssigned') active @endif">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>Assigned Vendor</p>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @php
+                                        $isInventoryQuotation = in_array($subMenu, ['InventoryQuotationCreate', 'InventoryQuotationList']);
+                                    @endphp
+                                    <li class="nav-item @if ($isInventoryQuotation) menu-open @endif">
+                                        <a href="#" class="nav-link @if ($isInventoryQuotation) active @endif">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Quotation
+                                                <i class="right fas fa-angle-left"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview ml-3">
+                                            @if (can_do('inventory', 'create'))
+                                                <li class="nav-item">
+                                                    <a href="{{ route('inventory.quotation.create') }}"
+                                                        class="nav-link @if ($subMenu == 'InventoryQuotationCreate') active @endif">
+                                                        <i class="far fa-dot-circle nav-icon"></i>
+                                                        <p>New Quotation</p>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            @if (can_do('inventory', 'read'))
+                                                <li class="nav-item">
+                                                    <a href="{{ route('inventory.quotation.index') }}"
+                                                        class="nav-link @if ($subMenu == 'InventoryQuotationList') active @endif">
+                                                        <i class="far fa-dot-circle nav-icon"></i>
+                                                        <p>Quotation List</p>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
 
+                            <li class="nav-item">
+                                <a href="{{ route('inventory.purchase_orders.index') }}"
+                                    class="nav-link @if ($subMenu == 'InventoryPurchaseOrderList') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Receive Point</p>
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a href="{{ route('inventory.stock') }}"
-                                class="nav-link @if ($subMenu == 'InventoryStock') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Stock</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('inventory.distribution') }}"
-                                class="nav-link @if ($subMenu == 'InventoryDistribution') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Distribution</p>
-                            </a>
-                        </li>
-                        <li
-                            class="nav-item @if (in_array($subMenu, ['InventoryRepairProduct', 'InventoryRepairApproval'])) menu-open @endif">
-                            <a href="#"
-                                class="nav-link @if (in_array($subMenu, ['InventoryRepairProduct', 'InventoryRepairApproval'])) active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>
-                                    Maintenance
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('inventory.maintenance.repair.create') }}"
-                                        class="nav-link @if ($subMenu == 'InventoryRepairProduct') active @endif">
-                                        <i class="far fa-dot-circle nav-icon"></i>
-                                        <p>Repairing Product</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('inventory.maintenance.repair.approvals') }}"
-                                        class="nav-link @if ($subMenu == 'InventoryRepairApproval') active @endif">
-                                        <i class="far fa-dot-circle nav-icon"></i>
-                                        <p>Repairing Approval</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
+                            <li class="nav-item">
+                                <a href="{{ route('inventory.stock') }}"
+                                    class="nav-link @if ($subMenu == 'InventoryStock') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Stock</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('inventory.distribution') }}"
+                                    class="nav-link @if ($subMenu == 'InventoryDistribution') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Distribution</p>
+                                </a>
+                            </li>
+                            <li
+                                class="nav-item @if (in_array($subMenu, ['InventoryRepairProduct', 'InventoryRepairApproval'])) menu-open @endif">
+                                <a href="#"
+                                    class="nav-link @if (in_array($subMenu, ['InventoryRepairProduct', 'InventoryRepairApproval'])) active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>
+                                        Maintenance
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ route('inventory.maintenance.repair.create') }}"
+                                            class="nav-link @if ($subMenu == 'InventoryRepairProduct') active @endif">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Repairing Product</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('inventory.maintenance.repair.approvals') }}"
+                                            class="nav-link @if ($subMenu == 'InventoryRepairApproval') active @endif">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Repairing Approval</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
 
             </ul>
         </nav>

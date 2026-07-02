@@ -55,6 +55,84 @@
             appearance: none;
         }
 
+        /* --- Frontend Form & Table Global Styles --- */
+        .section-title {
+            font-size: 14px !important;
+            font-family: 'Roboto', Arial, 'Kalpurush', sans-serif !important;
+            font-weight: 600 !important;
+            color: #333;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #10b981;
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        /* Labels and Radios */
+        label, input[type="radio"], .form-label, .form-check-label {
+            font-size: 14px !important;
+            font-family: 'Roboto', Arial, 'Kalpurush', sans-serif !important;
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        /* Ensure proper spacing for form rows */
+        .frontend-form-row, .form-group.row {
+            margin-bottom: 1.5rem !important; /* mb-4 equivalent */
+        }
+
+        /* Input styling for modern look */
+        .form-control, .form-select, .custom-select {
+            font-size: 14px !important;
+            font-family: 'Roboto', Arial, 'Kalpurush', sans-serif !important;
+            border-radius: 6px;
+            border: 1px solid #ced4da;
+            padding: 0.5rem 0.75rem;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.025);
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        .form-control:focus, .form-select:focus, .custom-select:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.25);
+        }
+
+        /* Professional Bootstrap 5 Table Look */
+        .table-responsive {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            margin-bottom: 1.5rem;
+            border: 1px solid #f1f5f9;
+        }
+        .table {
+            margin-bottom: 0;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        .table thead th {
+            background-color: #f8fafc;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Roboto', Arial, 'Kalpurush', sans-serif !important;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 12px 16px;
+            white-space: nowrap;
+        }
+        .table tbody td {
+            font-size: 14px;
+            font-family: 'Roboto', Arial, 'Kalpurush', sans-serif !important;
+            color: #475569;
+            padding: 12px 16px;
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        .table tbody tr:hover {
+            background-color: #f8fafc;
+        }
     </style>
 
     @stack('style')
