@@ -11,7 +11,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class GunLicenseController extends Controller
 {
-    public function index()
+    public function index(\App\DataTables\GunLicenseDataTable $dataTable)
     {
         $person = PersonGunApplication::with(['verification', 'interview'])->get()->map(function($item) {
             $item->type = 'person';
@@ -45,14 +45,7 @@ class GunLicenseController extends Controller
 
         $merged = $person->concat($org)->concat($other)->sortByDesc('created_at');
 
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $perPage = 10;
-        $currentItems = $merged->slice(($currentPage - 1) * $perPage, $perPage)->all();
-        $applications = new LengthAwarePaginator($currentItems, $merged->count(), $perPage, $currentPage, [
-            'path' => LengthAwarePaginator::resolveCurrentPath()
-        ]);
-
-        return view('backend.pages.gun-license.index', compact('applications'));
+        return $dataTable->with('collection', $merged)->render('backend.pages.gun-license.index');
     }
 
     public function create()

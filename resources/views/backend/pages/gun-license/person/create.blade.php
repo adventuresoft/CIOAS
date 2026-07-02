@@ -59,7 +59,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <label for="nid_no">জাতীয় পরিচিতি নম্বর <span class="text-danger">*</span></label>
-                                <input type="text" name="nid_no" class="form-control" id="nid_no" required placeholder="NID বা স্মার্ট কার্ড নম্বর">
+                                <input type="number" name="nid_no" class="form-control" id="nid_no" required placeholder="NID বা স্মার্ট কার্ড নম্বর">
                                 <small class="text-danger error nid_no_error"></small>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                             </div>
                             <div class="col-sm-3">
                                 <label for="age_at_application">আবেদনের তারিখে বয়স <span class="text-danger">*</span></label>
-                                <input type="text" name="age_at_application" class="form-control" id="age_at_application" required placeholder="আবেদনের তারিখে বয়স">
+                                <input type="number" name="age_at_application" class="form-control" readonly style="background-color: #f1f5f9;" id="age_at_application" required placeholder="আবেদনের তারিখে বয়স">
                                 <small class="text-danger error age_at_application_error"></small>
                             </div>
                             <div class="col-sm-3">
@@ -94,7 +94,7 @@
                         <div class="form-group row">
                             <div class="col-sm-6">
                                 <label for="phone">মোবাইল নম্বর <span class="text-danger">*</span></label>
-                                <input type="text" name="phone" class="form-control" id="phone" required placeholder="মোবাইল নম্বর">
+                                <input type="number" name="phone" class="form-control" id="phone" required placeholder="মোবাইল নম্বর">
                                 <small class="text-danger error phone_error"></small>
                             </div>
                             <div class="col-sm-6">
@@ -207,7 +207,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <label for="annual_income">বার্ষিক আয় <span class="text-danger">*</span></label>
-                                <input type="text" name="annual_income" class="form-control" id="annual_income" required placeholder="যেমন: ৫,০০,০০০">
+                                <input type="number" name="annual_income" class="form-control" id="annual_income" required placeholder="যেমন: ৫,০০,০০০">
                                 <small class="text-danger error annual_income_error"></small>
                             </div>
                             <div class="col-sm-4">
@@ -225,7 +225,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <label for="tin_no">আয়কর টিআইএন নম্বর</label>
-                                <input type="text" name="tin_no" class="form-control" id="tin_no" placeholder="১২ ডিজিটের টিআইএন (TIN)">
+                                <input type="number" name="tin_no" class="form-control" id="tin_no" placeholder="১২ ডিজিটের টিআইএন (TIN)">
                                 <small class="text-danger error tin_no_error"></small>
                             </div>
                         </div>
@@ -390,6 +390,22 @@
 <script>
     $(document).ready(function() {
         // Dynamic weapon count max validation based on application class
+        // Auto-calculate age based on DOB
+        $('#dob').on('change', function() {
+            var dob = new Date($(this).val());
+            if(!isNaN(dob.getTime())) {
+                var today = new Date();
+                var age = today.getFullYear() - dob.getFullYear();
+                var m = today.getMonth() - dob.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+                    age--;
+                }
+                $('#age_at_application').val(age);
+            } else {
+                $('#age_at_application').val('');
+            }
+        });
+
         function updateWeaponCountMax() {
             let appClass = $('#application_class').val();
             let weaponCountInput = $('#weapon_count');
@@ -497,3 +513,8 @@
     });
 </script>
 @endpush
+
+
+
+
+

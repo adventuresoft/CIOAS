@@ -52,6 +52,9 @@ class VillageController extends Controller
         } elseif ($type == 'City') {
 
             $villages_union = Village::where('city_id', $id)->get() ?? null;
+        } elseif ($type == 'thana') {
+            
+            $villages_union = Village::where('thana_id', $id)->get() ?? null;
         }
 
         // $villages_union = Village::where('union_id', $id)->get();

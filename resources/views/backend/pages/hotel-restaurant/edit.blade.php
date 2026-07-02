@@ -1,4 +1,4 @@
-@extends('backend.master', ['mainMenu' => 'HotelRestaurant', 'subMenu' => 'HotelRestaurantEdit'])
+@extends('backend.master', ['mainMenu' => 'hotel_restaurant', 'subMenu' => 'HotelRestaurantEdit'])
 @push('style')
 @endpush
 @section('title', 'Hotel Restaurant Edit')
@@ -29,13 +29,19 @@
                     @method('PUT')
                     <input type="hidden" name="id" value="{{ $organization->id }}">
 
+                    <div class="d-flex align-items-center mb-4" style="gap: 12px;">
+                        <a href="{{ route('hotel-restaurant.edit', $organization->id) }}" class="btn btn-material btn-material-primary rounded-pill px-4" style="text-transform: none; font-weight: 500;">
+                            <i class="fas fa-briefcase mr-1"></i> Hotel Restaurant Info
+                        </a>
+                        <a href="{{ route('hotelRestaurant-ownership.edit', $organization->id) }}" class="btn btn-light border rounded-pill px-4" style="color: #64748b; font-weight: 500; text-transform: none;">
+                            <i class="fas fa-users mr-1"></i> Ownership Info
+                        </a>
+                    </div>
+
                     <div class="cioas-panel">
                         <div class="cioas-panel-header">
                             <h3 class="cioas-panel-title">
-                                <i class="fas fa-briefcase"></i> 
-                                <a href="{{ route('hotel-restaurant.edit', $organization->id) }}" class="text-dark">Hotel Restaurant Information</a>
-                                <span class="text-secondary mx-2">|</span>
-                                <a href="{{ route('hotelRestaurant-ownership.edit', $organization->id) }}" class="text-muted">Ownership Information</a>
+                                <i class="fas fa-briefcase"></i> Hotel Restaurant Information
                             </h3>
                         </div>
                         <div class="cioas-panel-body">

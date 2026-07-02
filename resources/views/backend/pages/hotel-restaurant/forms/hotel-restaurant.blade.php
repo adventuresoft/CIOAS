@@ -1,7 +1,7 @@
 @push('style')
 <style>
     /* Premium Smart Form Design System */
-    .card-body label:not(.form-check-label) {
+    .cioas-panel-body label:not(.form-check-label) {
         font-size: 0.8rem;
         font-weight: 700;
         text-transform: uppercase;
@@ -11,7 +11,7 @@
         display: block;
     }
 
-    .card-body .form-control:not(.custom-file-input) {
+    .cioas-panel-body .form-control:not(.custom-file-input) {
         border-radius: 8px !important;
         border: 1px solid #cbd5e1 !important;
         height: 40px !important;
@@ -23,17 +23,17 @@
     }
 
     /* Increased vertical gap between form rows */
-    .card-body .form-group.row {
+    .cioas-panel-body .form-group.row {
         margin-bottom: 28px !important;
     }
 
-    .card-body .form-control:focus:not(.custom-file-input) {
+    .cioas-panel-body .form-control:focus:not(.custom-file-input) {
         border-color: #3b82f6 !important;
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
         background-color: #ffffff !important;
     }
 
-    .card-body .form-control[readonly] {
+    .cioas-panel-body .form-control[readonly] {
         background-color: #f8fafc !important;
         border-color: #cbd5e1 !important;
         font-weight: 500 !important;
@@ -41,25 +41,29 @@
     }
 
     /* Select2 Styling overrides */
-    .card-body .select2-container--default .select2-selection--single {
+    .cioas-panel-body .select2-container {
+        width: 100% !important;
+    }
+    
+    .cioas-panel-body .select2-container--default .select2-selection--single {
         border-radius: 8px !important;
         border: 1px solid #cbd5e1 !important;
         height: 40px !important;
         transition: all 0.2s ease-in-out;
     }
 
-    .card-body .select2-container--default .select2-selection--single .select2-selection__rendered {
+    .cioas-panel-body .select2-container--default .select2-selection--single .select2-selection__rendered {
         line-height: 38px !important;
         padding-left: 12px !important;
         color: #1e293b !important;
     }
 
-    .card-body .select2-container--default .select2-selection--single .select2-selection__arrow {
+    .cioas-panel-body .select2-container--default .select2-selection--single .select2-selection__arrow {
         height: 38px !important;
         right: 8px !important;
     }
 
-    .card-body .select2-container--default.select2-container--focus .select2-selection--single {
+    .cioas-panel-body .select2-container--default.select2-container--focus .select2-selection--single {
         border-color: #3b82f6 !important;
     }
 
@@ -67,38 +71,60 @@
     .location-type-card {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-        padding: 10px 24px;
+        gap: 8px;
+        padding: 8px 20px;
         background: #ffffff;
-        border: 1.5px solid #cbd5e1;
+        border: 2px solid #e2e8f0;
         border-radius: 8px;
         cursor: pointer;
         font-weight: 600;
-        font-size: 0.9rem;
-        color: #475569;
-        transition: all 0.2s ease-in-out;
+        font-size: 0.85rem;
+        color: #64748b;
+        transition: all 0.18s ease;
         margin-bottom: 0;
         user-select: none;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+        position: relative;
+        letter-spacing: 0.02em;
+    }
+
+    .location-type-card::before {
+        content: '';
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 2px solid #cbd5e1;
+        background: #fff;
+        transition: all 0.18s ease;
+        flex-shrink: 0;
     }
 
     .location-type-card:hover {
         border-color: #94a3b8;
         background: #f8fafc;
         color: #1e293b;
+        transform: translateY(-1px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
     }
 
     .location-type-card.active {
         border-color: #2563eb !important;
-        background: #eff6ff !important;
-        color: #2563eb !important;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
+        color: #1d4ed8 !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12), 0 2px 6px rgba(37, 99, 235, 0.15);
+    }
+
+    .location-type-card.active::before {
+        border-color: #2563eb;
+        background: #2563eb;
+        box-shadow: inset 0 0 0 2px #fff;
     }
 
     .location-type-card .location-icon {
-        font-size: 1.05rem;
-        color: #64748b;
-        transition: color 0.2s ease-in-out;
+        font-size: 1rem;
+        color: #94a3b8;
+        transition: color 0.18s ease;
     }
 
     .location-type-card.active .location-icon {
@@ -183,7 +209,7 @@
     <div class="form-group row">
         <div class="col-sm-4">
             <label for="organization_category_id">Category</label>
-            <select class="form-control select2" name="organization_category_id" id="organization_category_id">
+            <select class="form-control select2 select2bs4" name="organization_category_id" id="organization_category_id">
                 <option value=""> Category</option>
                 @if (count($categories))
                     @foreach ($categories as $category)
@@ -196,7 +222,7 @@
         </div>
         <div class="col-sm-4">
             <label for="organization_subcategory_id">Sub Category</label>
-            <select class="form-control select2" name="organization_subcategory_id" id="organization_subcategory_id">
+            <select class="form-control select2 select2bs4" name="organization_subcategory_id" id="organization_subcategory_id">
                 @if (isset($organization->hotel_subcategory_id))
                     <option value="{{ $organization->hotel_subcategory_id }}">
                         {{ $organization->subcategory->en_name }}
@@ -206,7 +232,7 @@
         </div>
         <div class="col-sm-4">
             <label for="organization_type_id">Type </label>
-            <select class="form-control select2" name="organization_type_id" id="organization_type_id">
+            <select class="form-control select2 select2bs4" name="organization_type_id" id="organization_type_id">
                 <option value="">Select Type </option>
                 @if (isset($types))
                     @foreach ($types as $type)
@@ -249,7 +275,7 @@
         </div>
         <div class="col-sm-2">
             <label for="application_type">Application Type</label>
-            <select class="form-control select2" name="application_type" id="application_type">
+            <select class="form-control select2 select2bs4" name="application_type" id="application_type">
                 <option value="new" {{ isset($organization->application_type) ? ($organization->application_type == 'new' ? 'selected' : '') : '' }}>
                     NEW</option>
                 <option value="old" {{ isset($organization->application_type) ? ($organization->application_type == 'old' ? 'selected' : '') : '' }}>
@@ -435,7 +461,7 @@
                     @if ($wards)
                         @foreach ($wards as $ward)
                             <option value="{{ $ward->id }}" {{ isset($organization->ward_id) ? ($organization->ward_id == $ward->id ? 'selected' : '') : '' }}>
-                                {{ $ward->en_ward_no }}
+                                {{ $ward->name }}
                             </option>
                         @endforeach
                     @endif
@@ -645,7 +671,7 @@
                     @if ($wards)
                         @foreach ($wards as $ward)
                             <option value="{{ $ward->id }}" {{ isset($organization->office_ward_id) ? ($organization->office_ward_id == $ward->id ? 'selected' : '') : '' }}>
-                                {{ $ward->en_ward_no }}
+                                {{ $ward->name }}
                             </option>
                         @endforeach
                     @endif
@@ -942,30 +968,6 @@
 
         });
 
-        $(document).on('change', '#organization_subcategory_id', function (e) {
-            e.preventDefault();
-            let _this_value = $(this).val();
-            if (_this_value) {
-                $.ajax({
-                    type: "GET",
-                    url: "{{ url('organization-work-area-options') }}/" + _this_value,
-                    beforeSend: function () {
-                        $('#organization_work_area_id').prop("disabled", true);
-                        console.log("Searcing Work Area");
-                    },
-                    success: function (response) {
-                        $('#organization_work_area_id').html(response)
-                        $('#organization_work_area_id').prop("disabled", false);
-                    },
-                    error: function (xhr, status, error) {
-                        var responseText = jQuery.parseJSON(xhr.responseText);
-                        toastr.error(responseText.message);
-                    }
-
-                });
-            }
-        })
-
         // Present address district selector: load districts for selected division
         // Registered address: load district options when division changes
         $(document).on('change', '#division_id', function (e) {
@@ -1129,7 +1131,7 @@
                         console.log("Searcing Districts");
                     },
                     success: function (response) {
-                        village_id.html(response)
+                        village_id.html(response.villageOptions)
                         village_id.prop("disabled", false);
                     },
                     error: function (xhr, status, error) {
@@ -1309,7 +1311,7 @@
                         console.log("Searcing Districts");
                     },
                     success: function (response) {
-                        village_id.html(response)
+                        village_id.html(response.villageOptions)
                         village_id.prop("disabled", false);
                     },
                     error: function (xhr, status, error) {
@@ -1443,3 +1445,4 @@
         });
     </script>
 @endpush
+

@@ -107,7 +107,7 @@
     <section class="content">
         <div class="container-fluid">
             <x-print-view title="ব্যক্তিগত আগ্নেয়াস্ত্র লাইসেন্স">
-                <div class="card card-info shadow-none">
+                <div class="card shadow-none border-0" style="background: transparent;">
                     <div class="card-header no-print">
                         <h3 class="card-title">Tracking ID: {{ $application->tracking_no }}</h3>
                         <div class="card-tools">
@@ -404,6 +404,8 @@
                                     <td><strong>{{ $application->interview->magistrate_final_comments ?? 'N/A' }}</strong></td>
                                 </tr>
                             </table>
+
+
                         @else
                             <div class="alert alert-warning">
                                 <i class="fas fa-exclamation-triangle"></i> ম্যাজিস্ট্রেট ইন্টারভিউ (পরিশिष्ट-৫) এখনও সম্পন্ন
@@ -411,27 +413,39 @@
                             </div>
                         @endif
 
-                    </div>
-                    <div class="card-footer text-right no-print">
-                        @if(in_array($application->status, ['Submitted', 'Verified', 'Interviewed']))
-                            <div class="d-inline-flex" style="gap: 10px;">
-                                <form action="{{ route('gun-license.person.approve', $application->id) }}" method="POST"
-                                    onsubmit="return confirm('আপনি কি এই আবেদনটি অনুমোদন করতে চান?');">
-                                    @csrf
-                                    <button type="submit" class="btn btn-success"><i class="fas fa-check-circle"></i>
-                                        অনুমোদন</button>
-                                </form>
-                                <form action="{{ route('gun-license.person.reject', $application->id) }}" method="POST"
-                                    onsubmit="return confirm('আপনি কি এই আবেদনটি প্রত্যাখ্যান করতে চান?');">
-                                    @csrf
-                                    <button type="submit" class="btn btn-danger"><i class="fas fa-times-circle"></i>
-                                        প্রত্যাখ্যান</button>
-                                </form>
-                            </div>
-                        @endif
-                    </div>
                 </div>
             </x-print-view>
+            
+            <div class="text-center mt-4 mb-5 no-print">
+                <div class="d-inline-flex justify-content-center align-items-center" style="gap: 15px;">
+                    <a href="{{ route('gun-license.index') }}" class="btn btn-dark" style="border-radius: 6px; font-weight: 600; padding: 10px 20px;">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                    
+                    <button type="button" class="btn btn-secondary" onclick="window.print();" style="border-radius: 6px; font-weight: 600; padding: 10px 20px;">
+                        <i class="fas fa-print"></i> Printout
+                    </button>
+
+                    @if(in_array($application->status, ['Submitted', 'Verified', 'Interviewed']))
+                        <div style="width: 2px; height: 30px; background-color: #cbd5e1;"></div>
+                        
+                        <form action="{{ route('gun-license.person.approve', $application->id) }}" method="POST"
+                            onsubmit="event.preventDefault(); Swal.fire({title: 'আবেদন অনুমোদন?', text: 'আপনি কি এই আবেদনটি অনুমোদন করতে চান?', icon: 'question', showCancelButton: true, confirmButtonColor: '#0f766e', cancelButtonColor: '#475569', confirmButtonText: 'হ্যাঁ, অনুমোদন করুন!', cancelButtonText: 'বাতিল'}).then((result) => { if (result.isConfirmed) { this.submit(); } });" style="margin-bottom:0;">
+                            @csrf
+                            <button type="submit" class="btn btn-success" style="border-radius: 6px; font-weight: 600; background-color: #10b981; border-color: #10b981; padding: 10px 20px;">
+                                <i class="fas fa-check-circle"></i> অনুমোদন
+                            </button>
+                        </form>
+                        <form action="{{ route('gun-license.person.reject', $application->id) }}" method="POST"
+                            onsubmit="event.preventDefault(); Swal.fire({title: 'আবেদন প্রত্যাখ্যান?', text: 'আপনি কি এই আবেদনটি প্রত্যাখ্যান করতে চান?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc2626', cancelButtonColor: '#475569', confirmButtonText: 'হ্যাঁ, প্রত্যাখ্যান করুন!', cancelButtonText: 'বাতিল'}).then((result) => { if (result.isConfirmed) { this.submit(); } });" style="margin-bottom:0;">
+                            @csrf
+                            <button type="submit" class="btn btn-danger" style="border-radius: 6px; font-weight: 600; background-color: #ef4444; border-color: #ef4444; padding: 10px 20px;">
+                                <i class="fas fa-times-circle"></i> প্রত্যাখ্যান
+                            </button>
+                        </form>
+                    @endif
+                </div>
+            </div>
         </div>
     </section>
 @endsection

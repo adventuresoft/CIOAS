@@ -1,4 +1,4 @@
-@extends('backend.master', ['mainMenu' => 'HotelRestaurant', 'subMenu' => 'HotelRestaurantShow'])
+﻿@extends('backend.master', ['mainMenu' => 'HotelRestaurant', 'subMenu' => 'HotelRestaurantShow'])
 
 @section('title', 'Hotel & Restaurant Details')
 
@@ -266,38 +266,7 @@
 @section('content')
     <x-print-view title="হোটেল ও রেস্তোরাঁ তথ্য বিবরণী (Hotel/Restaurant Details)">
 
-        <!-- Navigation/Action Buttons (Hidden on Print) -->
-        <div class="no-print d-flex gap-2 justify-content-end mb-4 align-items-center"
-            style="background: #ffffff; padding: 12px 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
-            <div class="mr-auto d-flex align-items-center gap-2">
-                <span class="text-secondary font-weight-bold" style="font-size: 14px;">Application Status:</span>
-                @if ($organization->status == 1)
-                    <span class="badge bg-success text-white px-3 py-2"
-                        style="border-radius: 20px; font-weight: 700; font-size: 12.5px;"><i class="fas fa-check-circle"></i>
-                        Approved</span>
-                @else
-                    <span class="badge bg-warning text-dark px-3 py-2"
-                        style="border-radius: 20px; font-weight: 700; font-size: 12.5px;"><i class="fas fa-clock"></i> Pending
-                        Review</span>
-                @endif
-            </div>
-            <a href="{{ route('hotel-restaurant.index') }}" class="btn btn-sm btn-secondary"
-                style="font-weight: 700; border-radius: 8px; padding: 8px 16px;">
-                <i class="fa fa-arrow-left"></i> Back to List
-            </a>
-            @if ($organization->status == 0)
-                <a href="{{ route('hotel-restaurant.edit', $organization->id) }}" class="btn btn-sm btn-primary"
-                    style="font-weight: 700; border-radius: 8px; padding: 8px 16px; margin-left: 8px;">
-                    <i class="fa fa-edit"></i> Edit
-                </a>
-            @endif
-            @if ($organization->status != 1)
-                <button class="btn btn-sm btn-success" id="approveBtn"
-                    style="font-weight: 700; border-radius: 8px; padding: 8px 16px; margin-left: 8px; background-color: #0f766e; border-color: #0f766e;">
-                    <i class="fa fa-check"></i> Approve
-                </button>
-            @endif
-        </div>
+
 
         {{-- Basic Organization Information --}}
         <div class="photo-badge">
@@ -498,6 +467,48 @@
         @endif
 
     </x-print-view>
+
+    <!-- Professional Floating/Bottom Action Bar -->
+    <div class="no-print mt-4 mb-5">
+        <div class="d-flex justify-content-between align-items-center" style="background: #ffffff; padding: 16px 24px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);">
+            <!-- Status Badge -->
+            <div class="d-flex align-items-center gap-3">
+                <span class="text-secondary" style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Status</span>
+                @if ($organization->status == 1)
+                    <span class="badge" style="background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; border-radius: 20px; font-weight: 700; font-size: 13px; padding: 8px 16px;">
+                        <i class="fas fa-check-circle mr-1"></i> Approved
+                    </span>
+                @else
+                    <span class="badge" style="background: #fffbeb; color: #d97706; border: 1px solid #fde68a; border-radius: 20px; font-weight: 700; font-size: 13px; padding: 8px 16px;">
+                        <i class="fas fa-clock mr-1"></i> Pending Review
+                    </span>
+                @endif
+            </div>
+            
+            <!-- Actions -->
+            <div class="d-flex gap-2">
+                <a href="{{ route('hotel-restaurant.index') }}" class="btn btn-light" style="font-weight: 600; border-radius: 8px; padding: 10px 20px; color: #475569; border: 1px solid #cbd5e1; transition: all 0.2s;">
+                    <i class="fa fa-arrow-left mr-1"></i> Back to List
+                </a>
+                
+                <button type="button" onclick="window.print()" class="btn" style="font-weight: 600; border-radius: 8px; padding: 10px 20px; background: #f8fafc; color: #0ea5e9; border: 1px solid #bae6fd; transition: all 0.2s;">
+                    <i class="fas fa-print mr-1"></i> Printout
+                </button>
+                
+                @if ($organization->status == 0)
+                    <a href="{{ route('hotel-restaurant.edit', $organization->id) }}" class="btn" style="font-weight: 600; border-radius: 8px; padding: 10px 20px; background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; transition: all 0.2s;">
+                        <i class="fa fa-edit mr-1"></i> Edit
+                    </a>
+                @endif
+                
+                @if ($organization->status != 1)
+                    <button class="btn btn-success" id="approveBtn" style="font-weight: 600; border-radius: 8px; padding: 10px 24px; background: #0f766e; border: none; box-shadow: 0 4px 6px rgba(15, 118, 110, 0.2); transition: all 0.2s;">
+                        <i class="fa fa-check mr-1"></i> Approve
+                    </button>
+                @endif
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('script')

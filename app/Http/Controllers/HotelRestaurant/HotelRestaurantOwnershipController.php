@@ -13,6 +13,9 @@ use App\Models\Division;
 use App\Models\Thana;
 use App\Models\PostOffice;
 use App\Models\UnionWard;
+use App\Models\Union;
+use App\Models\Pourashava;
+use App\Models\CityCorporation;
 use App\Models\Religion;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -76,6 +79,10 @@ class HotelRestaurantOwnershipController extends Controller
             'permanent_district.*'     => 'nullable|string',
             'permanent_thana.*'        => 'nullable|string',
             'permanent_post_office.*'  => 'nullable|string',
+            'permanent_location_type.*'=> 'nullable|string',
+            'permanent_city_id.*'      => 'nullable',
+            'permanent_pos_id.*'       => 'nullable',
+            'permanent_union_id.*'     => 'nullable',
             'permanent_village_id.*'   => 'nullable',
             'permanent_ward_id.*'      => 'nullable',
 
@@ -83,6 +90,10 @@ class HotelRestaurantOwnershipController extends Controller
             'present_district_id.*'    => 'nullable',
             'present_thana_id.*'       => 'nullable',
             'present_post_office_id.*' => 'nullable',
+            'present_location_type.*'  => 'nullable|string',
+            'present_city_id.*'        => 'nullable',
+            'present_pos_id.*'         => 'nullable',
+            'present_union_id.*'       => 'nullable',
             'present_village_id.*'     => 'nullable',
             'present_ward_id.*'        => 'nullable',
         ]);
@@ -142,6 +153,10 @@ class HotelRestaurantOwnershipController extends Controller
                     'permanent_district'     => $request->permanent_district[$key] ?? null,
                     'permanent_thana'        => $request->permanent_thana[$key] ?? null,
                     'permanent_post_office'  => $request->permanent_post_office[$key] ?? null,
+                    'permanent_location_type'=> $request->permanent_location_type[$key] ?? null,
+                    'permanent_city_id'      => $request->permanent_city_id[$key] ?? null,
+                    'permanent_pos_id'       => $request->permanent_pos_id[$key] ?? null,
+                    'permanent_union_id'     => $request->permanent_union_id[$key] ?? null,
                     'permanent_village_id'   => $request->permanent_village_id[$key] ?? null,
                     'permanent_ward_id'      => $request->permanent_ward_id[$key] ?? null,
                     'permanent_road'         => $request->permanent_road[$key] ?? null,
@@ -152,6 +167,10 @@ class HotelRestaurantOwnershipController extends Controller
                     'present_district_id'    => $request->present_district_id[$key] ?? null,
                     'present_thana_id'       => $request->present_thana_id[$key] ?? null,
                     'present_post_office_id' => $request->present_post_office_id[$key] ?? null,
+                    'present_location_type'  => $request->present_location_type[$key] ?? null,
+                    'present_city_id'        => $request->present_city_id[$key] ?? null,
+                    'present_pos_id'         => $request->present_pos_id[$key] ?? null,
+                    'present_union_id'       => $request->present_union_id[$key] ?? null,
                     'present_village_id'     => $request->present_village_id[$key] ?? null,
                     'present_ward_id'        => $request->present_ward_id[$key] ?? null,
                     'present_road'           => $request->present_road[$key] ?? null,
@@ -208,20 +227,64 @@ class HotelRestaurantOwnershipController extends Controller
                     ->where('district_id', $ownership->present_district_id)
                     ->get();
 
+                $data['post_officeses'][$key] = PostOffice::where('status', true)
+                    ->where('thana_id', $ownership->permanent_thana)
+                    ->get();
+
+                $data['present_post_officeses'][$key] = PostOffice::where('status', true)
+                    ->where('thana_id', $ownership->present_thana_id)
+                    ->get();
+                $data['cities'][$key] = CityCorporation::where('status', true)
+                    ->where('district_id', $ownership->permanent_district)
+                    ->get();
+
+                $data['pourashavas'][$key] = Pourashava::where('status', true)
+                    ->where('district_id', $ownership->permanent_district)
+                    ->get();
+
+                $data['unions'][$key] = Union::where('status', true)
+                    ->where('thana_id', $ownership->permanent_thana)
+                    ->get();
+
+                $data['villages'][$key] = [];
+                if ($ownership->permanent_location_type == 'city_type' && $ownership->permanent_city_id) {
+                    $data['villages'][$key] = Village::where('city_id', $ownership->permanent_city_id)->get();
+                } elseif ($ownership->permanent_location_type == 'pos_type' && $ownership->permanent_pos_id) {
+                    $data['villages'][$key] = Village::where('pos_id', $ownership->permanent_pos_id)->get();
+                } elseif ($ownership->permanent_location_type == 'union_type' && $ownership->permanent_union_id) {
+                    $data['villages'][$key] = Village::where('union_id', $ownership->permanent_union_id)->get();
+                }
+
+                $data['present_cities'][$key] = CityCorporation::where('status', true)
+                    ->where('district_id', $ownership->present_district_id)
+                    ->get();
+
+                $data['present_pourashavas'][$key] = Pourashava::where('status', true)
+                    ->where('district_id', $ownership->present_district_id)
+                    ->get();
+
+                $data['present_unions'][$key] = Union::where('status', true)
+                    ->where('thana_id', $ownership->present_thana_id)
+                    ->get();
+
+                $data['present_villages'][$key] = [];
+                if ($ownership->present_location_type == 'city_type' && $ownership->present_city_id) {
+                    $data['present_villages'][$key] = Village::where('city_id', $ownership->present_city_id)->get();
+                } elseif ($ownership->present_location_type == 'pos_type' && $ownership->present_pos_id) {
+                    $data['present_villages'][$key] = Village::where('pos_id', $ownership->present_pos_id)->get();
+                } elseif ($ownership->present_location_type == 'union_type' && $ownership->present_union_id) {
+                    $data['present_villages'][$key] = Village::where('union_id', $ownership->present_union_id)->get();
+                }
             }
 
+        } else {
+            $data['post_officeses'] = [];
+            $data['present_post_officeses'] = [];
         }
 
         $data['religions']      = Religion::where('status', true)->get();
         $data['divisions']      = Division::where('status', true)->get();
-        $data['wards']          = UnionWard::where('status', true)->get();
-        $data['post_officeses'] = PostOffice::latest()->get();
-        // Load villages for the current user's institute
-        $institute        = Institute::find(Auth::user()->institute_id);
-        $data['villages'] = $institute ? Village::where('union_id', $institute->union_id)->get() : [];
-
-
-
+        $data['wards']          = \App\Models\Ward::all();
 
         return view('backend.pages.hotel-restaurant.tabs.ownership', $data);
     }
@@ -249,3 +312,4 @@ class HotelRestaurantOwnershipController extends Controller
         //
     }
 }
+

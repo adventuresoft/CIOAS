@@ -99,7 +99,50 @@
                         @endif
 
                         <h4 class="font-weight-bold text-dark mb-1">{{ $user->name }}</h4>
-                        <p class="text-muted mb-3" style="font-size: 0.9rem;">{{ $user->email }}</p>
+                        <p class="text-muted mb-2" style="font-size: 0.9rem;">{{ $user->email }}</p>
+
+                        @if ($user->user_type)
+                            <p class="text-info font-weight-bold mb-2" style="font-size: 0.85rem; text-transform: capitalize;" title="User Type">
+                                <i class="fas fa-id-badge mr-1"></i> {{ $user->user_type }}
+                            </p>
+                        @endif
+
+                        @if ($user->department)
+                            <p class="text-muted mb-1" style="font-size: 0.85rem;" title="Department">
+                                <i class="fas fa-building mr-1 text-secondary"></i> {{ $user->department->name }}
+                            </p>
+                        @endif
+
+                        @if ($user->section)
+                            <p class="text-muted mb-1" style="font-size: 0.85rem;" title="Section">
+                                <i class="fas fa-layer-group mr-1 text-secondary"></i> {{ $user->section->name }}
+                            </p>
+                        @endif
+
+                        @php
+                            $profInfo = $user->professionalInfos->last();
+                            $currentDesignation = null;
+                            if ($profInfo) {
+                                if (!empty($profInfo->designation)) {
+                                    $currentDesignation = $profInfo->designation;
+                                } elseif (!empty($profInfo->current_designation)) {
+                                    if (is_numeric($profInfo->current_designation)) {
+                                        $section = \App\Models\Department\Section::find($profInfo->current_designation);
+                                        $currentDesignation = $section ? $section->name : null;
+                                    } else {
+                                        $currentDesignation = $profInfo->current_designation;
+                                    }
+                                }
+                            }
+                        @endphp
+
+                        @if ($currentDesignation)
+                            <p class="text-primary mb-3 font-weight-bold" style="font-size: 0.9rem;" title="Current Designation">
+                                <i class="fas fa-user-tie mr-1"></i> {{ $currentDesignation }}
+                            </p>
+                        @else
+                            <div class="mb-3"></div>
+                        @endif
 
                         @if ($user->status == 1)
                             <span class="badge badge-success px-3 py-2 font-weight-bold" style="border-radius: 9999px;"><i

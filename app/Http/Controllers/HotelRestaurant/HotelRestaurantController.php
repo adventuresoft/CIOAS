@@ -38,7 +38,7 @@ class HotelRestaurantController extends Controller
     public function index(Request $request)
     {
         // Return view for regular page load
-        $data["wards"] = [];
+        $data["wards"] = \App\Models\Ward::all();
         $data["ownership_types"] = [];
         return view('backend.pages.hotel-restaurant.index');
     }
@@ -165,13 +165,13 @@ class HotelRestaurantController extends Controller
 
 
         $data['divisions']       = Division::where('status', true)->get();
-        $data['post_officeses']  = PostOffice::latest()->get();
+        $data['post_officeses']  = [];
 
         // Load villages for the current user's institute
         $institute        = Institute::find(Auth::user()->institute_id);
         $data['villages'] = $institute ? Village::where('union_id', $institute->union_id)->get() : [];
 
-        $data["wards"] = [];
+        $data["wards"] = \App\Models\Ward::all();
         $data["ownership_types"] = [];
         return view('backend.pages.hotel-restaurant.create', $data);
     }
@@ -375,7 +375,7 @@ class HotelRestaurantController extends Controller
 
 
 
-        $data["wards"] = [];
+        $data["wards"] = \App\Models\Ward::all();
         $data["ownership_types"] = [];
         return view('backend.pages.hotel-restaurant.show', $data);
     }
@@ -493,7 +493,7 @@ class HotelRestaurantController extends Controller
 
         $institute = Institute::find(Auth::user()->institute_id);
 
-        $data["wards"] = [];
+        $data["wards"] = \App\Models\Ward::all();
         $data["ownership_types"] = [];
         return view('backend.pages.hotel-restaurant.edit', $data);
     }

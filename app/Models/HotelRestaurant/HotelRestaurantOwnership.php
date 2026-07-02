@@ -62,6 +62,15 @@ class HotelRestaurantOwnership extends Model
         'present_house',
         'present_house_bn',
         'image',
+        
+        'permanent_location_type',
+        'permanent_city_id',
+        'permanent_pos_id',
+        'permanent_union_id',
+        'present_location_type',
+        'present_city_id',
+        'present_pos_id',
+        'present_union_id',
     ];
 
     public function permanentDistrict()

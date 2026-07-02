@@ -56,13 +56,13 @@ class LicenseDataTable extends DataTable
             ->filterColumn('license_category_id', function ($query, $keyword) {
                 $query->whereHas('category', function ($q) use ($keyword) {
                     $q->where('en_name', 'like', "%{$keyword}%")
-                      ->orWhere('bn_name', 'like', "%{$keyword}%");
+                        ->orWhere('bn_name', 'like', "%{$keyword}%");
                 });
             })
             ->filterColumn('license_subcategory_id', function ($query, $keyword) {
                 $query->whereHas('subcategory', function ($q) use ($keyword) {
                     $q->where('en_name', 'like', "%{$keyword}%")
-                      ->orWhere('bn_name', 'like', "%{$keyword}%");
+                        ->orWhere('bn_name', 'like', "%{$keyword}%");
                 });
             })
             ->rawColumns(['action'])
