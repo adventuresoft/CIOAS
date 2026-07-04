@@ -31,7 +31,6 @@ class StaffProfessionalInfoController extends Controller
     public function create($id)
     {
         $data['user'] = User::with('professionalInfos')->find($id);
-        $data['professions'] = Profession::where('status', true)->get();
         $data['departments'] = \App\Models\Department\Department::all();
         // return response()->json($data,  200);
         return view('backend.pages.staff.tabs.professional', $data);

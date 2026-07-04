@@ -297,14 +297,36 @@
         }
     @endphp
 
-    <!-- Main Creation/Edit Form -->
-    <div class="card premium-card">
-        <div class="card-header">
-            <h3 class="card-title">
-                <i class="fas {{ isset($role) ? 'fa-edit' : 'fa-plus-circle' }} text-primary"></i> 
-                {{ isset($role) ? 'Modify Security Role : ' . $role->name : 'Initialize New Security Role' }}
-            </h3>
-        </div>
+    <!-- Action Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 premium-card p-3" style="background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);">
+        <h4 class="mb-0 text-dark font-weight-bold">
+            <i class="fas fa-shield-alt text-primary mr-2"></i> Security Roles Management
+        </h4>
+        @if(!isset($role))
+            <div>
+                <button class="btn btn-primary shadow-sm" type="button" id="createRoleBtn" data-toggle="collapse" data-target="#roleFormContainer" aria-expanded="{{ $errors->any() ? 'true' : 'false' }}" aria-controls="roleFormContainer" style="border-radius: 8px; font-weight: 600; {{ $errors->any() ? 'display: none;' : '' }}">
+                    <i class="fas fa-plus-circle mr-1"></i> Create New Role
+                </button>
+                <button class="btn btn-outline-secondary shadow-sm" type="button" id="backToListBtn" data-toggle="collapse" data-target="#roleFormContainer" style="border-radius: 8px; font-weight: 600; {{ $errors->any() ? '' : 'display: none;' }}">
+                    <i class="fas fa-arrow-left mr-1"></i> Back to Role List
+                </button>
+            </div>
+        @else
+            <a href="{{ route('role.index') }}" class="btn btn-outline-secondary shadow-sm" style="border-radius: 8px; font-weight: 600;">
+                <i class="fas fa-arrow-left mr-1"></i> Back to Role List
+            </a>
+        @endif
+    </div>
+
+    <!-- Main Creation/Edit Form (Collapsible) -->
+    <div class="collapse {{ isset($role) || $errors->any() ? 'show' : '' }}" id="roleFormContainer">
+        <div class="card premium-card mb-4" style="border: 2px solid #eff6ff;">
+            <div class="card-header bg-white">
+                <h3 class="card-title">
+                    <i class="fas {{ isset($role) ? 'fa-edit' : 'fa-plus-circle' }} text-primary"></i> 
+                    {{ isset($role) ? 'Modify Security Role : ' . $role->name : 'Initialize New Security Role' }}
+                </h3>
+            </div>
 
         <form role="form" method="POST" action="{{ isset($role) ? route('role.update', $role->id) : route('role.store') }}">
             @csrf
@@ -542,14 +564,16 @@
                     <a href="{{ route('role.index') }}" class="btn btn-light ml-2" style="border-radius: 8px; font-weight: 600; border: 1px solid #cbd5e1;"><i class="fas fa-times-circle mr-1"></i> Cancel</a>
                 @else
                     <button type="submit" class="btn btn-primary px-4" style="border-radius: 8px; font-weight: 600; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);"><i class="fas fa-plus-circle mr-1"></i> Initialize & Publish Security Role</button>
-                    <button type="reset" class="btn btn-light ml-2" style="border-radius: 8px; font-weight: 600; border: 1px solid #cbd5e1;"><i class="fas fa-undo-alt mr-1"></i> Reset Matrix</button>
+                    <button type="reset" class="btn btn-light ml-2" style="border-radius: 8px; font-weight: 600; border: 1px solid #cbd5e1;"><i class="fas fa-undo-alt mr-1"></i> Reset Form</button>
+                    <button type="button" class="btn btn-outline-secondary ml-auto" data-toggle="collapse" data-target="#roleFormContainer" style="border-radius: 8px; font-weight: 600;">Close</button>
                 @endif
             </div>
         </form>
+        </div>
     </div>
 
     <!-- Registered Roles Directory -->
-    <div class="card premium-card mt-4">
+    <div class="card premium-card mt-4" id="roleListContainer" style="{{ isset($role) || $errors->any() ? 'display: none;' : '' }}">
         <div class="card-header bg-light">
             <h3 class="card-title text-dark">
                 <i class="fas fa-list-alt text-secondary"></i> 
@@ -767,6 +791,19 @@ $(document).ready(function () {
     
     $(document).on('click', '.btn-row-uncheck-all', function() {
         $(this).closest('tr').find('input[type="checkbox"]').prop('checked', false);
+    });
+
+    // Handle visibility of Role List when form collapses
+    $('#roleFormContainer').on('show.bs.collapse', function () {
+        $('#roleListContainer').slideUp();
+        $('#createRoleBtn').hide();
+        $('#backToListBtn').show();
+    });
+    
+    $('#roleFormContainer').on('hide.bs.collapse', function () {
+        $('#roleListContainer').slideDown();
+        $('#createRoleBtn').show();
+        $('#backToListBtn').hide();
     });
 });
 </script>

@@ -412,6 +412,13 @@ if (!function_exists('_detect_module_from_route')) {
             'user'               => ['user'],
             // Institutional Admin
             'institutional-admin'=> ['institutional-admin', 'institutional_admin'],
+            // Basic Settings
+            'basic_setting'      => ['basic-settings', 'basic_settings', 'basic-setting'],
+            // Departments
+            'department'         => ['department'],
+            // Role and Permission
+            'role'               => ['role'],
+            'permission'         => ['permission'],
             // People (no dedicated permission, treat as superadmin-only)
             'people'             => ['people', 'certificate', 'house', 'road', 'marriage',
                                      'divorce', 'tax', 'trade', 'organization', 'succession'],

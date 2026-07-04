@@ -1,5 +1,5 @@
 @php
-    $subMenu  = $subMenu ?? '';
+    $subMenu = $subMenu ?? '';
     $mainMenu = $mainMenu ?? '';
 @endphp
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -270,7 +270,7 @@
                 @endif
 
                 {{-- Appointment Management --}}
-                @if (can_do('appoinment', 'read') || can_do('appoinment', 'create'))
+                @if (can_do('appoinment', 'read'))
                     <li class="nav-item @if (isset($mainMenu) && $mainMenu == 'Appointment') menu-open @endif">
                         <a href="#" class="nav-link @if (isset($mainMenu) && $mainMenu == 'Appointment') active @endif">
                             <i class="nav-icon fas fa-calendar-check"></i>
@@ -280,13 +280,15 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('appointment.slots.index') }}"
-                                    class="nav-link @if (isset($subMenu) && $subMenu == 'Slots') active @endif">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Manage Slots</p>
-                                </a>
-                            </li>
+                            @if(can_do('appoinment', 'create'))
+                                <li class="nav-item">
+                                    <a href="{{ route('appointment.slots.index') }}"
+                                        class="nav-link @if (isset($subMenu) && $subMenu == 'Slots') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Manage Slots</p>
+                                    </a>
+                                </li>
+                            @endif
                             <li class="nav-item">
                                 <a href="{{ route('appointment.booking.index') }}"
                                     class="nav-link @if (isset($subMenu) && $subMenu == 'Bookings') active @endif">
@@ -394,10 +396,9 @@
 
                 {{-- License --}}
                 @if (can_do('license', 'read') || can_do('license', 'create'))
-                    <li
-                        class="nav-item
-                               @if ($subMenu == 'LicenseCreate' || $subMenu == 'LicenseList' || $subMenu == 'LicenseShow' || $subMenu == 'LicenseEdit') menu-open @endif
-                               ">
+                    <li class="nav-item
+                                   @if ($subMenu == 'LicenseCreate' || $subMenu == 'LicenseList' || $subMenu == 'LicenseShow' || $subMenu == 'LicenseEdit') menu-open @endif
+                                   ">
                         <a href="#" class="nav-link @if ($mainMenu == 'license') active @endif ">
                             <i class="nav-icon fas fa-id-card"></i>
                             <p>

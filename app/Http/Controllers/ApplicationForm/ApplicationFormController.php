@@ -23,14 +23,14 @@ class ApplicationFormController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function __construct()
-    {
-        $this->middleware('permission:application_form.read')->only('index', 'show');
-        $this->middleware('permission:application_form.create')->only('create', 'store');
-        $this->middleware('permission:application_form.update')->only('update', 'edit');
-        $this->middleware('permission:application_form.delete')->only('destroy');
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:application_form.read')->only('index', 'show');
+    //     $this->middleware('permission:application_form.create')->only('create', 'store');
+    //     $this->middleware('permission:application_form.update')->only('update', 'edit');
+    //     $this->middleware('permission:application_form.delete')->only('destroy');
 
-    }
+    // }
     public function index()
     {
 

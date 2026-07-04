@@ -1,87 +1,92 @@
 @extends('frontend.master')
 
 @push('style')
-<style>
-    .font-kalpurush {
-        font-family: 'Roboto', Arial, 'Kalpurush', sans-serif !important;
-    }
-    
-    .gov-card {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-        position: relative;
-        overflow: hidden;
-    }
-    .gov-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        border-color: #cbd5e1;
-    }
-    .gov-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(90deg, #10b981, #3b82f6);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    .gov-card:hover::before {
-        opacity: 1;
-    }
-    
-    .icon-circle {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background-color: #f1f5f9;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #3b82f6;
-        transition: all 0.3s ease;
-    }
-    .gov-card:hover .icon-circle {
-        background-color: #eff6ff;
-        color: #2563eb;
-    }
-    
-    .fs-card-title {
-        font-family: 'Roboto', Arial, 'Kalpurush', sans-serif !important;
-        font-size: 16px !important;
-        font-weight: 600 !important;
-        color: #333 !important;
-        margin-bottom: 8px;
-    }
-    
-    .fs-content {
-        font-family: 'Roboto', Arial, 'Kalpurush', sans-serif !important;
-        font-size: 14px !important;
-        font-weight: 500 !important;
-        color: #333 !important;
-        line-height: 1.5;
-    }
-    
-    .btn-gov {
-        font-family: 'Roboto', Arial, 'Kalpurush', sans-serif !important;
-        font-size: 14px !important;
-        color: #059669;
-        font-weight: 600;
-        transition: all 0.2s ease;
-        padding: 6px 12px;
-        background: #ecfdf5;
-        border-radius: 6px;
-    }
-    .gov-card:hover .btn-gov {
-        background: #d1fae5;
-        color: #047857;
-    }
-</style>
+    <style>
+        .font-kalpurush {
+            font-family: 'Roboto', Arial, 'Kalpurush', sans-serif !important;
+        }
+
+        .gov-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gov-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-color: #cbd5e1;
+        }
+
+        .gov-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gov-card:hover::before {
+            opacity: 1;
+        }
+
+        .icon-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3b82f6;
+            transition: all 0.3s ease;
+        }
+
+        .gov-card:hover .icon-circle {
+            background-color: #eff6ff;
+            color: #2563eb;
+        }
+
+        .fs-card-title {
+            font-family: 'Roboto', Arial, 'Kalpurush', sans-serif !important;
+            font-size: 16px !important;
+            font-weight: 600 !important;
+            color: #333 !important;
+            margin-bottom: 8px;
+        }
+
+        .fs-content {
+            font-family: 'Roboto', Arial, 'Kalpurush', sans-serif !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            color: #333 !important;
+            line-height: 1.5;
+        }
+
+        .btn-gov {
+            font-family: 'Roboto', Arial, 'Kalpurush', sans-serif !important;
+            font-size: 14px !important;
+            color: #059669;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            padding: 6px 12px;
+            background: #ecfdf5;
+            border-radius: 6px;
+        }
+
+        .gov-card:hover .btn-gov {
+            background: #d1fae5;
+            color: #047857;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -97,7 +102,7 @@
                     কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম
                 </h1>
 
-                <div class="row g-4 justify-content-center">
+                <div class="row g-4 justify-content-left">
 
                     <!-- Appointment -->
                     <div class="col-12 col-md-6 col-lg-4">
@@ -233,7 +238,8 @@
 
                                 <div class="d-flex flex-column h-100 w-100">
                                     <h3 class="fs-card-title">মিসকেস তালিকা</h3>
-                                    <p class="fs-content text-muted mb-3">আপনার মিসকেস সম্পর্কিত তথ্য ও মামলার অবস্থা জানতে অনুসন্ধান করুন।</p>
+                                    <p class="fs-content text-muted mb-3">আপনার মিসকেস সম্পর্কিত তথ্য ও মামলার অবস্থা জানতে
+                                        অনুসন্ধান করুন।</p>
                                     <span class="btn-gov mt-auto d-inline-flex align-items-center align-self-start">
                                         অনুসন্ধান করুন <i class="fas fa-search ms-2" style="font-size: 12px;"></i>
                                     </span>

@@ -238,7 +238,7 @@ Route::get('get-people-by-union/{union_id}', [ChairmanController::class, 'getPeo
 Route::get('changeMember/{councilor_member_id}', [ChairmanController::class, 'changeMember'])->name('chairman.changeMember');
 Route::post('/councilorUpdate', [ChairmanController::class, "councilorUpdate"])->name('chairman.councilorUpdate');
 
-Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'module.permission']], function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('people', PeopleController::class);

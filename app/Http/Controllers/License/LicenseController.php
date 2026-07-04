@@ -29,13 +29,13 @@ class LicenseController extends Controller
     use FileUploadTrait;
 
 
-    public function __construct()
-    {
-        $this->middleware('permission:license.read')->only('index', 'show');
-        $this->middleware('permission:license.create')->only('create', 'store');
-        $this->middleware('permission:license.update')->only('update', 'edit');
-        $this->middleware('permission:license.delete')->only('destroy');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:license.read')->only('index', 'show');
+    //     $this->middleware('permission:license.create')->only('create', 'store');
+    //     $this->middleware('permission:license.update')->only('update', 'edit');
+    //     $this->middleware('permission:license.delete')->only('destroy');
+    // }
 
     public function index(LicenseDataTable $dataTable)
     {

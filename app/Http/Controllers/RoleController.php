@@ -29,7 +29,7 @@ class RoleController extends Controller
     {
         $roles = Role::paginate(10);
         $permissions = Permission::all();
-        
+
         // Group permissions by module
         $groupedPermissions = [];
         foreach ($permissions as $permission) {
@@ -79,7 +79,7 @@ class RoleController extends Controller
         $role = Role::findOrFail($id);
         $roles = Role::paginate(10);
         $permissions = Permission::all();
-        
+
         // Group permissions by module
         $groupedPermissions = [];
         foreach ($permissions as $permission) {
@@ -99,7 +99,7 @@ class RoleController extends Controller
     public function update(Request $request, $id)
     {
         $role = Role::findOrFail($id);
-        
+
         $request->validate([
             'name' => 'required|string|max:191|unique:roles,name,' . $role->id,
             'description' => 'nullable|string',
@@ -121,7 +121,7 @@ class RoleController extends Controller
             }
 
             session()->flash('success', 'Target Identity (Role) has been modified successfully.');
-            return redirect()->route('role.index');
+            return redirect()->back();
         } catch (\Throwable $th) {
             session()->flash('error', 'Security Operation failed: ' . $th->getMessage());
             return redirect()->back()->withInput();
