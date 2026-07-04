@@ -212,7 +212,7 @@
                         <a href="#" class="nav-link @if ($mainMenu == 'Staff') active @endif">
                             <i class="nav-icon fas fa-user-tie"></i>
                             <p>
-                                Staff Info
+                                Employee Info
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -232,7 +232,7 @@
                                     <a href="{{ route('staff.index') }}"
                                         class="nav-link @if ($mainMenu == 'Staff' && ($subMenu == 'StaffList' || $subMenu == 'Index')) active @endif">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Staff List</p>
+                                        <p>Employee List</p>
                                     </a>
                                 </li>
 
@@ -240,7 +240,7 @@
                                     <a href="{{ route('staffapprovedlist') }}"
                                         class="nav-link @if ($mainMenu == 'Staff' && ($subMenu == 'StaffApproveList' || $subMenu == 'approvedList')) active @endif">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Approve Staff List</p>
+                                        <p>Approve List</p>
                                     </a>
                                 </li>
 
@@ -397,8 +397,8 @@
                 {{-- License --}}
                 @if (can_do('license', 'read') || can_do('license', 'create'))
                     <li class="nav-item
-                                   @if ($subMenu == 'LicenseCreate' || $subMenu == 'LicenseList' || $subMenu == 'LicenseShow' || $subMenu == 'LicenseEdit') menu-open @endif
-                                   ">
+                                           @if ($subMenu == 'LicenseCreate' || $subMenu == 'LicenseList' || $subMenu == 'LicenseShow' || $subMenu == 'LicenseEdit') menu-open @endif
+                                           ">
                         <a href="#" class="nav-link @if ($mainMenu == 'license') active @endif ">
                             <i class="nav-icon fas fa-id-card"></i>
                             <p>

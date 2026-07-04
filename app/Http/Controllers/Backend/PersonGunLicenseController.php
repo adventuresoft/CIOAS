@@ -122,7 +122,7 @@ class PersonGunLicenseController extends Controller
         $trackingNo = 'PG-' . $datePart . '-' . str_pad($newSerial, 5, '0', STR_PAD_LEFT);
 
         $application = PersonGunApplication::create([
-            'institute_id' => Auth::user()->institute_id ?? 0,
+            'institute_id' => Auth::user()->institute_id,
             'tracking_no' => $trackingNo,
             'district_magistrate' => $request->district_magistrate,
             'application_class' => $request->application_class,

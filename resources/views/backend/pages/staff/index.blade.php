@@ -21,7 +21,7 @@
                 <div class="cioas-panel">
                     <div class="cioas-panel-header">
                         <h3 class="cioas-panel-title">
-                            <i class="fas fa-users"></i> Staff Information
+                            <i class="fas fa-users"></i> Employee Information
                         </h3>
                         <div>
                             @if (create_permission())
@@ -34,10 +34,12 @@
 
                     <div class="cioas-panel-body">
                         <!-- FILTER BAR -->
-                        <div class="row mb-4 p-3" style="background-color: #f8fafc; border-radius: 8px; border: 1px solid var(--mc-line); margin: 0 0 20px 0;">
+                        <div class="row mb-4 p-3"
+                            style="background-color: #f8fafc; border-radius: 8px; border: 1px solid var(--mc-line); margin: 0 0 20px 0;">
                             <!-- Show Entries -->
                             <div class="col-md-2 mb-2">
-                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Show Entries</label>
+                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Show
+                                    Entries</label>
                                 <select id="tableLength" class="form-control form-control-sm">
                                     <option value="10">10</option>
                                     <option value="25">25</option>
@@ -48,28 +50,31 @@
 
                             <!-- Name Filter -->
                             <div class="col-md-2 mb-2">
-                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Name</label>
-                                <input type="text" id="search_name" class="form-control form-control-sm"
-                                    placeholder="Name">
+                                <label
+                                    style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Name</label>
+                                <input type="text" id="search_name" class="form-control form-control-sm" placeholder="Name">
                             </div>
 
                             <!-- Mobile Filter -->
                             <div class="col-md-2 mb-2">
-                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Mobile</label>
+                                <label
+                                    style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Mobile</label>
                                 <input type="text" id="search_mobile" class="form-control form-control-sm"
                                     placeholder="Mobile">
                             </div>
 
                             <!-- Email Filter -->
                             <div class="col-md-2 mb-2">
-                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Email</label>
+                                <label
+                                    style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Email</label>
                                 <input type="text" id="search_email" class="form-control form-control-sm"
                                     placeholder="Email">
                             </div>
 
                             <!-- Gender Filter -->
                             <div class="col-md-2 mb-2">
-                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Gender</label>
+                                <label
+                                    style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Gender</label>
                                 <select id="search_gender" class="form-control form-control-sm">
                                     <option value="">All Gender</option>
                                     <option value="Male">Male</option>
@@ -80,7 +85,8 @@
 
                             <!-- GLOBAL SEARCH -->
                             <div class="col-md-2 mb-2">
-                                <label style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Search</label>
+                                <label
+                                    style="font-weight:700; font-size:12.5px; color:#475569; margin-bottom:6px;">Search</label>
                                 <input type="text" id="search_global" class="form-control form-control-sm"
                                     placeholder="Search...">
                             </div>
@@ -97,7 +103,7 @@
                                         <th>Gender & DOB</th>
                                         <th>Department</th>
                                         <th>Section</th>
-                                        <th>User Type</th>
+                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -173,8 +179,8 @@
                         name: 'section.name'
                     },
                     {
-                        data: 'user_type',
-                        name: 'user_type'
+                        data: 'status',
+                        name: 'status'
                     },
                     {
                         data: 'action',

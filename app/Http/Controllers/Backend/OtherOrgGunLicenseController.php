@@ -93,7 +93,7 @@ class OtherOrgGunLicenseController extends Controller
         DB::beginTransaction();
         try {
             $application = OtherOrgGunApplication::create([
-                'institute_id' => Auth::user()->institute_id ?? 0,
+                'institute_id' => Auth::user()->institute_id,
                 'tracking_no' => $trackingNo,
                 'org_name' => $request->org_name,
                 'org_type' => 'other',

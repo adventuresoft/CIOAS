@@ -433,7 +433,7 @@ class HomeController extends Controller
         $application_id = $this->generateHotelApplicationId();
 
         $payload = [
-            'institute_id' => \Illuminate\Support\Facades\Auth::user()->institute_id ?? 0,
+            'institute_id' => \Illuminate\Support\Facades\Auth::user()->institute_id,
             'name' => $request->name,
             'bn_name' => $request->bn_name,
             'application_id' => $application_id,
@@ -642,7 +642,7 @@ class HomeController extends Controller
         $trackingNo = 'PG-' . $datePart . '-' . str_pad($newSerial, 5, '0', STR_PAD_LEFT);
 
         $application = PersonGunApplication::create([
-            'institute_id' => \Illuminate\Support\Facades\Auth::user()->institute_id ?? 0,
+            'institute_id' => \Illuminate\Support\Facades\Auth::user()->institute_id,
             'tracking_no' => $trackingNo,
             'district_magistrate' => $request->district_magistrate,
             'application_class' => $request->application_class,
@@ -791,7 +791,7 @@ class HomeController extends Controller
         DB::beginTransaction();
         try {
             $application = OrgGunApplication::create([
-                'institute_id' => \Illuminate\Support\Facades\Auth::user()->institute_id ?? 0,
+                'institute_id' => \Illuminate\Support\Facades\Auth::user()->institute_id,
                 'tracking_no' => $trackingNo,
                 'org_name' => $request->org_name,
                 'phone' => $request->phone,
@@ -934,7 +934,7 @@ class HomeController extends Controller
         DB::beginTransaction();
         try {
             $application = OtherOrgGunApplication::create([
-                'institute_id' => \Illuminate\Support\Facades\Auth::user()->institute_id ?? 0,
+                'institute_id' => \Illuminate\Support\Facades\Auth::user()->institute_id,
                 'tracking_no' => $trackingNo,
                 'org_name' => $request->org_name,
                 'org_type' => 'other',

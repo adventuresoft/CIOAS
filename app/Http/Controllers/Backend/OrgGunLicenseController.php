@@ -129,7 +129,7 @@ class OrgGunLicenseController extends Controller
         DB::beginTransaction();
         try {
             $application = OrgGunApplication::create([
-                'institute_id' => Auth::user()->institute_id ?? 0,
+                'institute_id' => Auth::user()->institute_id,
                 'tracking_no' => $trackingNo,
                 'org_name' => $request->org_name,
                 'phone' => $request->phone,

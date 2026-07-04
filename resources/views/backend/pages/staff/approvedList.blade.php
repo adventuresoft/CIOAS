@@ -158,9 +158,7 @@
                                     @foreach ($users as $key => $user)
                                     <tr>
                                         <td>{{ ++$key }}</td>
-                                         <!--<td>
-                                            {{ $user->system_id ?? '' }}
-                                        </td>-->
+
 
                                         <td>
                                             <img src="{{ asset($user->image ?? 'default.png') }}"
@@ -172,7 +170,7 @@
 
                                         <td>
                                             <span class="citizen-id">
-                                                {{$user->people->approved_id}}
+                                                {{ $user->people->approved_id ?? '' }}
                                             </span><br>
                                             <strong>{{ $user->name ?? '' }}</strong>
                                         </td>
@@ -207,19 +205,19 @@
                                             @endphp
                                             {{ $instituteFind['institute']->name ?? '' }} {{ $instituteFind['institute_type'] ?? '' }} -->
                                            {{ collect([
-    $user->addressInfo->presentDistrict->name ?? '',
-    $user->addressInfo->presentThana->name ?? '',
-    $user->addressInfo->presentPostoffice->name ?? '',
+    $user->addressInfo?->presentDistrict?->name ?? '',
+    $user->addressInfo?->presentThana?->name ?? '',
+    $user->addressInfo?->presentPostoffice?->name ?? '',
 ])->filter()->implode(', ') }} 
 
 <br/>
 
 {{ collect([
-    $user->addressInfo->presentVillage->en_name ?? '',
-    $user->addressInfo->presentWard->en_ward_no ?? '',
-    $user->addressInfo->present_area ?? '',
-    $user->addressInfo->presentRoad->name ?? '',
-    $user->addressInfo->presentHouse->house ?? ''
+    $user->addressInfo?->presentVillage?->en_name ?? '',
+    $user->addressInfo?->presentWard?->en_ward_no ?? '',
+    $user->addressInfo?->present_area ?? '',
+    $user->addressInfo?->present_road ?? '',
+    $user->addressInfo?->present_house ?? ''
 ])->filter()->implode(', ') }}
                                         </td>
 
@@ -239,19 +237,6 @@
                                         </td>
                                     </tr>
                                     @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="7" class="empty-state">
-                                            <i class="fas fa-folder-open"></i>
-                                            <h5>No people found</h5>
-                                            <p class="text-muted">Get started by creating a new person.</p>
-                                            @if (create_permission())
-                                            <a href="{{ route('staff.create') }}" class="btn btn-primary mt-2">
-                                                <i class="fas fa-plus-circle mr-1"></i> Create New
-                                            </a>
-                                            @endif
-                                        </td>
-                                    </tr>
                                 @endif
                             </tbody>
 

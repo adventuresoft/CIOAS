@@ -20,13 +20,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
-use Spatie\Permission\Traits\HasRoles;
+// use Spatie\Permission\Traits\HasRoles;
 use App\Traits\BelongsToInstitute;
 use App\Models\Staff;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, BelongsToInstitute;
+    use HasApiTokens, HasFactory, Notifiable, BelongsToInstitute;
 
     /**
      * The attributes that are mass assignable.
@@ -101,6 +101,55 @@ class User extends Authenticatable
     public function staff()
     {
         return $this->hasOne(Staff::class, 'user_id', 'id');
+    }
+    
+    public function role()
+    {
+        return $this->belongsTo(\App\Models\Role::class, 'role_id', 'id');
+    }
+
+    public function getRoleNames()
+    {
+        return collect([$this->role?->name])->filter();
+    }
+
+    public function hasRole($roles, string $guard = null): bool
+    {
+        if (is_string($roles) && false !== strpos($roles, '|')) {
+            $roles = explode('|', $roles);
+        }
+        if (is_string($roles)) {
+            return $this->role?->name === $roles;
+        }
+        if (is_array($roles)) {
+            return in_array($this->role?->name, $roles);
+        }
+        return false;
+    }
+
+    public function hasAnyRole(...$roles): bool
+    {
+        return $this->hasRole($roles);
+    }
+
+    public function assignRole(...$roles)
+    {
+        $role = collect($roles)->flatten()->first();
+        if ($role instanceof \App\Models\Role) {
+            $this->role_id = $role->id;
+        } else {
+            $roleModel = \App\Models\Role::where('name', $role)->first();
+            if ($roleModel) {
+                $this->role_id = $roleModel->id;
+            }
+        }
+        $this->save();
+        return $this;
+    }
+
+    public function syncRoles(...$roles)
+    {
+        return $this->assignRole(...$roles);
     }
     public function peopleProfile()
     {

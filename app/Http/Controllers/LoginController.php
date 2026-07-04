@@ -182,7 +182,7 @@ class LoginController extends Controller
             'password' => $request->input('password'),
         ];
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials) && Auth::user()->status != 0) {
             return redirect()->route('dashboard');
         } else {
             return redirect()->route('login')->with('error', 'Invalid credentials. Please try again.');
@@ -233,7 +233,7 @@ class LoginController extends Controller
             $image = $request->file('image');
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('uploads/user'), $imageName);
-            
+
             // Delete old file
             if ($user->image && file_exists(public_path($user->image))) {
                 @unlink(public_path($user->image));

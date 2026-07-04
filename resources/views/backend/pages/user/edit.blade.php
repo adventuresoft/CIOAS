@@ -231,7 +231,7 @@
                                     <label class="form-label-premium" for="password">Access Password</label>
                                     <input type="password" name="password" id="password"
                                         class="form-control form-control-premium @error('password') is-invalid @enderror"
-                                        placeholder="Leave blank to keep current password">
+                                        placeholder="Leave blank to keep current password" autocomplete="new-password">
                                     <small class="text-muted d-block mt-1">Leave blank if password remains
                                         unchanged.</small>
                                     @error('password')
@@ -243,7 +243,7 @@
                                 <div class="col-md-6 form-group mb-4">
                                     <label class="form-label-premium" for="password_confirmation">Confirm Password</label>
                                     <input type="password" name="password_confirmation" id="password_confirmation"
-                                        class="form-control form-control-premium" placeholder="Repeat password">
+                                        class="form-control form-control-premium" placeholder="Repeat password" autocomplete="new-password">
                                 </div>
                             </div>
                         </div>
@@ -270,7 +270,7 @@
                                     <select name="role_id" id="role_id"
                                         class="form-control form-control-premium @error('role_id') is-invalid @enderror"
                                         required>
-                                        <option value="" disabled>Select a Role</option>
+                                        <option value="">Select a Role</option>
                                         @foreach($roles as $role)
                                             <option value="{{ $role->id }}" {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
                                                 {{ $role->name }}
@@ -308,6 +308,9 @@
                                         Pending Review
                                     </label>
                                 </div>
+                                @error('status')
+                                    <span class="text-danger small font-weight-bold d-block mt-2">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
 

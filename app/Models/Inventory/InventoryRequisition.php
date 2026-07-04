@@ -10,6 +10,7 @@ class InventoryRequisition extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'institute_id',
         'requisition_no',
         'application_date',
         'department_name',

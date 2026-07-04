@@ -449,7 +449,7 @@
             </div>
             <div class="id-info-columns">
                 <div class="id-info-item"><span>Name :</span> {{ $user->name ?? '' }}</div> </br>
-                <div class="id-info-item"><span>Role :</span> {{ $user->roles->first()?->name ?? 'N/A' }}</div> </br>
+                <div class="id-info-item"><span>Role :</span> {{ $user->role?->name ?? 'N/A' }}</div> </br>
                 <div class="id-info-item"><span>Department :</span> {{ optional($user->department)->name ?? 'N/A' }}
                 </div> </br>
                 <div class="id-info-item"><span>Section :</span> {{ optional($user->section)->name ?? 'N/A' }}</div>
@@ -491,7 +491,7 @@
                         @if(optional($user->section)->bn_name) ({{ optional($user->section)->bn_name }}) @endif</span>
                 </div>
                 <div class="info-row"><span class="info-label">Primary Role :</span><span
-                        class="info-value">{{ $user->roles->first()?->name ?? 'N/A' }}</span></div>
+                        class="info-value">{{ $user->role?->name ?? 'N/A' }}</span></div>
                 @if($user->people)
                     <div class="info-row"><span class="info-label">Gender :</span><span
                             class="info-value">{{ people_constant_option('gender')[optional($user->people)->gender ?? ''] ?? 'N/A' }}</span>

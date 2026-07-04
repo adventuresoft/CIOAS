@@ -13,6 +13,7 @@ class ApplicationFrom extends Model
     use HasFactory;
 
     protected $fillable = [
+        'institute_id',
         'date',
         'recipient',
         'subject',

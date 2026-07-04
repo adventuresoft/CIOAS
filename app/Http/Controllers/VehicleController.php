@@ -118,6 +118,7 @@ class VehicleController extends Controller
                 'tt_validity_date' => $request->tt_validity_date,
                 'in_issue_date' => $request->in_issue_date,
                 'in_validity_date' => $request->in_validity_date,
+                'institute_id' => auth()->user()->institute_id ?? null,
             ];
 
             $fileFields = ['rc_attachment', 'rp_attachment', 'tt_attachment', 'in_attachment'];

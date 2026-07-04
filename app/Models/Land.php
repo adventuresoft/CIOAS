@@ -13,6 +13,7 @@ class Land extends Model
     protected $table = 'lands';
 
     protected $fillable = [
+        'institute_id',
         'land_no',
         'land_type',
         'record_type',

@@ -77,12 +77,8 @@ class UserDataTable extends DataTable
                 </div>';
             })
             ->addColumn('roles_list', function($row) {
-                if ($row->roles->count() > 0) {
-                    $badges = '';
-                    foreach ($row->roles as $role) {
-                        $badges .= '<span class="badge text-white px-2 py-1 mr-1" style="background-color: #0ea5e9; border-radius: 6px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;"><i class="fas fa-user-shield" style="font-size: 0.8rem;"></i> ' . $role->name . '</span>';
-                    }
-                    return $badges;
+                if ($row->role) {
+                    return '<span class="badge text-white px-2 py-1 mr-1" style="background-color: #0ea5e9; border-radius: 6px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;"><i class="fas fa-user-shield" style="font-size: 0.8rem;"></i> ' . $row->role->name . '</span>';
                 }
                 return '<span class="text-muted font-italic" style="font-size: 0.85rem;">No role</span>';
             })
@@ -112,7 +108,7 @@ class UserDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        $query = $model->newQuery()->with(['department', 'section', 'roles.permissions', 'permissions', 'institute.union', 'institute.pourashava', 'institute.cityCorporation', 'institute.district', 'institute.type'])->orderBy('id', 'desc');
+        $query = $model->newQuery()->with(['department', 'section', 'role', 'institute.union', 'institute.pourashava', 'institute.cityCorporation', 'institute.district', 'institute.type'])->orderBy('id', 'desc');
 
         if (request()->has('department_id') && request('department_id') != '') {
             $query->where('department_id', request('department_id'));

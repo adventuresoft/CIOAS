@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\BasicSettings\AccountType;
 use App\Models\BasicSettings\Bank;
-use App\Models\BasicSettings\Country;
+// use App\Models\BasicSettings\Country;
 use App\Models\BasicSettings\FamilyCategory;
 use App\Models\BasicSettings\FamilyType;
-use App\Models\BasicSettings\Profession;
+// use App\Models\BasicSettings\Profession;
 use App\Models\BasicSettings\Village;
 use App\Models\District;
 use App\Models\Division;
@@ -122,7 +122,7 @@ class StaffController extends Controller
                 ->addColumn('photo', function ($row) {
                     $photoUrl = asset($row->image ?? 'default.png');
                     $defaultUrl = asset('default.png');
-                    return '<img src="' . $photoUrl . '" width="38" height="48" class="img" onerror="this.src=\'' . $defaultUrl . '\'">';
+                    return '<div style="width: 45px; height: 45px; border-radius: 50%; overflow: hidden; border: 2px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; background-color: #f8fafc;"><img src="' . $photoUrl . '" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=\'' . $defaultUrl . '\'"></div>';
                 })
                 ->addColumn('id_name', function ($row) {
                     $systemId = $row->system_id ?? '';
@@ -156,11 +156,15 @@ class StaffController extends Controller
                 ->addColumn('section_name', function ($row) {
                     return $row->section->name ?? 'N/A';
                 })
-                ->addColumn('user_type', function ($row) {
-                    return $row->user_type ?? 'N/A';
+                ->addColumn('status', function ($row) {
+                    if ($row->status == 1) {
+                        return '<span class="badge badge-success">Active</span>';
+                    } else {
+                        return '<span class="badge badge-danger">Inactive</span>';
+                    }
                 })
                 ->addColumn('action', function ($row) {
-                    $actionButtons = '<div class="table-action">';
+                    $actionButtons = '<div class="table-action d-flex" style="gap: 5px;">';
                     if (view_permission()) {
                         $actionButtons .= '<a href="' . route('staff.edit', $row->id) . '" title="Edit" class="btn btn-primary btn-sm btn-action"><i class="fa fa-edit"></i></a>';
                     }
@@ -170,7 +174,7 @@ class StaffController extends Controller
                     $actionButtons .= '</div>';
                     return $actionButtons;
                 })
-                ->rawColumns(['photo', 'id_name', 'mobile_email', 'gender_dob', 'action'])
+                ->rawColumns(['photo', 'id_name', 'mobile_email', 'gender_dob', 'status', 'action'])
                 ->make(true);
         }
     }
@@ -186,9 +190,7 @@ class StaffController extends Controller
             'addressInfo.presentThana',
             'addressInfo.presentPostoffice',
             'addressInfo.presentVillage',
-            'addressInfo.presentWard',
-            'addressInfo.presentRoad',
-            'addressInfo.presentHouse',
+            'addressInfo.presentWard'
         ])->where('user_type', 'staff')->where('status', 1);
 
         if (Auth::user()->institute_id) {
@@ -209,7 +211,7 @@ class StaffController extends Controller
     {
         $data['religions'] = Religion::where('status', true)->get();
         $data['districts'] = District::where('status', true)->orderBy('name')->get();
-        $data['countries'] = Country::orderBy('name')->get();
+        // $data['countries'] = Country::orderBy('name')->get();
         return view('backend.pages.staff.create', $data);
     }
 
@@ -270,7 +272,7 @@ class StaffController extends Controller
                     $staff->date_of_birth = $request->date_of_birth;
                     $staff->birth_place   = $request->birth_place;
                     $staff->district_id   = $request->district_id;
-                    $staff->country_id    = $request->country_id;
+                    // $staff->country_id    = $request->country_id;
                     $staff->gender        = $request->gender;
                     $staff->religion_id   = $request->religion;
                     $staff->blood_group   = $request->blood_group;
@@ -324,7 +326,7 @@ class StaffController extends Controller
 
         $data['religions']        = Religion::where('status', true)->get();
         $data['districts']        = District::where('status', true)->orderBy('name')->get();
-        $data['countries']        = Country::orderBy('name')->get();
+        // $data['countries']        = Country::orderBy('name')->get();
         $data['religions']        = Religion::where('status', true)->get();
         $data['familyTypes']      = FamilyType::where('status', true)->get();
         $data['familyCategories'] = FamilyCategory::where('status', true)->get();
@@ -332,26 +334,10 @@ class StaffController extends Controller
             ->with('institute')
             ->with(array(
                 'addressInfo' => function ($address) {
-                    $address->with('presentUnion', 'permanentHouse', 'presentHouse', 'presentRoad', 'permanentRoad', 'presentVillage', 'presentDistrict', 'presentThana');
+                    $address->with('presentUnion', 'presentVillage', 'presentDistrict', 'presentThana');
                 }
             ))
-            ->with(array(
-                'professionalInfos' => function ($q1) {
-                    $q1->with(array(
-                        'subcategory' => function ($q2) {
-                            $q2->with(array(
-                                'category' => function ($q3) {
-                                    $q3->with(array(
-                                        'type' => function ($q4) {
-                                            $q4->with('profession');
-                                        }
-                                    ));
-                                }
-                            ));
-                        }
-                    ));
-                }
-            ))
+            ->with('professionalInfos')
             ->find($id);
 
         if (!$user) {
@@ -371,7 +357,6 @@ class StaffController extends Controller
         if (isset($institute?->institute_type_id) && $institute->institute_type_id == 1) {
             $data['villages'] = Village::where('union_id', $institute->union_id)->get();
             $data['wards']    = UnionWard::where('status', true)->get();
-            $data['roads']    = Road::where('institute_id', $institute->id)->latest()->get();
         } else if (isset($institute?->institute_type_id) && $institute->institute_type_id == 2) {
 
         } else if (isset($institute?->institute_type_id) && $institute->institute_type_id == 3) {
@@ -379,15 +364,7 @@ class StaffController extends Controller
         }
         $data['divisions'] = Division::where('status', true)->get();
 
-        if ($user->addressInfo) {
-            if ($user->addressInfo->permanent_ward_id && $institute) {
-                $data['permanent_houses'] = House::where('institute_id', $institute->id)
-                    ->where('union_ward_id', $user->addressInfo->permanent_ward_id)
-                    ->latest()
-                    ->get();
-            }
-        }
-        $data['professions'] = Profession::where('status', true)->get();
+        // $data['professions'] = Profession::where('status', true)->get();
 
         $data['account_types'] = AccountType::where('status', true)->latest()->get();
         $data['banks']         = Bank::where('status', true)->latest()->get();
@@ -416,7 +393,7 @@ class StaffController extends Controller
 
         $data['religions'] = Religion::where('status', true)->get();
         $data['districts'] = District::where('status', true)->orderBy('name')->get();
-        $data['countries'] = Country::orderBy('name')->get();
+        // $data['countries'] = Country::orderBy('name')->get();
         $data['user']      = $user = User::with('staff')->find($id);
 
         if (!$user) {
@@ -488,7 +465,7 @@ class StaffController extends Controller
                 $staff->date_of_birth = $request->date_of_birth;
                 $staff->birth_place   = $request->birth_place;
                 $staff->district_id   = $request->district_id;
-                $staff->country_id    = $request->country_id;
+                // $staff->country_id    = $request->country_id;
                 $staff->gender        = $request->gender;
                 $staff->religion_id   = $request->religion;
                 $staff->blood_group   = $request->blood_group;

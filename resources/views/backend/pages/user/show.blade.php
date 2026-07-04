@@ -262,6 +262,14 @@
                         <form action="{{ route('user.update', $user->id) }}" method="POST">
                             @csrf
                             @method('PATCH')
+                            {{-- Hidden fields required for validation --}}
+                            <input type="hidden" name="name" value="{{ $user->name }}">
+                            <input type="hidden" name="email" value="{{ $user->email }}">
+                            <input type="hidden" name="user_type" value="{{ $user->user_type }}">
+                            <input type="hidden" name="mobile" value="{{ $user->mobile }}">
+                            <input type="hidden" name="institute_id" value="{{ $user->institute_id }}">
+                            <input type="hidden" name="department_id" value="{{ $user->department_id }}">
+                            <input type="hidden" name="section_id" value="{{ $user->section_id }}">
                             {{-- ===== Security Identity Section ===== --}}
                             <div class="row mb-4">
                                 {{-- Primary Security Role --}}
@@ -274,7 +282,7 @@
                                         <select name="role_id" id="role_id"
                                             class="form-control form-control-premium @error('role_id') is-invalid @enderror"
                                             required>
-                                            <option value="" disabled>Select a Role</option>
+                                            <option value="">Select a Role</option>
                                             @foreach ($roles as $role)
                                                 <option value="{{ $role->id }}"
                                                     {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
@@ -293,13 +301,14 @@
                                         @enderror
                                     </div>
                                     <div class="detail-value mt-1">
-                                        @if ($user->roles->count() > 0)
-                                            @foreach ($user->roles as $role)
-                                                <span class="badge badge-primary px-3 py-2 font-weight-bold"
-                                                    style="border-radius: 8px; font-size: 0.88rem;">
-                                                    <i class="fas fa-user-shield mr-1"></i>{{ $role->name }}
-                                                </span>
-                                            @endforeach
+                                        @php
+                                            $userRole = \App\Models\Role::find($user->role_id);
+                                        @endphp
+                                        @if ($userRole)
+                                            <span class="badge badge-primary px-3 py-2 font-weight-bold"
+                                                style="border-radius: 8px; font-size: 0.88rem;">
+                                                <i class="fas fa-user-shield mr-1"></i>{{ $userRole->name }}
+                                            </span>
                                         @else
                                             <span class="badge badge-secondary px-3 py-2 font-weight-bold"
                                                 style="border-radius: 8px; font-size: 0.88rem;">

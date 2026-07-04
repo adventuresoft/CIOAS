@@ -314,6 +314,7 @@ class InventoryController extends Controller
             $requisition->priority_level = $request->priority_level;
             $requisition->workflow_status = $requisition->workflow_status ?: 'draft';
             $requisition->current_step = 1;
+            $requisition->institute_id = auth()->user()->institute_id ?? null;
             $requisition->save();
 
             $requisition->items()->delete();

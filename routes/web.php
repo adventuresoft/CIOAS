@@ -276,13 +276,14 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'module.permissi
 
     // Staff Routes
     Route::post('staff/records', [StaffController::class, 'records'])->name('staff.records');
-    Route::resource('staff', StaffController::class);
+
 
     // Leave Application
-    Route::get('leave-application/api/staff-info', [\App\Http\Controllers\Backend\LeaveApplicationController::class, 'getStaffInfo'])->name('leave-application.api.staff_info');
-    Route::put('leave-application/{id}/update-status', [\App\Http\Controllers\Backend\LeaveApplicationController::class, 'updateStatus'])->name('leave-application.update-status');
-    Route::resource('leave-application', \App\Http\Controllers\Backend\LeaveApplicationController::class);
+    Route::get('staff/leave-application/api/staff-info', [\App\Http\Controllers\Backend\LeaveApplicationController::class, 'getStaffInfo'])->name('leave-application.api.staff_info');
+    Route::put('staff/leave-application/{id}/update-status', [\App\Http\Controllers\Backend\LeaveApplicationController::class, 'updateStatus'])->name('leave-application.update-status');
+    Route::resource('staff/leave-application', \App\Http\Controllers\Backend\LeaveApplicationController::class)->names('leave-application');
 
+    Route::resource('staff', StaffController::class);
     Route::get('/staff/family/{userID}', [StaffFamilyInfoController::class, 'create'])->name('staff.family');
     Route::post('/staff/family-store', [StaffFamilyInfoController::class, 'store'])->name('staff.familyStore');
 

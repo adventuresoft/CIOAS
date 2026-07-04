@@ -140,7 +140,8 @@ class LandController extends Controller
                 'gazette_no'          => $detailRow['gazette_no'] ?? null,
                 'remarks'             => $detailRow['remarks'] ?? null,
                 'status'              => 0, // Pending
-                'created_by'          => auth()->id()
+                'created_by'          => auth()->id(),
+                'institute_id'        => auth()->user()->institute_id ?? null,
             ]);
 
             $locations = [];

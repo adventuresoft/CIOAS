@@ -8,17 +8,8 @@
             /* Consistent margins for all pages */
         }
 
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Nikosh', 'Noto Sans Bengali', Arial, sans-serif;
-            font-size: 14px !important;
-            line-height: 1.4;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-            background: #f4f6f9;
-        }
+
+
 
         /* Main certificate style container */
         .people-certificate-page {
@@ -444,650 +435,657 @@
 @section('content')
     <x-print-view title="কর্মচারীর তথ্য বিবরণী (Staff Information Record)">
 
-            {{-- Photo and ID block --}}
-            <div class="photo-badge">
-                <div class="photo-box">
-                    <img src="{{ $user->image ? asset($user->image) : asset('public/no-image-found.jpeg') }}"
-                        alt="Profile Photo">
-                </div>
-                <div class="id-info-columns">
-                    <div class="id-info-item"><span>Name :</span> {{ $user->name ?? '' }}</div> </br>
-                    <div class="id-info-item"><span>Name (Bangla) :</span> {{ $user->people->bn_name ?? '' }}</div> </br>
-                    <div class="id-info-item"><span>Staff ID :</span>
-                        {{ $user->people->staff_id ?? $user->people->approved_id ?? '' }}</div> </br>
-                    <div class="id-info-item"><span>NID :</span> {{ $user->nid ?? '' }}</div> </br>
-                    <div class="id-info-item"><span>Mobile :</span> {{ $user->mobile ?? '' }}</div> </br>
-                </div>
+        {{-- Photo and ID block --}}
+        <div class="photo-badge">
+            <div class="photo-box">
+                <img src="{{ $user->image ? asset($user->image) : asset('public/no-image-found.jpeg') }}"
+                    alt="Profile Photo">
             </div>
+            <div class="id-info-columns">
+                <div class="id-info-item"><span>Name :</span> {{ $user->name ?? '' }}</div> </br>
+                <div class="id-info-item"><span>Name (Bangla) :</span> {{ $user->people->bn_name ?? '' }}</div> </br>
+                <div class="id-info-item"><span>Staff ID :</span>
+                    {{ $user->people->staff_id ?? $user->people->approved_id ?? '' }}</div> </br>
+                <div class="id-info-item"><span>NID :</span> {{ $user->nid ?? '' }}</div> </br>
+                <div class="id-info-item"><span>Mobile :</span> {{ $user->mobile ?? '' }}</div> </br>
+            </div>
+        </div>
 
-            {{-- Personal Information --}}
-            <div class="section-header">ব্যক্তিগত তথ্য / Personal Information</div>
-            <div class="two-columns">
-                <div class="col">
-                    <div class="info-row"><span class="info-label">Name (English) :</span><span
-                            class="info-value">{{ $user->name ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">NID No. :</span><span
-                            class="info-value">{{ $user->nid ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Blood Group :</span><span
-                            class="info-value">{{ people_constant_option('blood_group')[$user->people->blood_group ?? ''] ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">Date of Birth :</span><span
-                            class="info-value">{{ $user->people->date_of_birth ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Birth Place :</span><span
-                            class="info-value">{{ optional(\App\Models\District::find($user->people->birth_place ?? null))->name }}</span>
-                    </div>
+        {{-- Personal Information --}}
+        <div class="section-header">ব্যক্তিগত তথ্য / Personal Information</div>
+        <div class="two-columns">
+            <div class="col">
+                <div class="info-row"><span class="info-label">Name (English) :</span><span
+                        class="info-value">{{ $user->name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">NID No. :</span><span
+                        class="info-value">{{ $user->nid ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Blood Group :</span><span
+                        class="info-value">{{ people_constant_option('blood_group')[$user->people->blood_group ?? ''] ?? '' }}</span>
                 </div>
-                <div class="col">
-                    <div class="info-row"><span class="info-label">Name (Bangla) :</span><span
-                            class="info-value">{{ $user->people->bn_name ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Birth Reg. No. :</span><span
-                            class="info-value">{{ $user->birth_certificate ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Gender :</span><span
-                            class="info-value">{{ people_constant_option('gender')[$user->people->gender ?? ''] ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">Religion :</span><span
-                            class="info-value">{{ $user->people->religion->name ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Email :</span><span
-                            class="info-value">{{ $user->email ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Date of Birth :</span><span
+                        class="info-value">{{ $user->people->date_of_birth ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Birth Place :</span><span
+                        class="info-value">{{ optional(\App\Models\District::find($user->people->birth_place ?? null))->name }}</span>
                 </div>
             </div>
+            <div class="col">
+                <div class="info-row"><span class="info-label">Name (Bangla) :</span><span
+                        class="info-value">{{ $user->people->bn_name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Birth Reg. No. :</span><span
+                        class="info-value">{{ $user->birth_certificate ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Gender :</span><span
+                        class="info-value">{{ people_constant_option('gender')[$user->people->gender ?? ''] ?? '' }}</span>
+                </div>
+                <div class="info-row"><span class="info-label">Religion :</span><span
+                        class="info-value">{{ $user->people->religion->name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Email :</span><span
+                        class="info-value">{{ $user->email ?? '' }}</span></div>
+            </div>
+        </div>
 
-            {{-- Family Information --}}
-            <div class="section-header">পারিবারিক তথ্য / Family Information</div>
-            <div class="two-columns">
-                <div class="col">
-                    <div class="info-row"><span class="info-label">Father's Name :</span><span
-                            class="info-value">{{ $user->familyInfo->father_name ?? '' }} </span></div>
-                    <div class="info-row"><span class="info-label">Father's NID :</span><span
-                            class="info-value">{{ $user->familyInfo->father_nid ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Mother's Name :</span><span
-                            class="info-value">{{ $user->familyInfo->mother_name ?? '' }} </span></div>
-                    <div class="info-row"><span class="info-label">Mother's NID :</span><span
-                            class="info-value">{{ $user->familyInfo->mother_nid ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Marital Status :</span><span
-                            class="info-value">{{ family_constant_option('marital_status')[$user->familyInfo->marital_status ?? ''] ?? '' }}</span>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="info-row"><span class="info-label">Father's Name :</span><span
-                            class="info-value">{{ $user->familyInfo->father_name_bn ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Father's Live Status :</span><span
-                            class="info-value">{{ family_constant_option('live_status')[$user->familyInfo->father_live_status ?? ''] ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">Mother's Name :</span><span class="info-value">
-                            {{ $user->familyInfo->mother_name_bn ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Mother's Live Status :</span><span
-                            class="info-value">{{ family_constant_option('live_status')[$user->familyInfo->mother_live_status ?? ''] ?? '' }}</span>
-                    </div>
-                    @if(isset($user->familyInfo->marital_status) && $user->familyInfo->marital_status != 1)
-                        <div class="info-row"><span class="info-label">Spouse NID :</span><span
-                                class="info-value">{{ $user->familyInfo->spouse_nid ?? '' }}</span></div>
-                    @endif
-                    @if($user->familyInfo->have_children ?? false)
-                        <div class="info-row"><span class="info-label">Children :</span><span class="info-value">Boys:
-                                {{ $user->familyInfo->boys ?? 0 }}, Girls: {{ $user->familyInfo->girls ?? 0 }}</span></div>
-                    @endif
+        {{-- Family Information --}}
+        <div class="section-header">পারিবারিক তথ্য / Family Information</div>
+        <div class="two-columns">
+            <div class="col">
+                <div class="info-row"><span class="info-label">Father's Name :</span><span
+                        class="info-value">{{ $user->familyInfo->father_name ?? '' }} </span></div>
+                <div class="info-row"><span class="info-label">Father's NID :</span><span
+                        class="info-value">{{ $user->familyInfo->father_nid ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Mother's Name :</span><span
+                        class="info-value">{{ $user->familyInfo->mother_name ?? '' }} </span></div>
+                <div class="info-row"><span class="info-label">Mother's NID :</span><span
+                        class="info-value">{{ $user->familyInfo->mother_nid ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Marital Status :</span><span
+                        class="info-value">{{ family_constant_option('marital_status')[$user->familyInfo->marital_status ?? ''] ?? '' }}</span>
                 </div>
             </div>
+            <div class="col">
+                <div class="info-row"><span class="info-label">Father's Name :</span><span
+                        class="info-value">{{ $user->familyInfo->father_name_bn ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Father's Live Status :</span><span
+                        class="info-value">{{ family_constant_option('live_status')[$user->familyInfo->father_live_status ?? ''] ?? '' }}</span>
+                </div>
+                <div class="info-row"><span class="info-label">Mother's Name :</span><span class="info-value">
+                        {{ $user->familyInfo->mother_name_bn ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Mother's Live Status :</span><span
+                        class="info-value">{{ family_constant_option('live_status')[$user->familyInfo->mother_live_status ?? ''] ?? '' }}</span>
+                </div>
+                @if(isset($user->familyInfo->marital_status) && $user->familyInfo->marital_status != 1)
+                    <div class="info-row"><span class="info-label">Spouse NID :</span><span
+                            class="info-value">{{ $user->familyInfo->spouse_nid ?? '' }}</span></div>
+                @endif
+                @if($user->familyInfo->have_children ?? false)
+                    <div class="info-row"><span class="info-label">Children :</span><span class="info-value">Boys:
+                            {{ $user->familyInfo->boys ?? 0 }}, Girls: {{ $user->familyInfo->girls ?? 0 }}</span></div>
+                @endif
+            </div>
+        </div>
+
+        @php
+            //dd($user->addressInfo);
+        @endphp
+        {{-- Address Information (Permanent & Present side by side) --}}
+        <div class="section-header">ঠিকানার তথ্য / Address Information</div>
+        <div class="two-columns">
+            <div class="col">
+                <h6 class="mb-2 font-weight-bold">স্থায়ী ঠিকানা / Permanent Address</h6>
+                <div class="info-row"><span class="info-label">District :</span><span
+                        class="info-value">{{ $user->addressInfo->permanentDistrict->name ?? $user->addressInfo->permanentVillage->district->name ?? '' }}</span>
+                </div>
+                <div class="info-row"><span class="info-label">Thana :</span><span
+                        class="info-value">{{ $user->addressInfo->permanentThana->name ?? $user->addressInfo->permanentVillage->thana->name ?? '' }}</span>
+                </div>
+                <div class="info-row"><span class="info-label">Union :</span><span
+                        class="info-value">{{ $user->addressInfo->permanentUnion->name ?? $user->addressInfo->permanentVillage->union->name ?? '' }}</span>
+                </div>
+                <div class="info-row"><span class="info-label">Post Office :</span><span
+                        class="info-value">{{ $user->addressInfo->permanentPostoffice->name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Village :</span><span
+                        class="info-value">{{ $user->addressInfo->permanentVillage->en_name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Ward :</span><span
+                        class="info-value">{{ $user->addressInfo->permanentWard->en_ward_no ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Area :</span><span
+                        class="info-value">{{ $user->addressInfo->permanent_area ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Road :</span><span
+                        class="info-value">{{ $user->addressInfo->permanent_road ?? '' }}</span>
+                </div>
+                <div class="info-row"><span class="info-label">House :</span><span
+                        class="info-value">{{ $user->addressInfo->permanent_house ?? '' }}</span>
+                </div>
+                <div class="info-row"><span class="info-label">House (Bangla) :</span><span
+                        class="info-value">{{ $user->addressInfo->permanent_house_bn ?? '' }}</span>
+                </div>
+                @if(optional($user->addressInfo)->is_same_as_permanent == 1)
+                    <div class="mt-3">
+                        <span style="color: #5b4bdf; font-weight: bold;"><i class="fas fa-check-square mr-1"></i> Same as
+                            Permanent Address</span>
+                    </div>
+                @endif
+            </div>
+            <div class="col">
+                <h6 class="mb-2 font-weight-bold">বর্তমান ঠিকানা / Present Address</h6>
+                <div class="info-row"><span class="info-label">District :</span><span
+                        class="info-value">{{ $user->addressInfo->presentDistrict->name ?? $user->addressInfo->presentVillage->district->name ?? '' }}</span>
+                </div>
+                <div class="info-row"><span class="info-label">Thana :</span><span
+                        class="info-value">{{ $user->addressInfo->presentThana->name ?? $user->addressInfo->presentVillage->thana->name ?? '' }}</span>
+                </div>
+                <div class="info-row"><span class="info-label">Union :</span><span
+                        class="info-value">{{ $user->addressInfo->presentUnion->name ?? $user->addressInfo->presentVillage->union->name ?? '' }}</span>
+                </div>
+                <div class="info-row"><span class="info-label">Post Office :</span><span
+                        class="info-value">{{ $user->addressInfo->presentPostoffice->name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Village :</span><span
+                        class="info-value">{{ $user->addressInfo->presentVillage->en_name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Ward :</span><span
+                        class="info-value">{{ $user->addressInfo->presentWard->en_ward_no ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Area :</span><span
+                        class="info-value">{{ $user->addressInfo->present_area ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Road :</span><span
+                        class="info-value">{{ $user->addressInfo->present_road ?? '' }}</span>
+                </div>
+                <div class="info-row"><span class="info-label">House :</span><span
+                        class="info-value">{{ $user->addressInfo->present_house ?? '' }}</span>
+                </div>
+                <div class="info-row"><span class="info-label">House (Bangla) :</span><span
+                        class="info-value">{{ $user->addressInfo->present_house_bn ?? '' }}</span>
+                </div>
+            </div>
+        </div>
+
+        {{-- Education Section as Table --}}
+        @if(count($user->educationInfos) > 0)
+            <div class="section-header">শিক্ষাগত যোগ্যতা / Education</div>
+            <table class="education-table">
+                <thead>
+                    <tr>
+                        <th>ডিগ্রি / Degree</th>
+                        <th>গ্রুপ / Group</th>
+                        <th>গ্রেড / Grade</th>
+                        <th>বোর্ড / Board</th>
+                        <th>ইনস্টিটিউট / Institute</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($user->educationInfos as $edu)
+                        <tr>
+                            <td>
+                                @php
+                                    $degreeNames = [
+                                        1 => 'PSC',
+                                        2 => 'JSC',
+                                        3 => 'SSC',
+                                        4 => 'HSC',
+                                        5 => 'Diploma',
+                                        6 => 'Bachelor of Arts (BA)',
+                                        7 => 'Bachelor of Science (BSc)',
+                                        8 => 'Bachelor of Business Administration (BBA)',
+                                        9 => 'Bachelor of Social Science (BSS)',
+                                        10 => 'Honours',
+                                        11 => 'Masters',
+                                        12 => 'MBA',
+                                        13 => 'M.Sc',
+                                        14 => 'M.A',
+                                        15 => 'M.Phil',
+                                        16 => 'PhD',
+                                        17 => 'Post Graduate Diploma (PGD)',
+                                        18 => 'LLB',
+                                        19 => 'MBBS',
+                                        20 => 'BDS',
+                                        21 => 'B.Ed',
+                                        22 => 'M.Ed',
+                                        23 => 'Engineering (BSc Eng)',
+                                        24 => 'Fazil',
+                                        25 => 'Kamil',
+                                        26 => 'Dakhil',
+                                        27 => 'Alim',
+                                        28 => 'Other'
+                                    ];
+                                @endphp
+                                {{ $degreeNames[$edu->degree_id] ?? $edu->degree_id }}
+                            </td>
+                            <td>
+                                @if($edu->group_id == 1) Science
+                                @elseif($edu->group_id == 2) Business
+                                @elseif($edu->group_id == 3) Humanities
+                                @else {{ $edu->group_id ?? '' }}
+                                @endif
+                            </td>
+                            <td>
+                                @php
+                                    $grades = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'D', 'F'];
+                                @endphp
+                                {{ $edu->grade_id ? ($grades[$edu->grade_id - 1] ?? '') : '' }}
+                            </td>
+                            <td>
+                                @php
+                                    $boards = ['Dhaka', 'Rajshahi', 'Rangpur', 'Jessore', 'Comilla', 'Sylhet', 'Chittagong'];
+                                @endphp
+                                {{ $edu->board_id ? ($boards[$edu->board_id - 1] ?? '') : '' }}
+                            </td>
+                            <td>{{ $edu->institute ?? '' }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
+
+        {{-- Profession Section --}}
+        @if(count($user->professionalInfos) > 0)
+            <div class="section-header">পেশাগত তথ্য / Employment Information</div>
+            @foreach($user->professionalInfos as $prof)
+                @php
+                    $deptName = '';
+                    if ($prof->department) {
+                        $dept = \App\Models\Department\Department::find($prof->department);
+                        $deptName = $dept ? $dept->name : '';
+                    }
+                    $sectionName = '';
+                    if ($prof->current_designation) {
+                        $sectionValue = trim((string) $prof->current_designation);
+                        if ($sectionValue !== '' && ctype_digit($sectionValue)) {
+                            $sect = \App\Models\Department\Section::find((int) $sectionValue);
+                            $sectionName = $sect
+                                ? ($sect->name . (!empty($sect->bn_name) ? ' (' . $sect->bn_name . ')' : ''))
+                                : $sectionValue;
+                        } else {
+                            $sectionName = $sectionValue;
+                        }
+                    }
+                    $currentDesignationName = trim((string) ($prof->designation ?? ''));
+                    if ($currentDesignationName === '') {
+                        $currentDesignationName = $sectionName;
+                    }
+                @endphp
+                <div class="two-columns">
+                    <div class="col">
+                        <div class="info-row"><span class="info-label">Recruitment Notice No :</span><span
+                                class="info-value">{{ $prof->recruitment_notice_no ?? '' }}</span></div>
+                        <div class="info-row"><span class="info-label">Appointment Letter No :</span><span
+                                class="info-value">{{ $prof->appointment_letter_no ?? '' }}</span></div>
+                        <div class="info-row"><span class="info-label">Designation at Joining :</span><span
+                                class="info-value">{{ $prof->designation_joining ?? '' }}</span></div>
+                        <div class="info-row"><span class="info-label">Date of Joining :</span><span
+                                class="info-value">{{ $prof->date_of_joining ? date('d-m-Y', strtotime($prof->date_of_joining)) : '' }}</span>
+                        </div>
+                        <div class="info-row"><span class="info-label">Department :</span><span
+                                class="info-value">{{ $deptName }}</span></div>
+                    </div>
+                    <div class="col">
+                        <div class="info-row"><span class="info-label">Section :</span><span
+                                class="info-value">{{ $sectionName ?: 'N/A' }}</span></div>
+                        <div class="info-row"><span class="info-label">Current Designation :</span><span
+                                class="info-value">{{ $currentDesignationName ?: 'N/A' }}</span></div>
+                        <div class="info-row"><span class="info-label">Date of Current Designation :</span><span
+                                class="info-value">{{ $prof->date_current_designation ? date('d-m-Y', strtotime($prof->date_current_designation)) : '' }}</span>
+                        </div>
+                        <div class="info-row"><span class="info-label">Current Workplace :</span><span
+                                class="info-value">{{ $prof->current_workplace ?? '' }}</span></div>
+                        <div class="info-row"><span class="info-label">Date of Joining Current Workplace :</span><span
+                                class="info-value">{{ $prof->date_joining_current_workplace ? date('d-m-Y', strtotime($prof->date_joining_current_workplace)) : '' }}</span>
+                        </div>
+                    </div>
+                </div>
+                @if(!$loop->last)
+                <hr>@endif
+            @endforeach
+        @endif
+
+        {{-- Financial & Property Info merged for brevity but structured --}}
+        @if(count($user->financialInfos) > 0)
+            <div class="section-header">আর্থিক তথ্য / Financial Information</div>
+            @foreach($user->financialInfos as $fin)
+                <div class="info-row"><span class="info-label">A/C No :</span><span class="info-value">{{ $fin->account_no ?? '' }}
+                        ({{ $fin->accountType->en_name ?? '' }})</span></div>
+                <div class="info-row"><span class="info-label">Bank :</span><span
+                        class="info-value">{{ $fin->bank->en_name ?? '' }}</span></div>
+                <div class="info-row"><span class="info-label">Balance :</span><span
+                        class="info-value">{{ $fin->account_balance ?? '0' }} BDT</span></div>
+            @endforeach
+        @endif
+
+        {{-- Property Details (if any) --}}
+        @if(isset($user->propertyInfos) && ($user->propertyInfos->is_property ?? false))
+            @php
+                $property = $user->propertyInfos;
+
+                $districtCollection = collect($districts ?? []);
+                $landThanaCollection = collect($landThanas ?? []);
+                $landMouzaCollection = collect($landMouzas ?? []);
+                $flatThanaCollection = collect($flatThanas ?? []);
+                $flatMouzaCollection = collect($flatMouzas ?? []);
+
+                $nameOf = function ($item) {
+                    if (!$item) {
+                        return '';
+                    }
+                    return $item->name ?? $item->en_name ?? $item->bn_name ?? '';
+                };
+
+                $hasText = function ($value) {
+                    return !is_null($value) && trim((string) $value) !== '';
+                };
+
+                $hasAmount = function ($value) use ($hasText) {
+                    if (!$hasText($value)) {
+                        return false;
+                    }
+                    $normalized = str_replace(',', '', trim((string) $value));
+                    return !is_numeric($normalized) || (float) $normalized > 0;
+                };
+
+                $formatCurrency = function ($value) {
+                    $normalized = str_replace(',', '', trim((string) $value));
+                    if (is_numeric($normalized)) {
+                        return number_format((float) $normalized, 2) . ' BDT';
+                    }
+                    return $value . ' BDT';
+                };
+
+                $landDistrictName = $nameOf($districtCollection->firstWhere('id', $property->land_district_id));
+                $landThanaName = $nameOf($landThanaCollection->firstWhere('id', $property->land_thana_id));
+                $landMouzaName = $nameOf($landMouzaCollection->firstWhere('id', $property->land_mouza_id));
+                $landLocationParts = array_filter([$landDistrictName, $landThanaName, $landMouzaName]);
+
+                $flatDistrictName = $nameOf($districtCollection->firstWhere('id', $property->flat_district_id));
+                $flatThanaName = $nameOf($flatThanaCollection->firstWhere('id', $property->flat_thana_id));
+                $flatMouzaName = $nameOf($flatMouzaCollection->firstWhere('id', $property->flat_mouza_id));
+                $flatLocationParts = array_filter([$flatDistrictName, $flatThanaName, $flatMouzaName]);
+            @endphp
 
             @php
-                //dd($user->addressInfo);
+                $showGeneralCard = $hasAmount($property->cash_amount) || $hasText($property->tin_number);
             @endphp
-            {{-- Address Information (Permanent & Present side by side) --}}
-            <div class="section-header">ঠিকানার তথ্য / Address Information</div>
-            <div class="two-columns">
-                <div class="col">
-                    <h6 class="mb-2 font-weight-bold">স্থায়ী ঠিকানা / Permanent Address</h6>
-                    <div class="info-row"><span class="info-label">District :</span><span
-                            class="info-value">{{ $user->addressInfo->permanentDistrict->name ?? $user->addressInfo->permanentVillage->district->name ?? '' }}</span>
+
+            <div class="section-header">সম্পত্তির তথ্য / Property Information</div>
+            <div class="property-card-grid">
+                @if($showGeneralCard)
+                    <div class="property-card">
+                        <h5 class="property-card-title">General Property Info</h5>
+                        @if($hasAmount($property->cash_amount))
+                            <div class="info-row"><span class="info-label">Cash Amount :</span><span
+                                    class="info-value">{{ $formatCurrency($property->cash_amount) }}</span></div>
+                        @endif
+                        @if($hasText($property->tin_number))
+                            <div class="info-row"><span class="info-label">E-TIN :</span><span
+                                    class="info-value">{{ $property->tin_number }}</span></div>
+                        @endif
                     </div>
-                    <div class="info-row"><span class="info-label">Thana :</span><span
-                            class="info-value">{{ $user->addressInfo->permanentThana->name ?? $user->addressInfo->permanentVillage->thana->name ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">Union :</span><span
-                            class="info-value">{{ $user->addressInfo->permanentUnion->name ?? $user->addressInfo->permanentVillage->union->name ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">Post Office :</span><span
-                            class="info-value">{{ $user->addressInfo->permanentPostoffice->name ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Village :</span><span
-                            class="info-value">{{ $user->addressInfo->permanentVillage->en_name ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Ward :</span><span
-                            class="info-value">{{ $user->addressInfo->permanentWard->en_ward_no ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Area :</span><span
-                            class="info-value">{{ $user->addressInfo->permanent_area ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Road :</span><span
-                            class="info-value">{{ $user->addressInfo->permanentRoad->name ?? $user->addressInfo->permanent_road ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">House :</span><span
-                            class="info-value">{{ $user->addressInfo->permanentHouse->house ?? $user->addressInfo->permanent_house ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">House (Bangla) :</span><span
-                            class="info-value">{{ $user->addressInfo->permanent_house_bn ?? '' }}</span>
-                    </div>
-                    @if(optional($user->addressInfo)->is_same_as_permanent == 1)
-                        <div class="mt-3">
-                            <span style="color: #5b4bdf; font-weight: bold;"><i class="fas fa-check-square mr-1"></i> Same as Permanent Address</span>
-                        </div>
-                    @endif
-                </div>
-                <div class="col">
-                    <h6 class="mb-2 font-weight-bold">বর্তমান ঠিকানা / Present Address</h6>
-                    <div class="info-row"><span class="info-label">District :</span><span
-                            class="info-value">{{ $user->addressInfo->presentDistrict->name ?? $user->addressInfo->presentVillage->district->name ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">Thana :</span><span
-                            class="info-value">{{ $user->addressInfo->presentThana->name ?? $user->addressInfo->presentVillage->thana->name ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">Union :</span><span
-                            class="info-value">{{ $user->addressInfo->presentUnion->name ?? $user->addressInfo->presentVillage->union->name ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">Post Office :</span><span
-                            class="info-value">{{ $user->addressInfo->presentPostoffice->name ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Village :</span><span
-                            class="info-value">{{ $user->addressInfo->presentVillage->en_name ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Ward :</span><span
-                            class="info-value">{{ $user->addressInfo->presentWard->en_ward_no ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Area :</span><span
-                            class="info-value">{{ $user->addressInfo->present_area ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Road :</span><span
-                            class="info-value">{{ $user->addressInfo->presentRoad->name ?? $user->addressInfo->present_road ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">House :</span><span
-                            class="info-value">{{ $user->addressInfo->presentHouse->house ?? $user->addressInfo->present_house ?? '' }}</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">House (Bangla) :</span><span
-                            class="info-value">{{ $user->addressInfo->present_house_bn ?? '' }}</span>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Education Section as Table --}}
-            @if(count($user->educationInfos) > 0)
-                <div class="section-header">শিক্ষাগত যোগ্যতা / Education</div>
-                <table class="education-table">
-                    <thead>
-                        <tr>
-                            <th>ডিগ্রি / Degree</th>
-                            <th>গ্রুপ / Group</th>
-                            <th>গ্রেড / Grade</th>
-                            <th>বোর্ড / Board</th>
-                            <th>ইনস্টিটিউট / Institute</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($user->educationInfos as $edu)
-                            <tr>
-                                <td>
-                                    @php
-                                        $degreeNames = [
-                                            1 => 'PSC',
-                                            2 => 'JSC',
-                                            3 => 'SSC',
-                                            4 => 'HSC',
-                                            5 => 'Diploma',
-                                            6 => 'Bachelor of Arts (BA)',
-                                            7 => 'Bachelor of Science (BSc)',
-                                            8 => 'Bachelor of Business Administration (BBA)',
-                                            9 => 'Bachelor of Social Science (BSS)',
-                                            10 => 'Honours',
-                                            11 => 'Masters',
-                                            12 => 'MBA',
-                                            13 => 'M.Sc',
-                                            14 => 'M.A',
-                                            15 => 'M.Phil',
-                                            16 => 'PhD',
-                                            17 => 'Post Graduate Diploma (PGD)',
-                                            18 => 'LLB',
-                                            19 => 'MBBS',
-                                            20 => 'BDS',
-                                            21 => 'B.Ed',
-                                            22 => 'M.Ed',
-                                            23 => 'Engineering (BSc Eng)',
-                                            24 => 'Fazil',
-                                            25 => 'Kamil',
-                                            26 => 'Dakhil',
-                                            27 => 'Alim',
-                                            28 => 'Other'
-                                        ];
-                                    @endphp
-                                    {{ $degreeNames[$edu->degree_id] ?? $edu->degree_id }}
-                                </td>
-                                <td>
-                                    @if($edu->group_id == 1) Science
-                                    @elseif($edu->group_id == 2) Business
-                                    @elseif($edu->group_id == 3) Humanities
-                                    @else {{ $edu->group_id ?? '' }}
-                                    @endif
-                                </td>
-                                <td>
-                                    @php
-                                        $grades = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'D', 'F'];
-                                    @endphp
-                                    {{ $edu->grade_id ? ($grades[$edu->grade_id - 1] ?? '') : '' }}
-                                </td>
-                                <td>
-                                    @php
-                                        $boards = ['Dhaka', 'Rajshahi', 'Rangpur', 'Jessore', 'Comilla', 'Sylhet', 'Chittagong'];
-                                    @endphp
-                                    {{ $edu->board_id ? ($boards[$edu->board_id - 1] ?? '') : '' }}
-                                </td>
-                                <td>{{ $edu->institute ?? '' }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @endif
-
-            {{-- Profession Section --}}
-            @if(count($user->professionalInfos) > 0)
-                <div class="section-header">পেশাগত তথ্য / Employment Information</div>
-                @foreach($user->professionalInfos as $prof)
-                    @php
-                        $deptName = '';
-                        if ($prof->department) {
-                            $dept = \App\Models\Department\Department::find($prof->department);
-                            $deptName = $dept ? $dept->name : '';
-                        }
-                        $sectionName = '';
-                        if ($prof->current_designation) {
-                            $sectionValue = trim((string) $prof->current_designation);
-                            if ($sectionValue !== '' && ctype_digit($sectionValue)) {
-                                $sect = \App\Models\Department\Section::find((int) $sectionValue);
-                                $sectionName = $sect
-                                    ? ($sect->name . (!empty($sect->bn_name) ? ' (' . $sect->bn_name . ')' : ''))
-                                    : $sectionValue;
-                            } else {
-                                $sectionName = $sectionValue;
-                            }
-                        }
-                        $currentDesignationName = trim((string) ($prof->designation ?? ''));
-                        if ($currentDesignationName === '') {
-                            $currentDesignationName = $sectionName;
-                        }
-                    @endphp
-                    <div class="two-columns">
-                        <div class="col">
-                            <div class="info-row"><span class="info-label">Recruitment Notice No :</span><span
-                                    class="info-value">{{ $prof->recruitment_notice_no ?? '' }}</span></div>
-                            <div class="info-row"><span class="info-label">Appointment Letter No :</span><span
-                                    class="info-value">{{ $prof->appointment_letter_no ?? '' }}</span></div>
-                            <div class="info-row"><span class="info-label">Designation at Joining :</span><span
-                                    class="info-value">{{ $prof->designation_joining ?? '' }}</span></div>
-                            <div class="info-row"><span class="info-label">Date of Joining :</span><span
-                                    class="info-value">{{ $prof->date_of_joining ? date('d-m-Y', strtotime($prof->date_of_joining)) : '' }}</span>
-                            </div>
-                            <div class="info-row"><span class="info-label">Department :</span><span
-                                    class="info-value">{{ $deptName }}</span></div>
-                        </div>
-                        <div class="col">
-                            <div class="info-row"><span class="info-label">Section :</span><span
-                                    class="info-value">{{ $sectionName ?: 'N/A' }}</span></div>
-                            <div class="info-row"><span class="info-label">Current Designation :</span><span
-                                    class="info-value">{{ $currentDesignationName ?: 'N/A' }}</span></div>
-                            <div class="info-row"><span class="info-label">Date of Current Designation :</span><span
-                                    class="info-value">{{ $prof->date_current_designation ? date('d-m-Y', strtotime($prof->date_current_designation)) : '' }}</span>
-                            </div>
-                            <div class="info-row"><span class="info-label">Current Workplace :</span><span
-                                    class="info-value">{{ $prof->current_workplace ?? '' }}</span></div>
-                            <div class="info-row"><span class="info-label">Date of Joining Current Workplace :</span><span
-                                    class="info-value">{{ $prof->date_joining_current_workplace ? date('d-m-Y', strtotime($prof->date_joining_current_workplace)) : '' }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    @if(!$loop->last)
-                    <hr>@endif
-                @endforeach
-            @endif
-
-            {{-- Financial & Property Info merged for brevity but structured --}}
-            @if(count($user->financialInfos) > 0)
-                <div class="section-header">আর্থিক তথ্য / Financial Information</div>
-                @foreach($user->financialInfos as $fin)
-                    <div class="info-row"><span class="info-label">A/C No :</span><span
-                            class="info-value">{{ $fin->account_no ?? '' }} ({{ $fin->accountType->en_name ?? '' }})</span></div>
-                    <div class="info-row"><span class="info-label">Bank :</span><span
-                            class="info-value">{{ $fin->bank->en_name ?? '' }}</span></div>
-                    <div class="info-row"><span class="info-label">Balance :</span><span
-                            class="info-value">{{ $fin->account_balance ?? '0' }} BDT</span></div>
-                @endforeach
-            @endif
-
-            {{-- Property Details (if any) --}}
-            @if(isset($user->propertyInfos) && ($user->propertyInfos->is_property ?? false))
-                @php
-                    $property = $user->propertyInfos;
-
-                    $districtCollection = collect($districts ?? []);
-                    $landThanaCollection = collect($landThanas ?? []);
-                    $landMouzaCollection = collect($landMouzas ?? []);
-                    $flatThanaCollection = collect($flatThanas ?? []);
-                    $flatMouzaCollection = collect($flatMouzas ?? []);
-
-                    $nameOf = function ($item) {
-                        if (!$item) {
-                            return '';
-                        }
-                        return $item->name ?? $item->en_name ?? $item->bn_name ?? '';
-                    };
-
-                    $hasText = function ($value) {
-                        return !is_null($value) && trim((string) $value) !== '';
-                    };
-
-                    $hasAmount = function ($value) use ($hasText) {
-                        if (!$hasText($value)) {
-                            return false;
-                        }
-                        $normalized = str_replace(',', '', trim((string) $value));
-                        return !is_numeric($normalized) || (float) $normalized > 0;
-                    };
-
-                    $formatCurrency = function ($value) {
-                        $normalized = str_replace(',', '', trim((string) $value));
-                        if (is_numeric($normalized)) {
-                            return number_format((float) $normalized, 2) . ' BDT';
-                        }
-                        return $value . ' BDT';
-                    };
-
-                    $landDistrictName = $nameOf($districtCollection->firstWhere('id', $property->land_district_id));
-                    $landThanaName = $nameOf($landThanaCollection->firstWhere('id', $property->land_thana_id));
-                    $landMouzaName = $nameOf($landMouzaCollection->firstWhere('id', $property->land_mouza_id));
-                    $landLocationParts = array_filter([$landDistrictName, $landThanaName, $landMouzaName]);
-
-                    $flatDistrictName = $nameOf($districtCollection->firstWhere('id', $property->flat_district_id));
-                    $flatThanaName = $nameOf($flatThanaCollection->firstWhere('id', $property->flat_thana_id));
-                    $flatMouzaName = $nameOf($flatMouzaCollection->firstWhere('id', $property->flat_mouza_id));
-                    $flatLocationParts = array_filter([$flatDistrictName, $flatThanaName, $flatMouzaName]);
-                @endphp
-
-                @php
-                    $showGeneralCard = $hasAmount($property->cash_amount) || $hasText($property->tin_number);
-                @endphp
-
-                <div class="section-header">সম্পত্তির তথ্য / Property Information</div>
-                <div class="property-card-grid">
-                    @if($showGeneralCard)
-                        <div class="property-card">
-                            <h5 class="property-card-title">General Property Info</h5>
-                            @if($hasAmount($property->cash_amount))
-                                <div class="info-row"><span class="info-label">Cash Amount :</span><span
-                                        class="info-value">{{ $formatCurrency($property->cash_amount) }}</span></div>
-                            @endif
-                            @if($hasText($property->tin_number))
-                                <div class="info-row"><span class="info-label">E-TIN :</span><span
-                                        class="info-value">{{ $property->tin_number }}</span></div>
-                            @endif
-                        </div>
-                    @endif
-
-                    @if($property->house)
-                        <div class="property-card">
-                            <h5 class="property-card-title">House Information</h5>
-                            @if($hasText($property->house_type))
-                                <div class="info-row"><span class="info-label">House Type :</span><span
-                                        class="info-value">{{ $property->house_type }}</span></div>
-                            @endif
-                            @if($hasText($property->house_area))
-                                <div class="info-row"><span class="info-label">House Area :</span><span
-                                        class="info-value">{{ $property->house_area }}</span></div>
-                            @endif
-                            @if($hasText($property->house_land_quantity))
-                                <div class="info-row"><span class="info-label">Land Quantity :</span><span
-                                        class="info-value">{{ $property->house_land_quantity }}</span></div>
-                            @endif
-                            @if($hasAmount($property->house_price))
-                                <div class="info-row"><span class="info-label">House Price :</span><span
-                                        class="info-value">{{ $formatCurrency($property->house_price) }}</span></div>
-                            @endif
-                            @if($hasText($property->house_information ?? $property->house_ownership_status))
-                                <div class="info-row"><span class="info-label">House Information :</span><span
-                                        class="info-value">{{ $property->house_information ?? $property->house_ownership_status }}</span></div>
-                            @endif
-                            @if($hasText($property->house_address))
-                                <div class="info-row"><span class="info-label">House Address :</span><span
-                                        class="info-value">{{ $property->house_address }}</span></div>
-                            @endif
-                        </div>
-                    @endif
-
-                    @if($property->land)
-                        <div class="property-card">
-                            <h5 class="property-card-title">Land Information</h5>
-                            @if($hasText($property->land_quantity))
-                                <div class="info-row"><span class="info-label">Land Quantity :</span><span
-                                        class="info-value">{{ $property->land_quantity }}</span></div>
-                            @endif
-                            @if($hasText($property->land_type))
-                                <div class="info-row"><span class="info-label">Land Type :</span><span
-                                        class="info-value">{{ $property->land_type }}</span></div>
-                            @endif
-                            @if($hasAmount($property->land_price))
-                                <div class="info-row"><span class="info-label">Land Price :</span><span
-                                        class="info-value">{{ $formatCurrency($property->land_price) }}</span></div>
-                            @endif
-                            @if($hasText($property->land_information ?? $property->land_ownership_status))
-                                <div class="info-row"><span class="info-label">Land Information :</span><span
-                                        class="info-value">{{ $property->land_information ?? $property->land_ownership_status }}</span></div>
-                            @endif
-                            @if(!empty($landLocationParts))
-                                <div class="info-row"><span class="info-label">Location :</span><span
-                                        class="info-value">{{ implode(', ', $landLocationParts) }}</span></div>
-                            @endif
-                            @if($hasText($property->land_khatian_id))
-                                <div class="info-row"><span class="info-label">Khatian No :</span><span
-                                        class="info-value">{{ $property->land_khatian_id }}</span></div>
-                            @endif
-                            @if($hasText($property->land_dag_no))
-                                <div class="info-row"><span class="info-label">Dag No :</span><span
-                                        class="info-value">{{ $property->land_dag_no }}</span></div>
-                            @endif
-                            @if($hasText($property->land_bs))
-                                <div class="info-row"><span class="info-label">BS :</span><span
-                                        class="info-value">{{ $property->land_bs }}</span></div>
-                            @endif
-                            @if($hasText($property->land_rs))
-                                <div class="info-row"><span class="info-label">RS :</span><span
-                                        class="info-value">{{ $property->land_rs }}</span></div>
-                            @endif
-                            @if($hasText($property->land_sa))
-                                <div class="info-row"><span class="info-label">SA :</span><span
-                                        class="info-value">{{ $property->land_sa }}</span></div>
-                            @endif
-                            @if($hasText($property->land_cs))
-                                <div class="info-row"><span class="info-label">CS :</span><span
-                                        class="info-value">{{ $property->land_cs }}</span></div>
-                            @endif
-                        </div>
-                    @endif
-
-                    @if($property->flat)
-                        <div class="property-card">
-                            <h5 class="property-card-title">Flat Information</h5>
-                            @if($hasText($property->flat_area))
-                                <div class="info-row"><span class="info-label">Flat Area :</span><span
-                                        class="info-value">{{ $property->flat_area }}</span></div>
-                            @endif
-                            @if($hasText($property->flat_quantity))
-                                <div class="info-row"><span class="info-label">Flat Quantity :</span><span
-                                        class="info-value">{{ $property->flat_quantity }}</span></div>
-                            @endif
-                            @if($hasText($property->flat_road))
-                                <div class="info-row"><span class="info-label">Road :</span><span
-                                        class="info-value">{{ $property->flat_road }}</span></div>
-                            @endif
-                            @if($hasText($property->flat_house_no))
-                                <div class="info-row"><span class="info-label">House No :</span><span
-                                        class="info-value">{{ $property->flat_house_no }}</span></div>
-                            @endif
-                            @if($hasAmount($property->flat_price))
-                                <div class="info-row"><span class="info-label">Flat Price :</span><span
-                                        class="info-value">{{ $formatCurrency($property->flat_price) }}</span></div>
-                            @endif
-                            @if($hasText($property->flat_ownership_status))
-                                <div class="info-row"><span class="info-label">Owner Information :</span><span
-                                        class="info-value">{{ $property->flat_ownership_status }}</span></div>
-                            @endif
-                            @if(!empty($flatLocationParts))
-                                <div class="info-row"><span class="info-label">Location :</span><span
-                                        class="info-value">{{ implode(', ', $flatLocationParts) }}</span></div>
-                            @endif
-                        </div>
-                    @endif
-
-                    @if($property->gold)
-                        <div class="property-card">
-                            <h5 class="property-card-title">Gold Information</h5>
-                            @if($hasText($property->gold_type))
-                                <div class="info-row"><span class="info-label">Gold Type :</span><span
-                                        class="info-value">{{ $property->gold_type }}</span></div>
-                            @endif
-                            @if($hasText($property->gold_quantity))
-                                <div class="info-row"><span class="info-label">Quantity :</span><span
-                                        class="info-value">{{ $property->gold_quantity }}</span></div>
-                            @endif
-                            @if($hasAmount($property->gold_price))
-                                <div class="info-row"><span class="info-label">Price :</span><span
-                                        class="info-value">{{ $formatCurrency($property->gold_price) }}</span></div>
-                            @endif
-                            @if($hasText($property->gold_information ?? $property->gold_ownership_status))
-                                <div class="info-row"><span class="info-label">Gold Information :</span><span
-                                        class="info-value">{{ $property->gold_information ?? $property->gold_ownership_status }}</span></div>
-                            @endif
-                        </div>
-                    @endif
-
-                    @if($property->diamond)
-                        <div class="property-card">
-                            <h5 class="property-card-title">Diamond Information</h5>
-                            @if($hasText($property->diamond_type))
-                                <div class="info-row"><span class="info-label">Diamond Type :</span><span
-                                        class="info-value">{{ $property->diamond_type }}</span></div>
-                            @endif
-                            @if($hasText($property->diamond_quantity))
-                                <div class="info-row"><span class="info-label">Quantity :</span><span
-                                        class="info-value">{{ $property->diamond_quantity }}</span></div>
-                            @endif
-                            @if($hasAmount($property->diamond_price))
-                                <div class="info-row"><span class="info-label">Price :</span><span
-                                        class="info-value">{{ $formatCurrency($property->diamond_price) }}</span></div>
-                            @endif
-                            @if($hasText($property->diamond_information ?? $property->diamond_ownership_status))
-                                <div class="info-row"><span class="info-label">Diamond Information :</span><span
-                                        class="info-value">{{ $property->diamond_information ?? $property->diamond_ownership_status }}</span></div>
-                            @endif
-                        </div>
-                    @endif
-
-                    @if($property->silver)
-                        <div class="property-card">
-                            <h5 class="property-card-title">Silver Information</h5>
-                            @if($hasText($property->silver_type))
-                                <div class="info-row"><span class="info-label">Silver Type :</span><span
-                                        class="info-value">{{ $property->silver_type }}</span></div>
-                            @endif
-                            @if($hasText($property->silver_quantity))
-                                <div class="info-row"><span class="info-label">Quantity :</span><span
-                                        class="info-value">{{ $property->silver_quantity }}</span></div>
-                            @endif
-                            @if($hasAmount($property->silver_price))
-                                <div class="info-row"><span class="info-label">Price :</span><span
-                                        class="info-value">{{ $formatCurrency($property->silver_price) }}</span></div>
-                            @endif
-                            @if($hasText($property->silver_information ?? $property->silver_ownership_status))
-                                <div class="info-row"><span class="info-label">Silver Information :</span><span
-                                        class="info-value">{{ $property->silver_information ?? $property->silver_ownership_status }}</span></div>
-                            @endif
-                        </div>
-                    @endif
-                </div>
-            @endif
-
-            {{-- Disability & Freedom Fighter (if any) --}}
-            @if(isset($user->disabilityInfo) && ($user->disabilityInfo->is_disability ?? false))
-                <div class="section-header">প্রতিবন্ধিতা তথ্য / Disability Information</div>
-                <div class="info-row"><span class="info-label">Disability :</span><span
-                        class="info-value">{{ disability_constant_option('disability_name')[$user->disabilityInfo->disability_name_id ?? ''] ?? '' }}
-                        ({{ disability_constant_option('disability_category')[$user->disabilityInfo->disability_category_id ?? ''] ?? '' }})</span>
-                </div>
-                <div class="info-row"><span class="info-label">Type :</span><span
-                        class="info-value">{{ disability_constant_option('disability_type')[$user->disabilityInfo->disability_type_id ?? ''] ?? '' }}</span>
-                </div>
-                <div class="info-row"><span class="info-label">Treatment :</span><span
-                        class="info-value">{{ disability_constant_option('treatment_status')[$user->disabilityInfo->treatment_status_id ?? ''] ?? '' }}</span>
-                </div>
-                @if(!empty($user->disabilityInfo->disability_doctor))
-                    <div class="info-row"><span class="info-label">Doctor :</span><span
-                            class="info-value">{{ $user->disabilityInfo->disability_doctor }}</span></div>
                 @endif
-            @endif
 
-            @if(isset($user->freedomFighterInfo) && ($user->freedomFighterInfo->is_freedom_fighter ?? false))
-                <div class="section-header">মুক্তিযোদ্ধা তথ্য / Freedom Fighter Information</div>
-                <div class="info-row"><span class="info-label">Type :</span><span
-                        class="info-value">{{ freedom_fighter_constant_option('type')[$user->freedomFighterInfo->type_id ?? ''] ?? '' }}</span>
-                </div>
-                <div class="info-row"><span class="info-label">Area :</span><span
-                        class="info-value">{{ freedom_fighter_constant_option('area')[$user->freedomFighterInfo->area_id ?? ''] ?? '' }}</span>
-                </div>
-                <div class="info-row"><span class="info-label">Designation :</span><span
-                        class="info-value">{{ freedom_fighter_constant_option('designation')[$user->freedomFighterInfo->designation_id ?? ''] ?? '' }}</span>
-                </div>
-                <div class="info-row"><span class="info-label">FF ID :</span><span
-                        class="info-value">{{ $user->freedomFighterInfo->freedom_fighter_id ?? '' }}</span></div>
-                <div class="info-row"><span class="info-label">Commander :</span><span
-                        class="info-value">{{ $user->freedomFighterInfo->commander_name ?? '' }}</span></div>
-            @endif
+                @if($property->house)
+                    <div class="property-card">
+                        <h5 class="property-card-title">House Information</h5>
+                        @if($hasText($property->house_type))
+                            <div class="info-row"><span class="info-label">House Type :</span><span
+                                    class="info-value">{{ $property->house_type }}</span></div>
+                        @endif
+                        @if($hasText($property->house_area))
+                            <div class="info-row"><span class="info-label">House Area :</span><span
+                                    class="info-value">{{ $property->house_area }}</span></div>
+                        @endif
+                        @if($hasText($property->house_land_quantity))
+                            <div class="info-row"><span class="info-label">Land Quantity :</span><span
+                                    class="info-value">{{ $property->house_land_quantity }}</span></div>
+                        @endif
+                        @if($hasAmount($property->house_price))
+                            <div class="info-row"><span class="info-label">House Price :</span><span
+                                    class="info-value">{{ $formatCurrency($property->house_price) }}</span></div>
+                        @endif
+                        @if($hasText($property->house_information ?? $property->house_ownership_status))
+                            <div class="info-row"><span class="info-label">House Information :</span><span
+                                    class="info-value">{{ $property->house_information ?? $property->house_ownership_status }}</span>
+                            </div>
+                        @endif
+                        @if($hasText($property->house_address))
+                            <div class="info-row"><span class="info-label">House Address :</span><span
+                                    class="info-value">{{ $property->house_address }}</span></div>
+                        @endif
+                    </div>
+                @endif
 
-            @if(isset($user->freedomFighterInfo) && ($user->freedomFighterInfo->is_july_fighter ?? false))
-                <div class="section-header">জুলাই যোদ্ধা তথ্য / July Fighter Information</div>
-                <div class="info-row"><span class="info-label">Fighter Category :</span><span
-                        class="info-value">{{ freedom_fighter_constant_option('july_category')[$user->freedomFighterInfo->july_type_id ?? ''] ?? '' }}</span>
-                </div>
-                <div class="info-row"><span class="info-label">Movement/Incident Location :</span><span
-                        class="info-value">{{ $user->freedomFighterInfo->july_incident_location ?? '' }}</span></div>
-                <div class="info-row"><span class="info-label">Injury Details :</span><span
-                        class="info-value">{{ $user->freedomFighterInfo->july_injury_details ?? '' }}</span></div>
-                <div class="info-row"><span class="info-label">Contribution Description :</span><span
-                        class="info-value">{{ $user->freedomFighterInfo->july_contribution_description ?? '' }}</span></div>
-                <div class="info-row"><span class="info-label">July Fighter ID :</span><span
-                        class="info-value">{{ $user->freedomFighterInfo->july_fighter_id ?? '' }}</span></div>
-            @endif
+                @if($property->land)
+                    <div class="property-card">
+                        <h5 class="property-card-title">Land Information</h5>
+                        @if($hasText($property->land_quantity))
+                            <div class="info-row"><span class="info-label">Land Quantity :</span><span
+                                    class="info-value">{{ $property->land_quantity }}</span></div>
+                        @endif
+                        @if($hasText($property->land_type))
+                            <div class="info-row"><span class="info-label">Land Type :</span><span
+                                    class="info-value">{{ $property->land_type }}</span></div>
+                        @endif
+                        @if($hasAmount($property->land_price))
+                            <div class="info-row"><span class="info-label">Land Price :</span><span
+                                    class="info-value">{{ $formatCurrency($property->land_price) }}</span></div>
+                        @endif
+                        @if($hasText($property->land_information ?? $property->land_ownership_status))
+                            <div class="info-row"><span class="info-label">Land Information :</span><span
+                                    class="info-value">{{ $property->land_information ?? $property->land_ownership_status }}</span>
+                            </div>
+                        @endif
+                        @if(!empty($landLocationParts))
+                            <div class="info-row"><span class="info-label">Location :</span><span
+                                    class="info-value">{{ implode(', ', $landLocationParts) }}</span></div>
+                        @endif
+                        @if($hasText($property->land_khatian_id))
+                            <div class="info-row"><span class="info-label">Khatian No :</span><span
+                                    class="info-value">{{ $property->land_khatian_id }}</span></div>
+                        @endif
+                        @if($hasText($property->land_dag_no))
+                            <div class="info-row"><span class="info-label">Dag No :</span><span
+                                    class="info-value">{{ $property->land_dag_no }}</span></div>
+                        @endif
+                        @if($hasText($property->land_bs))
+                            <div class="info-row"><span class="info-label">BS :</span><span
+                                    class="info-value">{{ $property->land_bs }}</span></div>
+                        @endif
+                        @if($hasText($property->land_rs))
+                            <div class="info-row"><span class="info-label">RS :</span><span
+                                    class="info-value">{{ $property->land_rs }}</span></div>
+                        @endif
+                        @if($hasText($property->land_sa))
+                            <div class="info-row"><span class="info-label">SA :</span><span
+                                    class="info-value">{{ $property->land_sa }}</span></div>
+                        @endif
+                        @if($hasText($property->land_cs))
+                            <div class="info-row"><span class="info-label">CS :</span><span
+                                    class="info-value">{{ $property->land_cs }}</span></div>
+                        @endif
+                    </div>
+                @endif
 
-            {{-- Signature Area like Certificate --}}
-            <div class="signature-area" style="margin-top: 60px;">
-                <div class="sig-block">
-                    <div class="sig-line"></div>
-                    স্বাক্ষর / Signature
-                </div>
-                <div class="sig-block">
-                    <div class="sig-line"></div>
-                    সীল / Seal
-                </div>
-                <div class="sig-block">
-                    <div class="sig-line"></div>
-                    কর্তৃপক্ষ / Authority
-                </div>
-            </div> <!-- End signature-area -->
+                @if($property->flat)
+                    <div class="property-card">
+                        <h5 class="property-card-title">Flat Information</h5>
+                        @if($hasText($property->flat_area))
+                            <div class="info-row"><span class="info-label">Flat Area :</span><span
+                                    class="info-value">{{ $property->flat_area }}</span></div>
+                        @endif
+                        @if($hasText($property->flat_quantity))
+                            <div class="info-row"><span class="info-label">Flat Quantity :</span><span
+                                    class="info-value">{{ $property->flat_quantity }}</span></div>
+                        @endif
+                        @if($hasText($property->flat_road))
+                            <div class="info-row"><span class="info-label">Road :</span><span
+                                    class="info-value">{{ $property->flat_road }}</span></div>
+                        @endif
+                        @if($hasText($property->flat_house_no))
+                            <div class="info-row"><span class="info-label">House No :</span><span
+                                    class="info-value">{{ $property->flat_house_no }}</span></div>
+                        @endif
+                        @if($hasAmount($property->flat_price))
+                            <div class="info-row"><span class="info-label">Flat Price :</span><span
+                                    class="info-value">{{ $formatCurrency($property->flat_price) }}</span></div>
+                        @endif
+                        @if($hasText($property->flat_ownership_status))
+                            <div class="info-row"><span class="info-label">Owner Information :</span><span
+                                    class="info-value">{{ $property->flat_ownership_status }}</span></div>
+                        @endif
+                        @if(!empty($flatLocationParts))
+                            <div class="info-row"><span class="info-label">Location :</span><span
+                                    class="info-value">{{ implode(', ', $flatLocationParts) }}</span></div>
+                        @endif
+                    </div>
+                @endif
 
-            <div class="text-center mt-4 pt-2 small text-muted" style="font-size: 13px; font-weight: 500;">
-                ইস্যুর তারিখ / Issue Date: {{ date('d/m/Y') }}
+                @if($property->gold)
+                    <div class="property-card">
+                        <h5 class="property-card-title">Gold Information</h5>
+                        @if($hasText($property->gold_type))
+                            <div class="info-row"><span class="info-label">Gold Type :</span><span
+                                    class="info-value">{{ $property->gold_type }}</span></div>
+                        @endif
+                        @if($hasText($property->gold_quantity))
+                            <div class="info-row"><span class="info-label">Quantity :</span><span
+                                    class="info-value">{{ $property->gold_quantity }}</span></div>
+                        @endif
+                        @if($hasAmount($property->gold_price))
+                            <div class="info-row"><span class="info-label">Price :</span><span
+                                    class="info-value">{{ $formatCurrency($property->gold_price) }}</span></div>
+                        @endif
+                        @if($hasText($property->gold_information ?? $property->gold_ownership_status))
+                            <div class="info-row"><span class="info-label">Gold Information :</span><span
+                                    class="info-value">{{ $property->gold_information ?? $property->gold_ownership_status }}</span>
+                            </div>
+                        @endif
+                    </div>
+                @endif
+
+                @if($property->diamond)
+                    <div class="property-card">
+                        <h5 class="property-card-title">Diamond Information</h5>
+                        @if($hasText($property->diamond_type))
+                            <div class="info-row"><span class="info-label">Diamond Type :</span><span
+                                    class="info-value">{{ $property->diamond_type }}</span></div>
+                        @endif
+                        @if($hasText($property->diamond_quantity))
+                            <div class="info-row"><span class="info-label">Quantity :</span><span
+                                    class="info-value">{{ $property->diamond_quantity }}</span></div>
+                        @endif
+                        @if($hasAmount($property->diamond_price))
+                            <div class="info-row"><span class="info-label">Price :</span><span
+                                    class="info-value">{{ $formatCurrency($property->diamond_price) }}</span></div>
+                        @endif
+                        @if($hasText($property->diamond_information ?? $property->diamond_ownership_status))
+                            <div class="info-row"><span class="info-label">Diamond Information :</span><span
+                                    class="info-value">{{ $property->diamond_information ?? $property->diamond_ownership_status }}</span>
+                            </div>
+                        @endif
+                    </div>
+                @endif
+
+                @if($property->silver)
+                    <div class="property-card">
+                        <h5 class="property-card-title">Silver Information</h5>
+                        @if($hasText($property->silver_type))
+                            <div class="info-row"><span class="info-label">Silver Type :</span><span
+                                    class="info-value">{{ $property->silver_type }}</span></div>
+                        @endif
+                        @if($hasText($property->silver_quantity))
+                            <div class="info-row"><span class="info-label">Quantity :</span><span
+                                    class="info-value">{{ $property->silver_quantity }}</span></div>
+                        @endif
+                        @if($hasAmount($property->silver_price))
+                            <div class="info-row"><span class="info-label">Price :</span><span
+                                    class="info-value">{{ $formatCurrency($property->silver_price) }}</span></div>
+                        @endif
+                        @if($hasText($property->silver_information ?? $property->silver_ownership_status))
+                            <div class="info-row"><span class="info-label">Silver Information :</span><span
+                                    class="info-value">{{ $property->silver_information ?? $property->silver_ownership_status }}</span>
+                            </div>
+                        @endif
+                    </div>
+                @endif
             </div>
+        @endif
+
+        {{-- Disability & Freedom Fighter (if any) --}}
+        @if(isset($user->disabilityInfo) && ($user->disabilityInfo->is_disability ?? false))
+            <div class="section-header">প্রতিবন্ধিতা তথ্য / Disability Information</div>
+            <div class="info-row"><span class="info-label">Disability :</span><span
+                    class="info-value">{{ disability_constant_option('disability_name')[$user->disabilityInfo->disability_name_id ?? ''] ?? '' }}
+                    ({{ disability_constant_option('disability_category')[$user->disabilityInfo->disability_category_id ?? ''] ?? '' }})</span>
+            </div>
+            <div class="info-row"><span class="info-label">Type :</span><span
+                    class="info-value">{{ disability_constant_option('disability_type')[$user->disabilityInfo->disability_type_id ?? ''] ?? '' }}</span>
+            </div>
+            <div class="info-row"><span class="info-label">Treatment :</span><span
+                    class="info-value">{{ disability_constant_option('treatment_status')[$user->disabilityInfo->treatment_status_id ?? ''] ?? '' }}</span>
+            </div>
+            @if(!empty($user->disabilityInfo->disability_doctor))
+                <div class="info-row"><span class="info-label">Doctor :</span><span
+                        class="info-value">{{ $user->disabilityInfo->disability_doctor }}</span></div>
+            @endif
+        @endif
+
+        @if(isset($user->freedomFighterInfo) && ($user->freedomFighterInfo->is_freedom_fighter ?? false))
+            <div class="section-header">মুক্তিযোদ্ধা তথ্য / Freedom Fighter Information</div>
+            <div class="info-row"><span class="info-label">Type :</span><span
+                    class="info-value">{{ freedom_fighter_constant_option('type')[$user->freedomFighterInfo->type_id ?? ''] ?? '' }}</span>
+            </div>
+            <div class="info-row"><span class="info-label">Area :</span><span
+                    class="info-value">{{ freedom_fighter_constant_option('area')[$user->freedomFighterInfo->area_id ?? ''] ?? '' }}</span>
+            </div>
+            <div class="info-row"><span class="info-label">Designation :</span><span
+                    class="info-value">{{ freedom_fighter_constant_option('designation')[$user->freedomFighterInfo->designation_id ?? ''] ?? '' }}</span>
+            </div>
+            <div class="info-row"><span class="info-label">FF ID :</span><span
+                    class="info-value">{{ $user->freedomFighterInfo->freedom_fighter_id ?? '' }}</span></div>
+            <div class="info-row"><span class="info-label">Commander :</span><span
+                    class="info-value">{{ $user->freedomFighterInfo->commander_name ?? '' }}</span></div>
+        @endif
+
+        @if(isset($user->freedomFighterInfo) && ($user->freedomFighterInfo->is_july_fighter ?? false))
+            <div class="section-header">জুলাই যোদ্ধা তথ্য / July Fighter Information</div>
+            <div class="info-row"><span class="info-label">Fighter Category :</span><span
+                    class="info-value">{{ freedom_fighter_constant_option('july_category')[$user->freedomFighterInfo->july_type_id ?? ''] ?? '' }}</span>
+            </div>
+            <div class="info-row"><span class="info-label">Movement/Incident Location :</span><span
+                    class="info-value">{{ $user->freedomFighterInfo->july_incident_location ?? '' }}</span></div>
+            <div class="info-row"><span class="info-label">Injury Details :</span><span
+                    class="info-value">{{ $user->freedomFighterInfo->july_injury_details ?? '' }}</span></div>
+            <div class="info-row"><span class="info-label">Contribution Description :</span><span
+                    class="info-value">{{ $user->freedomFighterInfo->july_contribution_description ?? '' }}</span></div>
+            <div class="info-row"><span class="info-label">July Fighter ID :</span><span
+                    class="info-value">{{ $user->freedomFighterInfo->july_fighter_id ?? '' }}</span></div>
+        @endif
+
+        {{-- Signature Area like Certificate --}}
+        <div class="signature-area" style="margin-top: 60px;">
+            <div class="sig-block">
+                <div class="sig-line"></div>
+                স্বাক্ষর / Signature
+            </div>
+            <div class="sig-block">
+                <div class="sig-line"></div>
+                সীল / Seal
+            </div>
+            <div class="sig-block">
+                <div class="sig-line"></div>
+                কর্তৃপক্ষ / Authority
+            </div>
+        </div> <!-- End signature-area -->
+
+        <div class="text-center mt-4 pt-2 small text-muted" style="font-size: 13px; font-weight: 500;">
+            ইস্যুর তারিখ / Issue Date: {{ date('d/m/Y') }}
+        </div>
     </x-print-view>
 
     {{-- Professional Action Control Bar --}}
     <div class="no-print text-center my-4">
-        <button class="btn btn-success px-4 py-2 shadow-sm" style="border-radius: 6px; font-weight: 600;" onclick="window.print()">
+        <button class="btn btn-success px-4 py-2 shadow-sm" style="border-radius: 6px; font-weight: 600;"
+            onclick="window.print()">
             <i class="fa fa-print me-1"></i> Print / প্রিন্ট
         </button>
-        <a href="{{ route('staff.index') }}" class="btn btn-secondary px-4 py-2 ms-2 shadow-sm" style="border-radius: 6px; font-weight: 600;">
+        <a href="{{ route('staff.index') }}" class="btn btn-secondary px-4 py-2 ms-2 shadow-sm"
+            style="border-radius: 6px; font-weight: 600;">
             <i class="fa fa-arrow-left me-1"></i> Back to List
         </a>
 
         @if(empty($people->approved_id))
             <a href="{{ route('staff.approve', $people->user_id) }}" class="btn btn-primary px-4 py-2 ms-2 shadow-sm"
-                style="border-radius: 6px; font-weight: 600;"
-                onclick="return confirm('আপনি কি নিশ্চিত অনুমোদন করতে চান?')">
+                style="border-radius: 6px; font-weight: 600;" onclick="return confirm('আপনি কি নিশ্চিত অনুমোদন করতে চান?')">
                 <i class="fa fa-check me-1"></i> Approve
             </a>
         @endif
