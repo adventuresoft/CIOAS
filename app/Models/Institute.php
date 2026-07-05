@@ -59,7 +59,7 @@ class Institute extends Model
 
     public function superUser()
     {
-      return $this->hasOne(User::class, 'institute_id', 'id');
+      return $this->hasOne(User::class, 'institute_id', 'id')->where('user_type', 'admin');
     }
 
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BasicSettings\Country;
 use App\Models\BasicSettings\FamilyCategory;
 use App\Models\BasicSettings\FamilyType;
 use App\Models\BasicSettings\Village;
@@ -196,12 +195,11 @@ class LoginController extends Controller
             $data['districts'] = District::get();
             $data['thanas'] = Thana::get();
             $data['unions'] = Union::get();
-            $data['countries'] = Country::get();
             $data['religions'] = Religion::get();
             $data['familyTypes'] = FamilyType::get();
             $data['familyCategories'] = FamilyCategory::get();
             $data['villages'] = Village::get();
-            $data['wards'] = UnionWard::get();
+            $data['wards'] = [];
             $data['user'] = User::with('people', 'familyInfo', 'addressInfo')->find(Auth::id());
             return view('frontend.pages.user.profile', $data);
         } else {

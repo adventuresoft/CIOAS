@@ -17,21 +17,7 @@
 
                     <div class="card-body p-4">
 
-                        <div class="form-group row premium-form-group align-items-center">
-                            <label for="institute_category" class="col-sm-3 col-form-label premium-form-label">Uses as</label>
-                            <div class="col-sm-9">
-                                <select required class="form-control select2 premium-form-control" name="institute_category"
-                                    id="institute_category">
-                                    <option value="">Working/Monitoring</option>
-                                    @if (count($institute_categories))
-                                        @foreach ($institute_categories as $institute_category)
-                                            <option value="{{ $institute_category->id }}">
-                                                {{ $institute_category->name }}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                            </div>
-                        </div>
+                        <input type="hidden" name="institute_category" value="8">
 
                         <div class="form-group row premium-form-group align-items-center">
                             <label for="activation_time" class="col-sm-3 col-form-label premium-form-label">Activation Date</label>
@@ -70,15 +56,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row premium-form-group align-items-center">
-                            <label for="thana" class="col-sm-3 col-form-label premium-form-label">Thana / Upazila</label>
-                            <div class="col-sm-9">
-                                <select disabled class="form-control select2 premium-form-control" name="thana" id="thana">
-                                    <option value="">Select Thana</option>
-                                </select>
-                                <small class="error thana-error text-danger"></small>
-                            </div>
-                        </div>
+
 
                         <div class="form-group row premium-form-group align-items-center">
                             <label for="institute_type" class="col-sm-3 col-form-label premium-form-label">Institute Type <span
@@ -173,40 +151,14 @@
         $(document).on('change', '#district', function(e) {
             e.preventDefault();
             let districtId = $(this).val();
-            let thana = $('#thana');
             if (districtId) {
-                $.ajax({
-                    type: "GET",
-                    url: "{{ url('/get-thanas-by-district') }}/" + districtId,
-                    beforeSend: function() {
-                        thana.prop("disabled", true);
-                        $('#institute_type').prop("disabled", true);
-                    },
-                    success: function(response) {
-                        thana.html(response);
-                        thana.prop("disabled", false);
-                        $('#institute_type').prop("disabled", true);
-                    },
-                    error: function(xhr, status, error) {
-                        thana.prop("disabled", true);
-                        $('#institute_type').prop("disabled", true);
-                    }
-                });
-            } else {
-                thana.html('<option value="">Select Thana</option>').prop("disabled", true);
-                $('#institute_type').prop("disabled", true);
-            }
-        })
-
-        $(document).on('change', '#thana', function(e) {
-            e.preventDefault();
-            let thana_id = $(this).val();
-            if (thana_id) {
                 $('#institute_type').prop("disabled", false);
             } else {
                 $('#institute_type').prop("disabled", true);
             }
         })
+
+
 
         $(document).on('change', '#institute_type', function(e) {
             e.preventDefault();
@@ -299,7 +251,7 @@
                     toastr.error(responseText.message);
 
                     $.each(responseText.errors, function(key, val) {
-                        thisForm.find("." + key + "_error").text(val[0]);
+                        thisForm.find("." + key + "-error").text(val[0]);
                     });
                 }
 

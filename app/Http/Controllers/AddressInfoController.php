@@ -67,7 +67,7 @@ class AddressInfoController extends Controller
 
         if(isset($institute?->institute_type_id) && $institute->institute_type_id == 1) {
             $data['villages'] = Village::where('union_id', $institute->union_id)->get();
-            $data['wards'] = UnionWard::where('status', true)->get();
+            $data['wards'] = [];
             $data['roads'] = Road::where('institute_id',  $institute->id)->latest()->get();
             $data['post_officeses']=PostOffice::latest()->get();
             

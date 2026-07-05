@@ -99,7 +99,7 @@ class InventoryController extends Controller
         
         $isDeptHead = false;
         if ($user) {
-            $isDeptHead = $user->role_id == 1 || $user->hasRole('Admin') || $user->hasRole('Developer') ||
+            $isDeptHead = $user->role_id == 1 || $user->hasRole('SuperAdmin') || $user->hasRole('Developer') ||
                        $user->hasRole('Department Head') || 
                        str_contains($designation, 'department head') || 
                        str_contains($designation, 'dept head') ||

@@ -102,8 +102,16 @@
                         <p class="text-muted mb-2" style="font-size: 0.9rem;">{{ $user->email }}</p>
 
                         @if ($user->user_type)
+                            @php
+                                $userTypeLabel = ucfirst($user->user_type);
+                                if ($user->user_type == 'staff') {
+                                    $userTypeLabel = 'Employee';
+                                } elseif ($user->user_type == 'admin') {
+                                    $userTypeLabel = 'Department Head';
+                                }
+                            @endphp
                             <p class="text-info font-weight-bold mb-2" style="font-size: 0.85rem; text-transform: capitalize;" title="User Type">
-                                <i class="fas fa-id-badge mr-1"></i> {{ $user->user_type }}
+                                <i class="fas fa-id-badge mr-1"></i> {{ $userTypeLabel }}
                             </p>
                         @endif
 
@@ -224,11 +232,9 @@
                                 <div class="info-group">
                                     <div class="detail-label">Security Role</div>
                                     <div class="detail-value">
-                                        @if ($user->roles->count() > 0)
-                                            @foreach ($user->roles as $role)
-                                                <span class="badge badge-primary px-2 py-1 font-weight-bold"
-                                                    style="border-radius: 6px;">{{ $role->name }}</span>
-                                            @endforeach
+                                        @if ($user->role)
+                                            <span class="badge badge-primary px-2 py-1 font-weight-bold"
+                                                style="border-radius: 6px;">{{ $user->role->name }}</span>
                                         @else
                                             <span class="text-muted font-italic">No Role Assigned</span>
                                         @endif
@@ -238,11 +244,13 @@
                                 <div class="info-group">
                                     <div class="detail-label">Direct Override Permissions</div>
                                     <div class="detail-value">
-                                        @if ($user->getAllPermissions()->count() > 0)
+                                        @php
+                                            $userPermissions = $user->role ? $user->role->permissions : collect();
+                                        @endphp
+                                        @if ($userPermissions->count() > 0)
                                             <span class="badge badge-success px-2 py-1 font-weight-bold"
-                                                style="border-radius: 6px;">{{ $user->getAllPermissions()->count() }}
-                                                Direct
-                                                Overrides</span>
+                                                style="border-radius: 6px;">{{ $userPermissions->count() }}
+                                                Role Permissions</span>
                                         @else
                                             <span class="text-muted font-italic">None (Strict Role-Based Policies)</span>
                                         @endif
@@ -278,16 +286,18 @@
                                         <i class="fas fa-shield-alt text-secondary mr-1"></i> Security Identity
                                     </h6>
                                     <div class="detail-label">
-                                        <label class="form-label-premium" for="role_id">Primary Security Role</label>
+                                        <label class="form-label-premium" for="role_id">Primary Security Role95</label>
                                         <select name="role_id" id="role_id"
                                             class="form-control form-control-premium @error('role_id') is-invalid @enderror"
                                             required>
                                             <option value="">Select a Role</option>
                                             @foreach ($roles as $role)
-                                                <option value="{{ $role->id }}"
-                                                    {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
-                                                    {{ $role->name }}
-                                                </option>
+                                                @if(!in_array($role->id, [1, 2]))
+                                                    <option value="{{ $role->id }}"
+                                                        {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
+                                                        {{ $role->name }}
+                                                    </option>
+                                                @endif
                                             @endforeach
                                         </select>
                                         <small class="text-muted mt-2 d-block">
@@ -375,7 +385,7 @@
                             <i class="fas fa-shield-alt text-primary mr-1"></i> Active System Permissions
                         </h5>
                         @php
-                            $allPermissions = $user->getAllPermissions();
+                            $allPermissions = $user->role ? $user->role->permissions : collect();
                             $groupedPerms = [];
                             foreach ($allPermissions as $perm) {
                                 $parts = explode('.', $perm->name);

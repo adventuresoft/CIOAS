@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\BasicSettings\AccountType;
 use App\Models\BasicSettings\Bank;
-use App\Models\BasicSettings\Country;
 use App\Models\BasicSettings\FamilyCategory;
 use App\Models\BasicSettings\FamilyType;
 use App\Models\BasicSettings\Profession;
@@ -130,7 +129,6 @@ class PeopleController extends Controller
     {
         $data['religions'] = Religion::where('status', true)->get();
         $data['districts'] = District::where('status', true)->orderBy('name')->get();
-        $data['countries'] = Country::orderBy('name')->get();
         return view('backend.pages.people.create', $data);
     }
 
@@ -237,7 +235,6 @@ class PeopleController extends Controller
 
         $data['religions']        = Religion::where('status', true)->get();
         $data['districts']        = District::where('status', true)->orderBy('name')->get();
-        $data['countries']        = Country::orderBy('name')->get();
         $data['religions']        = Religion::where('status', true)->get();
         $data['familyTypes']      = FamilyType::where('status', true)->get();
         $data['familyCategories'] = FamilyCategory::where('status', true)->get();
@@ -288,7 +285,7 @@ class PeopleController extends Controller
         $data['roads']            = [];
         if (isset($institute?->institute_type_id) && $institute->institute_type_id == 1) {
             $data['villages'] = Village::where('union_id', $institute->union_id)->get();
-            $data['wards']    = UnionWard::where('status', true)->get();
+            $data['wards']    = [];
             $data['roads']    = Road::where('institute_id', $institute->id)->latest()->get();
         } else if (isset($institute?->institute_type_id) && $institute->institute_type_id == 2) {
 
@@ -335,7 +332,6 @@ class PeopleController extends Controller
 
         $data['religions'] = Religion::where('status', true)->get();
         $data['districts'] = District::where('status', true)->orderBy('name')->get();
-        $data['countries'] = Country::orderBy('name')->get();
         $data['user']      = $user = User::with('people')->find($id);
 
         if (!$user) {

@@ -89,7 +89,7 @@ class RolePermissionController extends Controller
             
             // Do not revoke critical permissions of admin/developer
             if (in_array($oldRole->id, [1, 4]) && in_array($oldPermission->name, ['roles.read', 'permissions.read', 'users.read'])) {
-                session()->flash('error', 'System-critical Capability cannot be revoked from Admin/Developer.');
+                session()->flash('error', 'System-critical Capability cannot be revoked from SuperAdmin/Developer.');
                 return redirect()->back();
             }
 

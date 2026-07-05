@@ -47,7 +47,7 @@ class InstitutionalAdminController extends Controller
     public function create()
     {
         $data['departments'] = \App\Models\Department\Department::all();
-        $data['roles'] = \App\Models\Role::whereNotIn('name', ['Admin', 'Developer'])->get();
+        $data['roles'] = \App\Models\Role::whereNotIn('name', ['SuperAdmin', 'Developer'])->get();
         return view('backend.pages.institutional_admin.create', $data);
     }
 
@@ -148,7 +148,7 @@ class InstitutionalAdminController extends Controller
         $admin = User::findOrFail($id);
         $data['admin'] = $admin;
         $data['departments'] = \App\Models\Department\Department::all();
-        $data['roles'] = \App\Models\Role::whereNotIn('name', ['Admin', 'Developer'])->get();
+        $data['roles'] = \App\Models\Role::whereNotIn('name', ['SuperAdmin', 'Developer'])->get();
         $data['sections'] = $admin->department_id ? \App\Models\Department\Section::where('department_id', $admin->department_id)->get() : collect([]);
         return view('backend.pages.institutional_admin.edit', $data);
     }

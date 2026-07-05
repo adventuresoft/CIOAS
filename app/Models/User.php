@@ -151,6 +151,22 @@ class User extends Authenticatable
     {
         return $this->assignRole(...$roles);
     }
+
+    public function hasPermissionTo($permission, $guardName = null): bool
+    {
+        if (!$this->role) return false;
+        try {
+            return $this->role->hasPermissionTo($permission, $guardName);
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return false;
+        }
+    }
+
+    public function checkPermissionTo($permission, $guardName = null): bool
+    {
+        return $this->hasPermissionTo($permission, $guardName);
+    }
+
     public function peopleProfile()
     {
         return $this->hasOne(People::class, 'user_id', 'id');

@@ -31,7 +31,7 @@ if (!function_exists('is_superadmin')) {
     function is_superadmin(): bool
     {
         if (!Auth::check()) return false;
-        return Auth::user()->hasRole(['Admin', 'Superadmin', 'Developer']);
+        return Auth::user()->hasRole(['SuperAdmin', 'Developer']);
     }
 }
 

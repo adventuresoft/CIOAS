@@ -29,7 +29,7 @@ class ApplicationController extends Controller
     {
         $data['divisions'] = Division::orderBy('name', 'asc')->get();
         $data['permanent_villages'] = Village::latest()->get();
-        $data['wards'] = UnionWard::get();
+        $data['wards'] = [];
         $data['roads'] = Road::latest()->get();
         $data['permanent_unions'] = Union::where('thana_id', 385)->get();
         $data['permanent_post_offices'] = PostOffice::where('thana_id', 385)->get();

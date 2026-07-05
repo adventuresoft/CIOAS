@@ -24,7 +24,6 @@ use App\Models\Division;
 use App\Models\District;
 use App\Models\Thana;
 use App\Models\Union;
-use App\Models\BasicSettings\Country;
 
 use App\Models\BasicSettings\AccountType;
 use App\Models\BasicSettings\Bank;
@@ -60,7 +59,6 @@ class ChairmanController extends Controller
 
         $data['religions'] = Religion::where('status', true)->get();
         $data['districts'] =  District::where('status', true)->orderBy('name')->get(); 
-        $data['countries'] =  Country::orderBy('name')->get(); 
         $data['divisions'] = Division::latest()->get();
         return view('backend.pages.chairman.create', $data);
     }
@@ -205,7 +203,6 @@ public function edit($id)
 {
     $data['religions'] = Religion::where('status', true)->get();
     $data['districts'] =  District::where('status', true)->orderBy('name')->get(); 
-    $data['countries'] =  Country::orderBy('name')->get(); 
     $data['divisions'] = Division::latest()->get();
 
 

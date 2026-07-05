@@ -429,17 +429,7 @@
 @section('content')
     <x-print-view title="ইনস্টিটিউশনাল অ্যাডমিন তথ্য বিবরণী">
 
-        <!-- Navigation Buttons (Hidden on Print) -->
-        <div class="no-print" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: flex-end;">
-            <a href="{{ route('institutional-admin.edit', $user->id) }}" class="btn btn-sm btn-warning text-white"
-                style="font-weight: 700; border-radius: 6px; padding: 7px 14px;">
-                <i class="fa fa-edit"></i> Edit / এডিট
-            </a>
-            <a href="{{ route('institutional-admin.index') }}" class="btn btn-sm btn-secondary"
-                style="font-weight: 700; border-radius: 6px; padding: 7px 14px; margin-left: 8px;">
-                <i class="fa fa-arrow-left"></i> Back to List / তালিকা
-            </a>
-        </div>
+
 
         {{-- Photo and ID block --}}
         <div class="photo-badge">
@@ -829,4 +819,20 @@
         </div>
         <div class="text-center mt-3 small text-muted">ইস্যুর তারিখ: {{ date('d/m/Y') }}</div>
     </x-print-view>
+    
+    <!-- Navigation Buttons (Hidden on Print) -->
+    <div class="no-print" style="display: flex; gap: 10px; margin-top: 20px; margin-bottom: 40px; justify-content: center;">
+        <a href="{{ route('institutional-admin.edit', $user->id) }}" class="btn btn-warning text-white"
+            style="font-weight: 700; border-radius: 6px; padding: 7px 14px;">
+            <i class="fa fa-edit"></i> Edit / এডিট
+        </a>
+        <a href="{{ route('institutional-admin.index') }}" class="btn btn-secondary"
+            style="font-weight: 700; border-radius: 6px; padding: 7px 14px;">
+            <i class="fa fa-arrow-left"></i> Back to List / তালিকা
+        </a>
+        <button onclick="window.print()" class="btn btn-info text-white"
+            style="font-weight: 700; border-radius: 6px; padding: 7px 14px; display: flex; align-items: center;">
+            <img src="{{ asset('design_tem/print.png') }}" alt="Print" style="width: 20px; height: 20px; margin-right: 8px; filter: brightness(0) invert(1);"> Printout
+        </button>
+    </div>
 @endsection

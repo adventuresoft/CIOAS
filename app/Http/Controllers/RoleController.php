@@ -134,7 +134,7 @@ class RoleController extends Controller
             $role = Role::findOrFail($id);
 
             // Do not delete superadmin/developer
-            if (in_array($role->id, [1, 4]) || in_array(strtolower($role->name), ['admin', 'developer'])) {
+            if (in_array($role->id, [1, 4]) || in_array(strtolower($role->name), ['superadmin', 'developer'])) {
                 session()->flash('error', 'System-critical Identity (Role) cannot be removed.');
                 return redirect()->route('role.index');
             }

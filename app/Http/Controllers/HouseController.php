@@ -93,7 +93,7 @@ class HouseController extends Controller
             $data['mouzas'] = [];
         }
         $data['villageAreas'] = [];
-        $data['union_wards'] = UnionWard::where('status', true)->orderBy('en_ward_no', 'asc')->get();
+        $data['union_wards'] = [];
         $data['house_types'] = HouseType::where('status', true)->latest()->get();
         $data['house_owner_types'] = HouseOwnerType::where('status', true)->latest()->get();
         $data['house_categories'] = HouseCategory::where('status', true)->latest()->get();
@@ -214,7 +214,7 @@ class HouseController extends Controller
             $data['mouzas'] = [];
         }
         
-        $data['union_wards'] = UnionWard::where('status', true)->orderBy('en_ward_no', 'asc')->get();
+        $data['union_wards'] = [];
         $data['house_types'] = HouseType::where('status', true)->latest()->get();
         $data['house_owner_types'] = HouseOwnerType::where('status', true)->latest()->get();
         $data['house'] = $house = House::find($id);

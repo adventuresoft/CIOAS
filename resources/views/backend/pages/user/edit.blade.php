@@ -264,6 +264,8 @@
                                         <option value="">Select User Type</option>
                                         <option value="staff" {{ old('user_type', $user->user_type) == 'staff' ? 'selected' : '' }}>Employee</option>
                                         <option value="admin" {{ old('user_type', $user->user_type) == 'admin' ? 'selected' : '' }}>Admin</option>
+                                        <option value="developer" {{ old('user_type', $user->user_type) == 'developer' ? 'selected' : '' }}>Developer</option>
+                                        <option value="normal" {{ old('user_type', $user->user_type) == 'normal' ? 'selected' : '' }}>Normal</option>
                                     </select>
                                     <br>
                                     <label class="form-label-premium" for="role_id">Primary Security Role</label>

@@ -82,6 +82,14 @@ class UserDataTable extends DataTable
                 }
                 return '<span class="text-muted font-italic" style="font-size: 0.85rem;">No role</span>';
             })
+            ->addColumn('user_type_label', function($row) {
+                if ($row->user_type == 'staff') {
+                    return '<span class="badge text-white px-2 py-1" style="background-color: #3b82f6; border-radius: 6px; font-weight: 600;"><i class="fas fa-user" style="font-size: 0.8rem;"></i> Employee</span>';
+                } elseif ($row->user_type == 'admin') {
+                    return '<span class="badge text-white px-2 py-1" style="background-color: #f59e0b; border-radius: 6px; font-weight: 600;"><i class="fas fa-user-tie" style="font-size: 0.8rem;"></i> Department Head</span>';
+                }
+                return '<span class="badge text-white px-2 py-1" style="background-color: #64748b; border-radius: 6px; font-weight: 600;">' . ucfirst($row->user_type) . '</span>';
+            })
             ->editColumn('status', function($row) {
                 if ($row->status == 1) {
                     return '<span class="badge-verified" style="background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; font-weight: 600; padding: 4px 10px; border-radius: 9999px; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 4px;"><i class="fas fa-check-circle"></i> Verified</span>';
@@ -92,14 +100,9 @@ class UserDataTable extends DataTable
                 return '
                 <div class="d-flex justify-content-center align-items-center" style="gap: 8px;">
                     <a href="' . route('user.show', $row->id) . '" class="btn btn-operation btn-operation-view" title="View Employee Profile" style="color:#0ea5e9; background:#e0f2fe; padding:6px 12px; border-radius:6px; font-size:0.85rem; transition:all 0.2s;"><i class="fas fa-eye"></i></a>
-                    <a href="' . route('user.edit', $row->id) . '" class="btn btn-operation btn-operation-edit" title="Modify Employee Profile" style="color:#f59e0b; background:#fef3c7; padding:6px 12px; border-radius:6px; font-size:0.85rem; transition:all 0.2s;"><i class="fas fa-edit"></i></a>
-                    <form action="' . route('user.destroy', $row->id) . '" method="POST" class="d-inline delete-form-confirm">
-                        ' . csrf_field() . ' ' . method_field("DELETE") . '
-                        <button type="submit" class="btn btn-operation btn-operation-delete" title="Delete Employee" style="color:#ef4444; background:#fee2e2; padding:6px 12px; border-radius:6px; border:none; font-size:0.85rem; transition:all 0.2s;"><i class="fas fa-trash-alt"></i></button>
-                    </form>
                 </div>';
             })
-            ->rawColumns(['profile', 'contact', 'department_section', 'roles_list', 'status', 'action'])
+            ->rawColumns(['profile', 'contact', 'department_section', 'roles_list', 'user_type_label', 'status', 'action'])
             ->setRowId('id');
     }
 
@@ -108,7 +111,10 @@ class UserDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        $query = $model->newQuery()->with(['department', 'section', 'role', 'institute.union', 'institute.pourashava', 'institute.cityCorporation', 'institute.district', 'institute.type'])->orderBy('id', 'desc');
+        $query = $model->newQuery()
+            ->with(['department', 'section', 'role', 'institute.union', 'institute.pourashava', 'institute.cityCorporation', 'institute.district', 'institute.type'])
+            ->whereIn('user_type', ['admin', 'staff'])
+            ->orderBy('id', 'desc');
 
         if (request()->has('department_id') && request('department_id') != '') {
             $query->where('department_id', request('department_id'));
@@ -154,6 +160,7 @@ class UserDataTable extends DataTable
             Column::make('profile')->title('Employee Profile')->name('name'),
             Column::make('contact')->title('Contact & Area')->name('mobile'),
             Column::make('department_section')->title('Dept. & Section')->searchable(false)->orderable(false),
+            Column::make('user_type_label')->title('User Type')->searchable(false)->orderable(false),
             Column::make('roles_list')->title('Roles')->searchable(false)->orderable(false),
             Column::make('status')->title('Status')->addClass('text-center'),
             Column::computed('action')

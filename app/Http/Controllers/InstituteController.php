@@ -294,6 +294,7 @@ class InstituteController extends Controller
         $institute = Institute::with('superUser')->find($id);
         $data['institute'] = $institute;
         $data['departments'] = \App\Models\Department\Department::all();
+        $data['roles'] = \Spatie\Permission\Models\Role::all();
 
         $superUser = $institute->superUser ?? null;
         $data['sections'] = ($superUser && $superUser->department_id)
@@ -309,9 +310,10 @@ class InstituteController extends Controller
             'name' => 'required|max:190',
             'email' => 'required|max:190|email',
             'mobile' => 'nullable|max:190',
-            'password' => 'required|min:6',
+            'password' => $request->user_id ? 'nullable|min:6' : 'required|min:6',
             'department_id' => 'nullable|integer',
             'section_id' => 'nullable|integer',
+            'role_id' => 'required|exists:roles,id',
         ]);
 
         if ($validate->fails()) {
@@ -329,7 +331,7 @@ class InstituteController extends Controller
         $user->institute_id = $request->institute_id;
         $user->department_id = $request->department_id;
         $user->section_id = $request->section_id;
-        $user->role_id = 6;
+        $user->role_id = $request->role_id;
         $user->email = $request->email;
         $user->status = true;
         $user->name = $request->name;
@@ -343,6 +345,11 @@ class InstituteController extends Controller
         try {
 
             $user->save();
+            
+            $role = \Spatie\Permission\Models\Role::find($request->role_id);
+            if ($role) {
+                $user->syncRoles([$role->name]);
+            }
 
 
             // if ($request->email) {

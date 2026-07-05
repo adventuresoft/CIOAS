@@ -94,9 +94,9 @@ class RoleUserController extends Controller
             $oldUser = User::findOrFail($request->old_model_id);
             $oldRole = Role::findOrFail($request->old_role_id);
             
-            // Safety: Don't remove the last Superadmin
-            if ($oldRole->id == 1 && User::role('Admin')->count() <= 1 && $oldUser->id == auth()->id()) {
-                session()->flash('error', 'Cannot revoke Superadmin role from the last active administrator.');
+            // Check if attempting to demote the last SuperAdmin
+            if ($oldRole->id == 1 && User::role('SuperAdmin')->count() <= 1 && $oldUser->id == auth()->id()) {
+                session()->flash('error', 'Cannot remove your own SuperAdmin clearance as you are the last active SuperAdmin.');
                 return redirect()->back();
             }
 
@@ -131,9 +131,9 @@ class RoleUserController extends Controller
             $user = User::findOrFail($request->model_id);
             $role = Role::findOrFail($request->role_id);
 
-            // Safety: Don't remove the last Superadmin
-            if ($role->id == 1 && User::role('Admin')->count() <= 1 && $user->id == auth()->id()) {
-                session()->flash('error', 'Cannot revoke Superadmin role from the last active administrator.');
+            // Safety: Don't remove the last SuperAdmin
+            if ($role->id == 1 && User::role('SuperAdmin')->count() <= 1 && $user->id == auth()->id()) {
+                session()->flash('error', 'Cannot revoke SuperAdmin role from the last active administrator.');
                 return redirect()->route('roleuser.index');
             }
 

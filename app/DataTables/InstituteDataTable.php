@@ -38,8 +38,11 @@ class InstituteDataTable extends DataTable
             ->addColumn('institute_type', function ($row) {
                 return $row->type ? $row->type->name : '—';
             })
-            ->addColumn('institute_category', function ($row) {
-                return $row->category ? $row->category->name : '—';
+            ->addColumn('division', function ($row) {
+                return $row->division ? $row->division->name : '—';
+            })
+            ->addColumn('district', function ($row) {
+                return $row->district ? $row->district->name : '—';
             })
             ->editColumn('activation_time', function ($row) {
                 return $row->activation_time ? date("d M, Y", strtotime($row->activation_time)) : '—';
@@ -64,7 +67,7 @@ class InstituteDataTable extends DataTable
      */
     public function query(Institute $model): QueryBuilder
     {
-        return $model->newQuery()->with(['type', 'category', 'union', 'pourashava', 'cityCorporation', 'district'])->orderBy('id', 'desc');
+        return $model->newQuery()->with(['type', 'union', 'pourashava', 'cityCorporation', 'division', 'district'])->orderBy('id', 'desc');
     }
 
     /**
@@ -105,7 +108,8 @@ class InstituteDataTable extends DataTable
             Column::make('DT_RowIndex')->title('Sl.')->searchable(false)->orderable(false)->width(60)->addClass('text-center text-muted font-weight-bold'),
             Column::make('institute_name')->title('Institute Name')->addClass('font-weight-bold text-secondary')->searchable(false)->orderable(false),
             Column::make('institute_type')->title('Institute Type')->addClass('text-secondary')->searchable(false)->orderable(false),
-            Column::make('institute_category')->title('Institute Category')->addClass('text-secondary')->searchable(false)->orderable(false),
+            Column::make('division')->title('Division')->addClass('text-secondary')->searchable(false)->orderable(false),
+            Column::make('district')->title('District')->addClass('text-secondary')->searchable(false)->orderable(false),
             Column::make('activation_time')->title('Activation Time')->addClass('text-secondary'),
             Column::computed('action')
                   ->title('Action')

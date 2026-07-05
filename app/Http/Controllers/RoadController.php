@@ -34,7 +34,7 @@ class RoadController extends Controller
         $data['road_categories'] = RoadCategory::latest()->get();
         $data['road_types'] = RoadType::latest()->get();
         $data['road_owners'] = RoadOwner::latest()->get();
-        $data['union_wards'] = UnionWard::latest()->get();
+        $data['union_wards'] = [];
         // return response()->json($data, 200);
         return view('backend.pages.road.create', $data);
     }
@@ -125,7 +125,7 @@ class RoadController extends Controller
         $data['road_categories'] = RoadCategory::latest()->get();
         $data['road_types'] = RoadType::latest()->get();
         $data['road_owners'] = RoadOwner::latest()->get();
-        $data['union_wards'] = UnionWard::latest()->get();
+        $data['union_wards'] = [];
         return view('backend.pages.road.edit', $data);
     }
 

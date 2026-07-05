@@ -356,7 +356,7 @@ class StaffController extends Controller
         $data['roads']            = [];
         if (isset($institute?->institute_type_id) && $institute->institute_type_id == 1) {
             $data['villages'] = Village::where('union_id', $institute->union_id)->get();
-            $data['wards']    = UnionWard::where('status', true)->get();
+            $data['wards']    = [];
         } else if (isset($institute?->institute_type_id) && $institute->institute_type_id == 2) {
 
         } else if (isset($institute?->institute_type_id) && $institute->institute_type_id == 3) {

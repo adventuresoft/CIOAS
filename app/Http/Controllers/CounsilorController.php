@@ -19,7 +19,6 @@ use App\Models\ChairmanMayor;
 use App\Models\Religion;
 use App\Models\Division;
 use App\Models\District;
-use App\Models\BasicSettings\Country;
 
 use App\Models\BasicSettings\AccountType;
 use App\Models\BasicSettings\Bank;
@@ -55,7 +54,6 @@ class CounsilorController extends Controller
 
         $data['religions'] = Religion::where('status', true)->get();
         $data['districts'] =  District::where('status', true)->orderBy('name')->get(); 
-        $data['countries'] =  Country::orderBy('name')->get(); 
         $data['divisions'] = Division::latest()->get();
         return view('backend.pages.chairman.create', $data);
     }
@@ -252,7 +250,7 @@ class CounsilorController extends Controller
         $data['permanent_houses'] = [];
         if(isset($user->institute->institute_type_id) && $user->institute->institute_type_id == 1) {
             $data['villages'] = Village::where('union_id', $user->institute->union_id)->get();
-            $data['wards'] = UnionWard::where('status', true)->get();
+            $data['wards'] = [];
             $data['roads'] = Road::where('institute_id',  $user->institute->id)->latest()->get();
         } else if (isset($user->institute->institute_type_id) && $user->institute->institute_type_id == 2) {
 
