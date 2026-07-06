@@ -10,4 +10,9 @@ class HotelCategory extends Model
     use HasFactory;
 
     protected $table = "hotel_categories";
+
+    public function subCategory()
+    {
+        return $this->hasMany(HotelSubCategory::class, 'hotel_category_id', 'id');
+    }
 }

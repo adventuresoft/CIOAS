@@ -61,6 +61,7 @@ class InstitutionalAdminController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'name' => 'required|max:190',
+            'designation' => 'nullable|max:190',
             'email' => 'required|max:190|email',
             'mobile' => 'nullable|max:190',
             'role_id' => 'required|integer',
@@ -88,6 +89,7 @@ class InstitutionalAdminController extends Controller
             $user->mobile = $request->mobile;
             $user->password = Hash::make($request->password);
             $user->name = $request->name;
+            $user->designation = $request->designation;
             $user->status = $request->status;
             $user->user_type = 'admin';
             $user->created_by = Auth::id();
@@ -124,7 +126,6 @@ class InstitutionalAdminController extends Controller
             'section',
             'people',
             'familyInfo',
-
             'educationInfos',
             'professionalInfos',
             'financialInfos',
@@ -164,6 +165,7 @@ class InstitutionalAdminController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'name' => 'required|max:190',
+            'designation' => 'nullable|max:190',
             'email' => 'required|max:190|email',
             'mobile' => 'nullable|max:190',
             'role_id' => 'required|integer',
@@ -185,6 +187,7 @@ class InstitutionalAdminController extends Controller
             $user->email = $request->email;
             $user->mobile = $request->mobile;
             $user->name = $request->name;
+            $user->designation = $request->designation;
             $user->role_id = $request->role_id;
             $user->department_id = $request->department_id;
             $user->section_id = $request->section_id;

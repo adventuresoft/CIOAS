@@ -41,21 +41,21 @@ class HotelSubCategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'en_name'           => 'required',
-            'bn_name'           => 'required',
+            'en_name' => 'required',
+            'bn_name' => 'required',
             'hotel_category_id' => 'required',
         ]);
 
-        $subcategory                    = new HotelSubCategory();
-        $subcategory->en_name           = $request->en_name;
-        $subcategory->bn_name           = $request->bn_name;
+        $subcategory = new HotelSubCategory();
+        $subcategory->en_name = $request->en_name;
+        $subcategory->bn_name = $request->bn_name;
         $subcategory->hotel_category_id = $request->hotel_category_id;
-        $subcategory->created_by        = Auth::user()->id;
-        $subcategory->slug              = str_replace(' ', '-', $request->en_name);
+        $subcategory->created_by = Auth::user()->id;
+        $subcategory->slug = str_replace(' ', '-', $request->en_name);
         $subcategory->save();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => 'Hotel SubCategory Created Successfully!',
         ], 200);
     }
@@ -68,7 +68,7 @@ class HotelSubCategoryController extends Controller
      */
     public function show($id)
     {
-        $categories  = HotelCategory::latest()->get();
+        $categories = HotelCategory::latest()->get();
         $subcategory = HotelSubCategory::findOrFail($id);
         return view('backend.pages.hotel-restaurant.subcategory.show', compact('subcategory', 'categories'));
     }
@@ -81,7 +81,7 @@ class HotelSubCategoryController extends Controller
      */
     public function edit($id)
     {
-        $categories  = HotelCategory::latest()->get();
+        $categories = HotelCategory::latest()->get();
         $subcategory = HotelSubCategory::findOrFail($id);
         return view('backend.pages.hotel-restaurant.subcategory.edit', compact('subcategory', 'categories'));
     }
@@ -96,21 +96,21 @@ class HotelSubCategoryController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'en_name'           => 'required',
-            'bn_name'           => 'required',
+            'en_name' => 'required',
+            'bn_name' => 'required',
             'hotel_category_id' => 'required',
         ]);
 
-        $subcategory                    = HotelSubCategory::findOrFail($id);
-        $subcategory->en_name           = $request->en_name;
-        $subcategory->bn_name           = $request->bn_name;
+        $subcategory = HotelSubCategory::findOrFail($id);
+        $subcategory->en_name = $request->en_name;
+        $subcategory->bn_name = $request->bn_name;
         $subcategory->hotel_category_id = $request->hotel_category_id;
-        $subcategory->updated_by        = Auth::user()->id;
-        $subcategory->slug              = str_replace(' ', '-', $request->en_name);
+        $subcategory->updated_by = Auth::user()->id;
+        $subcategory->slug = str_replace(' ', '-', $request->en_name);
         $subcategory->save();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => 'Hotel SubCategory Updated Successfully!',
         ], 200);
     }
@@ -124,10 +124,11 @@ class HotelSubCategoryController extends Controller
     public function destroy($id)
     {
         $subcategory = HotelSubCategory::findOrFail($id);
+
         $subcategory->delete();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => 'Hotel SubCategory Deleted Successfully!',
         ], 200);
     }

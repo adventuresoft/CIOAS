@@ -67,6 +67,14 @@
                                         </select>
                                         <small class="error section_id-error text-danger"></small>
                                     </div>
+                                    <!-- designation -->
+                                    <div class="col-md-6 form-group mb-4">
+                                        <label class="premium-form-label" for="designation">Designation</label>
+                                        <input type="text" name="designation" id="designation" 
+                                               class="form-control premium-form-control" 
+                                               placeholder="Designation">
+                                        <small class="error designation-error text-danger"></small>
+                                    </div>
                                 </div>
 
                                 <div class="row">

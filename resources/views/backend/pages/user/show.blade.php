@@ -146,7 +146,7 @@
 
                         @if ($currentDesignation)
                             <p class="text-primary mb-3 font-weight-bold" style="font-size: 0.9rem;" title="Current Designation">
-                                <i class="fas fa-user-tie mr-1"></i> {{ $currentDesignation }}
+                                <i class="fas fa-user-tie mr-1"></i> {{ $user->designation ?? $currentDesignation }}
                             </p>
                         @else
                             <div class="mb-3"></div>

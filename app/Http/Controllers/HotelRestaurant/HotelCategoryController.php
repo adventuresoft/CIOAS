@@ -123,6 +123,8 @@ class HotelCategoryController extends Controller
     public function destroy($id)
     {
         $category = HotelCategory::findOrFail($id);
+
+        $category->subCategory()->delete();
         $category->delete();
 
         return response()->json([

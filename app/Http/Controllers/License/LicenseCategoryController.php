@@ -75,7 +75,11 @@ class LicenseCategoryController extends Controller
 
     public function destroy($id)
     {
-        LicenseCategory::findOrFail($id)->delete();
+        $subcategories = LicenseCategory::findOrFail($id);
+
+        $subcategories->subcategories()->delete();
+
+        $subcategories->delete();
 
         return response()->json([
             'status' => true,

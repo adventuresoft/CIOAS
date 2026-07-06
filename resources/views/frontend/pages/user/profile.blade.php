@@ -60,6 +60,12 @@
                                     <span class="font-weight-bold text-dark">{{ $user->section->name ?? 'N/A' }}</span>
                                 </li>
 
+                                <li
+                                    class="list-group-item d-flex justify-content-between align-align-items-center py-2 px-0">
+                                    <span class="text-muted"><i class="fas fa-briefcase mr-2 text-emerald"></i> পদবি</span>
+                                    <span class="font-weight-bold text-dark">{{ $user->designation ?? 'N/A' }}</span>
+                                </li>
+
                             </ul>
                         </div>
                         <!-- /.card-body -->
@@ -142,7 +148,7 @@
                                             <div class="col-md-6">
                                                 <label for="bn_name">Name (Bangla) <span
                                                         class="text-danger">*</span></label>
-                                                <input type="text" required value="{{ $user->people->bn_name ?? '' }}"
+                                                <input type="text" required value="{{ $user->bn_name ?? '' }}"
                                                     class="form-control" name="bn_name" id="bn_name"
                                                     placeholder="Name Bangla">
                                                 <small class="error bn_name-error text-danger d-block mt-1"></small>

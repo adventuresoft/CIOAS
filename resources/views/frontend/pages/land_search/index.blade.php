@@ -121,11 +121,11 @@
         </div>
 
         @if($lands !== null)
-            <div class="bg-white rounded-3 shadow-sm border-top border-5 border-success p-3" id="print-section">
+            <div class="bg-white rounded-3 shadow-sm border-top border-5 border-success p-3 mt-3" id="print-section">
                 <div
                     class="d-d-flex align-align-items-center gap-3 border-bottom border-3 border-danger pb-3 mb-3 d-d-flex justify-content-between align-align-items-center no-print">
                     <div>
-                        <h2>অনুসন্ধান ফলাফল</h2>
+                        <h2 class="fs-5">অনুসন্ধান ফলাফল</h2>
                         <p class="fs-content text-green-100 mt-1">মোট {{ count($lands) }} টি তথ্য পাওয়া গেছে</p>
                     </div>
                     <button onclick="window.print()" class="btn btn-light"><i class="fas fa-print"></i> প্রিন্ট করুন</button>

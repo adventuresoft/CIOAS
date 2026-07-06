@@ -224,6 +224,7 @@ class LoginController extends Controller
         // 1. Update User
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->bn_name = $request->bn_name;
         $user->mobile = $request->mobile;
 
         // Image upload

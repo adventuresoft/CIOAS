@@ -129,14 +129,16 @@ class DepartmentController extends Controller
      */
     public function destroy($id)
     {
-        $department = Department::find($id);
+        $department = Department::findOrFail($id);
+
+        // Delete all sections under this department first
+        $department->sections()->delete();
 
         $department->delete();
 
         return response()->json([
-            'status' => true,
-            'message' => 'Department deleted successfully.',
+            'status'  => true,
+            'message' => 'Department and its sections deleted successfully.',
         ], 200);
-
     }
 }
