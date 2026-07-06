@@ -401,12 +401,16 @@
                 initLocSelect2($(this));
             });
 
-            function loadLocMouzas(row, thanaId, selectedMouza) {
+            function loadLocMouzas(row, thanaId, recordId, selectedMouza) {
                 let mouza = $('#loc_mouza_' + row);
                 mouza.html('<option value="">লোড হচ্ছে...</option>').trigger('change.select2');
                 if (!thanaId) { mouza.html('<option value="">-- মৌজা --</option>').trigger('change.select2'); return; }
+                
+                let url = '/get-mouzas-by-thana/' + thanaId;
+                if (recordId) url += '?record=' + encodeURIComponent(recordId);
+
                 $.ajax({
-                    url: '/get-mouzas-by-thana/' + thanaId,
+                    url: url,
                     success: function (response) {
                         mouza.html(response);
                         if (selectedMouza) mouza.val(String(selectedMouza));
@@ -432,7 +436,7 @@
                         thana.html(response);
                         if (selectedThana) {
                             thana.val(String(selectedThana));
-                            loadLocMouzas(row, selectedThana, selectedMouza);
+                            loadLocMouzas(row, selectedThana, recordId, selectedMouza);
                         }
                         thana.trigger('change.select2');
                     },
@@ -462,7 +466,9 @@
             // On thana change in location table
             $(document).on('change', 'select.location-thana', function () {
                 let row = $(this).data('row');
-                loadLocMouzas(row, $(this).val(), '');
+                let districtSelect = $('#loc_district_' + row);
+                let recordId = districtSelect.data('record');
+                loadLocMouzas(row, $(this).val(), recordId, '');
             });
 
             // Dynamic Upazila loading for main form
@@ -524,12 +530,17 @@
             $('#upazila_id').on('change', function () {
                 let upazilaId = $(this).val();
                 let mouzaSelect = $('#mouza_id');
+                let record = $('#record_type').val() || '';
 
                 mouzaSelect.html('<option value="">Select Mouza</option>').prop('disabled', true);
 
                 if (upazilaId) {
+                    let url = '/get-mouzas-by-thana/' + upazilaId;
+                    if (record) {
+                        url += '?record=' + encodeURIComponent(record);
+                    }
                     $.ajax({
-                        url: '/get-mouzas-by-thana/' + upazilaId,
+                        url: url,
                         type: 'GET',
                         success: function (response) {
                             mouzaSelect.html(response).prop('disabled', false);

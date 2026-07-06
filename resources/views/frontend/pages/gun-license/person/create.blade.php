@@ -6,14 +6,12 @@
 @endpush
 
 @section('content')
-    <div class="container pb-3">
+    <div class="container">
         <div class="bg-white rounded-3 shadow-sm border-top border-5 border-success p-3">
             <!-- Header -->
-            <div class="d-d-flex align-align-items-center gap-3 border-bottom border-3 border-danger pb-3 mb-3">
+            <div class="d-flex align-items-center gap-3 border-bottom border-3 border-danger pb-3 mb-3">
                 <div>
                     <h5 class="fw-semibold fs-6">ব্যক্তিগত আগ্নেয়াস্ত্র লাইসেন্স আবেদন ফরম</h5>
-                    <p class="fs-content text-green-100 mt-1">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার - কেন্দ্রীয় সমন্বিত অফিস
-                        অটোমেশন সিস্টেম</p>
                 </div>
             </div>
 

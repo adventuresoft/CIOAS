@@ -1,4 +1,4 @@
-<footer class="frontend-footer pt-2"
+<footer class="frontend-footer pt-2 mt-3"
     style="background-color: #dfdfdf; border-top: 1px solid #e2e8f0; position: relative; overflow: hidden; box-shadow: 0 -2px 10px rgba(0,0,0,0.02);">
     <div style="display: flex; justify-content: space-between; align-items: stretch; min-height: 70px;">
         <!-- Left Image Section -->

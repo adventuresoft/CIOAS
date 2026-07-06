@@ -47,7 +47,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'user_type' => 'required|in:admin,staff,developer,normal',
+            'user_type' => 'required|in:admin,superadmin,staff,developer,normal',
             'mobile' => 'required|string',
             'password' => 'required|min:6|confirmed',
             'institute_id' => 'required',
@@ -114,7 +114,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'user_type' => 'required|in:admin,staff,developer,normal',
+            'user_type' => 'required|in:admin,superadmin,staff,developer,normal',
             'mobile' => 'required|string',
             'password' => 'nullable|min:6|confirmed',
             'institute_id' => 'required',

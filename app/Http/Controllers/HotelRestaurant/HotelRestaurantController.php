@@ -258,24 +258,45 @@ class HotelRestaurantController extends Controller
         // Handle document files upload (owned or rented premises)
         $document_files = null;
         if ($request->hasFile('owned_document_file') || $request->hasFile('rented_document_file')) {
-            $files             = $request->file('owned_document_file') ?? $request->file('rented_document_file');
+            $files = $request->premises_ownership == 'owned' 
+                     ? $request->file('owned_document_file') 
+                     : $request->file('rented_document_file');
+            
+            $names = $request->premises_ownership == 'owned'
+                     ? $request->input('owned_document_name')
+                     : $request->input('rented_document_name');
+            
             $uploadedDocuments = [];
-
-            foreach ($files as $file) {
-                $filePath            = $this->uploadFile(
-                    $file,
-                    'uploads/hotel/documents/',
-                    'rented_doc_'
-                );
-                $uploadedDocuments[] = $filePath;
+            if ($files) {
+                foreach ($files as $index => $file) {
+                    $filePath = $this->uploadFile($file, 'uploads/hotel/documents/', 'doc_');
+                    $uploadedDocuments[] = [
+                        'name' => $names[$index] ?? 'Document',
+                        'file' => $filePath
+                    ];
+                }
             }
-
             if (!empty($uploadedDocuments)) {
                 $document_files = json_encode($uploadedDocuments);
             }
         }
 
+        // Clean up location fields based on location type
+        if ($request->location_type == 'city_type') {
+            $request->merge(['union_id' => null, 'pos_id' => null]);
+        } elseif ($request->location_type == 'pos_type') {
+            $request->merge(['union_id' => null, 'city_id' => null]);
+        } elseif ($request->location_type == 'union_type') {
+            $request->merge(['city_id' => null, 'pos_id' => null]);
+        }
 
+        if ($request->office_location_type == 'city_type') {
+            $request->merge(['office_union_id' => null, 'office_pos_id' => null]);
+        } elseif ($request->office_location_type == 'pos_type') {
+            $request->merge(['office_union_id' => null, 'office_city_id' => null]);
+        } elseif ($request->office_location_type == 'union_type') {
+            $request->merge(['office_city_id' => null, 'office_pos_id' => null]);
+        }
 
         // Prepare data for database insertion
         $payload = [
@@ -307,7 +328,7 @@ class HotelRestaurantController extends Controller
             'union_id'              => $request->union_id,
             'village_id'            => $request->village_id,
             'city_id'               => $request->city_id,
-            'pos_id'                => $request->city_id,
+            'pos_id'                => $request->pos_id,
             'ward_id'               => $request->ward_id,
             'road'                  => $request->road,
             'house'                 => $request->house,
@@ -598,32 +619,62 @@ class HotelRestaurantController extends Controller
         if ($request->hasFile('owned_document_file') || $request->hasFile('rented_document_file')) {
             // Delete old documents if they exist
             if ($hotelRestaurant->document_files) {
-                $oldDocuments = json_decode($hotelRestaurant->document_files);
+                $oldDocuments = json_decode($hotelRestaurant->document_files, true);
                 if (!empty($oldDocuments)) {
-                    foreach ($oldDocuments as $file) {
-                        if (File::exists(public_path($file))) {
-                            File::delete(public_path($file));
+                    foreach ($oldDocuments as $doc) {
+                        $oldFilePath = is_array($doc) && isset($doc['file']) ? $doc['file'] : $doc;
+                        if (File::exists(public_path($oldFilePath))) {
+                            File::delete(public_path($oldFilePath));
                         }
                     }
                 }
             }
 
             // Upload new documents
-            $files             = $request->file('owned_document_file') ?? $request->file('rented_document_file');
-            $uploadedDocuments = [];
+            $files = $request->premises_ownership == 'owned' 
+                     ? $request->file('owned_document_file') 
+                     : $request->file('rented_document_file');
+            
+            $names = $request->premises_ownership == 'owned'
+                     ? $request->input('owned_document_name')
+                     : $request->input('rented_document_name');
 
-            foreach ($files as $file) {
-                $filePath            = $this->uploadFile(
-                    $file,
-                    'uploads/hotel/documents/',
-                    'rented_doc_'
-                );
-                $uploadedDocuments[] = $filePath;
+            $uploadedDocuments = [];
+            
+            if ($files) {
+                foreach ($files as $index => $file) {
+                    $filePath            = $this->uploadFile(
+                        $file,
+                        'uploads/hotel/documents/',
+                        'doc_'
+                    );
+                    $uploadedDocuments[] = [
+                        'name' => $names[$index] ?? 'Document',
+                        'file' => $filePath
+                    ];
+                }
             }
 
             if (!empty($uploadedDocuments)) {
                 $document_files = json_encode($uploadedDocuments);
             }
+        }
+
+        // Clean up location fields based on location type
+        if ($request->location_type == 'city_type') {
+            $request->merge(['union_id' => null, 'pos_id' => null]);
+        } elseif ($request->location_type == 'pos_type') {
+            $request->merge(['union_id' => null, 'city_id' => null]);
+        } elseif ($request->location_type == 'union_type') {
+            $request->merge(['city_id' => null, 'pos_id' => null]);
+        }
+
+        if ($request->office_location_type == 'city_type') {
+            $request->merge(['office_union_id' => null, 'office_pos_id' => null]);
+        } elseif ($request->office_location_type == 'pos_type') {
+            $request->merge(['office_union_id' => null, 'office_city_id' => null]);
+        } elseif ($request->office_location_type == 'union_type') {
+            $request->merge(['office_city_id' => null, 'office_pos_id' => null]);
         }
 
         // Prepare data for database update

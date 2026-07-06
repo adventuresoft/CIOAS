@@ -34,13 +34,13 @@ class LicenseDataTable extends DataTable
                 $showButton = '';
                 $deleteForm = '';
 
-                if (auth()->user()->can('license.update') || edit_permission('license')) {
+                if (auth()->user()?->can('license.update') || update_permission('license')) {
                     $editButton = '<a href="' . route('license.edit', $row->id) . '" title="Edit" data-toggle="tooltip" class="btn btn-primary btn-sm mx-1"><i class="fa fa-edit"></i></a>';
                 }
-                if (auth()->user()->can('license.read') || view_permission('license')) {
+                if (auth()->user()?->can('license.read') || view_permission('license')) {
                     $showButton = '<a href="' . route('license.show', $row->id) . '" title="View" data-toggle="tooltip" class="btn btn-info btn-sm mx-1"><i class="fa fa-eye"></i></a>';
                 }
-                if (auth()->user()->can('license.delete') || delete_permission('license')) {
+                if (auth()->user()?->can('license.delete') || delete_permission('license')) {
                     $deleteForm = '<form class="deleteData" method="post" style="display:inline-block; margin:0;">
                                         <input type="hidden" name="_token" value="' . csrf_token() . '">
                                         <input type="hidden" name="_method" value="DELETE">
@@ -135,3 +135,4 @@ class LicenseDataTable extends DataTable
         return 'License_' . date('YmdHis');
     }
 }
+

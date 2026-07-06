@@ -16,7 +16,7 @@ use App\Models\District;
 use App\Models\Thana;
 use App\Models\Union;
 use App\Models\PostOffice;
-use App\Models\UnionWard;
+use App\Models\Ward;
 class HotelRestaurantOwnership extends Model
 {
     use HasFactory;
@@ -126,13 +126,11 @@ class HotelRestaurantOwnership extends Model
 
     public function presentWard()
     {
-        return $this->belongsTo(UnionWard::class, 'present_ward_id', 'id');
-
+        return $this->belongsTo(Ward::class, 'present_ward_id', 'id');
     }
 
     public function permanentWard()
     {
-        return $this->belongsTo(UnionWard::class, 'permanent_ward_id', 'id');
-
+        return $this->belongsTo(Ward::class, 'permanent_ward_id', 'id');
     }
 }

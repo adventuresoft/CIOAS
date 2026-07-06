@@ -107,7 +107,7 @@
                             <ul class="nav nav-pills border-0">
                                 <li class="nav-item"><a class="nav-link active" href="#personal"
                                         data-toggle="tab">Personal</a></li>
-                                @if(auth()->user()->user_type !== 'admin')
+                                @if(!in_array(auth()->user()->user_type, ['admin', 'superadmin']))
                                     <li class="nav-item"><a class="nav-link" href="#family" data-toggle="tab">Family</a></li>
                                     <li class="nav-item"><a class="nav-link" href="#address" data-toggle="tab">Address</a></li>
                                 @endif
@@ -187,7 +187,7 @@
 
 
                                     <!-- /.tab-pane -->
-                                    @if(auth()->user()->user_type !== 'admin')
+                                    @if(!in_array(auth()->user()->user_type, ['admin', 'superadmin']))
                                         <div class="tab-pane" id="family">
                                             <div class="row mb-3">
                                                 <div class="col-md-3">

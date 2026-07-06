@@ -64,7 +64,7 @@ class InstitutionalAdminDataTable extends DataTable
         return $model->newQuery()
             ->with(['department', 'section'])
             ->where('institute_id', Auth::user()->institute_id)
-            ->where('user_type', 'admin');
+            ->whereIn('user_type', ['admin']);
     }
 
     /**
@@ -111,10 +111,10 @@ class InstitutionalAdminDataTable extends DataTable
             Column::make('section')->title('Designation')->orderable(false)->searchable(false),
             Column::make('created_at')->title('Created at'),
             Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(160)
-                  ->addClass('text-center'),
+                ->exportable(false)
+                ->printable(false)
+                ->width(160)
+                ->addClass('text-center'),
         ];
     }
 

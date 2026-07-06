@@ -108,6 +108,8 @@
                                     $userTypeLabel = 'Employee';
                                 } elseif ($user->user_type == 'admin') {
                                     $userTypeLabel = 'Department Head';
+                                } elseif ($user->user_type == 'superadmin') {
+                                    $userTypeLabel = 'Super Admin';
                                 }
                             @endphp
                             <p class="text-info font-weight-bold mb-2" style="font-size: 0.85rem; text-transform: capitalize;" title="User Type">

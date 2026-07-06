@@ -125,7 +125,7 @@
 @endpush
 
 @section('content')
-    <div class="container pt-3 pb-3">
+    <div class="container pb-3">
         <div class="bg-white rounded-4 shadow-sm border border-light overflow-hidden">
 
             <!-- Header Banner -->

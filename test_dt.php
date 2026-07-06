@@ -1,23 +1,13 @@
 <?php
-
-require __DIR__.'/vendor/autoload.php';
-$app = require_once __DIR__.'/bootstrap/app.php';
+require 'vendor/autoload.php';
+$app = require_once 'bootstrap/app.php';
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
-
-try {
-    $dt = new \App\DataTables\BasicSettings\LicenseCategoryDataTable();
-    echo $dt->html()->scripts();
-    echo "\n\nHTML IS OK\n\n";
-    
-    // Test data loading
-    $request = Illuminate\Http\Request::create('/dashboard/basic-settings/license-category', 'GET', ['draw' => 1]);
-    app()->instance('request', $request);
-    
-    $query = App\Models\License\LicenseCategory::query();
-    $data = $dt->dataTable($query)->toJson();
-    echo substr($data->getContent(), 0, 500);
-
-} catch (\Exception $e) {
-    echo "ERROR: " . $e->getMessage() . "\n" . $e->getTraceAsString();
+try { 
+    $request = Illuminate\Http\Request::create('/dashboard/license', 'GET', ['draw' => 1, 'start' => 0, 'length' => 10, 'search' => ['value' => '']]);
+    $app->instance('request', $request);
+    $dt = app(App\DataTables\License\LicenseDataTable::class);
+    echo json_encode($dt->ajax()->getContent()); 
+} catch (\Exception $e) { 
+    echo $e->getMessage(); 
 }

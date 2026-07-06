@@ -23,7 +23,7 @@ class UserDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            ->addColumn('profile', function($row) {
+            ->addColumn('profile', function ($row) {
                 $firstLetter = strtoupper(substr($row->name, 0, 1));
                 $imageHtml = '';
                 if (!empty($row->image) && file_exists(public_path('upload/users/images/' . $row->image))) {
@@ -42,7 +42,7 @@ class UserDataTable extends DataTable
                     </div>
                 </div>';
             })
-            ->addColumn('contact', function($row) {
+            ->addColumn('contact', function ($row) {
                 $areaName = 'No Area';
                 if ($row->institute) {
                     if ($row->institute->institute_type_id == 1) {
@@ -67,7 +67,7 @@ class UserDataTable extends DataTable
                     <div class="text-secondary" style="font-size: 0.85rem;"><i class="fas fa-map-marker-alt text-danger mr-2" style="font-size: 0.85rem;"></i>' . $areaName . '</div>
                 </div>';
             })
-            ->addColumn('department_section', function($row) {
+            ->addColumn('department_section', function ($row) {
                 $dept = $row->department ? $row->department->name : 'N/A';
                 $sec = $row->section ? $row->section->name : 'N/A';
                 return '
@@ -76,27 +76,29 @@ class UserDataTable extends DataTable
                     <div class="text-secondary mt-1" style="font-size: 0.8rem;"><i class="fas fa-layer-group text-info mr-1"></i> ' . $sec . '</div>
                 </div>';
             })
-            ->addColumn('roles_list', function($row) {
+            ->addColumn('roles_list', function ($row) {
                 if ($row->role) {
                     return '<span class="badge text-white px-2 py-1 mr-1" style="background-color: #0ea5e9; border-radius: 6px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;"><i class="fas fa-user-shield" style="font-size: 0.8rem;"></i> ' . $row->role->name . '</span>';
                 }
                 return '<span class="text-muted font-italic" style="font-size: 0.85rem;">No role</span>';
             })
-            ->addColumn('user_type_label', function($row) {
+            ->addColumn('user_type_label', function ($row) {
                 if ($row->user_type == 'staff') {
                     return '<span class="badge text-white px-2 py-1" style="background-color: #3b82f6; border-radius: 6px; font-weight: 600;"><i class="fas fa-user" style="font-size: 0.8rem;"></i> Employee</span>';
                 } elseif ($row->user_type == 'admin') {
                     return '<span class="badge text-white px-2 py-1" style="background-color: #f59e0b; border-radius: 6px; font-weight: 600;"><i class="fas fa-user-tie" style="font-size: 0.8rem;"></i> Department Head</span>';
+                } elseif ($row->user_type == 'superadmin') {
+                    return '<span class="badge text-white px-2 py-1" style="background-color: #8b5cf6; border-radius: 6px; font-weight: 600;"><i class="fas fa-user-shield" style="font-size: 0.8rem;"></i> Super Admin</span>';
                 }
                 return '<span class="badge text-white px-2 py-1" style="background-color: #64748b; border-radius: 6px; font-weight: 600;">' . ucfirst($row->user_type) . '</span>';
             })
-            ->editColumn('status', function($row) {
+            ->editColumn('status', function ($row) {
                 if ($row->status == 1) {
                     return '<span class="badge-verified" style="background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; font-weight: 600; padding: 4px 10px; border-radius: 9999px; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 4px;"><i class="fas fa-check-circle"></i> Verified</span>';
                 }
                 return '<span class="badge-pending" style="background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; font-weight: 600; padding: 4px 10px; border-radius: 9999px; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 4px;"><i class="fas fa-clock"></i> Pending</span>';
             })
-            ->addColumn('action', function($row) {
+            ->addColumn('action', function ($row) {
                 return '
                 <div class="d-flex justify-content-center align-items-center" style="gap: 8px;">
                     <a href="' . route('user.show', $row->id) . '" class="btn btn-operation btn-operation-view" title="View Employee Profile" style="color:#0ea5e9; background:#e0f2fe; padding:6px 12px; border-radius:6px; font-size:0.85rem; transition:all 0.2s;"><i class="fas fa-eye"></i></a>
@@ -113,9 +115,13 @@ class UserDataTable extends DataTable
     {
         $query = $model->newQuery()
             ->with(['department', 'section', 'role', 'institute.union', 'institute.pourashava', 'institute.cityCorporation', 'institute.district', 'institute.type'])
-            ->whereIn('user_type', ['admin', 'staff'])
             ->orderBy('id', 'desc');
-
+        $currentUser = auth()->user();
+        if ($currentUser && in_array($currentUser->user_type, ['superadmin', 'developer'])) {
+            $query->whereIn('user_type', ['admin', 'superadmin', 'developer', 'staff', 'normal']);
+        } else {
+            $query->whereIn('user_type', ['admin', 'staff', 'normal']);
+        }
         if (request()->has('department_id') && request('department_id') != '') {
             $query->where('department_id', request('department_id'));
         }
@@ -133,21 +139,21 @@ class UserDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('user-table')
-                    ->columns($this->getColumns())
-                    ->ajax([
-                        'data' => 'function(d) {
+            ->setTableId('user-table')
+            ->columns($this->getColumns())
+            ->ajax([
+                'data' => 'function(d) {
                             d.department_id = $("#filter_department").val();
                             d.section_id = $("#filter_section").val();
                         }'
-                    ])
-                    ->orderBy(1)
-                    ->parameters([
-                        'language' => [
-                            'search' => '',
-                            'searchPlaceholder' => 'Search users...',
-                        ]
-                    ]);
+            ])
+            ->orderBy(1)
+            ->parameters([
+                'language' => [
+                    'search' => '',
+                    'searchPlaceholder' => 'Search users...',
+                ]
+            ]);
     }
 
     /**
@@ -164,10 +170,10 @@ class UserDataTable extends DataTable
             Column::make('roles_list')->title('Roles')->searchable(false)->orderable(false),
             Column::make('status')->title('Status')->addClass('text-center'),
             Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(160)
-                  ->addClass('text-center'),
+                ->exportable(false)
+                ->printable(false)
+                ->width(160)
+                ->addClass('text-center'),
         ];
     }
 

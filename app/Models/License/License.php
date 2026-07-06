@@ -5,6 +5,15 @@ namespace App\Models\License;
 use App\Models\Institute;
 use App\Models\OwnerShipType;
 use App\Traits\BelongsToInstitute;
+use App\Models\Division;
+use App\Models\District;
+use App\Models\Thana;
+use App\Models\Union;
+use App\Models\PostOffice;
+use App\Models\CityCorporation;
+use App\Models\Pourashava;
+use App\Models\Ward;
+use App\Models\BasicSettings\Village;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -104,5 +113,103 @@ class License extends Model
     public function institute()
     {
         return $this->belongsTo(Institute::class, 'institute_id', 'id');
+    }
+
+    public function Division()
+    {
+        return $this->belongsTo(Division::class, 'division_id', 'id');
+    }
+
+
+    public function District()
+    {
+        return $this->belongsTo(District::class, 'district_id', 'id');
+    }
+
+    public function Thana()
+    {
+        return $this->belongsTo(Thana::class, 'thana_id', 'id');
+    }
+
+
+    public function Union()
+    {
+        return $this->belongsTo(Union::class, 'union_id', 'id');
+    }
+
+    public function cityCorporation()
+    {
+        return $this->belongsTo(\App\Models\CityCorporation::class, 'city_id', 'id');
+    }
+
+    public function pourashava()
+    {
+        return $this->belongsTo(Pourashava::class, 'pos_id', 'id');
+    }
+
+    public function Village()
+    {
+        return $this->belongsTo(Village::class, 'village_id', 'id');
+    }
+
+    public function postOffice()
+    {
+        return $this->belongsTo(PostOffice::class, 'post_office_id', 'id');
+    }
+
+    public function ward()
+    {
+        return $this->belongsTo(\App\Models\Ward::class, 'ward_id', 'id');
+    }
+
+    public function officeDivision()
+    {
+        return $this->belongsTo(Division::class, 'office_division_id', 'id');
+    }
+
+    public function officeDistrict()
+    {
+        return $this->belongsTo(District::class, 'office_district_id', 'id');
+    }
+
+    public function officeThana()
+    {
+        return $this->belongsTo(Thana::class, 'office_thana_id', 'id');
+    }
+
+    public function officePostOffice()
+    {
+        return $this->belongsTo(PostOffice::class, 'office_post_office_id', 'id');
+    }
+
+    public function officeVillage()
+    {
+        return $this->belongsTo(Village::class, 'office_village_id', 'id');
+    }
+
+    public function officeWard()
+    {
+        return $this->belongsTo(\App\Models\Ward::class, 'office_ward_id', 'id');
+    }
+
+    public function officeUnion()
+    {
+        return $this->belongsTo(Union::class, 'office_union_id', 'id');
+    }
+
+    public function officeCityCorporation()
+    {
+        return $this->belongsTo(\App\Models\CityCorporation::class, 'office_city_id', 'id');
+    }
+
+    public function officePourashava()
+    {
+        return $this->belongsTo(Pourashava::class, 'office_pos_id', 'id');
+    }
+
+    
+    public function ownerships()
+    {
+        return $this->hasMany(\App\Models\LicenseOwnership::class, 'application_id', 'application_id');
     }
 }

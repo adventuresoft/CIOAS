@@ -218,17 +218,19 @@
                 <h3 class="cioas-panel-title">
                     <i class="fas fa-users"></i> Employee Directory
                 </h3>
-                @if(in_array(auth()->user()->user_type, ['admin', 'developer']))
-                <a href="{{ route('user.create') }}" class="btn btn-material btn-material-primary" style="background-color: #0f766e; border-color: #0f766e; color: white;">
-                    <i class="fas fa-plus-circle"></i> Add New Employee
-                </a>
+                @if(in_array(auth()->user()->user_type, ['admin', 'superadmin', 'developer']))
+                    <a href="{{ route('user.create') }}" class="btn btn-material btn-material-primary"
+                        style="background-color: #0f766e; border-color: #0f766e; color: white;">
+                        <i class="fas fa-plus-circle"></i> Add New Employee
+                    </a>
                 @endif
             </div>
             <div class="cioas-panel-body">
                 <div class="row mb-4">
                     <div class="col-md-3">
-                        <label class="text-secondary" style="font-size: 0.85rem; font-weight: 600;">Filter by Department</label>
-                        <select id="filter_department" class="form-control form-control-premium">
+                        <label class="text-secondary" style="font-size: 0.85rem; font-weight: 600;">Filter by
+                            Department</label>
+                        <select id="filter_department" class="form-control form-control-premium select2">
                             <option value="">All Departments</option>
                             @foreach($departments as $dept)
                                 <option value="{{ $dept->id }}">{{ $dept->name }}</option>
@@ -236,8 +238,9 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label class="text-secondary" style="font-size: 0.85rem; font-weight: 600;">Filter by Section</label>
-                        <select id="filter_section" class="form-control form-control-premium">
+                        <label class="text-secondary" style="font-size: 0.85rem; font-weight: 600;">Filter by
+                            Section</label>
+                        <select id="filter_section" class="form-control form-control-premium select2">
                             <option value="">All Sections</option>
                             @foreach($sections as $sec)
                                 <option value="{{ $sec->id }}">{{ $sec->name }}</option>
@@ -245,7 +248,8 @@
                         </select>
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
-                        <button type="button" id="clear_filters" class="btn btn-outline-danger w-100" style="padding: 0.375rem 0.75rem;">
+                        <button type="button" id="clear_filters" class="btn btn-outline-danger w-100"
+                            style="padding: 0.375rem 0.75rem;">
                             <i class="fas fa-times-circle mr-1"></i> Clear Filters
                         </button>
                     </div>
@@ -262,12 +266,12 @@
     <script>
         $(document).ready(function () {
             // Trigger datatable reload when filters change
-            $('#filter_department, #filter_section').on('change', function() {
+            $('#filter_department, #filter_section').on('change', function () {
                 window.LaravelDataTables["user-table"].ajax.reload();
             });
 
             // Clear filters button
-            $('#clear_filters').on('click', function() {
+            $('#clear_filters').on('click', function () {
                 $('#filter_department').val('');
                 $('#filter_section').val('');
                 window.LaravelDataTables["user-table"].ajax.reload();
@@ -298,9 +302,9 @@
             });
 
             // Make rows clickable to view profile
-            $('#user-table').on('click', 'tbody tr', function(e) {
+            $('#user-table').on('click', 'tbody tr', function (e) {
                 if ($(e.target).closest('a, button').length > 0) return;
-                
+
                 var rowId = $(this).attr('id');
                 if (rowId) {
                     window.location.href = "{{ url('dashboard/user') }}/" + rowId;
@@ -308,7 +312,7 @@
             });
 
             // Add pointer cursor to rows
-            $('#user-table').on('mouseenter', 'tbody tr', function() {
+            $('#user-table').on('mouseenter', 'tbody tr', function () {
                 $(this).css('cursor', 'pointer');
             });
         });

@@ -16,19 +16,27 @@
             </div>
         </div>
     </section>
-    <section class="content">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
-            <div class="card card-info">
-                <div class="card-header">
-                    <h3 class="card-title">License Information</h3>
-                </div>
-                <form class="form-horizontal" id="licenseForm" method="POST" enctype="multipart/form-data">
+            <div class="cioas-shell">
+                <form id="licenseForm" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id" value="{{ $license->id }}">
-                    @include('backend.pages.license.forms.license', ['license' => $license])
-                    <div class="card-footer">
-                        <a href="{{ route('license.index') }}" class="btn btn-default">Cancel</a>
-                        <button type="submit" class="btn btn-info">Update</button>
+
+                    <div class="cioas-panel">
+                        <div class="cioas-panel-header">
+                            <h3 class="cioas-panel-title">
+                                <i class="fas fa-certificate"></i> License Information
+                            </h3>
+                        </div>
+                        <div class="cioas-panel-body">
+                            @include('backend.pages.license.forms.license', ['license' => $license])
+                        </div>
+                    </div>
+
+                    <div class="cioas-actions">
+                        <a href="{{ route('license.index') }}" class="btn btn-material btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-material btn-material-primary">Update</button>
                     </div>
                 </form>
             </div>

@@ -197,4 +197,65 @@
 
 
     </x-print-view>
+
+    <!-- Action Buttons (Hidden on Print) -->
+    <div class="container no-print mt-4 mb-5" style="display: flex; justify-content: flex-end; gap: 15px;">
+        @if($land->status == 0)
+        <button type="button" class="btn" style="background-color: #10b981; color: white; padding: 10px 24px; font-weight: 600; border-radius: 6px; border: none; box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2); transition: all 0.2s;" onclick="approveLand({{ $land->id }})" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+            <i class="fas fa-check-circle mr-2"></i> Approve
+        </button>
+        @else
+        <button type="button" class="btn" style="background-color: #cbd5e1; color: #475569; padding: 10px 24px; font-weight: 600; border-radius: 6px; border: none; cursor: not-allowed;" disabled>
+            <i class="fas fa-check-double mr-2"></i> Approved
+        </button>
+        @endif
+        <button type="button" class="btn" style="background-color: #3b82f6; color: white; padding: 10px 24px; font-weight: 600; border-radius: 6px; border: none; box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2); transition: all 0.2s;" onclick="window.print()" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+            <i class="fas fa-print mr-2"></i> Printout
+        </button>
+    </div>
 @endsection
+
+@push('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function approveLand(id) {
+        Swal.fire({
+            title: 'আপনি কি নিশ্চিত?',
+            text: "আপনি কি এই জমির বিবরণী অনুমোদন করতে চান?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#10b981',
+            cancelButtonColor: '#ef4444',
+            confirmButtonText: 'হ্যাঁ, অনুমোদন করুন!',
+            cancelButtonText: 'না, বাতিল করুন'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '{{ route('land.approve') }}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: id
+                    },
+                    success: function(response) {
+                        if(response.status) {
+                            Swal.fire(
+                                'অনুমোদিত!',
+                                response.message,
+                                'success'
+                            ).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire('ত্রুটি', response.message, 'error');
+                        }
+                    },
+                    error: function(xhr) {
+                        Swal.fire('ত্রুটি', 'কিছু একটা সমস্যা হয়েছে।', 'error');
+                    }
+                });
+            }
+        });
+    }
+</script>
+@endpush

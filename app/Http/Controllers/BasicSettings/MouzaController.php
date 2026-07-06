@@ -16,7 +16,7 @@ class MouzaController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('admin')->except(['mouzasByThana']);
     }
 
     /**
@@ -223,16 +223,16 @@ class MouzaController extends Controller
     {
         $html = '<option value="">Select Mouza</option>';
 
-        $query = Mouza::where('upazila_id', $id);
-        if ($request->has('record') && $request->record !== '') {
-            $query->where('record', $request->record);
-        }
-        $mouzas = $query->get();
+        $query = Mouza::where('upazila_id', $id)->where('status', 1);
 
-        if (count($mouzas)) {
-            foreach ($mouzas as $mouza) {
-                $html .= '<option value="' . $mouza->id . '">' . $mouza->name . '</option>';
-            }
+        if ($request->has('record') && $request->record !== '') {
+            $query->where('record', (int) $request->record);
+        }
+
+        $mouzas = $query->orderBy('name')->get();
+
+        foreach ($mouzas as $mouza) {
+            $html .= '<option value="' . $mouza->id . '">' . $mouza->name . '</option>';
         }
 
         return $html;

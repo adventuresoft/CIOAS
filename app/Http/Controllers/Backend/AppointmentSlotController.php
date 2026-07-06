@@ -10,14 +10,6 @@ use Illuminate\Support\Facades\Auth;
 class AppointmentSlotController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('permission:appointment.read')->only('index', 'show');
-        $this->middleware('permission:appointment.create')->only('create', 'store');
-        $this->middleware('permission:appointment.update')->only('update', 'edit');
-        $this->middleware('permission:appointment.delete')->only('destroy');
-    }
-
     public function index()
     {
         return view('backend.pages.appointment.slots');

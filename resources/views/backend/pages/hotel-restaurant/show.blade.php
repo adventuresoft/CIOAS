@@ -1,4 +1,4 @@
-﻿@extends('backend.master', ['mainMenu' => 'HotelRestaurant', 'subMenu' => 'HotelRestaurantShow'])
+@extends('backend.master', ['mainMenu' => 'HotelRestaurant', 'subMenu' => 'HotelRestaurantShow'])
 
 @section('title', 'Hotel & Restaurant Details')
 
@@ -307,8 +307,16 @@
                                 class="info-value">{{ $organization->District->name ?? 'N/A' }}</span></div>
                         <div class="info-row"><span class="info-label">Thana:</span><span
                                 class="info-value">{{ $organization->Thana->name ?? 'N/A' }}</span></div>
-                        <div class="info-row"><span class="info-label">Union:</span><span
-                                class="info-value">{{ $organization->Union->name ?? 'N/A' }}</span></div>
+                        @if ($organization->location_type == 'city_type')
+                            <div class="info-row"><span class="info-label">City Corp:</span><span
+                                    class="info-value">{{ $organization->cityCorporation->name ?? 'N/A' }}</span></div>
+                        @elseif ($organization->location_type == 'pos_type')
+                            <div class="info-row"><span class="info-label">Pourashava:</span><span
+                                    class="info-value">{{ $organization->pourashava->name ?? 'N/A' }}</span></div>
+                        @else
+                            <div class="info-row"><span class="info-label">Union:</span><span
+                                    class="info-value">{{ $organization->Union->name ?? 'N/A' }}</span></div>
+                        @endif
                     </div>
                     <div class="col-md-6">
                         <div class="info-row"><span class="info-label">Post Office:</span><span
@@ -318,7 +326,7 @@
                                 class="info-value">{{ $organization->Village->bn_name ?? ($organization->Village->name ?? 'N/A') }}</span>
                         </div>
                         <div class="info-row"><span class="info-label">Ward No:</span><span
-                                class="info-value">{{ $organization->ward?->en_ward_no ?? 'N/A' }}</span></div>
+                                class="info-value">{{ $organization->ward->name ?? 'N/A' }}</span></div>
                         <div class="info-row"><span class="info-label">Road/House:</span><span
                                 class="info-value">{{ $organization->road ?? 'N/A' }} @if($organization->house) (House:
                                 {{ $organization->house }}) @endif</span></div>
@@ -338,6 +346,16 @@
                                 class="info-value">{{ $organization->officeDistrict?->name ?? 'N/A' }}</span></div>
                         <div class="info-row"><span class="info-label">Thana:</span><span
                                 class="info-value">{{ $organization->officeThana?->name ?? 'N/A' }}</span></div>
+                        @if ($organization->office_location_type == 'city_type')
+                            <div class="info-row"><span class="info-label">City Corp:</span><span
+                                    class="info-value">{{ $organization->officeCityCorporation?->name ?? 'N/A' }}</span></div>
+                        @elseif ($organization->office_location_type == 'pos_type')
+                            <div class="info-row"><span class="info-label">Pourashava:</span><span
+                                    class="info-value">{{ $organization->officePourashava?->name ?? 'N/A' }}</span></div>
+                        @else
+                            <div class="info-row"><span class="info-label">Union:</span><span
+                                    class="info-value">{{ $organization->officeUnion?->name ?? 'N/A' }}</span></div>
+                        @endif
                         <div class="info-row"><span class="info-label">Post Office:</span><span
                                 class="info-value">{{ $organization->officePostOffice?->bn_name ?? ($organization->officePostOffice?->name ?? 'N/A') }}</span>
                         </div>
@@ -347,7 +365,7 @@
                                 class="info-value">{{ $organization->officeVillage?->bn_name ?? ($organization->officeVillage?->name ?? 'N/A') }}</span>
                         </div>
                         <div class="info-row"><span class="info-label">Ward No:</span><span
-                                class="info-value">{{ $organization->officeWard?->en_ward_no ?? 'N/A' }}</span></div>
+                                class="info-value">{{ $organization->officeWard?->name ?? 'N/A' }}</span></div>
                         <div class="info-row"><span class="info-label">Road/House:</span><span
                                 class="info-value">{{ $organization->office_road ?? 'N/A' }}
                                 @if($organization->office_house) (House: {{ $organization->office_house }}) @endif</span>
@@ -385,7 +403,7 @@
                             <span class="info-value" style="font-size: 12.5px; font-weight: normal; color: #475569;">
                                 {{ $ownership->present_house ?? '' }} {{ $ownership->present_road ?? '' }}
                                 {{ $ownership->presentVillage?->name ?? '' }}
-                                {{ $ownership->presentWard?->en_ward_no ? 'Ward-' . $ownership->presentWard->en_ward_no : '' }}
+                                {{-- Removed presentWard reference due to table deletion --}}
                                 {{ $ownership->presentPostOffice?->name ?? '' }} {{ $ownership->presentThana?->name ?? '' }}
                                 {{ $ownership->presentDistrict?->name ?? '' }}
                             </span>
@@ -395,7 +413,7 @@
                             <span class="info-value" style="font-size: 12.5px; font-weight: normal; color: #475569;">
                                 {{ $ownership->permanent_house ?? '' }} {{ $ownership->permanent_road ?? '' }}
                                 {{ $ownership->permanentVillage?->name ?? '' }}
-                                {{ $ownership->permanentWard?->en_ward_no ? 'Ward-' . $ownership->permanentWard->en_ward_no : '' }}
+                                {{-- Removed permanentWard reference due to table deletion --}}
                                 {{ $ownership->permanentPostOffice?->name ?? '' }} {{ $ownership->permanentThana?->name ?? '' }}
                                 {{ $ownership->permanentDistrict?->name ?? '' }}
                             </span>
@@ -412,24 +430,24 @@
                 @php
                     $files = json_decode($organization->document_files) ?: [];
                 @endphp
-                @foreach ($files as $file)
+                @foreach ($files as $doc)
                     @php
-                        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                        if (is_object($doc)) {
+                            $filePath = $doc->file ?? '';
+                            $docName = $doc->name ?? basename($filePath);
+                        } else {
+                            $filePath = $doc;
+                            $docName = basename($filePath);
+                        }
+                        $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
                     @endphp
                     <div class="mb-3">
-                        @if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']))
-                            <a href="{{ asset($file) }}" target="_blank" class="d-inline-block mb-1">
-                                <img src="{{ asset($file) }}"
-                                    style="max-width: 250px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"
-                                    alt="Premises Doc">
-                            </a>
-                            <div><a href="{{ asset($file) }}" target="_blank" class="btn btn-sm btn-outline-primary mt-1"><i
-                                        class="fa fa-external-link-alt"></i> View Full Image</a></div>
-                        @elseif($ext == 'pdf')
-                            <iframe src="{{ asset($file) }}" width="100%" height="450px"
-                                style="border: 1px solid #e2e8f0; border-radius: 8px;"></iframe>
-                            <div class="mt-2"><a href="{{ asset($file) }}" target="_blank" class="btn btn-sm btn-outline-primary"><i
-                                        class="fa fa-file-pdf"></i> Open PDF in new tab</a></div>
+                        @if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf']))
+                            <div>
+                                <a href="{{ asset($filePath) }}" target="_blank" class="btn btn-outline-primary mb-2" style="border-radius: 6px; font-weight: 500;">
+                                    <i class="fas fa-{{ $ext == 'pdf' ? 'file-pdf' : 'image' }} mr-2"></i> {{ $docName }}
+                                </a>
+                            </div>
                         @endif
                     </div>
                 @endforeach
@@ -442,24 +460,24 @@
                 @php
                     $files = json_decode($organization->document_files) ?: [];
                 @endphp
-                @foreach ($files as $file)
+                @foreach ($files as $doc)
                     @php
-                        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                        if (is_object($doc)) {
+                            $filePath = $doc->file ?? '';
+                            $docName = $doc->name ?? basename($filePath);
+                        } else {
+                            $filePath = $doc;
+                            $docName = basename($filePath);
+                        }
+                        $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
                     @endphp
                     <div class="mb-3">
-                        @if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']))
-                            <a href="{{ asset($file) }}" target="_blank" class="d-inline-block mb-1">
-                                <img src="{{ asset($file) }}"
-                                    style="max-width: 250px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"
-                                    alt="Premises Doc">
-                            </a>
-                            <div><a href="{{ asset($file) }}" target="_blank" class="btn btn-sm btn-outline-primary mt-1"><i
-                                        class="fa fa-external-link-alt"></i> View Full Image</a></div>
-                        @elseif($ext == 'pdf')
-                            <iframe src="{{ asset($file) }}" width="100%" height="450px"
-                                style="border: 1px solid #e2e8f0; border-radius: 8px;"></iframe>
-                            <div class="mt-2"><a href="{{ asset($file) }}" target="_blank" class="btn btn-sm btn-outline-primary"><i
-                                        class="fa fa-file-pdf"></i> Open PDF in new tab</a></div>
+                        @if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf']))
+                            <div>
+                                <a href="{{ asset($filePath) }}" target="_blank" class="btn btn-outline-primary mb-2" style="border-radius: 6px; font-weight: 500;">
+                                    <i class="fas fa-{{ $ext == 'pdf' ? 'file-pdf' : 'image' }} mr-2"></i> {{ $docName }}
+                                </a>
+                            </div>
                         @endif
                     </div>
                 @endforeach

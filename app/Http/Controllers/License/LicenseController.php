@@ -45,7 +45,7 @@ class LicenseController extends Controller
     public function create()
     {
         $data = $this->formData();
-        $data["wards"] = [];
+        $data["wards"] = \App\Models\Ward::all();
         $data["ownership_types"] = [];
         return view('backend.pages.license.create', $data);
     }
@@ -136,14 +136,28 @@ class LicenseController extends Controller
                 }
             }
 
-            $files = $request->file('owned_document_file') ?? $request->file('rented_document_file');
-            $uploadedDocuments = [];
+            $files = $request->premises_ownership == 'owned' 
+                     ? $request->file('owned_document_file') 
+                     : $request->file('rented_document_file');
+            
+            $names = $request->premises_ownership == 'owned'
+                     ? $request->input('owned_document_name')
+                     : $request->input('rented_document_name');
 
-            foreach ($files as $file) {
-                $uploadedDocuments[] = $this->uploadFile($file, 'uploads/license/documents/', 'doc_');
+            $uploadedDocuments = [];
+            if ($files) {
+                foreach ($files as $index => $file) {
+                    $filePath = $this->uploadFile($file, 'uploads/license/documents/', 'doc_');
+                    $uploadedDocuments[] = [
+                        'name' => $names[$index] ?? 'Document',
+                        'file' => $filePath
+                    ];
+                }
             }
 
-            $documentFiles = json_encode($uploadedDocuments);
+            if (!empty($uploadedDocuments)) {
+                $documentFiles = json_encode($uploadedDocuments);
+            }
         }
 
         $payload = [
@@ -207,7 +221,7 @@ class LicenseController extends Controller
             'status' => true,
             'message' => 'License saved successfully!',
             'result' => $license,
-            'redirect_url' => route('license.index'),
+            'redirect_url' => route('license-ownership.edit', $license->id),
         ], 200);
     }
 
@@ -225,7 +239,7 @@ class LicenseController extends Controller
         $data = $this->formData($license);
         $data['license'] = $license;
 
-        $data["wards"] = [];
+        $data["wards"] = \App\Models\Ward::all();
         $data["ownership_types"] = [];
         return view('backend.pages.license.edit', $data);
     }

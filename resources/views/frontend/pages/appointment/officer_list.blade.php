@@ -293,7 +293,7 @@
                 <div class="d-flex align-items-center justify-content-between mb-4">
                     <div>
                         <p class="section-label mb-1">Available Officers</p>
-                        <h2 class="section-title mb-0">Book Your Appointment</h2>
+                        <h2 class="section-title mb-0 mt-3">Book Your Appointment</h2>
                     </div>
                     <span class="officer-count">
                         <i class="fas fa-user-tie me-1"></i>{{ count($officers) }}
@@ -304,7 +304,7 @@
                 @if($officers && count($officers) > 0)
                     <div class="row">
                         @foreach($officers as $officer)
-                            <div class="col-md-4 col-sm-6 mb-4 officer-col">
+                            <div class="col-md-3 col-sm-4 mb-3 officer-col">
                                 <div class="officer-card">
                                     <div class="officer-card-accent"></div>
                                     <div class="officer-card-body">

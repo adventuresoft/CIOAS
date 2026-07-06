@@ -229,7 +229,8 @@
                                         required>
                                         <option value="">Select User Type</option>
                                         <option value="staff">Employee</option>
-                                        <option value="admin">Super Admin</option>
+                                        <option value="admin">Department Head</option>
+                                        <option value="superadmin">Super Admin</option>
                                         <option value="developer">Developer</option>
                                         <option value="normal">User</option>
                                     </select>

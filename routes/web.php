@@ -425,6 +425,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'module.permissi
     });
 
     Route::resource('license', LicenseController::class);
+    Route::resource('license-ownership', \App\Http\Controllers\License\LicenseOwnershipController::class);
 
     // HotelRestaurantController
 

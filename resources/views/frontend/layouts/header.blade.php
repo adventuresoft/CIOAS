@@ -26,7 +26,7 @@
 <div class="site-header font-kalpurush">
 
     {{-- ══ TOP UTILITY BAR ══ --}}
-    <div class="bg-gov-top border-bottom border-secondary py-1">
+    <div class="bg-gov-top border-bottom border-secondary">
         <div class="container fs-top-header">
             <div class="d-flex align-items-center justify-content-between gap-3">
                 <div class="d-none d-md-flex align-items-center gap-3 text-white-50">
@@ -70,7 +70,7 @@
     {{-- ══ STICKY WRAPPER ══ --}}
     <div id="stickyHeaderContainer" class="w-100 z-3 bg-white">
         {{-- ══ MAIN HEADER — Emblem + Title ══ --}}
-        <div class="bg-white border-bottom border-3 border-gov-green py-3 position-relative">
+        <div class="bg-white  py-2 position-relative">
             <div class="container fs-header">
                 <div class="d-flex align-items-center justify-content-between">
 
@@ -125,11 +125,6 @@
                             <i class="fas fa-home opacity-75"></i>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('frontend.miscase.index') }}" class="main-nav-link">
-                            <i class="fas fa-gavel opacity-75"></i> মিসকেস তালিকা
-                        </a>
-                    </li>
                     <li class="nav-item position-relative">
                         <a href="#" class="main-nav-link">
                             <i class="fas fa-calendar-check opacity-75"></i> অ্যাপয়েন্টমেন্ট
@@ -144,27 +139,29 @@
                             </a>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('frontend.miscase.index') }}" class="main-nav-link">
+                            <i class="fas fa-gavel opacity-75"></i> মিসকেস তালিকা
+                        </a>
+                    </li>
                     <li class="nav-item position-relative">
                         <a href="#" class="main-nav-link">
-                            <i class="fas fa-gavel opacity-75"></i> আইন ও বিধিমালা
+                            <i class="fas fa-gavel opacity-75"></i> ই-সেবা
                             <i class="fas fa-chevron-down small opacity-75 ms-1"></i>
                         </a>
                         <div class="gov-dropdown">
                             <a href="{{ route('inquiry.index') }}" class="dropdown-item-gov">
                                 <i class="fas fa-desktop text-gov-green small"></i> জিজ্ঞাসা
                             </a>
+                            <a href="{{ route('frontend.miscase.index') }}" class="dropdown-item-gov">
+                                <i class="fas fa-desktop text-gov-green small"></i> মিসকেস তালিকা
+                            </a>
+                            <a href="{{ route('frontend.land.search') }}" class="dropdown-item-gov">
+                                <i class="fas fa-desktop text-gov-green small"></i> জমি অনুসন্ধান
+                            </a>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a href="#" class="main-nav-link">
-                            <i class="fas fa-bell opacity-75"></i> নোটিশ বোর্ড
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="main-nav-link">
-                            <i class="fas fa-photo-video opacity-75"></i> গ্যালারি
-                        </a>
-                    </li>
+
                     <li class="nav-item">
                         <a href="#" class="main-nav-link">
                             <i class="fas fa-phone-volume opacity-75"></i> যোগাযোগ

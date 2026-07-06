@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\HotelRestaurant;
+namespace App\Http\Controllers\License;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\HotelRestaurant\HotelRestaurant;
-use App\Models\HotelRestaurant\HotelRestaurantOwnership;
+use App\Models\License\License;
+use App\Models\LicenseOwnership;
 use App\Models\BasicSettings\Village;
 use App\Models\Institute;
 use App\Models\District;
@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use \App\Traits\FileUploadTrait;
 
-class HotelRestaurantOwnershipController extends Controller
+class LicenseOwnershipController extends Controller
 {
 
     use FileUploadTrait;
@@ -56,7 +56,7 @@ class HotelRestaurantOwnershipController extends Controller
 
 
         $request->validate([
-            'hotel_restaurant_id'      => 'required|integer',
+            'license_id'               => 'required|integer',
 
             'name.*'                   => 'required|string|max:255',
             'bn_name.*'                => 'nullable|string|max:255',
@@ -101,12 +101,16 @@ class HotelRestaurantOwnershipController extends Controller
         // dd($request->hotel_restaurant_id);
 
 
+        $license = License::findOrFail($request->license_id);
+
         foreach ($request->name as $key => $name) {
             $ownerId   = $request->owner_id[$key] ?? null;
             $imagePath = null;
+            $signaturePath = null;
 
-            if ($ownerId && $ownershipRecord = HotelRestaurantOwnership::find($ownerId)) {
-                $imagePath = $ownershipRecord->image;
+            if ($ownerId && $ownershipRecord = LicenseOwnership::find($ownerId)) {
+                $imagePath = $ownershipRecord->photo;
+                $signaturePath = $ownershipRecord->signature;
             }
 
             if ($request->hasFile('image') && isset($request->file('image')[$key])) {
@@ -119,18 +123,34 @@ class HotelRestaurantOwnershipController extends Controller
 
                     $imagePath = $this->uploadFile(
                         $imageFile,
-                        'uploads/hotel/ownership/',
+                        'uploads/license/ownership/photo/',
                         'owner_'
                     );
                 }
             }
 
-            HotelRestaurantOwnership::updateOrCreate(
+            if ($request->hasFile('signature') && isset($request->file('signature')[$key])) {
+                $signatureFile = $request->file('signature')[$key];
+
+                if ($signatureFile) {
+                    if (!empty($signaturePath)) {
+                        $this->deleteFile($signaturePath);
+                    }
+
+                    $signaturePath = $this->uploadFile(
+                        $signatureFile,
+                        'uploads/license/ownership/signature/',
+                        'sign_'
+                    );
+                }
+            }
+
+            LicenseOwnership::updateOrCreate(
                 [
                     'id' => $ownerId
                 ],
                 [
-                    'hotel_restaurant_id'    => $request->hotel_restaurant_id,
+                    'application_id'         => $license->application_id, // Store the application_id of the license
 
                     'name'                   => $request->name[$key] ?? null,
                     'bn_name'                => $request->bn_name[$key] ?? null,
@@ -142,7 +162,8 @@ class HotelRestaurantOwnershipController extends Controller
                     'blood_group'            => $request->blood_group[$key] ?? null,
                     'mobile'                 => $request->mobile[$key] ?? null,
                     'email'                  => $request->email[$key] ?? null,
-                    'image'                  => $imagePath,
+                    'photo'                  => $imagePath,
+                    'signature'              => $signaturePath,
 
                     'father_name'            => $request->father_name[$key] ?? null,
                     'father_name_bn'         => $request->father_name_bn[$key] ?? null,
@@ -209,9 +230,13 @@ class HotelRestaurantOwnershipController extends Controller
      */
     public function edit($id)
     {
-        $data['organization'] = HotelRestaurant::find($id);
+        $data['organization'] = License::find($id);
 
-        $data['ownerships'] = HotelRestaurantOwnership::where('hotel_restaurant_id', $data['organization']->id)->get();
+        if (!$data['organization']) {
+            return redirect()->back()->with('error', 'License not found');
+        }
+
+        $data['ownerships'] = LicenseOwnership::where('application_id', $data['organization']->application_id)->get();
 
         if ($data['ownerships']->count() > 0) {
 
@@ -292,7 +317,7 @@ class HotelRestaurantOwnershipController extends Controller
         $data['divisions']      = Division::where('status', true)->get();
         $data['wards']          = \App\Models\Ward::all();
 
-        return view('backend.pages.hotel-restaurant.tabs.ownership', $data);
+        return view('backend.pages.license.ownership.edit', $data);
     }
 
     /**

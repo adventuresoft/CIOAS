@@ -16,6 +16,9 @@ use App\Models\Thana;
 use App\Models\Union;
 use App\Models\PostOffice;
 use App\Models\UnionWard;
+use App\Models\CityCorporation;
+use App\Models\Pourashava;
+use App\Models\Ward;
 
 
 use App\Models\VillageArea;
@@ -127,6 +130,15 @@ class HotelRestaurant extends Model
         return $this->belongsTo(Union::class, 'union_id', 'id');
     }
 
+    public function cityCorporation()
+    {
+        return $this->belongsTo(\App\Models\CityCorporation::class, 'city_id', 'id');
+    }
+
+    public function pourashava()
+    {
+        return $this->belongsTo(Pourashava::class, 'pos_id', 'id');
+    }
 
     public function Village()
     {
@@ -140,7 +152,7 @@ class HotelRestaurant extends Model
 
     public function ward()
     {
-        return $this->belongsTo(UnionWard::class, 'ward_id', 'id');
+        return $this->belongsTo(\App\Models\Ward::class, 'ward_id', 'id');
     }
 
     public function officeDivision()
@@ -170,9 +182,23 @@ class HotelRestaurant extends Model
 
     public function officeWard()
     {
-        return $this->belongsTo(UnionWard::class, 'office_ward_id', 'id');
+        return $this->belongsTo(\App\Models\Ward::class, 'office_ward_id', 'id');
     }
 
+    public function officeUnion()
+    {
+        return $this->belongsTo(Union::class, 'office_union_id', 'id');
+    }
+
+    public function officeCityCorporation()
+    {
+        return $this->belongsTo(\App\Models\CityCorporation::class, 'office_city_id', 'id');
+    }
+
+    public function officePourashava()
+    {
+        return $this->belongsTo(Pourashava::class, 'office_pos_id', 'id');
+    }
 
     public function category()
     {
@@ -204,3 +230,4 @@ class HotelRestaurant extends Model
 
 
 }
+
