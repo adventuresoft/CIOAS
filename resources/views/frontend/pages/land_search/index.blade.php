@@ -150,7 +150,6 @@
                                         <th>দাগ নং</th>
                                         <th>খতিয়ান নং</th>
                                         <th>জমির পরিমাণ (একর)</th>
-                                        <th>মালিকের নাম (রেকর্ডীয়)</th>
                                         <th>অবস্থা</th>
                                     </tr>
                                 </thead>
@@ -164,7 +163,6 @@
                                             <td style="font-weight: 600;">{{ $land->dag_no ?? '—' }}</td>
                                             <td style="font-weight: 600;">{{ $land->khatian_no ?? '—' }}</td>
                                             <td>{{ number_format((float) ($land->land_amount ?? 0), 4) }}</td>
-                                            <td>{{ $land->recorded_owner_name ?? '—' }}</td>
                                             <td><span class="badge bg-success"
                                                     style="font-size: 13px; font-weight: 500; padding: 6px 10px; border-radius: 6px;">অনুমোদিত</span>
                                             </td>
