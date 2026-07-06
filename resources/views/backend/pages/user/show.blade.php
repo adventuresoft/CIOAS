@@ -108,8 +108,6 @@
                                     $userTypeLabel = 'Employee';
                                 } elseif ($user->user_type == 'admin') {
                                     $userTypeLabel = 'Department Head';
-                                } elseif ($user->user_type == 'superadmin') {
-                                    $userTypeLabel = 'Super Admin';
                                 }
                             @endphp
                             <p class="text-info font-weight-bold mb-2" style="font-size: 0.85rem; text-transform: capitalize;" title="User Type">
@@ -288,20 +286,20 @@
                                         <i class="fas fa-shield-alt text-secondary mr-1"></i> Security Identity
                                     </h6>
                                     <div class="detail-label">
-                                        <label class="form-label-premium" for="role_id">Primary Security Role95</label>
+                                        <label class="form-label-premium" for="role_id">Primary Security Role</label>
                                         <select name="role_id" id="role_id"
                                             class="form-control form-control-premium @error('role_id') is-invalid @enderror"
                                             required>
                                             <option value="">Select a Role</option>
                                             @foreach ($roles as $role)
-                                                @if(!in_array($role->id, [1, 2]))
+                                                @if($role->role_id != 1)
                                                     <option value="{{ $role->id }}"
                                                         {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
                                                         {{ $role->name }}
                                                     </option>
                                                 @endif
                                             @endforeach
-                                        </select>
+                                        </select>   
                                         <small class="text-muted mt-2 d-block">
                                             Users inherit all capabilities assigned to their chosen role. Direct
                                             overrides are

@@ -20,7 +20,7 @@ class AppointmentController extends Controller
 
     public function officerList()
     {
-        $officers = User::whereIn('user_type', ['admin', 'superadmin'])->get();
+        $officers = User::whereIn('user_type', ['admin'])->get();
         return view('frontend.pages.appointment.officer_list', compact('officers'));
     }
 

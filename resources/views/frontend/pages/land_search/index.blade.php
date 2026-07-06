@@ -51,14 +51,14 @@
     <div class="container py-8">
         <div class="bg-white rounded-3 shadow-sm border-top border-5 border-success p-3 no-print">
             <!-- Header -->
-            <div class="d-d-flex align-align-items-center gap-3 border-bottom border-3 border-danger pb-3 mb-3">
-                <div class="d-d-flex align-align-items-center gap-3">
+            <div class="d-flex align-items-center gap-3 border-bottom border-3 border-danger pb-3 mb-3">
+                <div class="d-flex align-items-center gap-3">
                     <div
-                        class="d-d-flex h-12 w-12 align-align-items-center justify-content-center rounded-full bg-white text-gov-green">
+                        class="d-flex h-12 w-12 align-items-center justify-content-center rounded-full bg-white text-gov-green">
                         <i class="fas fa-search text-2xl"></i>
                     </div>
                     <div>
-                        <h2>জমি অনুসন্ধান</h2>
+                        <h2 class="fs-5">জমি অনুসন্ধান</h2>
                         <p class="fs-content text-green-100 mt-1">অনুমোদিত জমির তালিকা এবং বিস্তারিত তথ্য অনুসন্ধান</p>
                     </div>
                 </div>
@@ -74,7 +74,8 @@
                                 <option value="">সকল রেকর্ড</option>
                                 @foreach ($records as $record)
                                     <option value="{{ $record->id }}" {{ request('record') == $record->id ? 'selected' : '' }}>
-                                        {{ $record->name ?? $record->name }}</option>
+                                        {{ $record->name ?? $record->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -196,7 +197,7 @@
             let oldMouza = "{{ request('mouza_id') }}";
 
             // Reload on record change
-            $('#record').on('change', function() {
+            $('#record').on('change', function () {
                 if ($('#district_id').val()) {
                     $('#district_id').trigger('change');
                 }
