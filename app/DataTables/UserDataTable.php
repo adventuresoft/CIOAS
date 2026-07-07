@@ -70,28 +70,34 @@ class UserDataTable extends DataTable
             ->addColumn('department_section', function ($row) {
                 $dept = $row->department ? $row->department->name : 'N/A';
                 $sec = $row->section ? $row->section->name : 'N/A';
+
+                $rolesHtml = '';
+                if ($row->role) {
+                    $rolesHtml = '<span class="badge text-white px-2 py-1 mr-1 mt-1" style="background-color: #0ea5e9; border-radius: 6px; font-weight: 600; display: inline-block; white-space: normal; word-break: break-word; max-width: 130px; text-align: left;">' . $row->role->name . '</span>';
+                } else {
+                    $rolesHtml = '<span class="text-muted font-italic mt-1" style="font-size: 0.85rem; display: inline-block;">No role</span>';
+                }
+
+                $userTypeHtml = '';
+                if ($row->user_type == 'staff') {
+                    $userTypeHtml = '<span class="badge text-white px-2 py-1 mr-1 mt-1" style="background-color: #3b82f6; border-radius: 6px; font-weight: 600; display: inline-block; white-space: normal; word-break: break-word; max-width: 130px; text-align: left;">Employee</span>';
+                } elseif ($row->user_type == 'admin') {
+                    $userTypeHtml = '<span class="badge text-white px-2 py-1 mr-1 mt-1" style="background-color: #f59e0b; border-radius: 6px; font-weight: 600; display: inline-block; white-space: normal; word-break: break-word; max-width: 130px; text-align: left;">Department Head</span>';
+                } elseif ($row->user_type == 'superadmin') {
+                    $userTypeHtml = '<span class="badge text-white px-2 py-1 mr-1 mt-1" style="background-color: #8b5cf6; border-radius: 6px; font-weight: 600; display: inline-block; white-space: normal; word-break: break-word; max-width: 130px; text-align: left;">Super Admin</span>';
+                } else {
+                    $userTypeHtml = '<span class="badge text-white px-2 py-1 mr-1 mt-1" style="background-color: #64748b; border-radius: 6px; font-weight: 600; display: inline-block; white-space: normal; word-break: break-word; max-width: 130px; text-align: left;">' . ucfirst($row->user_type) . '</span>';
+                }
+
                 return '
                 <div>
                     <div class="text-dark font-weight-bold" style="font-size: 0.85rem;"><i class="fas fa-building text-primary mr-1"></i> ' . $dept . '</div>
-                    <div class="text-secondary mt-1" style="font-size: 0.8rem;"><i class="fas fa-layer-group text-info mr-1"></i> ' . $sec . '</div>
+                    <div class="text-secondary mt-1 mb-1" style="font-size: 0.8rem;"><i class="fas fa-layer-group text-info mr-1"></i> ' . $sec . '</div>
+                    <div class="mt-1">' . $userTypeHtml . '</div>
+                    <div class="mt-1">' . $rolesHtml . '</div>
                 </div>';
             })
-            ->addColumn('roles_list', function ($row) {
-                if ($row->role) {
-                    return '<span class="badge text-white px-2 py-1 mr-1" style="background-color: #0ea5e9; border-radius: 6px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;"><i class="fas fa-user-shield" style="font-size: 0.8rem;"></i> ' . $row->role->name . '</span>';
-                }
-                return '<span class="text-muted font-italic" style="font-size: 0.85rem;">No role</span>';
-            })
-            ->addColumn('user_type_label', function ($row) {
-                if ($row->user_type == 'staff') {
-                    return '<span class="badge text-white px-2 py-1" style="background-color: #3b82f6; border-radius: 6px; font-weight: 600;"><i class="fas fa-user" style="font-size: 0.8rem;"></i> Employee</span>';
-                } elseif ($row->user_type == 'admin') {
-                    return '<span class="badge text-white px-2 py-1" style="background-color: #f59e0b; border-radius: 6px; font-weight: 600;"><i class="fas fa-user-tie" style="font-size: 0.8rem;"></i> Department Head</span>';
-                } elseif ($row->user_type == 'superadmin') {
-                    return '<span class="badge text-white px-2 py-1" style="background-color: #8b5cf6; border-radius: 6px; font-weight: 600;"><i class="fas fa-user-shield" style="font-size: 0.8rem;"></i> Super Admin</span>';
-                }
-                return '<span class="badge text-white px-2 py-1" style="background-color: #64748b; border-radius: 6px; font-weight: 600;">' . ucfirst($row->user_type) . '</span>';
-            })
+
             ->editColumn('status', function ($row) {
                 if ($row->status == 1) {
                     return '<span class="badge-verified" style="background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; font-weight: 600; padding: 4px 10px; border-radius: 9999px; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 4px;"><i class="fas fa-check-circle"></i> Verified</span>';
@@ -102,9 +108,14 @@ class UserDataTable extends DataTable
                 return '
                 <div class="d-flex justify-content-center align-items-center" style="gap: 8px;">
                     <a href="' . route('user.show', $row->id) . '" class="btn btn-operation btn-operation-view" title="View Employee Profile" style="color:#0ea5e9; background:#e0f2fe; padding:6px 12px; border-radius:6px; font-size:0.85rem; transition:all 0.2s;"><i class="fas fa-eye"></i></a>
+                    <form action="' . route('user.destroy', $row->id) . '" method="POST" class="d-inline" onsubmit="return confirm(\'Are you sure you want to delete this user?\');">
+                        ' . csrf_field() . '
+                        ' . method_field('DELETE') . '
+                        <button type="submit" class="btn btn-operation btn-operation-delete" title="Delete User" style="color:#dc2626; background:#fef2f2; padding:6px 12px; border-radius:6px; border:1px solid #fee2e2; font-size:0.85rem; transition:all 0.2s;"><i class="fas fa-trash-alt"></i></button>
+                    </form>
                 </div>';
             })
-            ->rawColumns(['profile', 'contact', 'department_section', 'roles_list', 'user_type_label', 'status', 'action'])
+            ->rawColumns(['profile', 'contact', 'department_section', 'status', 'action'])
             ->setRowId('id');
     }
 
@@ -166,8 +177,6 @@ class UserDataTable extends DataTable
             Column::make('profile')->title('Employee Profile')->name('name'),
             Column::make('contact')->title('Contact & Area')->name('mobile'),
             Column::make('department_section')->title('Dept. & Section')->searchable(false)->orderable(false),
-            Column::make('user_type_label')->title('User Type')->searchable(false)->orderable(false),
-            Column::make('roles_list')->title('Roles')->searchable(false)->orderable(false),
             Column::make('status')->title('Status')->addClass('text-center'),
             Column::computed('action')
                 ->exportable(false)

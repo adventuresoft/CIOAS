@@ -22,10 +22,10 @@
                             <div class="col-md-8">
                                 <div class="row">
                                     <div class="col-md-6 form-group mb-4">
-                                        <label class="premium-form-label" for="name">Admin Name <span class="text-danger">*</span></label>
+                                        <label class="premium-form-label" for="name">Department Head Name <span class="text-danger">*</span></label>
                                         <input type="text" name="name" id="name" 
                                                class="form-control premium-form-control" 
-                                               placeholder="Institutional Super Admin Name" required>
+                                               placeholder="Department Head Name" required>
                                         <small class="error name-error text-danger"></small>
                                     </div>
 
