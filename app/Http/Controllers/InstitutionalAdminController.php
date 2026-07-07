@@ -8,8 +8,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Traits\FileUploadTrait;
+
 class InstitutionalAdminController extends Controller
 {
+    use FileUploadTrait;
 
     public function generateUserName($name)
     {
@@ -69,6 +72,7 @@ class InstitutionalAdminController extends Controller
             'department_id' => 'nullable|integer',
             'section_id' => 'nullable|integer',
             'status' => 'required|in:0,1',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validate->fails()) {
@@ -93,6 +97,11 @@ class InstitutionalAdminController extends Controller
             $user->status = $request->status;
             $user->user_type = 'admin';
             $user->created_by = Auth::id();
+
+            if ($request->hasFile('image')) {
+                $user->image = $this->uploadFile($request->file('image'), 'uploads/users/', 'user_');
+            }
+
             $user->save();
 
             // Sync Spatie role
@@ -173,6 +182,7 @@ class InstitutionalAdminController extends Controller
             'department_id' => 'nullable|integer',
             'section_id' => 'nullable|integer',
             'status' => 'required|in:0,1',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validate->fails()) {
@@ -195,9 +205,16 @@ class InstitutionalAdminController extends Controller
             if ($request->filled('password')) {
                 $user->password = Hash::make($request->password);
             }
+
+            if ($request->hasFile('image')) {
+                // Delete old image if it exists
+                if ($user->image) {
+                    $this->deleteFile($user->image);
+                }
+                $user->image = $this->uploadFile($request->file('image'), 'uploads/users/', 'user_');
+            }
+
             $user->updated_by = Auth::id();
-
-
             $user->save();
 
             // Sync Spatie role

@@ -95,6 +95,21 @@
                                                placeholder="Repeat password">
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 form-group mb-4">
+                                        <label class="premium-form-label" for="image">Profile Image</label>
+                                        <div class="d-flex align-items-center gap-3">
+                                            @if($admin->image)
+                                                <img src="{{ asset($admin->image) }}" alt="Profile" class="rounded-circle border" style="width: 50px; height: 50px; object-fit: cover;">
+                                            @endif
+                                            <input type="file" name="image" id="image" 
+                                                   class="form-control premium-form-control p-1" accept="image/*">
+                                        </div>
+                                        <small class="text-muted">Leave blank to keep current image</small>
+                                        <small class="error image-error text-danger d-block"></small>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Right Side: Account Role info -->

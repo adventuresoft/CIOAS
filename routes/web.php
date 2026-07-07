@@ -210,20 +210,6 @@ Route::post('/load-project-type-content', [ProjectTypeController::class, 'projec
 Route::post('/backend/load-project-type-content', [ProjectTypeController::class, 'backendProjectTypeContent'])->name('backendProjectTypeContent');
 
 // Find Dependencies
-Route::get('/get-districts-by-division/{divisionID}', [DistrictController::class, 'districtsByDivision']);
-Route::get('/get-thanas-by-district/{districtID}', [ThanaController::class, 'thanasByDistrict']);
-Route::get('/get-upazilas-by-district/{districtID}', [UpazilaController::class, 'upazilasByDistrict']);
-Route::get('/get-pourashava-by-district/{districtID}', [PourashavaController::class, 'pourashavaByDistrict']);
-Route::get('/get-postOffice-by-thana/{thanaID}', [PostOfficeController::class, 'postOfficeByThana']);
-// Route::get('/get-word-by-union/{unionID}', ...); // Removed: UnionWardController deleted
-Route::get('/get-city-corporation-by-district/{districtID}', [CityCorporationController::class, 'cityByDistrict']);
-
-Route::get('/get-unions-by-thana/{thanaID}', [UnionController::class, 'unionsByThana']);
-Route::get('/get-villages-by-union/{unionID}', [VillageController::class, 'villagesByUnion']);
-Route::get('/get-villages-by-type/{ID}/{type}', [VillageController::class, 'villagesByUnion']);
-Route::get('/get-mouzas-by-thana/{thanaID}', [BasicMouzaController::class, 'mouzasByThana']);
-// Route::get('/get-areas-by-village/{villageID}', ...); // Removed: VillageAreaController deleted
-Route::get('/get-houses-by-village-area/{areaID}', [HouseController::class, 'getHouseByArea']);
 
 
 Route::get('/house-single-ownership-form', [HouseOwnershipController::class, 'loadOwnershipForm']);
@@ -419,9 +405,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'module.permissi
         Route::get('department-section/edit/{id}', [DepartmentSectionController::class, 'edit'])->name('department-section.edit');
         Route::put('department-section/update/{id}', [DepartmentSectionController::class, 'update'])->name('department-section.update');
         Route::delete('department-section/delete/{id}', [DepartmentSectionController::class, 'destroy'])->name('department-section.destroy');
-        Route::get('get-sections-by-department/{department_id}', [DepartmentSectionController::class, 'getSectionsByDepartment'])->name('get-sections-by-department');
-
-
     });
 
     Route::resource('license', LicenseController::class);
@@ -808,6 +791,25 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'module.permissi
     Route::resource('user', UserController::class);
 
 });
+
+// Frontend url start
+Route::get('get-sections-by-department/{department_id}', [DepartmentSectionController::class, 'getSectionsByDepartment'])->name('basic-settings.get-sections-by-department');
+
+Route::get('/get-districts-by-division/{divisionID}', [DistrictController::class, 'basic-settings.districtsByDivision']);
+Route::get('/get-thanas-by-district/{districtID}', [ThanaController::class, 'basic-settings.thanasByDistrict']);
+Route::get('/get-upazilas-by-district/{districtID}', [UpazilaController::class, 'basic-settings.upazilasByDistrict']);
+Route::get('/get-pourashava-by-district/{districtID}', [PourashavaController::class, 'basic-settings.pourashavaByDistrict']);
+Route::get('/get-postOffice-by-thana/{thanaID}', [PostOfficeController::class, 'basic-settings.postOfficeByThana']);
+// Route::get('/get-word-by-union/{unionID}', ...); // Removed: UnionWardController deleted
+Route::get('/get-city-corporation-by-district/{districtID}', [CityCorporationController::class, 'basic-settings.cityByDistrict']);
+
+Route::get('/get-unions-by-thana/{thanaID}', [UnionController::class, 'basic-settings.unionsByThana']);
+Route::get('/get-villages-by-union/{unionID}', [VillageController::class, 'basic-settings.villagesByUnion']);
+Route::get('/get-villages-by-type/{ID}/{type}', [VillageController::class, 'basic-settings.villagesByUnion']);
+Route::get('/get-mouzas-by-thana/{thanaID}', [BasicMouzaController::class, 'basic-settings.mouzasByThana']);
+// Route::get('/get-areas-by-village/{villageID}', ...); // Removed: VillageAreaController deleted
+Route::get('/get-houses-by-village-area/{areaID}', [HouseController::class, 'basic-settings.getHouseByArea']);
+// Frontend url end
 
 // Frontend Appointments
 Route::prefix('appointments')->name('appointment.')->group(function () {

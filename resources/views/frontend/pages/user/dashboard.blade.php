@@ -182,7 +182,16 @@
                         <div class="border-top pt-3">
                             <span class="text-muted d-block mb-2">ঠিকানা (Registered Address):</span>
                             <div class="bg-light p-3 rounded-3 border border-light text-dark font-monospace fs-content">
-                                {{ $user->addressInfo->present_address ?? 'N/A' }}
+                                @php
+                                    $addr = $user->addressInfo;
+                                    $divName = $addr && $addr->present_division_id ? \App\Models\Division::find($addr->present_division_id)->name ?? 'N/A' : 'N/A';
+                                    $distName = $addr && $addr->presentDistrict ? $addr->presentDistrict->name : 'N/A';
+                                    $thanaName = $addr && $addr->presentThana ? $addr->presentThana->name : 'N/A';
+                                    $poName = $addr && $addr->presentPostoffice ? $addr->presentPostoffice->name : 'N/A';
+                                @endphp
+                                <div class="mb-1"><strong>বিভাগ:</strong> {{ $divName }}, <strong>জেলা:</strong> {{ $distName }}</div>
+                                <div class="mb-2"><strong>উপজেলা/থানা:</strong> {{ $thanaName }}, <strong>পোস্ট অফিস:</strong> {{ $poName }}</div>
+                                <div><strong>বিস্তারিত ঠিকানা:</strong> {{ $user->address ?? ($addr->present_address ?? 'N/A') }}</div>
                             </div>
                         </div>
                     </div>

@@ -76,7 +76,7 @@ class InquiryFormController extends Controller
         $data['status'] = 'pending';
         Inquiry::create($data);
 
-        return redirect()->back()->with('success', 'আপনার জিজ্ঞাসা সফলভাবে জমা দেওয়া হয়েছে।');
+        return redirect()->route('home')->with('success', 'আপনার জিজ্ঞাসা সফলভাবে জমা দেওয়া হয়েছে।');
     }
 
     /**

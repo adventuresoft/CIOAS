@@ -94,6 +94,11 @@
     <main style="background-color: #f4faeb;" class="font-kalpurush">
         <!-- Hero Section -->
         <section class="pt-4" style="min-height: calc(100vh - 200px);">
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
 
             <div class="container font-kalpurush">
 

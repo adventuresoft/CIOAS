@@ -93,6 +93,15 @@
                                                placeholder="Repeat password" required>
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 form-group mb-4">
+                                        <label class="premium-form-label" for="image">Profile Image</label>
+                                        <input type="file" name="image" id="image" 
+                                               class="form-control premium-form-control p-1" accept="image/*">
+                                        <small class="error image-error text-danger"></small>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Right Side: Account Role info -->

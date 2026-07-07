@@ -65,12 +65,8 @@ class UserDashboardController extends Controller
             'thana_id' => 'nullable|integer',
             'city_id' => 'nullable|integer',
             'pos_id' => 'nullable|integer',
-            'union_id' => 'nullable|integer',
             'post_office_id' => 'nullable|integer',
-            'village_id' => 'nullable|integer',
-            'ward_id' => 'nullable|integer',
-            'road' => 'nullable|string|max:191',
-            'house' => 'nullable|string|max:191',
+            'address' => 'required|string',
         ], [
             'nid_no.unique' => 'এই এনআইডি (NID) নম্বরটি ইতিপূর্বে নিবন্ধিত হয়েছে।',
             'mobile.unique' => 'এই মোবাইল নম্বরটি ইতিমধ্যে ব্যবহৃত হয়েছে।',
@@ -125,37 +121,19 @@ class UserDashboardController extends Controller
 
                 // Build Present Address String
                 $addressParts = [];
-                if ($request->house)
-                    $addressParts[] = "হোল্ডিং: " . $request->house;
-                if ($request->road)
-                    $addressParts[] = "রোড/গ্রাম: " . $request->road;
 
-                $unionName = null;
-                if ($request->location_type == 'union_type' && $request->union_id) {
-                    $union = Union::find($request->union_id);
-                    if ($union) {
-                        $unionName = $union->name;
-                        $addressParts[] = "ইউনিয়ন: " . $union->name;
-                    }
-                } elseif ($request->location_type == 'pos_type' && $request->pos_id) {
+                if ($request->location_type == 'pos_type' && $request->pos_id) {
                     $pos = Pourashava::find($request->pos_id);
                     if ($pos) {
-                        $unionName = $pos->name;
                         $addressParts[] = "পৌরসভা: " . $pos->name;
                     }
                 } elseif ($request->location_type == 'city_type' && $request->city_id) {
                     $city = CityCorporation::find($request->city_id);
                     if ($city) {
-                        $unionName = $city->bn_name;
                         $addressParts[] = "সিটি কর্পোরেশন: " . $city->bn_name;
                     }
                 }
 
-                if ($request->village_id) {
-                    $village = Village::find($request->village_id);
-                    if ($village)
-                        $addressParts[] = "গ্রাম: " . $village->bn_name;
-                }
                 if ($request->thana_id) {
                     $thana = Thana::find($request->thana_id);
                     if ($thana)
@@ -167,7 +145,7 @@ class UserDashboardController extends Controller
                         $addressParts[] = "জেলা: " . $district->name;
                 }
 
-                $fullAddress = implode(', ', $addressParts);
+                $fullAddress = implode(', ', $addressParts) . ', বিস্তারিত ঠিকানা: ' . $request->address;
 
                 // 4. Create entry in address_infos table
                 AddressInfo::create([
@@ -175,14 +153,8 @@ class UserDashboardController extends Controller
                     'present_division_id' => $request->division_id,
                     'present_district_id' => $request->district_id,
                     'present_thana_id' => $request->thana_id,
-                    'present_union_id' => ($request->location_type == 'union_type') ? $request->union_id : null,
                     'present_post_office_id' => $request->post_office_id,
-                    'present_village_id' => $request->village_id,
-                    'present_ward_id' => $request->ward_id,
-                    'present_road' => $request->road,
-                    'present_house' => $request->house,
-                    'present_address' => $fullAddress,
-                    'union_name' => $unionName,
+                    'present_address' => $request->address,
                 ]);
 
                 return $user;

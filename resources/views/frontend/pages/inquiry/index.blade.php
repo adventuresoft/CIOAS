@@ -21,11 +21,6 @@
 
             <!-- Form Body -->
             <div class="gov-body">
-                @if(session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
 
                 <form action="{{ route('inquiry.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -56,7 +51,7 @@
                         </div>
                         <div class="col-md-4">
                             <label for="nid_number">জাতীয় পরিচয়পত্র নম্বর</label>
-                            <input type="text" name="nid_number" placeholder="জাতীয় পরিচয়পত্র নম্বর" class="form-control"
+                            <input type="number" name="nid_number" placeholder="জাতীয় পরিচয়পত্র নম্বর" class="form-control"
                                 id="nid_number">
                         </div>
                     </div>
@@ -64,12 +59,14 @@
                     <div class="row g-4 mb-3">
                         <div class="col-md-4">
                             <label for="mobile_number">মোবাইল নম্বর <span class="text-danger">*</span></label>
-                            <input type="text" required name="mobile_number" placeholder="মোবাইল নম্বর" class="form-control"
-                                id="mobile_number" value="{{ Auth::check() ? Auth::user()->mobile : '' }}" {{ Auth::check() ? 'readonly' : '' }}>
+                            <input type="number" required name="mobile_number" placeholder="মোবাইল নম্বর"
+                                class="form-control" id="mobile_number"
+                                value="{{ Auth::check() ? Auth::user()->mobile : '' }}" {{ Auth::check() ? 'readonly' : '' }}>
                         </div>
                         <div class="col-md-4">
                             <label for="email">ই-মেইল</label>
-                            <input type="email" name="email" placeholder="ই-মেইল" class="form-control" id="email">
+                            <input type="email" name="email" placeholder="ই-মেইল" class="form-control" id="email"
+                                value="{{ Auth::check() ? Auth::user()->email : '' }}" {{ Auth::check() ? 'readonly' : '' }}>
                         </div>
                         <div class="col-md-4">
                             <label for="address">ঠিকানা</label>
