@@ -112,7 +112,7 @@ class InquiryFormController extends Controller
         $canApprove = in_array($inquiry->status, ['assigned', 'received', 'processing', 'revision']);
         $showApproveForm = true;
 
-        return view('backend.pages.inquiry.show', compact('inquiry', 'departments', 'sections', 'canManageAllApplications', 'canAssign', 'canReceive', 'canApprove', 'showApproveForm'));
+        return view('backend.pages.Inquiry.show', compact('inquiry', 'departments', 'sections', 'canManageAllApplications', 'canAssign', 'canReceive', 'canApprove', 'showApproveForm'));
     }
 
     /**
