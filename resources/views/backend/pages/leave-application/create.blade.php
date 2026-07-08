@@ -28,7 +28,7 @@
 @endpush
 
 @section('content')
-    <section class="content cioas-page pt-5">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <div class="cioas-shell">
                 <form action="{{ route('leave-application.store') }}" method="POST" enctype="multipart/form-data">

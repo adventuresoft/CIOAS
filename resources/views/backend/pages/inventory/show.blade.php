@@ -72,23 +72,6 @@
 @endpush
 
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2 align-items-center">
-                <div class="col-sm-7">
-                    <h1 class="mb-1">Requisition Details</h1>
-                </div>
-                <div class="col-sm-5">
-                    <ol class="breadcrumb float-sm-right mb-0">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('inventory.requisition.index') }}">Requisition List</a></li>
-                        <li class="breadcrumb-item active">Show</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="content">
         <div class="container-fluid">
             @if (session('success'))

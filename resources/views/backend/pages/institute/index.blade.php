@@ -4,7 +4,7 @@
 @section('title', 'Institute List')
 @section('content')
 
-    <section class="content cioas-page pt-4">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <!-- Alert Notifications -->
             @if(session()->has('success'))

@@ -6,7 +6,7 @@
 @section('title', 'Create Mouza')
 
 @section('content')
-    <section class="content cioas-page pt-4">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <form id="mouzaForm" action="{{ route('basic-settings.mouza.store') }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                 @csrf

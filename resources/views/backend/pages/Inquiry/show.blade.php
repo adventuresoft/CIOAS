@@ -799,24 +799,6 @@
 @endpush
 
 @section('content')
-    <section class="content-header no-print">
-        <div class="container-fluid">
-            <div class="row mb-2 align-items-center">
-                <div class="col-sm-6">
-                    <h1 class="font-weight-bold text-dark" style="font-size: 24px;"><i class="fa fa-file-alt text-info"></i>
-                        Inquiry Form Details</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right" style="background: transparent;">
-                        <li class="breadcrumb-item"><a href="{{ route('inquiry.formlist') }}">Inquiry Form</a>
-                        </li>
-                        <li class="breadcrumb-item active">View Details</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-
     @php
         $statusBn = match ($inquiry->status) {
             'pending' => 'অপেক্ষমান (Pending)',

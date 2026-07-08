@@ -1,7 +1,7 @@
 @extends('backend.master', ['mainMenu' => 'Basic', 'subMenu' => 'LicenseCategory'])
 @section('title', 'License Category')
 @section('content')
-    <section class="content cioas-page pt-4">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <form id="licenseCategoryForm" method="POST" class="form-horizontal">
                 @csrf

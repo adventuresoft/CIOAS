@@ -4,7 +4,7 @@
 @section('title', 'Institute Edit')
 @section('content')
 
-    <section class="content cioas-page pt-5">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <form class="form-horizontal" id="instituteForm" method="POST" enctype="multipart/form-data">
                 @csrf

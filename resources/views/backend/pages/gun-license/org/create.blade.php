@@ -3,7 +3,7 @@
 @section('title', 'Create Organization Gun License')
 @section('content')
 
-<section class="content cioas-page pt-5">
+<section class="content cioas-page pt-3">
     <div class="container-fluid">
         <div class="cioas-shell">
             <form id="orgApplicationForm" method="POST" enctype="multipart/form-data">

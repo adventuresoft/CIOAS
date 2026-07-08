@@ -90,20 +90,6 @@
 @endpush
 
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Application Details</h1>
-                </div>
-                <div class="col-sm-6 text-right">
-                    <a href="{{ route('gun-license.index') }}" class="btn btn-default"><i
-                            class="fas fa-arrow-left"></i> Back to List</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="content">
         <div class="container-fluid">
             <x-print-view title="ব্যক্তিগত আগ্নেয়াস্ত্র লাইসেন্স">

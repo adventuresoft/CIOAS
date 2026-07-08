@@ -55,19 +55,6 @@
 
 @section('title', 'Organization Guard Interview (Appendix-8)')
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>সাক্ষাৎকার গ্রহণের ফরম (পরিশিষ্ট-৫)</h1>
-                </div>
-                <div class="col-sm-6 text-right">
-                    <a href="{{ route('gun-license.index') }}" class="btn btn-default">ফিরে যান</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="content">
         <div class="container-fluid">
             <div class="row">

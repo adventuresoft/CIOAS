@@ -28,20 +28,6 @@
 @endpush
 
 @section('content')
-<section class="content-header no-print">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Leave Application Details</h1>
-            </div>
-            <div class="col-sm-6 text-right">
-                <a href="{{ route('leave-application.index') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</a>
-                <button onclick="window.print()" class="btn btn-info"><i class="fas fa-print"></i> Print</button>
-            </div>
-        </div>
-    </div>
-</section>
-
 <section class="content">
     <div class="container-fluid">
         <div class="row">

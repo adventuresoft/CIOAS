@@ -4,7 +4,7 @@
 @section('title', 'Edit Hotel Subcategory')
 @section('content')
     <!-- Main content -->
-    <section class="content cioas-page pt-4">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <form id="hotelSubcategoryEditForm" method="POST" enctype="multipart/form-data" class="form-horizontal">
                 @csrf

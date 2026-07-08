@@ -5,22 +5,6 @@
 @section('title', 'জমির রেকর্ডের তালিকা')
 
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>জমির রেকর্ডের তালিকা</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('land.index') }}">জমির রেকর্ড</a></li>
-                        <li class="breadcrumb-item active">তালিকা</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <div class="cioas-shell">

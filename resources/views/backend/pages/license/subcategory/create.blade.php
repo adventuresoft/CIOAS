@@ -4,7 +4,7 @@
 @section('title', 'License Subcategory Create')
 @section('content')
     <!-- Main content -->
-    <section class="content cioas-page pt-4">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <form id="licenseSubcategoryForm" method="POST" enctype="multipart/form-data" class="form-horizontal">
                 @csrf

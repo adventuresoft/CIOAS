@@ -58,24 +58,8 @@
         <div class="mt-3 fw-bold fs-5" style="color: #0f766e;">Saving Ownership Data... Please wait.</div>
     </div>
 
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Hotel Restaurant Edit</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('hotel-restaurant.index') }}">Hotel Restaurant</a></li>
-                        <li class="breadcrumb-item active">Edit Ownership</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Main content -->
-    <section class="content cioas-page pt-5">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <div class="cioas-shell">
                 <div class="d-flex align-items-center mb-4" style="gap: 12px;">

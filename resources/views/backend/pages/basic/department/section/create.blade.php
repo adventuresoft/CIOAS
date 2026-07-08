@@ -7,28 +7,8 @@
         $department = App\Models\Department\Department::find($department_id);
     @endphp
 
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Create Section</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.department.index') }}">Basic
-                                Settings</a></li>
-                        <li class="breadcrumb-item"><a
-                                href="{{ route('basic-settings.department-section.index', $department_id) }}">Section
-                                List</a></li>
-                        <li class="breadcrumb-item active">Create Section</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Main content -->
-    <section class="content cioas-page pt-5">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <div class="cioas-shell">
                 <form class="form-horizontal" id="FormSubmit" method="POST" enctype="multipart/form-data"

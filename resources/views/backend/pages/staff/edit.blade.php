@@ -2,7 +2,7 @@
 @section('title', 'Staff Create')
 @section('content')
 
-    <section class="content cioas-page pt-5">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <div class="cioas-shell">
                 <form class="form-horizontal" id="peoplePersonalForm" method="POST" enctype="multipart/form-data">

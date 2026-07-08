@@ -2,7 +2,7 @@
 @section('title', 'Leave Applications')
 @section('content')
 
-    <section class="content cioas-page pt-5">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <div class="cioas-shell">
                 <div class="cioas-panel">

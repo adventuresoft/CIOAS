@@ -231,23 +231,6 @@
 @endpush
 
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2 align-items-center">
-                <div class="col-sm-7">
-                    <h1 class="mb-1">{{ ($showStepper ?? true) ? 'Inventory Management System' : 'Add New Requisition' }}</h1>
-                </div>
-                <div class="col-sm-5">
-                    <ol class="breadcrumb float-sm-right mb-0">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('inventory.index') }}">Inventory</a></li>
-                        <li class="breadcrumb-item active">{{ ($showStepper ?? true) ? 'Section ' . $currentStep : 'Add New Requisition' }}</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="content inventory-shell">
         <div class="container-fluid">
             @if (session('success'))

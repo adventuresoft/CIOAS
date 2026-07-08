@@ -6,7 +6,7 @@
 @section('title', 'Edit Village')
 
 @section('content')
-    <section class="content cioas-page pt-4">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <form id="villageForm" action="{{ route('basic-settings.village.update', $village->id) }}" method="POST" class="form-horizontal">
                 @csrf

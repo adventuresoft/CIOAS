@@ -6,7 +6,7 @@
 @section('title', 'Stock Details')
 
 @section('content')
-    <section class="content cioas-page pt-4">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <div class="cioas-panel">
                 <div class="cioas-panel-header">

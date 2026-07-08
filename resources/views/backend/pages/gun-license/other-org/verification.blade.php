@@ -55,19 +55,6 @@
 
 @section('title', 'পুলিশ ভেরিফিকেশন প্রতিবেদন (পরিশিষ্ট-৭)')
 @section('content')
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>পুলিশ ভেরিফিকেশন প্রতিবেদন (পরিশিষ্ট-৭)</h1>
-            </div>
-            <div class="col-sm-6 text-right">
-                <a href="{{ route('gun-license.index') }}" class="btn btn-default">ফিরে যান</a>
-            </div>
-        </div>
-    </div>
-</section>
-
 <section class="content">
     <div class="container-fluid">
         <div class="row">

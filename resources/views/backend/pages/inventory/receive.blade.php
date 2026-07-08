@@ -3,23 +3,6 @@
 @section('title', 'Receive')
 
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2 align-items-center">
-                <div class="col-sm-7">
-                    <h1 class="mb-1">Receive</h1>
-                </div>
-                <div class="col-sm-5">
-                    <ol class="breadcrumb float-sm-right mb-0">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('inventory.requisition.index') }}">Inventory</a></li>
-                        <li class="breadcrumb-item active">Receive</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="content">
         <div class="container-fluid">
             @if (session('success'))

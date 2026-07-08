@@ -34,22 +34,6 @@
 @endpush
 
 @section('content')
-<section class="content-header pt-4 pb-0">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0 text-gray-800" style="font-weight: 700; font-size: 24px;">জমির মামলার তালিকা</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right" style="background: transparent; padding: 0; margin-bottom: 0;">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}" style="color: #3b82f6;">হোম</a></li>
-                    <li class="breadcrumb-item active" style="color: #64748b;">জমির মামলার তালিকা</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-</section>
-
 <section class="content pt-3">
     <div class="container-fluid">
         <div class="cioas-shell">

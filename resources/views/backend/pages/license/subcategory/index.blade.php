@@ -3,23 +3,6 @@
 @section('title', 'License Subcategory')
 
 @section('content')
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>License Subcategory</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('basic-settings.license-category.index') }}">License Category</a></li>
-                        <li class="breadcrumb-item active">Subcategory List</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Main content -->
     <section class="content cioas-page pt-3">
         <div class="container-fluid">

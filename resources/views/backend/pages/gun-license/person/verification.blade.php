@@ -110,21 +110,6 @@
 
 @section('title', 'পুলিশ ভেরিফিকেশন')
 @section('content')
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 style="font-size: 20px; font-weight: 700; color: #1e293b;">পুলিশ ভেরিফিকেশন ফর্ম</h1>
-            </div>
-            <div class="col-sm-6 text-right">
-                <a href="{{ route('gun-license.index') }}" class="btn btn-sm btn-outline-secondary" style="font-weight: 600; border-radius: 6px;">
-                    <i class="fas fa-arrow-left"></i> ফিরে যান
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
 <section class="content">
     <div class="container-fluid">
         <form id="verificationForm" method="POST">

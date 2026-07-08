@@ -4,7 +4,7 @@
 @section('title', 'Hotel Subcategory Details')
 @section('content')
     <!-- Main content -->
-    <section class="content cioas-page pt-4">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <div class="cioas-shell">
                 <div class="cioas-panel">

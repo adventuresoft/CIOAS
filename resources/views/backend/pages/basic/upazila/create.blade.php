@@ -6,7 +6,7 @@
 @section('title', 'Create Upazila/Circle')
 
 @section('content')
-    <section class="content cioas-page pt-4">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <form id="upazilaForm" action="{{ route('basic-settings.upazila.store') }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                 @csrf

@@ -110,21 +110,6 @@
 
 @section('title', 'Person License Interview (Appendix-5)')
 @section('content')
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-8">
-                <h1 style="font-size: 20px; font-weight: 700; color: #1e293b;">জেলা ম্যাজিস্ট্রেট কর্তৃক আবেদনকারীর সাক্ষাৎকার গ্রহণের ফরম</h1>
-            </div>
-            <div class="col-sm-4 text-right">
-                <a href="{{ route('gun-license.index') }}" class="btn btn-sm btn-outline-secondary" style="font-weight: 600; border-radius: 6px;">
-                    <i class="fas fa-arrow-left"></i> ফিরে যান
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
 <section class="content">
     <div class="container-fluid">
         <form id="interviewForm" method="POST">

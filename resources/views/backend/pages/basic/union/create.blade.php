@@ -6,7 +6,7 @@
 @section('title', 'Create Union')
 
 @section('content')
-    <section class="content cioas-page pt-4">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <form id="union-form" enctype="multipart/form-data" method="POST" class="form-horizontal">
                 @csrf

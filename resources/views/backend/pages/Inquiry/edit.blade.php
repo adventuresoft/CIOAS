@@ -16,7 +16,7 @@
 @endpush
 @section('title', 'Inquiry Details')
 @section('content')
-    <section class="content cioas-page pt-5">
+    <section class="content cioas-page pt-3">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-9 mx-auto">

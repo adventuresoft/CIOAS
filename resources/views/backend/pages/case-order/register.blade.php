@@ -130,20 +130,6 @@
 
 @section('title', 'কেস অর্ডার নথিভুক্ত করুন')
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6"><h1>কেস অর্ডার নথিভুক্ত করুন</h1></div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('caseorder.index') }}">Case Order</a></li>
-                        <li class="breadcrumb-item active">কেস অর্ডার নথিভুক্ত করুন</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="content co-page">
         <div class="container-fluid" style="max-width: 900px;">
 
