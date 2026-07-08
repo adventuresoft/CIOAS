@@ -9,9 +9,11 @@ use App\Models\Role;
 use App\Models\Institute;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\FileUploadTrait;
 
 class UserController extends Controller
 {
+    use FileUploadTrait;
     // public function __construct()
     // {
     //     $this->middleware(function ($request, $next) {
@@ -46,6 +48,9 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'bn_name' => 'nullable|string|max:255',
+            'designation' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'email' => 'required|email|unique:users,email',
             'user_type' => 'required|in:admin,superadmin,staff,developer,normal',
             'mobile' => 'required|string',
@@ -60,6 +65,12 @@ class UserController extends Controller
         try {
             $user = new User;
             $user->name = $request->name;
+            $user->bn_name = $request->bn_name;
+            $user->designation = $request->designation;
+            
+            if ($request->hasFile('image')) {
+                $user->image = $this->uploadFile($request->file('image'), 'uploads/users/', 'user_');
+            }
             $user->email = $request->email;
             $user->mobile = $request->mobile;
             $user->password = Hash::make($request->password);
@@ -113,6 +124,9 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $request->validate([
             'name' => 'required|string|max:255',
+            'bn_name' => 'nullable|string|max:255',
+            'designation' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'user_type' => 'required|in:admin,superadmin,staff,developer,normal',
             'mobile' => 'required|string',
@@ -127,6 +141,15 @@ class UserController extends Controller
         try {
 
             $user->name = $request->name;
+            $user->bn_name = $request->bn_name;
+            $user->designation = $request->designation;
+            
+            if ($request->hasFile('image')) {
+                if ($user->image) {
+                    $this->deleteFile($user->image);
+                }
+                $user->image = $this->uploadFile($request->file('image'), 'uploads/users/', 'user_');
+            }
             $user->email = $request->email;
             $user->mobile = $request->mobile;
             if ($request->filled('password')) {

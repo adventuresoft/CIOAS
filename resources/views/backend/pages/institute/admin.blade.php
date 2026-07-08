@@ -35,6 +35,24 @@
                             </div>
 
                             <div class="form-group row mb-4">
+                                <label for="bn_name" class="col-sm-2 col-form-label text-dark font-weight-bold">Bangla Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="bn_name" value="{{ $institute->superUser->bn_name ?? '' }}"
+                                        placeholder="Bangla Name" name="bn_name" class="form-control">
+                                    <small class="error bn_name-error text-danger"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-4">
+                                <label for="designation" class="col-sm-2 col-form-label text-dark font-weight-bold">Designation</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="designation" value="{{ $institute->superUser->designation ?? '' }}"
+                                        placeholder="Designation" name="designation" class="form-control">
+                                    <small class="error designation-error text-danger"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-4">
                                 <label for="email" class="col-sm-2 col-form-label text-dark font-weight-bold">Email <span
                                         class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
                                 <div class="col-sm-9">
@@ -109,6 +127,17 @@
                                     <input type="password" id="password" placeholder="Keep empty to unchange"
                                         name="password" class="form-control">
                                     <small class="error password-error text-danger"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-4">
+                                <label for="image" class="col-sm-2 col-form-label text-dark font-weight-bold">Profile Image</label>
+                                <div class="col-sm-9">
+                                    <input type="file" name="image" id="image" class="form-control p-1" accept="image/*">
+                                    <small class="error image-error text-danger"></small>
+                                    @if(isset($institute->superUser->image) && $institute->superUser->image != '')
+                                        <img src="{{ asset($institute->superUser->image) }}" alt="Profile Image" width="100" class="mt-2">
+                                    @endif
                                 </div>
                             </div>
                         </div>

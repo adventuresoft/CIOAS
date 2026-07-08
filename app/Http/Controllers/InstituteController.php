@@ -23,6 +23,7 @@ use Illuminate\Support\Str;
 
 class InstituteController extends Controller
 {
+    use \App\Traits\FileUploadTrait;
 
     public function generateUserName($name)
     {
@@ -308,12 +309,15 @@ class InstituteController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'name' => 'required|max:190',
+            'bn_name' => 'nullable|max:190',
+            'designation' => 'nullable|max:190',
             'email' => 'required|max:190|email',
             'mobile' => 'nullable|max:190',
             'password' => $request->user_id ? 'nullable|min:6' : 'required|min:6',
             'department_id' => 'nullable|integer',
             'section_id' => 'nullable|integer',
             'role_id' => 'required|exists:roles,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validate->fails()) {
@@ -335,8 +339,17 @@ class InstituteController extends Controller
         $user->email = $request->email;
         $user->status = true;
         $user->name = $request->name;
+        $user->bn_name = $request->bn_name;
+        $user->designation = $request->designation;
         $user->mobile = $request->mobile;
         $user->user_type = 'admin';
+
+        if ($request->hasFile('image')) {
+            if ($user->image) {
+                $this->deleteFile($user->image);
+            }
+            $user->image = $this->uploadFile($request->file('image'), 'uploads/users/', 'user_');
+        }
 
         if ($request->password) {
             $user->password = Hash::make($request->password);

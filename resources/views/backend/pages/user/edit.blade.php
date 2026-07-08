@@ -90,7 +90,7 @@
                 </h3>
             </div>
 
-            <form role="form" method="POST" action="{{ route('user.update', $user->id) }}">
+            <form role="form" method="POST" action="{{ route('user.update', $user->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
 
@@ -118,6 +118,28 @@
                                     @error('email')
                                         <span class="invalid-feedback"
                                             role="alert"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 form-group mb-4">
+                                    <label class="form-label-premium" for="bn_name">Bangla Name</label>
+                                    <input type="text" name="bn_name" id="bn_name"
+                                        class="form-control form-control-premium @error('bn_name') is-invalid @enderror"
+                                        value="{{ old('bn_name', $user->bn_name) }}" placeholder="Enter Bangla Name">
+                                    @error('bn_name')
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 form-group mb-4">
+                                    <label class="form-label-premium" for="designation">Designation</label>
+                                    <input type="text" name="designation" id="designation"
+                                        class="form-control form-control-premium @error('designation') is-invalid @enderror"
+                                        value="{{ old('designation', $user->designation) }}" placeholder="Enter Designation">
+                                    @error('designation')
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
                             </div>
@@ -244,6 +266,22 @@
                                     <label class="form-label-premium" for="password_confirmation">Confirm Password</label>
                                     <input type="password" name="password_confirmation" id="password_confirmation"
                                         class="form-control form-control-premium" placeholder="Repeat password" autocomplete="new-password">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 form-group mb-4">
+                                    <label class="form-label-premium" for="image">Profile Image</label>
+                                    <input type="file" name="image" id="image"
+                                        class="form-control form-control-premium p-1 @error('image') is-invalid @enderror" accept="image/*">
+                                    @if($user->image)
+                                        <div class="mt-2">
+                                            <img src="{{ asset($user->image) }}" alt="Profile Image" class="img-thumbnail" style="max-height: 80px;">
+                                        </div>
+                                    @endif
+                                    @error('image')
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
