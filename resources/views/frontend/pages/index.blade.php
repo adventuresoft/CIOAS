@@ -29,7 +29,7 @@
             left: 0;
             width: 100%;
             height: 4px;
-            background: linear-gradient(90deg, #10b981, #3b82f6);
+            background: #046307;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
