@@ -266,14 +266,14 @@ p {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 10px 24px;
+    padding: 10px ;
     background: #ffffff;
     border: 1.5px solid #cbd5e1;
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
-    font-size: 14px;
-    color: #475569;
+    font-size: 14px!important;
+    color: #333;
     transition: all 0.2s ease-in-out;
     margin-bottom: 0;
     user-select: none;

@@ -3,28 +3,15 @@
 @push('style')
 @endpush
 @section('content')
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <div class="container">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h4>আবেদন</h4>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                            <li class="breadcrumb-item active">Application</li>
-                        </ol>
-                    </div>
-                </div>
-            </div><!-- /.container-fluid -->
-        </section>
+
+<!-- Content Header (Page header) -->
+
+    <div class="theme-form-card-header">
+        <i class="fas fa-form text-2xl"></i>
+        <h2>আবেদন</h2>
+    </div>
 
         <!-- Main content -->
-        <section class="content">
-            <div class="container">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -518,9 +505,7 @@
                 </div>
                 <!-- /.row -->
             </div><!-- /.container-fluid -->
-        </section>
-        <!-- /.content -->
-    </div>
+
 
 @endsection
 @push('script')

@@ -71,9 +71,7 @@
 @endpush
 
 @section('content')
-    <div class="container pt-2 pb-3">
-
-        <!-- Welcome Header Banner -->
+    <!-- Welcome Header Banner -->
         <div
             class="dashboard-header-bg rounded-4 p-3 p-md-3 shadow-sm mb-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
             <div>
@@ -150,7 +148,7 @@
             <div class="col-lg-4">
 
                 <!-- Profile Card -->
-                <div class="bg-white rounded-4 shadow-sm border border-light p-4 mb-4">
+                <div class="theme-form-card">
                     <div class="text-center mb-4">
                         <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center mb-3 border border-3 border-success"
                             style="width: 80px; height: 80px; background: #f8f9fa;">
@@ -198,7 +196,7 @@
                 </div>
 
                 <!-- Quick Action Buttons -->
-                <div class="bg-white rounded-4 shadow-sm border border-light p-4">
+                <div class="theme-form-card">
                     <h5 class="fw-bold text-dark fs-6 mb-3 border-bottom pb-2 d-flex align-items-center gap-2">
                         <i class="fas fa-star fs-7 text-danger"></i> নাগরিক সেবাসমূহ
                     </h5>
@@ -237,7 +235,7 @@
 
             <!-- Right Side: Application Tracking List -->
             <div class="col-lg-8">
-                <div class="bg-white rounded-4 shadow-sm border border-light p-4 h-100">
+                <div class="theme-form-card">
                     <h6 class="fw-bold text-dark mb-4 d-flex align-items-center gap-2">
                         <i class="fas fa-list-ul text-success fs-7"></i> আপনার আবেদনের তালিকা ও ট্র্যাকিং
                     </h6>
@@ -351,8 +349,7 @@
                 </div>
             </div>
         </div>
-    </div>
-@endsection
+    @endsection
 
 @push('script')
     <script>

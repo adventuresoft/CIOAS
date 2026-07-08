@@ -1,0 +1,121 @@
+/* --- Frontend Global Theme Styles --- */
+
+/* Font Variables */
+:root {
+    --font-english: 'Inter', sans-serif;
+    --font-bangla:'Roboto', 'Kalpurush', Arial, sans-serif;
+}
+
+/* Base Body Styles */
+body, p, span, div {
+    font-family: var(--font-bangla);
+    font-weight: 500;
+}
+
+/* Typography for English text */
+.font-english {
+    font-family: var(--font-english) !important;
+}
+
+/* Titles and Headings */
+h1, h2, h3, h4, h5, h6, .page-title, .section-title {
+    font-family: var(--font-bangla);
+    font-weight: 600 !important;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+form .section-title{
+   font-size: 16px !important;
+    padding: 15px 0;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 20px !important;
+}
+
+/* Standardized Heading Sizes */
+h1 { font-size: 28px !important; }
+h2 { font-size: 24px !important; }
+h3 { font-size: 20px !important; }
+h4 { font-size: 18px !important; }
+h5 { font-size: 16px !important; }
+h6 { font-size: 14px !important; }
+
+/* Form Styles */
+label, .form-label {
+    font-family: var(--font-bangla) !important;
+    font-weight: 600 !important;
+    font-size: 15px !important;
+    margin-bottom: 8px;
+    display: inline-block;
+    padding-top: 15px;
+}
+
+.form-control, .form-select, .form-check-input {
+    font-family: var(--font-bangla) !important;
+    font-weight: 500 !important;
+    font-size: 15px !important;
+    color: #4b5563;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    padding: 10px 15px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.025);
+    transition: all 0.2s ease-in-out;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #059669;
+    box-shadow: 0 0 0 0.25rem rgba(5, 150, 105, 0.25);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+/* Card Common Layout */
+.frontend-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e5e7eb;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.theme-form-card-header {
+    border-bottom: 3px solid #dc3545;
+    padding: 10px 0 15px 0;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.theme-form-card-header h2,h3,h4,h5,h6 {
+    font-size: 18px !important;
+    margin: 0px!important;
+}
+.theme-form-card-title {
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    color: #111827;
+    margin: 0;
+}
+
+/* Standardized Buttons */
+.btn-primary, .btn-submit {
+    font-family: var(--font-bangla) !important;
+    font-weight: 600 !important;
+    font-size: 15px !important;
+    padding: 10px 24px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+/* Custom Form Wrapper Card */
+.theme-form-card {
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border-top: 5px solid #198754;
+    padding: 1rem 1.5rem;
+}

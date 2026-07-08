@@ -2,8 +2,7 @@
 
 @section('content')
 
-<div class="container mt-5">
-    <div class="card shadow-sm">
+<div class="card shadow-sm">
         <div class="card-header bg-light">
             <h5 class="mb-0 text-success">সনদ যাচাই করুন : অনুসন্ধান করুন</h5>
         </div>
@@ -46,6 +45,4 @@
 
         </div>
     </div>
-</div>
-
 @endsection

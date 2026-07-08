@@ -7,8 +7,7 @@
 @endpush
 
 @section('content')
-    <div class="container mx-auto max-w-100 w-100 px-4 py-8">
-        <div class="register-card p-3 md:p-8 w-100">
+    <div class="register-card p-3 md:p-8 w-100">
 
             <!-- Header -->
 
@@ -269,8 +268,7 @@
                 </div>
             </form>
         </div>
-    </div>
-@endsection
+    @endsection
 
 @push('script')
     <script>

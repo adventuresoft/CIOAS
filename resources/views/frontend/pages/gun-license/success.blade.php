@@ -2,10 +2,9 @@
 @section('title', $title ?? 'আগ্নেয়াস্ত্র লাইসেন্স আবেদন সফল')
 
 @section('content')
-    <div class="container pt-2 pb-3">
-        <div class="row justify-content-center">
+    <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
-                <div class="bg-white rounded-3 shadow-sm border-top border-5 border-success overflow-hidden">
+                <div class="theme-form-card">
                     <!-- Header -->
                     <div class="p-4 text-center"
                         style="background: linear-gradient(135deg, #006a4e, #00523b); border-bottom: 3px solid #f42a41;">
@@ -56,5 +55,4 @@
                 </div>
             </div>
         </div>
-    </div>
-@endsection
+    @endsection

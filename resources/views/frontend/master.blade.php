@@ -17,20 +17,18 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('plugins')}}/select2/css/select2.min.css">
     <link rel="stylesheet" href="{{ asset('plugins')}}/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="{{ asset('frontend/css/custom-bootstrap.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('assets/style/global.css') }}" />
+    <link rel="stylesheet" href="{{ asset('frontend/css/gov-card.css') }}" />
+    <link rel="stylesheet" href="{{ asset('frontend/css/frontend-theme.css') }}?v={{ time() }}" />
     <style type="text/css">
-        html,body{
-            overflow-x: hidden!important;
-        }
-        body {
-            background: #eeeeee;
-        }
 
-
-
-        .custom-select {
+        /* .custom-select {
             display: inline-block;
             width: 100%;
             height: calc(2.25rem + 2px);
@@ -43,10 +41,10 @@
             border: 1px solid #ced4da;
             border-radius: .25rem;
             appearance: none;
-        }
+        } */
 
         /* --- Frontend Form & Table Global Styles --- */
-        .section-title {
+        /* .section-title {
             font-size: 14px !important;
             font-family: 'Roboto', Arial, 'Kalpurush', sans-serif !important;
             font-weight: 600 !important;
@@ -55,10 +53,10 @@
             border-bottom: 2px solid #10b981;
             display: inline-block;
             padding-bottom: 4px;
-        }
+        } */
 
         /* Labels and Radios */
-        label, input[type="radio"], .form-label, .form-check-label {
+        /* label, input[type="radio"], .form-label, .form-check-label {
             font-size: 14px !important;
             font-family: 'Roboto', Arial, 'Kalpurush', sans-serif !important;
             color: #495057;
@@ -66,12 +64,12 @@
         }
         
         /* Ensure proper spacing for form rows */
-        .frontend-form-row, .form-group.row {
+        /* .frontend-form-row, .form-group.row {
             margin-bottom: 1.5rem !important; /* mb-4 equivalent */
-        }
+        /* }  */
 
         /* Input styling for modern look */
-        .form-control, .form-select, .custom-select {
+        /* .form-control, .form-select, .custom-select {
             font-size: 14px !important;
             font-family: 'Roboto', Arial, 'Kalpurush', sans-serif !important;
             border-radius: 6px;
@@ -83,10 +81,10 @@
         .form-control:focus, .form-select:focus, .custom-select:focus {
             border-color: #10b981;
             box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.25);
-        }
+        } */
 
         /* Professional Bootstrap 5 Table Look */
-        .table-responsive {
+        /* .table-responsive {
             background: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
@@ -122,7 +120,7 @@
         }
         .table tbody tr:hover {
             background-color: #f8fafc;
-        }
+        } */ 
     </style>
 
     @stack('style')
@@ -135,18 +133,15 @@
         </form>
     @endauth
 
-    <div style="background-color: #f4faeb;">
+  
         @include('frontend.layouts.header')
         <!-- Main Content Section -->
-        <section id="main-content" class="container pt-3">
+        <main id="main-content" class="container pt-3">
             @yield('content')
-        </section>
+        </main>
         <!-- Footer Top Section-->
         @include('frontend.layouts.footer')
-    </div>
-
-
-
+   
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="{{asset('frontend/js/jquery.waypoints.min.js')}}"></script>

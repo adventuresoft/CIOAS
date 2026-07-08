@@ -125,84 +125,81 @@
 @endpush
 
 @section('content')
-    <div class="container pb-3">
-        <div class="bg-white rounded-4 shadow-sm border border-light overflow-hidden">
+    <div class="theme-form-card">
 
-            <!-- Header Banner -->
-            <div class="header-banner p-3 p-md-3 d-flex flex-column flex-md-row align-items-center gap-4">
-                <div class="d-flex align-items-center justify-content-center bg-white rounded-circle shadow-sm"
-                    style="width: 40px; height: 40px;">
-                    <i class="fas fa-shield-alt fs-6 text-success"></i>
-                </div>
-                <div class="text-center text-md-start">
-                    <h4 class="fw-bold mb-2 fs-6">আগ্নেয়াস্ত্র লাইসেন্স আবেদন</h4>
-                    <p class="mb-0 text-white-50 fs-content">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার - কেন্দ্রীয় সমন্বিত অফিস অটোমেশন
-                        সিস্টেম</p>
-                </div>
+        <!-- Header Banner -->
+        <div class="header-banner p-3 p-md-3 d-flex flex-column flex-md-row align-items-center gap-4 rounded">
+            <div class="d-flex align-items-center justify-content-center bg-white rounded-circle shadow-sm"
+                style="width: 40px; height: 40px;">
+                <i class="fas fa-shield-alt fs-6 text-success"></i>
+            </div>
+            <div class="text-center text-md-start">
+                <h4 class="fw-bold mb-2 fs-6 text-white">আগ্নেয়াস্ত্র লাইসেন্স আবেদন</h4>
+                <p class="mb-0 text-white-50">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার - কেন্দ্রীয় সমন্বিত অফিস অটোমেশন
+                    সিস্টেম</p>
+            </div>
+        </div>
+
+        <div class="p-4 p-md-5 bg-light">
+            <div class="text-center mb-5">
+                <h4 class="fw-bold text-dark mb-2 fs-6">অনুগ্রহ করে আপনার আবেদনের লাইসেন্সের ধরণটি নির্বাচন করুন</h4>
+                <p class="text-muted fs-content">আপনার প্রয়োজনীয় ক্যাটাগরি অনুযায়ী নিচের কার্ডে ক্লিক করে আবেদন
+                    প্রক্রিয়া শুরু করুন।</p>
             </div>
 
-            <div class="p-4 p-md-5 bg-light">
-                <div class="text-center mb-5">
-                    <h4 class="fw-bold text-dark mb-2 fs-6">অনুগ্রহ করে আপনার আবেদনের লাইসেন্সের ধরণটি নির্বাচন করুন</h4>
-                    <p class="text-muted fs-content">আপনার প্রয়োজনীয় ক্যাটাগরি অনুযায়ী নিচের কার্ডে ক্লিক করে আবেদন
-                        প্রক্রিয়া শুরু করুন।</p>
+            <div class="row justify-content-center g-4 max-w-screen-lg mx-auto">
+
+                <!-- 1. Personal License Card -->
+                <div class="col-md-4">
+                    <div class="license-card d-flex flex-column"
+                        onclick="location.href='{{ route('frontend.gun-license.person.create') }}'">
+                        <div class="card-icon-container">
+                            <div class="card-icon-circle personal-theme">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        <h5 class="card-header-title">ব্যক্তিগত</h5>
+                        <p class="card-description">ব্যক্তিগত আত্মরক্ষা বা নিরাপত্তার উদ্দেশ্যে ব্যক্তিগত আগ্নেয়াস্ত্র
+                            লাইসেন্সের জন্য আবেদন করুন।</p>
+                        <a href="{{ route('frontend.gun-license.person.create') }}"
+                            class="btn btn-personal card-action-btn">আবেদন করুন <i class="fas fa-arrow-right ms-2"></i></a>
+                    </div>
                 </div>
 
-                <div class="row justify-content-center g-4 max-w-screen-lg mx-auto">
-
-                    <!-- 1. Personal License Card -->
-                    <div class="col-md-4">
-                        <div class="license-card d-flex flex-column"
-                            onclick="location.href='{{ route('frontend.gun-license.person.create') }}'">
-                            <div class="card-icon-container">
-                                <div class="card-icon-circle personal-theme">
-                                    <i class="fas fa-user"></i>
-                                </div>
+                <!-- 2. Bank/Org License Card -->
+                <div class="col-md-4">
+                    <div class="license-card d-flex flex-column"
+                        onclick="location.href='{{ route('frontend.gun-license.org.create') }}'">
+                        <div class="card-icon-container">
+                            <div class="card-icon-circle org-theme">
+                                <i class="fas fa-university"></i>
                             </div>
-                            <h5 class="card-header-title">ব্যক্তিগত</h5>
-                            <p class="card-description">ব্যক্তিগত আত্মরক্ষা বা নিরাপত্তার উদ্দেশ্যে ব্যক্তিগত আগ্নেয়াস্ত্র
-                                লাইসেন্সের জন্য আবেদন করুন।</p>
-                            <a href="{{ route('frontend.gun-license.person.create') }}"
-                                class="btn btn-personal card-action-btn">আবেদন করুন <i
-                                    class="fas fa-arrow-right ms-2"></i></a>
                         </div>
+                        <h5 class="card-header-title">ব্যাংক/আর্থিক প্রতিষ্ঠান</h5>
+                        <p class="card-description">ব্যাংক, ফাইন্যান্স কোম্পানি বা অন্যান্য আর্থিক প্রতিষ্ঠানের
+                            নিরাপত্তা ও সম্পদ সুরক্ষায় আবেদনের জন্য।</p>
+                        <a href="{{ route('frontend.gun-license.org.create') }}" class="btn btn-org card-action-btn">আবেদন
+                            করুন <i class="fas fa-arrow-right ms-2"></i></a>
                     </div>
-
-                    <!-- 2. Bank/Org License Card -->
-                    <div class="col-md-4">
-                        <div class="license-card d-flex flex-column"
-                            onclick="location.href='{{ route('frontend.gun-license.org.create') }}'">
-                            <div class="card-icon-container">
-                                <div class="card-icon-circle org-theme">
-                                    <i class="fas fa-university"></i>
-                                </div>
-                            </div>
-                            <h5 class="card-header-title">ব্যাংক/আর্থিক প্রতিষ্ঠান</h5>
-                            <p class="card-description">ব্যাংক, ফাইন্যান্স কোম্পানি বা অন্যান্য আর্থিক প্রতিষ্ঠানের
-                                নিরাপত্তা ও সম্পদ সুরক্ষায় আবেদনের জন্য।</p>
-                            <a href="{{ route('frontend.gun-license.org.create') }}"
-                                class="btn btn-org card-action-btn">আবেদন করুন <i class="fas fa-arrow-right ms-2"></i></a>
-                        </div>
-                    </div>
-
-                    <!-- 3. Other Org License Card -->
-                    <div class="col-md-4">
-                        <div class="license-card d-flex flex-column"
-                            onclick="location.href='{{ route('frontend.gun-license.other-org.create') }}'">
-                            <div class="card-icon-container">
-                                <div class="card-icon-circle other-theme">
-                                    <i class="fas fa-building"></i>
-                                </div>
-                            </div>
-                            <h5 class="card-header-title">প্রতিষ্ঠান</h5>
-                            <p class="card-description">অন্যান্য বেসরকারি সংস্থা, কোম্পানি, মিল-কারখানা বা শপিংমলের
-                                নিরাপত্তা বাড়াতে লাইসেন্সের জন্য।</p>
-                            <a href="{{ route('frontend.gun-license.other-org.create') }}"
-                                class="btn btn-other card-action-btn">আবেদন করুন <i class="fas fa-arrow-right ms-2"></i></a>
-                        </div>
-                    </div>
-
                 </div>
+
+                <!-- 3. Other Org License Card -->
+                <div class="col-md-4">
+                    <div class="license-card d-flex flex-column"
+                        onclick="location.href='{{ route('frontend.gun-license.other-org.create') }}'">
+                        <div class="card-icon-container">
+                            <div class="card-icon-circle other-theme">
+                                <i class="fas fa-building"></i>
+                            </div>
+                        </div>
+                        <h5 class="card-header-title">প্রতিষ্ঠান</h5>
+                        <p class="card-description">অন্যান্য বেসরকারি সংস্থা, কোম্পানি, মিল-কারখানা বা শপিংমলের
+                            নিরাপত্তা বাড়াতে লাইসেন্সের জন্য।</p>
+                        <a href="{{ route('frontend.gun-license.other-org.create') }}"
+                            class="btn btn-other card-action-btn">আবেদন করুন <i class="fas fa-arrow-right ms-2"></i></a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

@@ -2,11 +2,10 @@
 @section('title', 'আবেদন সফল - লাইসেন্স')
 
 @section('content')
-<div class="container py-12">
-    <div class="max-w-2xl mx-auto bg-white rounded-4 shadow-lg border-t-4 border-[#006a4e] overflow-d-none">
+<div class="max-w-2xl mx-auto bg-white rounded-4 shadow-lg border-t-4 border-[#006a4e] overflow-d-none">
         
         <!-- Header -->
-        <div class="bg-gradient-to-r from-[#006a4e] to-[#00523b] p-3 text-white text-center border-b border-[#f42a41]/20">
+        <div class="theme-form-card-header">
             <div class="inline-d-d-flex h-16 w-16 align-align-items-center justify-content-center rounded-full bg-white text-gov-green mb-3 shadow-md">
                 <i class="fas fa-check-circle text-3xl"></i>
             </div>
@@ -48,5 +47,4 @@
         </div>
 
     </div>
-</div>
 @endsection
