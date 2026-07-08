@@ -319,69 +319,69 @@
             let guardIndex = 1;
             $('#add_more_guard').on('click', function () {
                 let template = `
-                                    <div class="guard-d-block border p-3 mb-3 rounded bg-light position-relative" data-index="${guardIndex}">
-                                        <div class="d-flex justify-content-between align-align-items-center mb-3">
-                                            <h6 class="font-weight-bold text-success mb-0"><i class="fas fa-user"></i> গার্ড #${guardIndex + 1}</h6>
-                                            <button type="button" class="btn btn-sm btn-outline-danger remove-guard"><i class="fas fa-trash-alt"></i> মুছুন</button>
-                                        </div>
+                                        <div class="guard-d-block border p-3 mb-3 rounded bg-light position-relative" data-index="${guardIndex}">
+                                            <div class="d-flex justify-content-between align-align-items-center mb-3">
+                                                <h6 class="font-weight-bold text-success mb-0"><i class="fas fa-user"></i> গার্ড #${guardIndex + 1}</h6>
+                                                <button type="button" class="btn btn-sm btn-outline-danger remove-guard"><i class="fas fa-trash-alt"></i> মুছুন</button>
+                                            </div>
 
-                                        <div class="row g-4 mb-3">
-                                            <div class="col-md-4">
-                                                <label>গার্ডের নাম <span class="text-danger">*</span></label>
-                                                <input type="text" name="guards[${guardIndex}][guard_name]" class="form-control" required placeholder="গার্ডের নাম">
-                                                <small class="error-text error guards_${guardIndex}_guard_name_error"></small>
+                                            <div class="row g-4 mb-3">
+                                                <div class="col-md-4">
+                                                    <label>গার্ডের নাম <span class="text-danger">*</span></label>
+                                                    <input type="text" name="guards[${guardIndex}][guard_name]" class="form-control" required placeholder="গার্ডের নাম">
+                                                    <small class="error-text error guards_${guardIndex}_guard_name_error"></small>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label>গার্ডের পিতার নাম</label>
+                                                    <input type="text" name="guards[${guardIndex}][guard_father_name]" class="form-control" placeholder="গার্ডের পিতার নাম">
+                                                    <small class="error-text error guards_${guardIndex}_guard_father_name_error"></small>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label>গার্ডের মাতার নাম</label>
+                                                    <input type="text" name="guards[${guardIndex}][guard_mother_name]" class="form-control" placeholder="গার্ডের মাতার নাম">
+                                                    <small class="error-text error guards_${guardIndex}_guard_mother_name_error"></small>
+                                                </div>
                                             </div>
-                                            <div class="col-md-4">
-                                                <label>গার্ডের পিতার নাম</label>
-                                                <input type="text" name="guards[${guardIndex}][guard_father_name]" class="form-control" placeholder="গার্ডের পিতার নাম">
-                                                <small class="error-text error guards_${guardIndex}_guard_father_name_error"></small>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label>গার্ডের মাতার নাম</label>
-                                                <input type="text" name="guards[${guardIndex}][guard_mother_name]" class="form-control" placeholder="গার্ডের মাতার নাম">
-                                                <small class="error-text error guards_${guardIndex}_guard_mother_name_error"></small>
-                                            </div>
-                                        </div>
 
-                                        <div class="row g-4 mb-3">
-                                            <div class="col-md-6">
-                                                <label>বর্তমান ঠিকানা</label>
-                                                <textarea name="guards[${guardIndex}][guard_present_address]" class="form-control" rows="2" style="height: auto !important;" placeholder="গার্ডের বর্তমান ঠিকানা"></textarea>
-                                                <small class="error-text error guards_${guardIndex}_guard_present_address_error"></small>
+                                            <div class="row g-4 mb-3">
+                                                <div class="col-md-6">
+                                                    <label>বর্তমান ঠিকানা</label>
+                                                    <textarea name="guards[${guardIndex}][guard_present_address]" class="form-control" rows="2" style="height: auto !important;" placeholder="গার্ডের বর্তমান ঠিকানা"></textarea>
+                                                    <small class="error-text error guards_${guardIndex}_guard_present_address_error"></small>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>স্থায়ী ঠিকানা</label>
+                                                    <textarea name="guards[${guardIndex}][guard_permanent_address]" class="form-control" rows="2" style="height: auto !important;" placeholder="গার্ডের স্থায়ী ঠিকানা"></textarea>
+                                                    <small class="error-text error guards_${guardIndex}_guard_permanent_address_error"></small>
+                                                </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <label>স্থায়ী ঠিকানা</label>
-                                                <textarea name="guards[${guardIndex}][guard_permanent_address]" class="form-control" rows="2" style="height: auto !important;" placeholder="গার্ডের স্থায়ী ঠিকানা"></textarea>
-                                                <small class="error-text error guards_${guardIndex}_guard_permanent_address_error"></small>
-                                            </div>
-                                        </div>
 
-                                        <div class="row g-4">
-                                            <div class="col-md-3">
-                                                <label>বয়স</label>
-                                                <input type="number" name="guards[${guardIndex}][guard_age]" class="form-control" placeholder="বয়স">
-                                                <small class="error-text error guards_${guardIndex}_guard_age_error"></small>
+                                            <div class="row g-4">
+                                                <div class="col-md-3">
+                                                    <label>বয়স</label>
+                                                    <input type="number" name="guards[${guardIndex}][guard_age]" class="form-control" placeholder="বয়স">
+                                                    <small class="error-text error guards_${guardIndex}_guard_age_error"></small>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label>শিক্ষাগত যোগ্যতা</label>
+                                                    <input type="text" name="guards[${guardIndex}][guard_education]" class="form-control" placeholder="যেমন: এসএসসি / এইচএসসি">
+                                                    <small class="error-text error guards_${guardIndex}_guard_education_error"></small>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label>জাতীয় পরিচিতি নম্বর</label>
+                                                    <input type="text" name="guards[${guardIndex}][guard_nid_number]" class="form-control" placeholder="NID নম্বর">
+                                                    <small class="error-text error guards_${guardIndex}_guard_nid_number_error"></small>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label>প্রশিক্ষণপ্রাপ্ত কিনা <span class="text-danger">*</span></label>
+                                                    <select name="guards[${guardIndex}][guard_training_certificate_status]" class="form-control" required>
+                                                        <option value="1">হ্যাঁ</option>
+                                                        <option value="0">না</option>
+                                                    </select>
+                                                    <small class="error-text error guards_${guardIndex}_guard_training_certificate_status_error"></small>
+                                                </div>
                                             </div>
-                                            <div class="col-md-3">
-                                                <label>শিক্ষাগত যোগ্যতা</label>
-                                                <input type="text" name="guards[${guardIndex}][guard_education]" class="form-control" placeholder="যেমন: এসএসসি / এইচএসসি">
-                                                <small class="error-text error guards_${guardIndex}_guard_education_error"></small>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label>জাতীয় পরিচিতি নম্বর</label>
-                                                <input type="text" name="guards[${guardIndex}][guard_nid_number]" class="form-control" placeholder="NID নম্বর">
-                                                <small class="error-text error guards_${guardIndex}_guard_nid_number_error"></small>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label>প্রশিক্ষণপ্রাপ্ত কিনা <span class="text-danger">*</span></label>
-                                                <select name="guards[${guardIndex}][guard_training_certificate_status]" class="form-control" required>
-                                                    <option value="1">হ্যাঁ</option>
-                                                    <option value="0">না</option>
-                                                </select>
-                                                <small class="error-text error guards_${guardIndex}_guard_training_certificate_status_error"></small>
-                                            </div>
-                                        </div>
-                                    </div>`;
+                                        </div>`;
 
                 $('#guards_container').append(template);
                 guardIndex++;
@@ -395,11 +395,11 @@
             function reIndexGuards() {
                 guardIndex = 0;
                 $('#guards_container .guard-d-block').each(function () {
-                    let d-d - block = $(this);
-                    d - d - block.attr('data-index', guardIndex);
-                    d - d - block.find('h6').html(`<i class="fas fa-user"></i> গার্ড #${guardIndex + 1}`);
+                    let dd_block = $(this);
+                    dd_block.attr('data-index', guardIndex);
+                    dd_block.find('h6').html(`<i class="fas fa-user"></i> গার্ড #${guardIndex + 1}`);
 
-                    d - d - block.find('input, select, textarea').each(function () {
+                    dd_block.find('input, select, textarea').each(function () {
                         let input = $(this);
                         let name = input.attr('name');
                         if (name) {
@@ -408,7 +408,7 @@
                         }
                     });
 
-                    d - d - block.find('.error-text').each(function () {
+                    dd_block.find('.error-text').each(function () {
                         let errorSpan = $(this);
                         let classList = errorSpan.attr('class').split(' ');
                         let newClassList = classList.map(cls => {

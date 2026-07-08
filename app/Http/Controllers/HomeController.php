@@ -86,11 +86,11 @@ class HomeController extends Controller
                 })
                 ->editColumn('status', function ($row) {
                     if ($row->status == 'running') {
-                        return '<span class="badge bg-primary px-3 py-2 rounded-pill fs-content">চলমান</span>';
+                        return '<span class="status-badge status-badge-running"><i class="fas fa-sync-alt fa-spin me-2" style="font-size: 0.75rem;"></i>চলমান</span>';
                     } elseif ($row->status == 'resolved') {
-                        return '<span class="badge bg-success px-3 py-2 rounded-pill fs-content">নিষ্পন্ন</span>';
+                        return '<span class="status-badge status-badge-resolved"><i class="fas fa-check-circle me-2" style="font-size: 0.85rem;"></i>নিষ্পন্ন</span>';
                     }
-                    return '<span class="badge bg-secondary px-3 py-2 rounded-pill fs-content">' . ucfirst($row->status) . '</span>';
+                    return '<span class="status-badge status-badge-secondary">' . ucfirst($row->status) . '</span>';
                 })
                 ->rawColumns(['plaintiffs', 'defendants', 'status'])
                 ->make(true);

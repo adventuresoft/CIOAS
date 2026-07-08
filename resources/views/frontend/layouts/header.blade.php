@@ -70,7 +70,7 @@
     {{-- ══ STICKY WRAPPER ══ --}}
     <div id="stickyHeaderContainer" class="w-100 z-3 bg-white">
         {{-- ══ MAIN HEADER — Emblem + Title ══ --}}
-        <div class="bg-white  py-2 position-relative">
+        <div class="bg-white  py-xl-2 py-xxl-4 position-relative">
             <div class="container fs-header">
                 <div class="d-flex align-items-center justify-content-between">
 
@@ -89,9 +89,10 @@
                             </div>
 
                             <div class="flex-grow-1">
-                                <p class="fs-5 fw-bold text-gov-dark mb-0 lh-sm font-kalpurush"
+                                <p class="nav-title fs-5  fw-bold text-gov-dark mb-0 lh-sm font-kalpurush"
                                     style="letter-spacing: 0.2px;">কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম</p>
-                                <p class="fs-6 fw-semibold text-black mb-0 lh-sm font-kalpurush">Central Integrated
+                                <p class="nav-subtitle fs-6 fw-semibold text-black mb-0 lh-sm font-kalpurush">Central
+                                    Integrated
                                     Office
                                     Automation System</p>
 
@@ -172,24 +173,26 @@
 
                     @auth
                         <li class="me-2">
-                            <a href="{{ route('dashboard') }}" class="btn btn-outline-light btn-sm fs-button my-1">
+                            <a href="{{ route('dashboard') }}"
+                                class="btn btn-outline-success text-white btn-sm fs-button my-1">
                                 <i class="fas fa-tachometer-alt"></i> Dashboard
                             </a>
                         </li>
                         <li>
-                            <a href="#" onclick="logoutUser()" class="btn btn-outline-light btn-sm fs-button my-1">
+                            <a href="#" onclick="logoutUser()"
+                                class="btn btn-outline-success text-white btn-sm fs-button my-1">
                                 <i class="fas fa-sign-out-alt"></i> লগআউট
                             </a>
                         </li>
                     @else
                         <li class="me-2">
                             <a href="{{ route('frontend.user.register') }}"
-                                class="btn btn-outline-light btn-sm fs-button my-1 fw-bold">
+                                class="btn btn-outline-success btn-sm text-white fs-button my-1 fw-bold">
                                 <i class="fas fa-user-plus"></i> নিবন্ধন
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url('/login') }}" class="btn btn-outline-light btn-sm fs-button my-1">
+                            <a href="{{ url('/login') }}" class="btn btn-outline-success text-white btn-sm fs-button my-1">
                                 <i class="fas fa-sign-in-alt"></i> লগইন
                             </a>
                         </li>
@@ -300,7 +303,7 @@
         });
 
         window.addEventListener('scroll', function () {
-            if (window.scrollY >= stickyPos) {
+            if (window.scrollY >= 100) {
                 stickyContainer.classList.add("sticky-navbar");
                 document.body.style.paddingTop = stickyContainer.offsetHeight + 'px'; // prevent layout jump
             } else {

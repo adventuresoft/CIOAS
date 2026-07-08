@@ -1154,7 +1154,8 @@
                         type: "GET",
                         url: "{{ url('/get-villages-by-type') }}/" + val + '/' + type,
                         success: function (response) {
-                            village_id.html(response).prop("disabled", false).trigger('change');
+                            village_id.html(response.villageOptions)
+                            village_id.prop("disabled", false);
                         }
                     });
                 }
@@ -1249,7 +1250,8 @@
                         type: "GET",
                         url: "{{ url('/get-villages-by-type') }}/" + val + '/' + type,
                         success: function (response) {
-                            village_id.html(response).prop("disabled", false).trigger('change');
+                            village_id.html(response.villageOptions)
+                            village_id.prop("disabled", false);
                         }
                     });
                 }
@@ -1333,18 +1335,18 @@
                 let target = $(this).data('target');
                 let list = $(`.premises-docs-${target}-list`);
                 let newRow = `
-                                                    <div class="row align-align-items-center mb-2 premises-doc-row">
-                                                        <div class="col-md-5 mb-2 mb-md-0">
-                                                            <input type="text" name="${target}_document_name[]" class="form-control" placeholder="Enter Document Name" required>
-                                                        </div>
-                                                        <div class="col-md-5 mb-2 mb-md-0">
-                                                            <input type="file" name="${target}_document_file[]" class="form-control" required>
-                                                        </div>
-                                                        <div class="col-md-2 text-end">
-                                                            <button type="button" class="btn btn-outline-danger btn-sm remove-doc-row"><i class="fas fa-trash-alt"></i></button>
-                                                        </div>
-                                                    </div>
-                                                `;
+                                                                            <div class="row align-align-items-center mb-2 premises-doc-row">
+                                                                                <div class="col-md-5 mb-2 mb-md-0">
+                                                                                    <input type="text" name="${target}_document_name[]" class="form-control" placeholder="Enter Document Name" required>
+                                                                                </div>
+                                                                                <div class="col-md-5 mb-2 mb-md-0">
+                                                                                    <input type="file" name="${target}_document_file[]" class="form-control" required>
+                                                                                </div>
+                                                                                <div class="col-md-2 text-end">
+                                                                                    <button type="button" class="btn btn-outline-danger btn-sm remove-doc-row"><i class="fas fa-trash-alt"></i></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        `;
                 list.append(newRow);
             });
 
@@ -1535,7 +1537,8 @@
                         type: "GET",
                         url: "{{ url('/get-villages-by-type') }}/" + val + '/' + type,
                         success: function (response) {
-                            village_id.html(response).prop("disabled", false).trigger('change');
+                            village_id.html(response.villageOptions)
+                            village_id.prop("disabled", false);
                         }
                     });
                 }

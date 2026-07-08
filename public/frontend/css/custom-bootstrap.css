@@ -382,3 +382,50 @@ p {
     border-color: #006a4e !important;
     box-shadow: 0 0 0 3px rgba(0, 106, 78, 0.15) !important;
 }
+
+
+
+@media screen and (min-width: 1400px) {
+  .gov-card{
+        padding: 40px 15px !important;
+  }
+
+  .gov-card .fs-card-title{
+    font-size: 26px !important;
+    padding-bottom: 15px;
+  }
+  .gov-card .fs-content{
+    font-size: 18px !important;
+    padding-bottom: 15px;
+  }
+
+  .gov-card  .btn-gov{
+    font-size: 16px !important;
+  }
+
+  .container  h1{
+        font-size: 36px !important;
+    padding: 20px;
+  }
+  .nav-title{
+    font-size: 26px !important;
+
+  }
+
+  .nav-subtitle{
+    font-size: 18px !important;
+  }
+
+  .gov-navbar a{
+    font-size: 16px !important;
+  }
+  .gov-navbar{
+        padding: 8px 0px !important;
+  }
+
+  .theme-form-card-header h2, h3, h4, h5, h6{
+        font-size: 24px !important;
+        font-weight: 600 !important;
+  }
+
+}

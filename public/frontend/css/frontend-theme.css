@@ -91,7 +91,7 @@ label, .form-label {
 }
 
 .theme-form-card-header h2,h3,h4,h5,h6 {
-    font-size: 18px !important;
+    font-size: 18px ;
     margin: 0px!important;
 }
 .theme-form-card-title {
@@ -119,3 +119,100 @@ label, .form-label {
     border-top: 5px solid #198754;
     padding: 1rem 1.5rem;
 }
+
+/* Theme Table Styling */
+.theme-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+}
+
+.theme-table thead {
+    background-color: #f8f9fa;
+}
+
+.theme-table thead th {
+    font-weight: 600;
+    color: #374151;
+    font-size: 14px;
+    padding: 14px 16px;
+    border-bottom: 2px solid #e5e7eb;
+    letter-spacing: 0.5px;
+    background-color: #e2e8f0;
+}
+
+.theme-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.theme-table tbody tr td {
+    padding: 12px 16px;
+    color: #4b5563;
+    font-size: 14px;
+    vertical-align: middle;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.theme-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.theme-table tbody tr:hover {
+    background-color: #f1f5f9 !important;
+}
+
+/* DataTables customization */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, 
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: #198754 !important;
+    color: white !important;
+    border: 1px solid #198754 !important;
+}
+.dataTables_wrapper .dataTables_filter input {
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 6px 12px;
+    outline: none;
+}
+.dataTables_wrapper .dataTables_filter input:focus {
+    border-color: #198754;
+    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+}
+
+/* Professional Status Badges */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 2rem;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.status-badge-running {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+}
+
+.status-badge-resolved {
+    background-color: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+}
+
+.status-badge-secondary {
+    background-color: #f8fafc;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
