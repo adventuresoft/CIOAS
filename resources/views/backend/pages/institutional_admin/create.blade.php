@@ -22,13 +22,23 @@
                             <div class="col-md-8">
                                 <div class="row">
                                     <div class="col-md-6 form-group mb-4">
-                                        <label class="premium-form-label" for="name">Department Head Name <span class="text-danger">*</span></label>
+                                        <label class="premium-form-label" for="name">Name <span class="text-danger">*</span></label>
                                         <input type="text" name="name" id="name" 
                                                class="form-control premium-form-control" 
-                                               placeholder="Department Head Name" required>
+                                               placeholder="Name" required>
                                         <small class="error name-error text-danger"></small>
                                     </div>
 
+                                    <div class="col-md-6 form-group mb-4">
+                                        <label class="premium-form-label" for="bn_name">Bangla Name</label>
+                                        <input type="text" name="bn_name" id="bn_name" 
+                                               class="form-control premium-form-control" 
+                                               placeholder="Bangla Name">
+                                        <small class="error bn_name-error text-danger"></small>
+                                    </div>
+                                </div>
+
+                                <div class="row">
                                     <div class="col-md-6 form-group mb-4">
                                         <label class="premium-form-label" for="email">Email Address <span class="text-danger">*</span></label>
                                         <input type="email" name="email" id="email" 
@@ -36,9 +46,7 @@
                                                placeholder="email@example.com" required>
                                         <small class="error email-error text-danger"></small>
                                     </div>
-                                </div>
 
-                                <div class="row">
                                     <div class="col-md-6 form-group mb-4">
                                         <label class="premium-form-label" for="mobile">Contact Number <span class="text-danger">*</span></label>
                                         <input type="text" name="mobile" id="mobile" 
@@ -46,8 +54,10 @@
                                                placeholder="e.g. 01700000000" required>
                                         <small class="error mobile-error text-danger"></small>
                                     </div>
+                                </div>
 
-                                    <div class="col-md-6 form-group mb-4">
+                                <div class="row">
+                                    <div class="col-md-12 form-group mb-4">
                                         <label class="premium-form-label" for="department_id">Department</label>
                                         <select name="department_id" id="department_id" class="form-control premium-form-control select2">
                                             <option value="">-- Select Department --</option>

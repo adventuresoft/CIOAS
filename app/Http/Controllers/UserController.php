@@ -155,18 +155,28 @@ class UserController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         try {
             $user = User::findOrFail($id);
             if ($user->id == Auth::id()) {
+                if ($request->ajax()) {
+                    return response()->json(['message' => 'You cannot delete your own active session account.'], 403);
+                }
                 session()->flash('error', 'You cannot delete your own active session account.');
                 return redirect()->route('user.index');
             }
             $user->delete();
+            
+            if ($request->ajax()) {
+                return response()->json(['status' => true, 'message' => 'Employee account deleted successfully.']);
+            }
             session()->flash('success', 'Employee account deleted successfully.');
             return redirect()->route('user.index');
         } catch (\Throwable $th) {
+            if ($request->ajax()) {
+                return response()->json(['message' => 'Failed to delete Employee: ' . $th->getMessage()], 500);
+            }
             session()->flash('error', 'Failed to delete Employee: ' . $th->getMessage());
             return redirect()->route('user.index');
         }

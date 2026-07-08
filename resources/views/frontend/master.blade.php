@@ -27,19 +27,9 @@
         body {
             background: #eeeeee;
         }
-        .breadcrumb {
-            -webkit-border-radius: 0px;
-            -moz-border-radius: 0px;
-            border-radius: 0px;
-            height: 34px;
-            position: relative;
-            margin: 0 0 19px 0;
-            overflow: hidden;
-        }
 
-        .application-link:hover{
-            color: #fff !important;
-        }
+
+
         .custom-select {
             display: inline-block;
             width: 100%;

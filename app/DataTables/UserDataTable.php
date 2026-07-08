@@ -82,7 +82,11 @@ class UserDataTable extends DataTable
                 if ($row->user_type == 'staff') {
                     $userTypeHtml = '<span class="badge text-white px-2 py-1 mr-1 mt-1" style="background-color: #3b82f6; border-radius: 6px; font-weight: 600; display: inline-block; white-space: normal; word-break: break-word; max-width: 130px; text-align: left;">Employee</span>';
                 } elseif ($row->user_type == 'admin') {
-                    $userTypeHtml = '<span class="badge text-white px-2 py-1 mr-1 mt-1" style="background-color: #f59e0b; border-radius: 6px; font-weight: 600; display: inline-block; white-space: normal; word-break: break-word; max-width: 130px; text-align: left;">Department Head</span>';
+                    if (is_null($row->section_id)) {
+                        $userTypeHtml = '<span class="badge text-white px-2 py-1 mr-1 mt-1" style="background-color: #f59e0b; border-radius: 6px; font-weight: 600; display: inline-block; white-space: normal; word-break: break-word; max-width: 130px; text-align: left;">Department Head</span>';
+                    } else {
+                        $userTypeHtml = '<span class="badge text-white px-2 py-1 mr-1 mt-1" style="background-color: #10b981; border-radius: 6px; font-weight: 600; display: inline-block; white-space: normal; word-break: break-word; max-width: 130px; text-align: left;">Section Admin</span>';
+                    }
                 } elseif ($row->user_type == 'superadmin') {
                     $userTypeHtml = '<span class="badge text-white px-2 py-1 mr-1 mt-1" style="background-color: #8b5cf6; border-radius: 6px; font-weight: 600; display: inline-block; white-space: normal; word-break: break-word; max-width: 130px; text-align: left;">Super Admin</span>';
                 } else {
@@ -108,7 +112,7 @@ class UserDataTable extends DataTable
                 return '
                 <div class="d-flex justify-content-center align-items-center" style="gap: 8px;">
                     <a href="' . route('user.show', $row->id) . '" class="btn btn-operation btn-operation-view" title="View Employee Profile" style="color:#0ea5e9; background:#e0f2fe; padding:6px 12px; border-radius:6px; font-size:0.85rem; transition:all 0.2s;"><i class="fas fa-eye"></i></a>
-                    <form action="' . route('user.destroy', $row->id) . '" method="POST" class="d-inline" onsubmit="return confirm(\'Are you sure you want to delete this user?\');">
+                    <form action="' . route('user.destroy', $row->id) . '" method="POST" class="d-inline deleteData">
                         ' . csrf_field() . '
                         ' . method_field('DELETE') . '
                         <button type="submit" class="btn btn-operation btn-operation-delete" title="Delete User" style="color:#dc2626; background:#fef2f2; padding:6px 12px; border-radius:6px; border:1px solid #fee2e2; font-size:0.85rem; transition:all 0.2s;"><i class="fas fa-trash-alt"></i></button>
