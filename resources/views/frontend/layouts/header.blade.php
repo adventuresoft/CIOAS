@@ -303,7 +303,7 @@
         });
 
         window.addEventListener('scroll', function () {
-            if (window.scrollY >= 100) {
+            if (window.scrollY >= 200) {
                 stickyContainer.classList.add("sticky-navbar");
                 document.body.style.paddingTop = stickyContainer.offsetHeight + 'px'; // prevent layout jump
             } else {
