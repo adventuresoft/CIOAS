@@ -70,22 +70,20 @@ class InquiryDataTable extends DataTable
         $user = auth()->user();
         $query = $model->newQuery();
 
-        // if ($user && !$user->can('inquiry.read')) {
-        //     if ($user->department_id) {
-        //         $query->where('current_department_id', $user->department_id);
-        //         if ($user->section_id) {
-        //             $query->where(function ($q) use ($user) {
-        //                 $q->whereNull('current_section_id')
-        //                   ->orWhere('current_section_id', $user->section_id);
-        //             });
-        //         } else {
-        //             $query->whereNull('current_section_id');
-        //         }
-        //     } else {
-        //         // If the user has no read permission and no department, they shouldn't see anything.
-        //         $query->whereRaw('1 = 0');
-        //     }
-        // }
+        if ($user && !in_array($user->user_type, ['superadmin', 'developer'])) {
+            if ($user->department_id) {
+                $query->where('current_department_id', $user->department_id);
+                if ($user->section_id) {
+                    $query->where(function ($q) use ($user) {
+                        $q->whereNull('current_section_id')
+                          ->orWhere('current_section_id', $user->section_id);
+                    });
+                }
+            } else {
+                // If the user has no read permission and no department, they shouldn't see anything.
+                $query->whereRaw('1 = 0');
+            }
+        }
 
         return $query;
     }

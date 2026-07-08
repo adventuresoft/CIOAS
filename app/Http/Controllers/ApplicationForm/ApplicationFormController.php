@@ -47,12 +47,19 @@ class ApplicationFormController extends Controller
                 ->latest()
                 ->get();
         } else {
-            $applicationForms = ApplicationFrom::with(['currentDepartment', 'currentSection', 'receiver'])
-                ->where('institute_id', auth()->user()->institute_id)
-                ->where('current_department_id', auth()->user()->department_id)
-                ->where('current_section_id', auth()->user()->section_id)
-                ->latest()
-                ->get();
+            $user = auth()->user();
+            $query = ApplicationFrom::with(['currentDepartment', 'currentSection', 'receiver'])
+                ->where('institute_id', $user->institute_id)
+                ->where('current_department_id', $user->department_id);
+                
+            if ($user->section_id) {
+                $query->where(function($q) use ($user) {
+                    $q->whereNull('current_section_id')
+                      ->orWhere('current_section_id', $user->section_id);
+                });
+            }
+
+            $applicationForms = $query->latest()->get();
         }
 
         $canCreateApplication = auth()->user()->can('application_form.create');
@@ -520,10 +527,7 @@ class ApplicationFormController extends Controller
                 $sectionQuery->whereNull('current_section_id')
                     ->orWhere('current_section_id', $user->section_id);
             });
-            return;
         }
-
-        $query->whereNull('current_section_id');
     }
 
     private function canAccessApplication($user, ApplicationFrom $applicationForm): bool
@@ -544,8 +548,12 @@ class ApplicationFormController extends Controller
             return false;
         }
 
+        if (empty($user->section_id)) {
+            return true;
+        }
+
         if (!empty($applicationForm->current_section_id)) {
-            return !empty($user->section_id) && (int) $user->section_id === (int) $applicationForm->current_section_id;
+            return (int) $user->section_id === (int) $applicationForm->current_section_id;
         }
 
         return true;
