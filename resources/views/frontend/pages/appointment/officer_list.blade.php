@@ -315,11 +315,11 @@
                                             <span class="officer-status-dot"></span>
                                         </div>
                                         <div class="officer-name">{{ $officer->name }}</div>
-                                        <div class="officer-designation">{{ $officer->section->name ?? 'District Official' }}
+                                        <div class="officer-designation">{{ $officer->designation ?? 'Department Head' }}
                                         </div>
                                         <div class="officer-dept">
                                             <i class="fas fa-building"></i>
-                                            {{ $officer->department->name ?? 'Government Office' }}
+                                            {{ $officer->department->name ?? 'DC' }}
                                         </div>
                                         <a href="{{ route('appointment.calendar', $officer->id) }}" class="btn-book">
                                             <i class="fas fa-calendar-check"></i> Book Appointment

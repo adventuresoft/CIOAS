@@ -20,7 +20,7 @@ class AppointmentController extends Controller
 
     public function officerList()
     {
-        $officers = User::whereIn('user_type', ['admin'])->get();
+        $officers = User::whereIn('user_type', [ 'admin' ])->where('section_id', null)->get();
         return view('frontend.pages.appointment.officer_list', compact('officers'));
     }
 
@@ -33,7 +33,7 @@ class AppointmentController extends Controller
     public function getAvailableSlots(Request $request, $officer_id)
     {
         $start = $request->start;
-        $end = $request->end;
+        $end   = $request->end;
 
         $slots = $this->appointmentService->getAvailableSlots($officer_id, $start, $end);
 
@@ -41,20 +41,20 @@ class AppointmentController extends Controller
         foreach ($slots as $slot) {
             if ($slot->slot_type == 'emergency') {
                 $events[] = [
-                    'id' => $slot->id,
-                    'title' => 'Emergency Appointment',
-                    'start' => $slot->slot_date,
+                    'id'     => $slot->id,
+                    'title'  => 'Emergency Appointment',
+                    'start'  => $slot->slot_date,
                     'allDay' => true,
-                    'color' => '#dc3545',
-                    'url' => route('appointment.book', $slot->id)
+                    'color'  => '#dc3545',
+                    'url'    => route('appointment.book', $slot->id)
                 ];
             } else {
                 $events[] = [
-                    'id' => $slot->id,
+                    'id'    => $slot->id,
                     'title' => date('h:i A', strtotime($slot->start_time)),
                     'start' => $slot->slot_date . 'T' . $slot->start_time,
                     'color' => '#28a745',
-                    'url' => route('appointment.book', $slot->id)
+                    'url'   => route('appointment.book', $slot->id)
                 ];
             }
         }
@@ -64,32 +64,32 @@ class AppointmentController extends Controller
 
     public function getSlotsByDate(Request $request, $officer_id)
     {
-        $date = $request->date;
-        $slots = $this->appointmentService->getAvailableSlots($officer_id, $date, $date);
+        $date         = $request->date;
+        $slots        = $this->appointmentService->getAvailableSlots($officer_id, $date, $date);
         $regularSlots = [];
-        $emergency = [];
+        $emergency    = [];
 
         foreach ($slots as $slot) {
             if ($slot->slot_type == 'emergency') {
                 $emergency[] = [
-                    'id' => $slot->id,
+                    'id'    => $slot->id,
                     'title' => 'Emergency',
-                    'url' => route('appointment.book', $slot->id)
+                    'url'   => route('appointment.book', $slot->id)
                 ];
             } else {
-                $time = strtotime($slot->start_time);
+                $time          = strtotime($slot->start_time);
                 $formattedTime = date('h:i A', $time);
 
                 $regularSlots[] = [
-                    'id' => $slot->id,
+                    'id'   => $slot->id,
                     'time' => $formattedTime,
-                    'url' => route('appointment.book', $slot->id)
+                    'url'  => route('appointment.book', $slot->id)
                 ];
             }
         }
 
         return response()->json([
-            'slots' => $regularSlots,
+            'slots'     => $regularSlots,
             'emergency' => $emergency
         ]);
     }
@@ -103,22 +103,22 @@ class AppointmentController extends Controller
     public function storeBooking(Request $request)
     {
         $request->validate([
-            'slot_id' => 'required|exists:appointment_slots,id',
-            'name' => 'required|string|max:190',
+            'slot_id'       => 'required|exists:appointment_slots,id',
+            'name'          => 'required|string|max:190',
             'date_of_birth' => 'required|date',
-            'phone' => 'required|string|max:190',
-            'email' => 'required|email|max:190',
-            'nid_number' => 'required|string|max:190',
-            'address' => 'required|string|max:1000',
-            'purpose' => 'required|string|max:190',
-            'description' => 'required|string|max:2000',
+            'phone'         => 'required|string|max:190',
+            'email'         => 'required|email|max:190',
+            'nid_number'    => 'required|string|max:190',
+            'address'       => 'required|string|max:1000',
+            'purpose'       => 'required|string|max:190',
+            'description'   => 'required|string|max:2000',
         ]);
 
         try {
             $booking = $this->appointmentService->bookAppointment($request->all());
-            return response()->json(['status' => true, 'message' => 'Appointment booked successfully.', 'redirect_url' => route('appointment.officers')]);
+            return response()->json([ 'status' => true, 'message' => 'Appointment booked successfully.', 'redirect_url' => route('appointment.officers') ]);
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'message' => $e->getMessage()], 400);
+            return response()->json([ 'status' => false, 'message' => $e->getMessage() ], 400);
         }
     }
 }

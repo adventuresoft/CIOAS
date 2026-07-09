@@ -37,6 +37,24 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="md-field">
+                                        <label for="url">URL</label>
+                                        <input type="text" name="url" placeholder="Department URL" class="form-control"
+                                            id="url" value="{{ $department->url }}">
+                                        <small class="text-danger error url_error"></small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="md-field">
+                                        <label for="info">Info</label>
+                                        <textarea name="info" placeholder="Department Info" class="form-control"
+                                            id="info" rows="3">{{ $department->info }}</textarea>
+                                        <small class="text-danger error info_error"></small>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

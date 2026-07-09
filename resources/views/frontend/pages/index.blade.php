@@ -18,134 +18,122 @@
                 কেন্দ্রীয় সমন্বিত অফিস অটোমেশন সিস্টেম
             </h1>
 
-            <div class="row g-4 justify-content-left">
+            <div id="departments-grid" class="row g-4 justify-content-left" style="transition: opacity 0.3s ease-in-out;">
 
-                <!-- Appointment -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <a href="{{ route('appointment.officers') }}"
-                        class="gov-card p-3 d-d-block text-decoration-none h-100 group">
-                        <div class="d-flex align-items-start h-100">
-                            <div class="icon-circle flex-shrink-0" style="margin-right: 10px;">
-                                <i class="fas fa-calendar-check fs-4"></i>
-                            </div>
+                <!-- Card -->
+                @if(isset($departments))
+                    @foreach ($departments as $department)
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <a href="javascript:void(0)"
+                                onclick="showDepartmentServices('{{ $department->id }}', '{{ $department->bn_name }}')"
+                                class="gov-card p-3 d-block text-decoration-none h-100 group">
+                                <div class="d-flex align-items-start h-100">
+                                    <div class="icon-circle flex-shrink-0" style="margin-right: 10px;">
+                                        <i class="fas fa-calendar-check fs-4"></i>
+                                    </div>
 
-                            <div class="d-flex flex-column h-100 w-100">
-                                <h3 class="fs-card-title">অ্যাপয়েন্টমেন্ট</h3>
-                                <p class="fs-content text-muted mb-3">অফিসারদের সঙ্গে সাক্ষাতের জন্য অ্যাপয়েন্টমেন্ট
-                                    বুক করুন।</p>
-                                <span class="btn-gov mt-auto d-inline-flex align-items-center align-self-start">
-                                    আবেদন করুন <i class="fas fa-arrow-right ms-2" style="font-size: 12px;"></i>
-                                </span>
-                            </div>
+                                    <div class="d-flex flex-column h-100 w-100">
+                                        <h3 class="fs-card-title">{{ $department->bn_name}}</h3>
+                                        <p class="fs-content text-muted mb-3">{{$department->info }}</p>
+                                        <span class="btn-gov mt-auto d-inline-flex align-items-center align-self-start">
+                                            ক্লিক করুন <i class="fas fa-arrow-right ms-2" style="font-size: 12px;"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
-                    </a>
+                    @endforeach
+                @endif
+            </div>
+
+            <!-- Services Section -->
+            <div id="services-container" style="display: none; animation: fadeIn 0.4s;">
+                <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+                    <button class="btn btn-outline-primary btn-sm me-3 shadow-sm" onclick="showDepartmentsGrid()"
+                        style="border-radius: 20px; padding: 5px 15px;">
+                        <i class="fas fa-arrow-left"></i> ফিরে যান
+                    </button>
+                    <h3 id="department-title" class="mb-0 text-dark fw-bold" style="font-size: 22px;"></h3>
                 </div>
 
-                <!-- Inquiry -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <a href="{{ route('inquiry.index') }}" class="gov-card p-3 d-d-block text-decoration-none h-100 group">
-                        <div class="d-flex align-items-start h-100">
-                            <div class="icon-circle flex-shrink-0" style="margin-right: 10px;">
-                                <i class="fas fa-question-circle fs-4"></i>
+                <div id="services-wrapper">
+                    @if(isset($departments))
+                        @foreach ($departments as $department)
+                            <div id="dept-content-{{ $department->id }}" class="department-content" style="display: none;">
+                                @if(!empty($department->url) && view()->exists($department->url))
+                                    <div class="row g-4 justify-content-left">
+                                        @include($department->url)
+                                    </div>
+                                @else
+                                    <div class="alert alert-warning text-center p-5 shadow-sm"
+                                        style="border-radius: 12px; border: 1px solid #ffeeba;">
+                                        <i class="fas fa-exclamation-triangle fs-1 text-warning mb-3"></i>
+                                        <h5 class="fw-bold">দুঃখিত!</h5>
+                                        <p class="mb-0">এই বিভাগের জন্য এখনো কোনো সেবা বা ফর্ম যুক্ত করা হয়নি।</p>
+                                    </div>
+                                @endif
                             </div>
-
-                            <div class="d-flex flex-column h-100 w-100">
-                                <h3 class="fs-card-title">জিজ্ঞাসা আবেদন</h3>
-                                <p class="fs-content text-muted mb-3">আপনার যেকোনো জিজ্ঞাসা বা অভিযোগ জানাতে আবেদন করুন।
-                                </p>
-                                <span class="btn-gov mt-auto d-inline-flex align-items-center align-self-start">
-                                    আবেদন করুন <i class="fas fa-arrow-right ms-2" style="font-size: 12px;"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </a>
+                        @endforeach
+                    @endif
                 </div>
-
-                <!-- Land Search -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <a href="{{ route('frontend.land.search') }}"
-                        class="gov-card p-3 d-d-block text-decoration-none h-100 group">
-                        <div class="d-flex align-items-start h-100">
-                            <div class="icon-circle flex-shrink-0" style="margin-right: 10px;">
-                                <i class="fas fa-map-marked-alt fs-4"></i>
-                            </div>
-
-                            <div class="d-flex flex-column h-100 w-100">
-                                <h3 class="fs-card-title">জমি অনুসন্ধান</h3>
-                                <p class="fs-content text-muted mb-3">অনুমোদিত জমির তালিকা এবং বিস্তারিত তথ্য অনুসন্ধান
-                                    করুন।</p>
-                                <span class="btn-gov mt-auto d-inline-flex align-items-center align-self-start">
-                                    অনুসন্ধান করুন <i class="fas fa-search ms-2" style="font-size: 12px;"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-
-                <!-- Hotel & Restaurant -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <a href="{{ route('frontend.hotel-restaurant.create') }}"
-                        class="gov-card p-3 d-d-block text-decoration-none h-100 group">
-                        <div class="d-flex align-items-start h-100">
-                            <div class="icon-circle flex-shrink-0" style="margin-right: 10px;">
-                                <i class="fas fa-hotel fs-4"></i>
-                            </div>
-
-                            <div class="d-flex flex-column h-100 w-100">
-                                <h3 class="fs-card-title">হোটেল ও রেস্তোরাঁ</h3>
-                                <p class="fs-content text-muted mb-3">হোটেল ও রেস্তোরাঁ লাইসেন্স সংক্রান্ত আবেদন।</p>
-                                <span class="btn-gov mt-auto d-inline-flex align-items-center align-self-start">
-                                    আবেদন করুন <i class="fas fa-arrow-right ms-2" style="font-size: 12px;"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Gun License -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <a href="{{ route('frontend.gun-license.select') }}"
-                        class="gov-card p-3 d-d-block text-decoration-none h-100 group">
-                        <div class="d-flex align-items-start h-100">
-                            <div class="icon-circle flex-shrink-0" style="margin-right: 10px;">
-                                <i class="fas fa-crosshairs fs-4"></i>
-                            </div>
-
-                            <div class="d-flex flex-column h-100 w-100">
-                                <h3 class="fs-card-title">আগ্নেয়াস্ত্র লাইসেন্স</h3>
-                                <p class="fs-content text-muted mb-3">আগ্নেয়াস্ত্র লাইসেন্সের নতুন আবেদন বা নবায়ন।</p>
-                                <span class="btn-gov mt-auto d-inline-flex align-items-center align-self-start">
-                                    আবেদন করুন <i class="fas fa-arrow-right ms-2" style="font-size: 12px;"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- General License -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <a href="{{ route('frontend.license.create') }}"
-                        class="gov-card p-3 d-d-block text-decoration-none h-100 group">
-                        <div class="d-flex align-items-start h-100">
-                            <div class="icon-circle flex-shrink-0" style="margin-right: 10px;">
-                                <i class="fas fa-id-card fs-4"></i>
-                            </div>
-
-                            <div class="d-flex flex-column h-100 w-100">
-                                <h3 class="fs-card-title">লাইসেন্স</h3>
-                                <p class="fs-content text-muted mb-3">নতুন লাইসেন্সের আবেদন করতে এখানে ক্লিক করুন।</p>
-                                <span class="btn-gov mt-auto d-inline-flex align-items-center align-self-start">
-                                    আবেদন করুন <i class="fas fa-arrow-right ms-2" style="font-size: 12px;"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
             </div>
         </div>
     </section>
 
-
 @endsection
+
+@push('style')
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Fix d-d-block typo from previous layout */
+        .d-d-block {
+            display: block;
+        }
+    </style>
+@endpush
+
+@push('script')
+    <script>
+        function showDepartmentServices(id, name) {
+            // Hide departments grid
+            document.getElementById('departments-grid').style.display = 'none';
+
+            // Show services container
+            document.getElementById('services-container').style.display = 'block';
+
+            // Update Title
+            document.getElementById('department-title').innerText = name + " - এর সেবাসমূহ";
+
+            // Hide all department contents
+            let contents = document.querySelectorAll('.department-content');
+            contents.forEach(content => {
+                content.style.display = 'none';
+            });
+
+            // Show the specific department's content
+            let targetContent = document.getElementById('dept-content-' + id);
+            if (targetContent) {
+                targetContent.style.display = 'block';
+            }
+        }
+
+        function showDepartmentsGrid() {
+            // Hide services container
+            document.getElementById('services-container').style.display = 'none';
+
+            // Show departments grid
+            document.getElementById('departments-grid').style.display = 'flex';
+        }
+    </script>
+@endpush

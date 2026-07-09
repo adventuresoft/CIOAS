@@ -795,7 +795,7 @@ Route::group([ 'prefix' => 'dashboard', 'middleware' => [ 'auth', 'module.permis
 // Frontend url start
 Route::get('get-sections-by-department/{department_id}', [ DepartmentSectionController::class, 'getSectionsByDepartment' ])->name('basic-settings.get-sections-by-department');
 
-Route::get('get-sections-by-department/{department_id}', [ DepartmentSectionController::class, 'getSectionsByDepartment' ])->name('get-sections-by-department');
+// Route::get('get-sections-by-department/{department_id}', [ DepartmentSectionController::class, 'getSectionsByDepartment' ])->name('get-sections-by-department');
 
 Route::get('/get-districts-by-division/{divisionID}', [ DistrictController::class, 'districtsByDivision' ]);
 Route::get('/get-thanas-by-district/{districtID}', [ ThanaController::class, 'thanasByDistrict' ]);

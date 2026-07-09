@@ -21,71 +21,41 @@
 
                         <div class="cioas-panel-body">
 
-                            {{-- Institute Category --}}
-                            <div class="form-group row mb-4">
-                                <label for="institute_category" class="col-sm-3 col-form-label text-dark font-weight-bold">Uses as <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
-                                <div class="col-sm-9">
-                                    <select required class="form-control select2" name="institute_category" id="institute_category">
-                                        <option value="">Select Working/Monitoring</option>
-                                        @foreach ($institute_categories as $institute_category)
-                                            <option value="{{ $institute_category->id }}"
-                                                {{ $institute->institute_category_id == $institute_category->id ? 'selected' : '' }}>
-                                                {{ $institute_category->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <small class="error institute_category-error text-danger"></small>
-                                </div>
-                            </div>
+                            <input type="hidden" name="institute_category" value="{{ $institute->institute_category_id ?? 8 }}">
 
-                            {{-- Institute Subcategory --}}
-                            <div class="form-group row mb-4">
-                                <label for="institute_subcategory_id" class="col-sm-3 col-form-label text-dark font-weight-bold">Institute Category</label>
+                            <div class="form-group row mb-4 align-items-center">
+                                <label for="activation_time" class="col-sm-3 col-form-label text-dark font-weight-bold">Activation Date</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control select2" name="institute_subcategory_id" id="institute_subcategory_id">
-                                        <option value="">Category A/B/C</option>
-                                        <option value="1" {{ $institute->institute_subcategory_id == 1 ? 'selected' : '' }}>Category A</option>
-                                        <option value="2" {{ $institute->institute_subcategory_id == 2 ? 'selected' : '' }}>Category B</option>
-                                        <option value="3" {{ $institute->institute_subcategory_id == 3 ? 'selected' : '' }}>Category C</option>
-                                    </select>
-                                    <small class="error institute_subcategory_id-error text-danger"></small>
-                                </div>
-                            </div>
-
-                            {{-- Activation Date --}}
-                            <div class="form-group row mb-4">
-                                <label for="activation_time" class="col-sm-3 col-form-label text-dark font-weight-bold">Activation Date <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
-                                <div class="col-sm-9">
-                                    <input type="date" id="activation_time" value="{{ $institute->activation_time ?? '' }}"
-                                        name="activation_time" class="form-control" required>
+                                    <input type="date" id="activation_time"
+                                        value="{{ $institute->activation_time ?? '' }}" name="activation_time"
+                                        class="form-control" required>
                                     <small class="error activation_time-error text-danger"></small>
                                 </div>
                             </div>
 
-                            {{-- Division --}}
-                            <div class="form-group row mb-4">
-                                <label for="division" class="col-sm-3 col-form-label text-dark font-weight-bold">Division <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                            <div class="form-group row mb-4 align-items-center">
+                                <label for="division" class="col-sm-3 col-form-label text-dark font-weight-bold">Division <span class="text-danger"
+                                        title="Required" data-toggle="tooltip">*</span></label>
                                 <div class="col-sm-9">
                                     <select required class="form-control select2" name="division" id="division">
                                         <option value="">Select Division</option>
-                                        @foreach ($divisions as $division)
-                                            <option value="{{ $division->id }}"
-                                                {{ $institute->division_id == $division->id ? 'selected' : '' }}>
-                                                {{ $division->name }}
-                                            </option>
-                                        @endforeach
+                                        @if (count($divisions))
+                                            @foreach ($divisions as $division)
+                                                <option value="{{ $division->id }}" {{ $institute->division_id == $division->id ? 'selected' : '' }}>{{ $division->name }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                     <small class="error division-error text-danger"></small>
                                 </div>
                             </div>
 
-                            {{-- District --}}
-                            <div class="form-group row mb-4">
-                                <label for="district" class="col-sm-3 col-form-label text-dark font-weight-bold">District <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                            <div class="form-group row mb-4 align-items-center">
+                                <label for="district" class="col-sm-3 col-form-label text-dark font-weight-bold">District <span class="text-danger"
+                                        title="Required" data-toggle="tooltip">*</span></label>
                                 <div class="col-sm-9">
-                                    <select required class="form-control select2" name="district" id="district">
+                                    <select required class="form-control select2" name="district"
+                                        id="district">
                                         <option value="">Select District</option>
-                                        {{-- Pre-populate if division is set --}}
                                         @if($institute->district_id && $institute->district)
                                             <option value="{{ $institute->district_id }}" selected>
                                                 {{ $institute->district->name ?? 'District #'.$institute->district_id }}
@@ -96,36 +66,35 @@
                                 </div>
                             </div>
 
-                            {{-- Thana --}}
-                            <div class="form-group row mb-4">
-                                <label for="thana" class="col-sm-3 col-form-label text-dark font-weight-bold">Thana / Upazila</label>
+                            <div class="form-group row mb-4 align-items-center">
+                                <label for="institute_type" class="col-sm-3 col-form-label text-dark font-weight-bold">Institute Type <span
+                                        class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
                                 <div class="col-sm-9">
-                                    <select class="form-control select2" name="thana" id="thana">
-                                        <option value="">Select Thana</option>
-                                        @if($institute->thana_id && $institute->thana)
-                                            <option value="{{ $institute->thana_id }}" selected>
-                                                {{ $institute->thana->name ?? 'Thana #'.$institute->thana_id }}
-                                            </option>
+                                    <select required class="form-control select2" name="institute_type"
+                                        id="institute_type">
+                                        <option value="">Select Institute Type</option>
+                                        @if (count($institute_types))
+                                            @foreach ($institute_types as $institute_type)
+                                                <option value="{{ $institute_type->id }}" {{ $institute->institute_type_id == $institute_type->id ? 'selected' : '' }}>{{ $institute_type->name }}
+                                                </option>
+                                            @endforeach
                                         @endif
                                     </select>
-                                    <small class="error thana-error text-danger"></small>
+                                    <small class="error institute_type-error text-danger"></small>
                                 </div>
                             </div>
 
-                            {{-- Institute Type --}}
-                            <div class="form-group row mb-4">
-                                <label for="institute_type" class="col-sm-3 col-form-label text-dark font-weight-bold">Institute Type <span class="text-danger" title="Required" data-toggle="tooltip">*</span></label>
+                            <div class="form-group row mb-4 align-items-center">
+                                <label for="institute_subcategory_id" class="col-sm-3 col-form-label text-dark font-weight-bold">Institute
+                                    Category</label>
                                 <div class="col-sm-9">
-                                    <select required class="form-control select2" name="institute_type" id="institute_type">
-                                        <option value="">Select Institute Type</option>
-                                        @foreach ($institute_types as $institute_type)
-                                            <option value="{{ $institute_type->id }}"
-                                                {{ $institute->institute_type_id == $institute_type->id ? 'selected' : '' }}>
-                                                {{ $institute_type->name }}
-                                            </option>
-                                        @endforeach
+                                    <select required class="form-control select2" name="institute_subcategory_id"
+                                        id="institute_subcategory_id">
+                                        <option value="">Category A/B/C</option>
+                                        <option value="1" {{ $institute->institute_subcategory_id == 1 ? 'selected' : '' }}>Category A</option>
+                                        <option value="2" {{ $institute->institute_subcategory_id == 2 ? 'selected' : '' }}>Category B</option>
+                                        <option value="3" {{ $institute->institute_subcategory_id == 3 ? 'selected' : '' }}>Category C</option>
                                     </select>
-                                    <small class="error institute_type-error text-danger"></small>
                                 </div>
                             </div>
 
@@ -156,7 +125,6 @@
         // On page load: if division is already selected, load districts
         let existingDivision = $('#division').val();
         let existingDistrict = '{{ $institute->district_id ?? "" }}';
-        let existingThana    = '{{ $institute->thana_id ?? "" }}';
         let existingInstituteType = '{{ $institute->institute_type_id ?? "" }}';
 
         if (existingDivision) {
@@ -171,22 +139,6 @@
                     }
                     $('#district').prop("disabled", false);
                     $(".select2").select2();
-
-                    // Then load thanas for selected district
-                    if (existingDistrict) {
-                        $.ajax({
-                            type: "GET",
-                            url: "{{ url('/get-thanas-by-district') }}/" + existingDistrict,
-                            success: function(res) {
-                                $('#thana').html(res);
-                                if (existingThana) {
-                                    $('#thana').val(existingThana);
-                                }
-                                $('#thana').prop("disabled", false);
-                                $(".select2").select2();
-                            }
-                        });
-                    }
                 }
             });
         }
@@ -215,7 +167,6 @@
         // Division change → load districts
         $(document).on('change', '#division', function(e) {
             let divisionId = $(this).val();
-            let thana = $('#thana');
             let district = $('#district');
             if (divisionId) {
                 $.ajax({
@@ -223,7 +174,6 @@
                     url: "{{ url('/get-districts-by-division') }}/" + divisionId,
                     beforeSend: function() {
                         district.prop("disabled", true);
-                        thana.html('<option value="">Select Thana</option>').prop("disabled", true);
                         $('#institute_type').prop("disabled", true);
                     },
                     success: function(response) {
@@ -236,40 +186,18 @@
                 });
             } else {
                 district.html('<option value="">Select District</option>').prop("disabled", true);
-                thana.html('<option value="">Select Thana</option>').prop("disabled", true);
                 $('#institute_type').prop("disabled", true);
             }
         });
 
-        // District change → load thanas
+        // District change → enable institute type
         $(document).on('change', '#district', function(e) {
             let districtId = $(this).val();
-            let thana = $('#thana');
             if (districtId) {
-                $.ajax({
-                    type: "GET",
-                    url: "{{ url('/get-thanas-by-district') }}/" + districtId,
-                    beforeSend: function() {
-                        thana.prop("disabled", true);
-                        $('#institute_type').prop("disabled", true);
-                    },
-                    success: function(response) {
-                        thana.html(response).prop("disabled", false);
-                        $(".select2").select2();
-                    },
-                    error: function() {
-                        thana.prop("disabled", true);
-                    }
-                });
+                $('#institute_type').prop("disabled", false);
             } else {
-                thana.html('<option value="">Select Thana</option>').prop("disabled", true);
                 $('#institute_type').prop("disabled", true);
             }
-        });
-
-        // Thana change → enable institute type
-        $(document).on('change', '#thana', function() {
-            $('#institute_type').prop("disabled", $(this).val() ? false : true);
         });
 
         // Institute Type change → load dynamic content

@@ -41,6 +41,8 @@ class DepartmentController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'bn_name' => 'required|string|max:255',
+            'url' => 'nullable|string|max:255',
+            'info' => 'nullable|string',
         ]);
 
 
@@ -56,6 +58,8 @@ class DepartmentController extends Controller
 
         $department->name = $request->name;
         $department->bn_name = $request->bn_name;
+        $department->url = $request->url;
+        $department->info = $request->info;
         $department->save();
 
         return response()->json([
@@ -100,6 +104,8 @@ class DepartmentController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'bn_name' => 'required|string|max:255',
+            'url' => 'nullable|string|max:255',
+            'info' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -113,6 +119,8 @@ class DepartmentController extends Controller
         $department = Department::findOrFail($id);
         $department->name = $request->name;
         $department->bn_name = $request->bn_name;
+        $department->url = $request->url;
+        $department->info = $request->info;
         $department->save();
 
         return response()->json([

@@ -126,48 +126,49 @@
                             <i class="fas fa-home opacity-75"></i>
                         </a>
                     </li>
-                    <li class="nav-item position-relative">
-                        <a href="#" class="main-nav-link">
+                    <li class="nav-item">
+                        <a href="{{ route('appointment.officers') }}" class="main-nav-link">
                             <i class="fas fa-calendar-check opacity-75"></i> অ্যাপয়েন্টমেন্ট
-                            <i class="fas fa-chevron-down small opacity-75 ms-1"></i>
                         </a>
-                        <div class="gov-dropdown">
-                            <a href="{{ route('appointment.officers') }}" class="dropdown-item-gov">
-                                <i class="fas fa-user-tie text-gov-green small"></i> অফিসার নির্বাচন
-                            </a>
-                            <a href="{{ url('/login') }}" class="dropdown-item-gov">
-                                <i class="fas fa-list-alt text-gov-green small"></i> আমার বুকিং
-                            </a>
-                        </div>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('inquiry.index') }}" class="main-nav-link">
+                            <i class="fas fa-desktop  opacity-75"></i> জিজ্ঞাসা
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('frontend.land.search') }}" class="main-nav-link">
+                            <i class="fas fa-search opacity-75"></i> জমি অনুসন্ধান
+                        </a>
+                    </li>
+
                     <li class="nav-item">
                         <a href="{{ route('frontend.miscase.index') }}" class="main-nav-link">
                             <i class="fas fa-gavel opacity-75"></i> মিসকেস তালিকা
                         </a>
                     </li>
+
+
                     <li class="nav-item position-relative">
-                        <a href="#" class="main-nav-link">
-                            <i class="fas fa-gavel opacity-75"></i> ই-সেবা
+                        <a href="javascript:void(0)" class="main-nav-link">
+                            <i class="fas fa-id-card opacity-75"></i> লাইসেন্স
                             <i class="fas fa-chevron-down small opacity-75 ms-1"></i>
                         </a>
                         <div class="gov-dropdown">
-                            <a href="{{ route('inquiry.index') }}" class="dropdown-item-gov">
-                                <i class="fas fa-desktop text-gov-green small"></i> জিজ্ঞাসা
+                            <a href="{{ route('frontend.license.create') }}" class="dropdown-item-gov">
+                                <i class="fas fa-id-card text-gov-green small"></i> লাইসেন্স
                             </a>
-                            <a href="{{ route('frontend.miscase.index') }}" class="dropdown-item-gov">
-                                <i class="fas fa-desktop text-gov-green small"></i> মিসকেস তালিকা
+                            <a href="{{ route('frontend.hotel-restaurant.create') }}" class="dropdown-item-gov">
+                                <i class="fas fa-hotel text-gov-green small"></i> হোটেল ও রেস্তোরাঁ
                             </a>
-                            <a href="{{ route('frontend.land.search') }}" class="dropdown-item-gov">
-                                <i class="fas fa-desktop text-gov-green small"></i> জমি অনুসন্ধান
+                            <a href="{{ route('frontend.gun-license.select') }}" class="dropdown-item-gov">
+                                <i class="fas fa-crosshairs text-gov-green small"></i>আগ্নেয়াস্ত্র লাইসেন্স
                             </a>
                         </div>
+
                     </li>
 
-                    <li class="nav-item">
-                        <a href="#" class="main-nav-link">
-                            <i class="fas fa-phone-volume opacity-75"></i> যোগাযোগ
-                        </a>
-                    </li>
 
                     <li class="flex-grow-1"></li>
 
