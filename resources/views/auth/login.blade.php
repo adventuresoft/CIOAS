@@ -33,7 +33,7 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
             overflow: hidden;
             width: 100%;
-            max-width: 800px;
+            max-width: 700px;
             max-height: 400px;
             height: 400px;
         }
@@ -102,7 +102,44 @@
             font-size: 12px;
             font-weight: 400;
             color: #e2e8f0;
+            margin: 0 0 16px 0;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
             margin: 0;
+            text-align: left;
+            width: 100%;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 7px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 11.5px;
+            color: #d1fae5;
+            line-height: 1.5;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-list li .f-icon {
+            width: 26px;
+            height: 26px;
+            min-width: 26px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #a7f3d0;
+            margin-top: 1px;
         }
 
         .login-bottom {
@@ -327,27 +364,51 @@
             .login-card {
                 flex-direction: column;
                 max-width: 100%;
+                max-height: none;
+                height: auto;
                 border-radius: 12px;
             }
 
             .login-left {
                 flex: none;
                 width: 100%;
-                padding: 30px 25px;
+                flex: 0 0 auto;
+                padding: 22px 20px;
                 border-right: none;
-                border-bottom: 1px solid #e2e8f0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15);
             }
 
             .login-left::before {
                 display: none;
             }
 
+            .login-top h3 {
+                font-size: 24px;
+            }
+
+            .feature-list {
+                display: none;
+            }
+
+            .login-bottom {
+                display: none;
+            }
+
             .login-right {
-                padding: 40px 25px;
+                padding: 24px 20px;
             }
 
             .login-form-wrapper {
                 max-width: 100%;
+            }
+
+            .login-form-header img {
+                height: 38px;
+                width: 38px;
+            }
+
+            .login-form-header h5 {
+                font-size: 15px;
             }
         }
     </style>
@@ -361,6 +422,20 @@
                     <h6>Welcome to</h6>
                     <h3>CIOAS</h3>
                     <h4>System Gateway</h4>
+                    <ul class="feature-list">
+                        <li>
+                            <span class="f-icon"><i class="fas fa-tasks"></i></span>
+                            <span>প্রশাসনিক ও মনিটরিং কার্যক্রম পরিচালনা করুন।</span>
+                        </li>
+                        <li>
+                            <span class="f-icon"><i class="fas fa-chart-line"></i></span>
+                            <span>রিয়েল-টাইম রিপোর্ট এবং তথ্য বিশ্লেষণ করুন।</span>
+                        </li>
+                        <li>
+                            <span class="f-icon"><i class="fas fa-users-cog"></i></span>
+                            <span>নাগরিক সেবা ও ইউজার ম্যানেজমেন্ট নিশ্চিত করুন।</span>
+                        </li>
+                    </ul>
                 </div>
                 <div class="login-bottom">
                     <h5>Powered by</h5>
