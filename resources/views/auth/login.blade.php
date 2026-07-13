@@ -5,7 +5,8 @@
             margin: 0;
             padding: 0;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); /* Light metallic/white background */
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            /* Light metallic/white background */
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -29,23 +30,24 @@
             border-top: 1px solid #ffffff;
             border-left: 1px solid #ffffff;
             border-radius: 16px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.8);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
             overflow: hidden;
             width: 100%;
             max-width: 800px;
-            height: auto;
+            max-height: 400px;
+            height: 400px;
         }
 
         /* Left Side */
         .login-left {
-            flex: 0 0 320px;
-            background: linear-gradient(135deg, rgba(0, 106, 78, 0.9) 0%, rgba(0, 50, 35, 0.95) 100%);
+            flex: 0 0 260px;
+            background: #046307;
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px 30px;
+            padding: 24px 22px;
             text-align: center;
             border-right: 1px solid rgba(255, 255, 255, 0.1);
             overflow: hidden;
@@ -65,16 +67,21 @@
         }
 
         @keyframes shine {
-            0% { transform: translateX(-50%) translateY(-50%) rotate(0deg); }
-            100% { transform: translateX(50%) translateY(50%) rotate(45deg); }
+            0% {
+                transform: translateX(-50%) translateY(-50%) rotate(0deg);
+            }
+
+            100% {
+                transform: translateX(50%) translateY(50%) rotate(45deg);
+            }
         }
 
         .login-top {
-            margin-bottom: auto;
+            margin-bottom: 14px;
         }
 
         .login-top h6 {
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 500;
             margin: 0;
             letter-spacing: 1.5px;
@@ -83,16 +90,16 @@
         }
 
         .login-top h3 {
-            font-size: 38px;
+            font-size: 30px;
             font-weight: 800;
             color: #ffffff;
-            margin: 10px 0 5px 0;
+            margin: 6px 0 3px 0;
             letter-spacing: 1px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .login-top h4 {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 400;
             color: #e2e8f0;
             margin: 0;
@@ -100,24 +107,24 @@
 
         .login-bottom {
             margin-top: auto;
-            background: rgba(255,255,255,0.1);
-            padding: 15px 25px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 18px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(5px);
         }
 
         .login-bottom h5 {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             color: #d1fae5;
-            margin: 0 0 8px 0;
+            margin: 0 0 5px 0;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .login-bottom img {
-            max-width: 130px;
+            max-width: 110px;
             width: 100%;
             filter: brightness(0) invert(1);
             opacity: 1;
@@ -130,7 +137,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 50px 40px;
+            padding: 24px 30px;
         }
 
         .login-form-wrapper {
@@ -140,18 +147,18 @@
 
         .login-form-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 14px;
         }
 
         .login-form-header img {
-            height: 64px;
-            width: 64px;
-            margin-bottom: 12px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            height: 44px;
+            width: 44px;
+            margin-bottom: 7px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
         .login-form-header h5 {
-            font-size: 22px;
+            font-size: 17px;
             font-weight: 700;
             color: #0f172a;
             margin: 0;
@@ -159,22 +166,22 @@
         }
 
         .login-form-header p {
-            font-size: 13px;
+            font-size: 11px;
             color: #475569;
-            margin: 5px 0 0 0;
+            margin: 3px 0 0 0;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             text-align: left;
         }
 
         .form-group label {
             display: block;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             color: #334155;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -187,23 +194,23 @@
 
         .form-group input {
             width: 100%;
-            padding: 12px 16px;
+            padding: 9px 13px;
             /* Light Metallic input style */
             background: linear-gradient(to bottom, #ffffff, #f8fafc);
             border: 1px solid #cbd5e1;
             border-top: 1px solid #94a3b8;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             color: #1e293b;
             transition: all 0.3s ease;
             font-family: inherit;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
         }
 
         .form-group input:focus {
             outline: none;
             border-color: #006a4e;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.04), 0 0 0 3px rgba(0, 106, 78, 0.15);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04), 0 0 0 3px rgba(0, 106, 78, 0.15);
             background: #ffffff;
         }
 
@@ -220,7 +227,7 @@
             transition: color 0.3s;
             display: none;
         }
-        
+
         .input-icon:hover {
             color: #475569;
         }
@@ -258,38 +265,38 @@
 
         .btn-login {
             width: 100%;
-            padding: 12px;
+            padding: 9px;
             /* Premium metallic button */
-            background: linear-gradient(135deg, #00b080, #006a4e);
+            background: #046307;
             color: white;
             border: 1px solid #00523b;
             border-top: 1px solid #00d59b;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 700;
             letter-spacing: 0.5px;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(0, 106, 78, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+            margin-top: 6px;
+            box-shadow: 0 4px 15px rgba(0, 106, 78, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
             text-transform: uppercase;
         }
 
         .btn-login:hover {
             background: linear-gradient(135deg, #00c992, #008260);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 106, 78, 0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+            box-shadow: 0 6px 20px rgba(0, 106, 78, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
         .btn-login:active {
             transform: translateY(1px);
-            box-shadow: 0 2px 10px rgba(0, 106, 78, 0.4), inset 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 10px rgba(0, 106, 78, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .form-footer {
-            margin-top: 25px;
+            margin-top: 10px;
             text-align: center;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         .form-footer a {
@@ -304,7 +311,7 @@
 
         .forgot-password {
             display: inline-block;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
             font-weight: 500;
         }
 
@@ -312,7 +319,7 @@
             display: flex;
             justify-content: center;
             gap: 15px;
-            padding-top: 15px;
+            padding-top: 8px;
             border-top: 1px solid #e2e8f0;
         }
 
@@ -330,7 +337,7 @@
                 border-right: none;
                 border-bottom: 1px solid #e2e8f0;
             }
-            
+
             .login-left::before {
                 display: none;
             }
@@ -387,8 +394,8 @@
                         <div class="form-group">
                             <label for="email">User ID</label>
                             <div class="input-wrapper">
-                                <input type="email" id="email" name="email" placeholder="Enter your user ID" class="form-control"
-                                    required value="{{ old('email') }}">
+                                <input type="email" id="email" name="email" placeholder="Enter your user ID"
+                                    class="form-control" required value="{{ old('email') }}">
                             </div>
                         </div>
 
@@ -403,7 +410,8 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn-login"><i class="fas fa-sign-in-alt mr-2"></i> Login to System</button>
+                        <button type="submit" class="btn-login"><i class="fas fa-sign-in-alt mr-2"></i> Login to
+                            System</button>
                     </form>
 
                     <div class="form-footer">

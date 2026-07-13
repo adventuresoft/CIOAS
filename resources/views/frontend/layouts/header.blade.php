@@ -28,41 +28,14 @@
     {{-- ══ TOP UTILITY BAR ══ --}}
     <div class="bg-gov-top border-bottom border-secondary">
         <div class="container fs-top-header">
-            <div class="d-flex align-items-center justify-content-between gap-3">
+            <div class="d-flex align-items-left justify-content-end py-1 gap-3">
                 <div class="d-none d-md-flex align-items-center gap-3 text-white-50">
                     <span class="d-flex align-items-center gap-1"><i class="far fa-calendar-alt opacity-75 small"></i>
                         <span id="govDate"></span></span>
                     <span class="d-flex align-items-center gap-1"><i class="far fa-clock opacity-75 small"></i> <span
                             id="govTime"></span></span>
                 </div>
-                <ul class="d-none d-sm-flex align-items-center gap-2 m-0 p-0 list-unstyled">
-                    <li><a href="{{ url('/') }}"
-                            class="top-nav-link d-inline-flex align-items-center gap-1 text-white-50"><i
-                                class="fas fa-home opacity-75 small"></i> Home</a></li>
-                    <li>
-                        <div class="vr bg-white opacity-25" style="height: 12px;"></div>
-                    </li>
-                    <li><a href="#" title="Sitemap"
-                            class="top-nav-link d-inline-flex align-items-center gap-1 text-white-50"><i
-                                class="fas fa-sitemap opacity-75 small"></i> Sitemap</a></li>
-                    <li>
-                        <div class="vr bg-white opacity-25" style="height: 12px;"></div>
-                    </li>
-                    @guest
-                        <li><a href="{{ route('frontend.user.register') }}"
-                                class="top-nav-link d-inline-flex align-items-center gap-1 text-white-50"><i
-                                    class="fas fa-user-plus opacity-75 small"></i> Citizen Register</a></li>
-                        <li>
-                            <div class="vr bg-white opacity-25" style="height: 12px;"></div>
-                        </li>
-                    @endguest
-                    <li>
-                        <a href="{{ url('/') }}/login"
-                            class="top-nav-link text-white fw-bold border border-secondary bg-white bg-opacity-10 d-inline-flex align-items-center gap-1">
-                            <i class="fas fa-sign-in-alt opacity-75 small"></i> System Login
-                        </a>
-                    </li>
-                </ul>
+
             </div>
         </div>
     </div>
@@ -304,7 +277,7 @@
         });
 
         window.addEventListener('scroll', function () {
-            if (window.scrollY >= 200) {
+            if (window.scrollY >= 300) {
                 stickyContainer.classList.add("sticky-navbar");
                 document.body.style.paddingTop = stickyContainer.offsetHeight + 'px'; // prevent layout jump
             } else {

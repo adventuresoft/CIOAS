@@ -43,6 +43,7 @@ class DepartmentController extends Controller
             'bn_name' => 'required|string|max:255',
             'url' => 'nullable|string|max:255',
             'info' => 'nullable|string',
+            'order' => 'nullable|integer',
         ]);
 
 
@@ -60,6 +61,7 @@ class DepartmentController extends Controller
         $department->bn_name = $request->bn_name;
         $department->url = $request->url;
         $department->info = $request->info;
+        $department->order = $request->order;
         $department->save();
 
         return response()->json([
@@ -106,6 +108,7 @@ class DepartmentController extends Controller
             'bn_name' => 'required|string|max:255',
             'url' => 'nullable|string|max:255',
             'info' => 'nullable|string',
+            'order' => 'nullable|integer',
         ]);
 
         if ($validator->fails()) {
@@ -121,6 +124,7 @@ class DepartmentController extends Controller
         $department->bn_name = $request->bn_name;
         $department->url = $request->url;
         $department->info = $request->info;
+        $department->order = $request->order;
         $department->save();
 
         return response()->json([
@@ -145,7 +149,7 @@ class DepartmentController extends Controller
         $department->delete();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => 'Department and its sections deleted successfully.',
         ], 200);
     }

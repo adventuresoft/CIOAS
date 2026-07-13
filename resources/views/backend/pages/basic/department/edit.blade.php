@@ -48,9 +48,17 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="md-field">
+                                        <label for="order">Order</label>
+                                        <input type="number" name="order" placeholder="Department order"
+                                            class="form-control" id="order" value="{{ $department->order }}">
+                                        <small class="text-danger error order_error"></small>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="md-field">
                                         <label for="info">Info</label>
-                                        <textarea name="info" placeholder="Department Info" class="form-control"
-                                            id="info" rows="3">{{ $department->info }}</textarea>
+                                        <textarea name="info" placeholder="Department Info" class="form-control" id="info"
+                                            rows="3">{{ $department->info }}</textarea>
                                         <small class="text-danger error info_error"></small>
                                     </div>
                                 </div>
