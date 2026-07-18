@@ -24,12 +24,24 @@
 
                                     <div class="form-group">
                                         <label>প্রাপক (Recipient) <span class="text-danger">*</span></label>
-                                        <input type="text" name="recipient" placeholder="প্রাপক (Recipient)"
-                                            class="form-control">
+                                        <select name="recipient" class="form-control select2" required>
+                                            <option value="">নির্বাচন করুন (Select)</option>
+                                            @if(isset($departments))
+                                                @foreach($departments as $department)
+                                                    @if($department->users->count() > 0)
+                                                        <optgroup label="{{ $department->name }}">
+                                                            @foreach($department->users as $user)
+                                                                <option value="{{ $user->name }}{{ $user->designation ? ' - ' . $user->designation : '' }}">{{ $user->name }} {{ $user->designation ? '(' . $user->designation . ')' : '' }}</option>
+                                                            @endforeach
+                                                        </optgroup>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        </select>
                                         <small class="text-danger error recipient_error"></small>
                                     </div>
                                     <div class="form-group">
-                                        <label>প্রেরক (Sender) <span class="text-danger">*</span></label>
+                                        <label>প্রেরক (Sender)</label>
                                         <input type="text" name="sender" placeholder="প্রেরক (Sender)" class="form-control">
                                         <small class="text-danger error sender_error"></small>
                                     </div>
@@ -40,7 +52,7 @@
                                 <div class="col-sm-4">
 
                                     <div class="form-group">
-                                        <label>এনআইডি নম্বর (NID NO) <span class="text-danger">*</span></label>
+                                        <label>এনআইডি নম্বর (NID NO)</label>
                                         <input type="text" name="nid_no" placeholder="এনআইডি নম্বর (NID NO)"
                                             class="form-control">
                                         <small class="text-danger error nid_no_error"></small>
@@ -50,12 +62,12 @@
                                         <label>মোবাইল নম্বর (Mobile Number) <span class="text-danger">*</span></label>
                                         <input type="text" name="mobile" maxlength="11" pattern="[0-9]{11}"
                                             inputmode="numeric" placeholder="মোবাইল নম্বর (Mobile Number)"
-                                            class="form-control">
+                                            class="form-control" required>
                                         <small class="text-danger error mobile_error"></small>
                                     </div>
 
                                     <div class="form-group">
-                                        <label>ঠিকানা (Address) <span class="text-danger">*</span></label>
+                                        <label>ঠিকানা (Address)</label>
                                         <input type="text" name="address" placeholder="ঠিকানা (Address)"
                                             class="form-control">
                                         <small class="text-danger error address_error"></small>
@@ -63,19 +75,19 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>বাবার নাম (Father's Name) <span class="text-danger">*</span></label>
+                                        <label>বাবার নাম (Father's Name)</label>
                                         <input type="text" name="father_name" placeholder="বাবার নাম (Father's Name)"
                                             class="form-control">
                                         <small class="text-danger error father_name_error"></small>
                                     </div>
                                     <div class="form-group">
-                                        <label>ইমেইল (Email) <span class="text-danger">*</span></label>
+                                        <label>ইমেইল (Email)</label>
                                         <input type="text" name="email" placeholder="ইমেইল (Email)" class="form-control">
                                         <small class="text-danger error email_error"></small>
                                     </div>
 
                                     <div class="form-group">
-                                        <label>ফর্মের ধরণ নির্বাচন করুন <span class="text-danger">*</span></label>
+                                        <label>ফর্মের ধরণ নির্বাচন করুন</label>
                                         <select name="form_type" class="form-control select2">
                                             <option value="">ফর্মের ধরণ নির্বাচন করুন</option>
                                             <option value="regular">নিয়মিত ভিত্তিতে (Regular)</option>
@@ -88,7 +100,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label>বিষয় (Subject) <span class="text-danger">*</span></label>
+                                        <label>বিষয় (Subject)</label>
                                         <input type="text" name="subject" placeholder="বিষয় (Subject)"
                                             class="form-control">
                                         <small class="text-danger error subject_error"></small>
@@ -97,7 +109,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label>বার্তা (Message) <span class="text-danger">*</span></label>
+                                <label>বার্তা (Message)</label>
                                 <textarea rows="8" name="message" placeholder="বার্তা (Message)"
                                     class="form-control"></textarea>
                                 <small class="text-danger error message_error"></small>

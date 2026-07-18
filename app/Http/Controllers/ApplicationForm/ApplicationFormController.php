@@ -79,8 +79,11 @@ class ApplicationFormController extends Controller
      */
     public function create()
     {
+        $departments = \App\Models\Department\Department::with(['users' => function($q) {
+            $q->whereIn('user_type', ['admin', 'staff', 'superadmin']);
+        }])->get();
 
-        return view('backend.pages.application-form.create');
+        return view('backend.pages.application-form.create', compact('departments'));
     }
 
     /**
@@ -465,10 +468,10 @@ class ApplicationFormController extends Controller
         return [
             'date' => 'nullable|date',
             'recipient' => 'required|string|max:255',
-            'subject' => 'required|string|max:255',
-            'sender' => 'required|string|max:255',
+            'subject' => 'nullable|string|max:255',
+            'sender' => 'nullable|string|max:255',
             'nid_no' => 'nullable|string|max:30',
-            'mobile' => 'nullable|string|max:20',
+            'mobile' => 'required|string|max:20',
             'address' => 'nullable|string|max:500',
             'father_name' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',

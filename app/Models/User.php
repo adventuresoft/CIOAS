@@ -156,6 +156,11 @@ class User extends Authenticatable
     public function hasPermissionTo($permission, $guardName = null): bool
     {
         if (!$this->role) return false;
+
+        if ($this->role->name === 'SuperAdmin') {
+            return true;
+        }
+
         try {
             return $this->role->hasPermissionTo($permission, $guardName);
         } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {

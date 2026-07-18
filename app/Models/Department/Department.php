@@ -13,4 +13,9 @@ class Department extends Model
     {
         return $this->hasMany(Section::class);
     }
+
+    public function users()
+    {
+        return $this->hasMany(\App\Models\User::class, 'department_id', 'id');
+    }
 }

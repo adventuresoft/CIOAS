@@ -209,8 +209,11 @@
             <i class="fas fa-check-double mr-2"></i> Approved
         </button>
         @endif
-        <button type="button" class="btn" style="background-color: #3b82f6; color: white; padding: 10px 24px; font-weight: 600; border-radius: 6px; border: none; box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2); transition: all 0.2s;" onclick="window.print()" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-            <i class="fas fa-print mr-2"></i> Printout
+        <button type="button" class="btn" style="background-color: #3b82f6; color: white; padding: 10px 24px; font-weight: 600; border-radius: 6px; border: none; box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2); transition: all 0.2s;" onclick="printPage('portrait')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+            <i class="fas fa-print mr-2"></i> Print Portrait
+        </button>
+        <button type="button" class="btn" style="background-color: #8b5cf6; color: white; padding: 10px 24px; font-weight: 600; border-radius: 6px; border: none; box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.2); transition: all 0.2s;" onclick="printPage('landscape')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+            <i class="fas fa-print mr-2"></i> Print Landscape
         </button>
     </div>
 @endsection
@@ -218,6 +221,26 @@
 @push('script')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    function printPage(orientation) {
+        var css = '@page { size: ' + orientation + '; }';
+        var head = document.head || document.getElementsByTagName('head')[0];
+        var style = document.createElement('style');
+
+        style.type = 'text/css';
+        style.media = 'print';
+        style.id = 'print-orientation';
+        
+        var oldStyle = document.getElementById('print-orientation');
+        if (oldStyle) {
+            oldStyle.remove();
+        }
+        
+        style.appendChild(document.createTextNode(css));
+        head.appendChild(style);
+        
+        window.print();
+    }
+
     function approveLand(id) {
         Swal.fire({
             title: 'আপনি কি নিশ্চিত?',
